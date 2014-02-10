@@ -1,7 +1,18 @@
 package com.ped.myneightool.model;
 
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+
+@Entity
 public class Utilisateur {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String nom;
 	private String prenom;
@@ -20,6 +31,7 @@ public class Utilisateur {
 		this.telephone = telephone;
 	}
 
+	
 	public int getId() {
 		return id;
 	}
@@ -27,6 +39,7 @@ public class Utilisateur {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	
 	public String getNom() {
 		return nom;
@@ -36,6 +49,7 @@ public class Utilisateur {
 		this.nom = nom;
 	}
 	
+	
 	public String getPrenom() {
 		return prenom;
 	}
@@ -44,6 +58,7 @@ public class Utilisateur {
 		this.prenom = prenom;
 	}
 
+	
 	public Connection getConnexion() {
 		return connexion;
 	}
@@ -52,6 +67,7 @@ public class Utilisateur {
 		this.connexion = connexion;
 	}
 
+	
 	public String getMail() {
 		return mail;
 	}
@@ -60,6 +76,7 @@ public class Utilisateur {
 		this.mail = mail;
 	}
 
+	
 	public String getTelephone() {
 		return telephone;
 	}

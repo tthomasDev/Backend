@@ -1,5 +1,9 @@
 package com.ped.myneightool.model;
 
+
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Connection {
 	
 	private String login;
@@ -11,6 +15,7 @@ public class Connection {
 		this.password = password;
 	}
 	
+	
 	public String getLogin() {
 		return login;
 	}
@@ -18,6 +23,7 @@ public class Connection {
 	public void setLogin(String login) {
 		this.login = login;
 	}
+	
 	
 	public String getPassword() {
 		return password;
