@@ -1,7 +1,17 @@
 package com.ped.myneightool.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+
+@Entity
 public class Outil {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private int idProprio;
 	private String nom;
@@ -22,6 +32,7 @@ public class Outil {
 		this.caution = caution;
 	}
 
+	
 	public int getId() {
 		return id;
 	}
@@ -29,6 +40,7 @@ public class Outil {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	
 	public String getNom() {
 		return nom;
@@ -38,6 +50,7 @@ public class Outil {
 		this.nom = nom;
 	}
 	
+	
 	public boolean isDisponible() {
 		return disponible;
 	}
@@ -46,6 +59,7 @@ public class Outil {
 		this.disponible = disponible;
 	}
 
+	
 	public String getDescription() {
 		return description;
 	}
@@ -54,6 +68,7 @@ public class Outil {
 		this.description = description;
 	}
 
+	
 	public String getCategorie() {
 		return categorie;
 	}
@@ -62,6 +77,7 @@ public class Outil {
 		this.categorie = categorie;
 	}
 
+	
 	public int getCaution() {
 		return caution;
 	}
@@ -70,6 +86,7 @@ public class Outil {
 		this.caution = caution;
 	}
 
+	
 	public int getIdProprio() {
 		return idProprio;
 	}
