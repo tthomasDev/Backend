@@ -20,7 +20,6 @@ public class JPAFilter implements Filter {
 	private static final Logger LOG = LoggerFactory.getLogger(JPAFilter.class);
 	private static EntityManagerFactory emf = null;
 
-	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		LOG.info("INTERCEPT REQUEST");
@@ -42,14 +41,13 @@ public class JPAFilter implements Filter {
 		}
 	}
 
-	@Override
+
 	public void destroy() {
 		if (emf != null) {
 			emf.close();
 		}
 	}
 
-	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		destroy();
 		emf = Persistence.createEntityManagerFactory("MyNeightool");
