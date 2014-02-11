@@ -1,13 +1,45 @@
 package com.ped.myneightool.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@Entity
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "adresse")
 public class Adresse {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@XmlElement
+	private int id;
+	
+	@XmlElement
 	private String adresse;
+	
+	@XmlElement
 	private String cp;
+	
+	@XmlElement
 	private String ville;
+	
+	@XmlElement
 	private String pays;
+	
+	@XmlElement
 	private float longitude;
+	
+	@XmlElement
 	private float latitude;
+	
+	public Adresse(){
+		
+	}
 	
 	public Adresse(String adresse, String cp, String ville, String pays,
 			float longitude, float latitude) {

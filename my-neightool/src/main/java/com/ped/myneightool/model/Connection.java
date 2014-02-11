@@ -9,6 +9,10 @@ public class Connection {
 	private String login;
 	private String password;
 	
+	public Connection(){
+		
+	}
+	
 	public Connection(String login, String password) {
 		super();
 		this.login = login;

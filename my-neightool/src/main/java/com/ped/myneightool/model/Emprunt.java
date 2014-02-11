@@ -2,18 +2,47 @@ package com.ped.myneightool.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.ManyToOne;
+
+@Entity
+@XmlRootElement(name = "emprunt")
 public class Emprunt {
+	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	private Outil tool;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "outil_id")
+	protected Outil outil;
+	
+	
 	private int idEmprunteur;
+	
+	
 	private Timestamp dateDebut;
+	
+	
 	private Timestamp dateFin;
+	
+	public Emprunt(){
+		
+	}
 	
 	public Emprunt(int id, Outil tool, int idEmprunteur, Timestamp dateDebut,
 			Timestamp dateFin) {
 		super();
 		this.id = id;
-		this.tool = tool;
+		this.outil = tool;
 		this.idEmprunteur = idEmprunteur;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
@@ -26,10 +55,10 @@ public class Emprunt {
 		this.id = id;
 	}
 	public Outil getTool() {
-		return tool;
+		return outil;
 	}
 	public void setTool(Outil tool) {
-		this.tool = tool;
+		this.outil = tool;
 	}
 	public int getIdEmprunteur() {
 		return idEmprunteur;

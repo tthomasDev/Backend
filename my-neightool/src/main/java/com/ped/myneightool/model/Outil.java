@@ -4,22 +4,41 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 @Entity
+@XmlRootElement(name = "outil")
 public class Outil {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@XmlElement
 	private int id;
+	
+	@XmlElement
 	private int idProprio;
+	
+	@XmlElement
 	private String nom;
+	
+	@XmlElement
 	private String description;
+	
+	@XmlElement
 	private boolean disponible;
+	
+	@XmlElement
 	private String categorie;
+	
+	@XmlElement
 	private int caution;
 
+	public Outil(){
+		
+	}
+	
 	public Outil(int id, int idProprio, String nom, String description,
 			boolean disponible, String categorie, int caution) {
 		super();
