@@ -52,12 +52,10 @@ public class Utilisateur implements Serializable{
 		
 	}
 	
-	public Utilisateur(int id, String nom, String prenom, Connection connexion,
+	public Utilisateur(String prenom, String nom, Connection connexion,
 			String mail, String telephone) {
-		super();
-		this.id = id;
-		this.nom = nom;
 		this.prenom = prenom;
+		this.nom = nom;
 		this.connexion = connexion;
 		this.mail = mail;
 		this.telephone = telephone;

@@ -1,8 +1,11 @@
 package com.ped.myneightool.service;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
@@ -40,6 +43,30 @@ public class ServiceUtilisateur {
 		return Response.ok(u).build();
 	}
 
+	@POST
+	@Path("/update")
+	@Consumes("application/xml")
+	public Response updateOeuvre(final Utilisateur u) {
+		utilisateurDAO.updateUtilisateur(u);
+		return Response.ok(u).build();
+	}
+	
+	@GET
+	@Path("/delete/{id}")
+	public void deleteUtilisateur(@PathParam("id") final int id) {
+		final Utilisateur utilisateur = utilisateurDAO.findById(id);
+		utilisateurDAO.deleteUtilisateur(utilisateur);
+	}
+
+	@GET
+	@Path("/{id}")
+	@Produces("application/xml")
+	public Utilisateur getUtilisateur(@PathParam("id") final int id) {
+		final Utilisateur a = utilisateurDAO.findById(id);
+		return a;
+	}
+
+	
 	
 		
 }

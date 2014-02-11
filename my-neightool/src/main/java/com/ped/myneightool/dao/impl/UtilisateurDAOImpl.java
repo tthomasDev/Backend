@@ -38,6 +38,53 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 
 	}
 
+	@Override
+	public void updateUtilisateur(Utilisateur utilisateur) {
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			em.merge(utilisateur);
+			tx.commit();
+
+		} catch (final Exception re) {
+			if (tx != null) {
+				LOG.error("update utilisateur failed", re);
+			}
+			tx.rollback();
+		}
+	}
+
 	
+	
+	
+	@Override
+	public Utilisateur findById(int id) {
+		final EntityManager em = createEntityManager();
+		final Utilisateur Utilisateur = em.find(Utilisateur.class, id);
+		return Utilisateur;
+	}
+
+	
+	@Override
+	public void deleteUtilisateur(Utilisateur utilisateur) {
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			em.remove(em.merge(utilisateur));
+			tx.commit();
+
+		} catch (final Exception re) {
+			if (tx != null) {
+				LOG.error("delete utilisateur failed", re);
+			}
+			tx.rollback();
+		}
+
+	}
+
 	
 }

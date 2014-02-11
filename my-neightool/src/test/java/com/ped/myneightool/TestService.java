@@ -1,22 +1,12 @@
 package com.ped.myneightool;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.Writer;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.stream.StreamSource;
 
-import org.codehaus.jettison.mapped.Configuration;
-import org.codehaus.jettison.mapped.MappedNamespaceConvention;
-import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.junit.Assert;
@@ -208,22 +198,7 @@ public class TestService {
 	
 	
 	
-	@Test
-	public void testCreateUserXML() {
-		try {
-			
-			final Utilisateur utilisateur = new Utilisateur("test", "xml");
-			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur,"user/create");
-			
-						
-			Assert.assertNotSame(utilisateurPost,null);
-			
-			
-		} catch (final RuntimeException re) {
-			LOG.error("echec de creation de l'utilisateur", re);
-			throw re;
-		}
-	}
+	
 	
 	/*
 	@Test
@@ -243,4 +218,128 @@ public class TestService {
 		}
 	}
 	*/
+	/**
+	 * test unitaire création d'utilisateur
+	 */
+	@Test
+	public void testCreateUserXML() {
+		try {
+			final Connection connexion = new Connection("login","password");
+			
+			//final Utilisateur utilisateur = new Utilisateur("test", "xml");
+			final Utilisateur utilisateur2= new Utilisateur("Jean","Duchemin",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur2,"user/create");
+			
+						
+			Assert.assertNotSame(utilisateurPost,null);
+			
+			
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'utilisateur", re);
+			throw re;
+		}
+	}
+	
+	/**
+	 * test unitaire mis à jour d'utilisateur
+	 */
+	@Test
+	public final void testUpdateUser() {
+		try {
+			final Connection connexion = new Connection("login","password");
+			final Utilisateur utilisateur= new Utilisateur("Jean","Duchemin",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur,"user/create");
+			
+			String str="1234567890";
+			utilisateurPost.setTelephone(str);
+			final Utilisateur utilisateurPost2 = (Utilisateur) httpRequestXMLBody(utilisateurPost,"user/update");						
+			
+			Assert.assertTrue(str.equals(utilisateurPost2.getTelephone()));
+
+		} catch (final RuntimeException re) {
+			LOG.error("echec de mis a jour de l'utilisateur", re);
+			throw re;
+		}
+	}
+
+	
+	
+	/**
+	 * test unitaire obtenir un utilisateur
+	 */
+	
+	@Test
+	public final void testGetUser() {
+
+		try{
+			final Connection connexion = new Connection("login","password");
+			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur,"user/create");
+			
+			LOG.info("");
+			LOG.info("");
+			LOG.info(utilisateurPost.getId()+" "+utilisateurPost.getPrenom()+" "+utilisateurPost.getNom()+" "+utilisateurPost.getTelephone());	
+			int i = utilisateurPost.getId();
+			LOG.info("");
+			LOG.info("");
+			LOG.info("id: "+i);
+			LOG.info("");
+			LOG.info("");
+			
+			final Utilisateur utilisateurGet = (Utilisateur) httpGetRequest("user", i);
+			LOG.info(utilisateurGet.getId()+" "+utilisateurGet.getPrenom()+" "+utilisateurGet.getNom()+" "+utilisateurGet.getTelephone());
+			LOG.info("");
+			LOG.info("");
+			Assert.assertNotSame(utilisateurGet, null);
+			LOG.info("");
+			LOG.info("");
+			
+		}
+		catch(final RuntimeException r){
+			LOG.error("testGetUser failed",r);
+			throw r;
+		}
+	}
+	
+	/**
+	 * test unitaire supprimer un utilisateur
+	 */
+	
+	@Test
+	public final void testDeleteUser() {
+
+		try{
+			final Connection connexion = new Connection("login","password");
+			final Utilisateur utilisateur= new Utilisateur("JeanDelete","DucheminDelete",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur,"user/create");
+					
+					
+			int i = utilisateurPost.getId();
+			LOG.info("n");
+			LOG.info("");
+			LOG.info("id: "+i);
+			LOG.info("");
+			LOG.info("");
+					 
+			httpGetRequest("user/delete", i);
+					
+			
+			try{
+				final Utilisateur utilisateurGet = (Utilisateur) httpGetRequest("user", i);
+				Assert.assertSame(utilisateurGet, null);
+			}
+			catch(final RuntimeException r){
+				LOG.error("testDeleteOeuvre failed",r);
+				throw r;
+			}
+					
+			
+			
+		}
+		catch(final RuntimeException r){
+			LOG.error("testDeleteOeuvre failed",r);
+			throw r;
+		}
+	}
+	
 }
