@@ -1,29 +1,24 @@
 package com.ped.myneightool.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
+@Embeddable
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "adresse")
 public class Adresse {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@XmlElement
-	private int id;
+	
 	
 	@XmlElement
 	private String adresse;
 	
 	@XmlElement
-	private String cp;
+	private String codePostale;
 	
 	@XmlElement
 	private String ville;
@@ -32,20 +27,22 @@ public class Adresse {
 	private String pays;
 	
 	@XmlElement
+	@Column(nullable = true)
 	private float longitude;
 	
 	@XmlElement
+	@Column(nullable = true)
 	private float latitude;
 	
 	public Adresse(){
 		
 	}
 	
-	public Adresse(String adresse, String cp, String ville, String pays,
+	public Adresse(String adresse, String codePostale, String ville, String pays,
 			float longitude, float latitude) {
 		super();
 		this.adresse = adresse;
-		this.cp = cp;
+		this.codePostale = codePostale;
 		this.ville = ville;
 		this.pays = pays;
 		this.longitude = longitude;
@@ -58,11 +55,11 @@ public class Adresse {
 	public void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}
-	public String getCp() {
-		return cp;
+	public String getcodePostale() {
+		return codePostale;
 	}
-	public void setCp(String cp) {
-		this.cp = cp;
+	public void setcodePostale(String codePostale) {
+		this.codePostale = codePostale;
 	}
 	public String getVille() {
 		return ville;

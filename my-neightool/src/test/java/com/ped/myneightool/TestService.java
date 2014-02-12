@@ -175,11 +175,7 @@ public class TestService {
 	public Object httpGetRequest(String resourceURI, int id){
 		try {
 			ClientRequest request;
-			if(id==0){
-				request = new ClientRequest("http://localhost:8080/rest/" + resourceURI);
-			}else{
-				request = new ClientRequest("http://localhost:8080/rest/" + resourceURI + "/" + id);
-			}		
+			request = new ClientRequest("http://localhost:8080/rest/" + resourceURI + "/" + id);
 			request.accept("application/xml");
 			ClientResponse<String> response = request.get(String.class);
 			if (response.getStatus() == 200)
@@ -224,10 +220,10 @@ public class TestService {
 	@Test
 	public void testCreateUserXML() {
 		try {
-			final Connection connexion = new Connection("login","password");
+			final Connection connexion = new Connection("loginCreate","passwordCreate");
 			
 			//final Utilisateur utilisateur = new Utilisateur("test", "xml");
-			final Utilisateur utilisateur2= new Utilisateur("Jean","Duchemin",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateur2= new Utilisateur("JeanCreate","DucheminCreate",connexion,"jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur2,"user/create");
 			
 						
@@ -246,8 +242,8 @@ public class TestService {
 	@Test
 	public final void testUpdateUser() {
 		try {
-			final Connection connexion = new Connection("login","password");
-			final Utilisateur utilisateur= new Utilisateur("Jean","Duchemin",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Connection connexion = new Connection("loginUpdate","passwordUpdate");
+			final Utilisateur utilisateur= new Utilisateur("JeanUpdate","DucheminUpdate",connexion,"jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur,"user/create");
 			
 			String str="1234567890";
@@ -272,7 +268,7 @@ public class TestService {
 	public final void testGetUser() {
 
 		try{
-			final Connection connexion = new Connection("login","password");
+			final Connection connexion = new Connection("loginGet","passwordGet");
 			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur,"user/create");
 			
@@ -309,7 +305,7 @@ public class TestService {
 	public final void testDeleteUser() {
 
 		try{
-			final Connection connexion = new Connection("login","password");
+			final Connection connexion = new Connection("loginDelete","passwordDelete");
 			final Utilisateur utilisateur= new Utilisateur("JeanDelete","DucheminDelete",connexion,"jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur,"user/create");
 					

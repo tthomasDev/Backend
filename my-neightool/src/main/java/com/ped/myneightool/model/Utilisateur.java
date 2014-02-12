@@ -42,6 +42,10 @@ public class Utilisateur implements Serializable{
 	@XmlElement
 	private Connection connexion;
 	
+	@Embedded
+	@XmlElement
+	private Adresse adresse;
+	
 	@XmlElement
 	private String mail;
 	
@@ -59,6 +63,16 @@ public class Utilisateur implements Serializable{
 		this.connexion = connexion;
 		this.mail = mail;
 		this.telephone = telephone;
+	}
+	
+	public Utilisateur(String prenom, String nom, Connection connexion,
+			String mail, String telephone, Adresse adresse) {
+		this.prenom = prenom;
+		this.nom = nom;
+		this.connexion = connexion;
+		this.mail = mail;
+		this.telephone = telephone;
+		this.adresse = adresse;
 	}
 
 	public Utilisateur(String nom, String prenom) {
@@ -126,6 +140,18 @@ public class Utilisateur implements Serializable{
 	public String toString(){
 		return this.id+" "+this.nom +" "+this.prenom;
 		
+	}
+	
+	public Adresse getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(Adresse adresse) {
+		this.adresse = adresse;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }
