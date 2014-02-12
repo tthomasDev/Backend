@@ -3,6 +3,10 @@ package com.ped.myneightool.model;
 
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,10 +15,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 
-
+@Entity
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "message")
 public class Message {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@XmlElement
+	private int id;
 	
 	@XmlElement
 	private int idSource;
@@ -27,6 +36,10 @@ public class Message {
 	
 	@XmlElement
 	private String corps;
+	
+	public Message(){
+		
+	}
 	
 	public Message(int idSource, int idDestinataire, String objet, String corps) {
 		super();
