@@ -10,9 +10,6 @@ import javax.xml.bind.Unmarshaller;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
-import com.ped.myneightool.dto.UtilisateursDTO;
-
-
 
 public class ClientRequestBuilder {
 	

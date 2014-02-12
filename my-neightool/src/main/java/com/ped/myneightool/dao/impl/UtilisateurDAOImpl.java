@@ -114,7 +114,7 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 			
 		}
 		
-		Set set = new HashSet(res);
+		Set<Utilisateur> set = new HashSet<Utilisateur>(res);
 		UtilisateursDTO odto= new UtilisateursDTO();
 		odto.setListeUtilisateurs(set);
 		return odto;
