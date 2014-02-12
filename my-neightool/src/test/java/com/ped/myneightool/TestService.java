@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import com.ped.myneightool.model.Adresse;
 import com.ped.myneightool.model.Connection;
 import com.ped.myneightool.model.Utilisateur;
 
@@ -35,7 +36,7 @@ public class TestService {
 		
 		
 		
-		jc = JAXBContext.newInstance(Utilisateur.class, Connection.class);
+		jc = JAXBContext.newInstance(Utilisateur.class, Connection.class,Adresse.class);
 		
 	}
 		
@@ -214,6 +215,29 @@ public class TestService {
 		}
 	}
 	*/
+	/**
+	 * test unitaire création d'utilisateur
+	 */
+	@Test
+	public void testCreateUserXMLWithAddress() {
+		try {
+			final Connection connexion = new Connection("loginCreate","passwordCreate");
+			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			
+			//final Utilisateur utilisateur = new Utilisateur("test", "xml");
+			final Utilisateur utilisateur2= new Utilisateur("JeanCreate","DucheminCreate",connexion,"jean-duchemin@gmail.com","0606060606",adresse);
+			final Utilisateur utilisateurPost = (Utilisateur) httpRequestXMLBody(utilisateur2,"user/create");
+			
+						
+			Assert.assertNotSame(utilisateurPost,null);
+			
+			
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'utilisateur", re);
+			throw re;
+		}
+	}
+	
 	/**
 	 * test unitaire création d'utilisateur
 	 */
