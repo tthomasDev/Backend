@@ -10,6 +10,8 @@ import javax.xml.bind.Unmarshaller;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
+import com.ped.myneightool.dto.UtilisateursDTO;
+
 
 
 public class ClientRequestBuilder {
@@ -172,6 +174,26 @@ public class ClientRequestBuilder {
 		try {
 			ClientRequest request;
 			request = new ClientRequest("http://localhost:8080/rest/" + resourceURI + "/" + id);
+			request.accept("application/xml");
+			ClientResponse<String> response = request.get(String.class);
+			if (response.getStatus() == 200)
+			{
+				Unmarshaller un = this.jc.createUnmarshaller();
+				Object o = un.unmarshal(new StringReader(response.getEntity()));
+				return o;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+
+	public Object httpGetRequestWithoutArgument(String resourceURI) {
+		try {
+			ClientRequest request;
+			request = new ClientRequest("http://localhost:8080/rest/" + resourceURI);
 			request.accept("application/xml");
 			ClientResponse<String> response = request.get(String.class);
 			if (response.getStatus() == 200)

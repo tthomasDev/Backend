@@ -1,5 +1,7 @@
 package com.ped.myneightool;
 
+import java.util.Iterator;
+
 import javax.xml.bind.JAXBContext;
 
 import org.junit.Assert;
@@ -7,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import com.ped.myneightool.dto.UtilisateursDTO;
 import com.ped.myneightool.model.Adresse;
 import com.ped.myneightool.model.Connection;
 import com.ped.myneightool.model.Utilisateur;
@@ -28,6 +31,7 @@ public class TestUtilisateur {
 	@BeforeClass
 	public static void setUp() throws Exception {
 		jaxbc=JAXBContext.newInstance(	Utilisateur.class,
+										UtilisateursDTO.class,
 										Connection.class,
 										Adresse.class);
 		crb= new ClientRequestBuilder(jaxbc);
@@ -206,6 +210,39 @@ public class TestUtilisateur {
 		}
 	}
 	
-	
+	/**
+	 * test unitaire pour obtenir la liste des utilisateurs
+	 */
+	@Test
+	public final void testGetAllUsers() {
+		try{
+		//ne marche pas car erreur de type list	 
+		//List<Oeuvre> lo = (List<Oeuvre>) httpGetRequest("serviceOeuvre/Utilisateurs",0);
+		
+		UtilisateursDTO dto =(UtilisateursDTO) crb.httpGetRequestWithoutArgument("user/list");
+		
+		LOG.info("\n\n\n");
+		LOG.info("taille liste utilisateurs:" +dto.size());
+		LOG.info("\n\n\n");
+		
+		LOG.info("liste des artistes:\n");
+		
+		Iterator<Utilisateur> ito=dto.getListeUtilisateurs().iterator();
+		while(ito.hasNext()){
+			
+			final Utilisateur utilisateur = ito.next();
+			LOG.info(utilisateur.getId()+" "+utilisateur.getPrenom()+" "+utilisateur.getNom()+" "+utilisateur.getMail());
+			
+		}
+		
+		
+		Assert.assertTrue( dto.getListeUtilisateurs().size() >= 0);
+		LOG.info("\n\n\n");
+		}
+		catch(final RuntimeException r){
+			LOG.error("getAllUtilisateurs failed",r);
+			throw r;
+		}
+	}
 	
 }

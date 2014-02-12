@@ -80,6 +80,14 @@ public class Message {
 	public void setCorps(String corps) {
 		this.corps = corps;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 
 }

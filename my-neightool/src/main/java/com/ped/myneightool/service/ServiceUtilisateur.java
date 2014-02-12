@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.impl.UtilisateurDAOImpl;
 import com.ped.myneightool.dao.itf.ItfUtilisateurDAO;
+import com.ped.myneightool.dto.UtilisateursDTO;
 import com.ped.myneightool.model.Utilisateur;
 
 
@@ -67,6 +68,19 @@ public class ServiceUtilisateur {
 	}
 
 	
-	
+	@GET
+	@Path("/list")
+	@Produces("application/xml")
+	public UtilisateursDTO getAllUtilisateurs() {
+		UtilisateursDTO Utilisateurs = new UtilisateursDTO();
+		try {
+		Utilisateurs = utilisateurDAO.findAll();
+		} catch (Exception e) {
+			LOG.error("erreur service /list");
+			e.printStackTrace();
+		}
+		return Utilisateurs;
+
+	}
 		
 }

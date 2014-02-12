@@ -1,5 +1,6 @@
 package com.ped.myneightool.dao.itf;
 
+import com.ped.myneightool.dto.UtilisateursDTO;
 import com.ped.myneightool.model.Utilisateur;
 
 public interface ItfUtilisateurDAO {
@@ -11,5 +12,7 @@ public interface ItfUtilisateurDAO {
 	public abstract Utilisateur findById(int id);
 
 	public abstract void deleteUtilisateur(Utilisateur utilisateur);
+
+	public abstract UtilisateursDTO findAll();
 
 }
