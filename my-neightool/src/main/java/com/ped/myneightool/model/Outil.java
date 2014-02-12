@@ -6,52 +6,65 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @XmlRootElement(name = "outil")
 public class Outil {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@XmlElement
 	private int id;
 	
-	@XmlElement
 	private int idProprio;
 	
-	@XmlElement
 	private String nom;
 	
-	@XmlElement
 	private String description;
 	
-	@XmlElement
-	private boolean disponible;
+	private boolean disponible = true;
 	
-	@XmlElement
 	private String categorie;
 	
-	@XmlElement
 	private int caution;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="utilisateur_id")
+	private Utilisateur utilisateur;
 
 	public Outil(){
 		
 	}
 	
-	public Outil(int id, int idProprio, String nom, String description,
+	public Outil(Utilisateur utilisateur,String nom, String description,
 			boolean disponible, String categorie, int caution) {
-		super();
-		this.id = id;
-		this.idProprio = idProprio;
+				
+		this.utilisateur=utilisateur;
+		this.utilisateur.addOutil(this);
+				
 		this.nom = nom;
 		this.description = description;
 		this.disponible = disponible;
 		this.categorie = categorie;
 		this.caution = caution;
 	}
-
 	
+	@XmlElement
+	public Utilisateur getUtilisateur(){
+		return this.utilisateur;
+	}
+	
+	public void setUtilisateur(Utilisateur utilisateur){
+		this.utilisateur=utilisateur;
+		utilisateur.addOutil(this);
+	}
+
+	@XmlElement
 	public int getId() {
 		return id;
 	}
@@ -60,7 +73,7 @@ public class Outil {
 		this.id = id;
 	}
 	
-	
+	@XmlElement
 	public String getNom() {
 		return nom;
 	}
@@ -69,7 +82,7 @@ public class Outil {
 		this.nom = nom;
 	}
 	
-	
+	@XmlElement(defaultValue="true")
 	public boolean isDisponible() {
 		return disponible;
 	}
@@ -78,7 +91,7 @@ public class Outil {
 		this.disponible = disponible;
 	}
 
-	
+	@XmlElement
 	public String getDescription() {
 		return description;
 	}
@@ -87,7 +100,7 @@ public class Outil {
 		this.description = description;
 	}
 
-	
+	@XmlElement
 	public String getCategorie() {
 		return categorie;
 	}
@@ -96,7 +109,7 @@ public class Outil {
 		this.categorie = categorie;
 	}
 
-	
+	@XmlElement
 	public int getCaution() {
 		return caution;
 	}
@@ -105,7 +118,7 @@ public class Outil {
 		this.caution = caution;
 	}
 
-	
+	@XmlElement
 	public int getIdProprio() {
 		return idProprio;
 	}

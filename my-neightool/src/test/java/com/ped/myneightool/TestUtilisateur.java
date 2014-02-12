@@ -27,7 +27,9 @@ public class TestUtilisateur {
 
 	@BeforeClass
 	public static void setUp() throws Exception {
-		jaxbc=JAXBContext.newInstance(Utilisateur.class, Connection.class,Adresse.class);
+		jaxbc=JAXBContext.newInstance(	Utilisateur.class,
+										Connection.class,
+										Adresse.class);
 		crb= new ClientRequestBuilder(jaxbc);
 	}
 		

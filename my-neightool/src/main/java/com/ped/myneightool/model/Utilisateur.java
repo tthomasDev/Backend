@@ -2,6 +2,8 @@ package com.ped.myneightool.model;
 
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -12,45 +14,40 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.OneToMany;
 
 
 
-
+@SuppressWarnings("serial")
 @Entity
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "utilisateur")
 public class Utilisateur implements Serializable{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7978946567530340990L;
-	
-	
+		
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@XmlElement
 	private int id;
 	
-	@XmlElement
 	private String nom;
 	
-	@XmlElement
 	private String prenom;
 	
 	@Embedded
-	@XmlElement
 	private Connection connexion;
 	
 	@Embedded
-	@XmlElement
 	private Adresse adresse;
 	
-	@XmlElement
 	private String mail;
 	
-	@XmlElement
 	private String telephone;
+	
+	private String dateDeNaissance;
+	
+	@OneToMany(mappedBy = "utilisateur",orphanRemoval=true)
+	private Set<Outil> outils = new HashSet<Outil>();
 	
 	public Utilisateur(){
 		
@@ -75,7 +72,7 @@ public class Utilisateur implements Serializable{
 		this.adresse = adresse;
 	}
 
-	public Utilisateur(String nom, String prenom) {
+	public Utilisateur(String prenom, String nom) {
 		super();
 		
 		this.nom = nom;
@@ -83,7 +80,26 @@ public class Utilisateur implements Serializable{
 		
 	}
 	
+	@XmlTransient
+	public Set<Outil> getOutils(){
+		return outils;
+	}
 	
+	public void setOutils(Set<Outil> outils){
+		this.outils=outils;
+	}
+	
+	// methode metier qui evitera d'avoir a faire :
+	// utilisateur.getOutils().add(outils) et utilisateur.setOutils(outils)
+	public void addOutil(Outil o) {
+		this.outils.add(o);
+	}
+		
+	public void removeOutil(Outil o) {
+		this.outils.remove(o);
+	}
+	
+	@XmlElement
 	public int getId() {
 		return id;
 	}
@@ -92,7 +108,7 @@ public class Utilisateur implements Serializable{
 		this.id = id;
 	}
 	
-	
+	@XmlElement
 	public String getNom() {
 		return nom;
 	}
@@ -101,7 +117,7 @@ public class Utilisateur implements Serializable{
 		this.nom = nom;
 	}
 	
-	
+	@XmlElement
 	public String getPrenom() {
 		return prenom;
 	}
@@ -110,7 +126,7 @@ public class Utilisateur implements Serializable{
 		this.prenom = prenom;
 	}
 
-	
+	@XmlElement
 	public Connection getConnexion() {
 		return connexion;
 	}
@@ -119,7 +135,7 @@ public class Utilisateur implements Serializable{
 		this.connexion = connexion;
 	}
 
-	
+	@XmlElement
 	public String getMail() {
 		return mail;
 	}
@@ -128,7 +144,7 @@ public class Utilisateur implements Serializable{
 		this.mail = mail;
 	}
 
-	
+	@XmlElement
 	public String getTelephone() {
 		return telephone;
 	}
@@ -142,6 +158,7 @@ public class Utilisateur implements Serializable{
 		
 	}
 	
+	@XmlElement
 	public Adresse getAdresse() {
 		return adresse;
 	}
@@ -150,8 +167,14 @@ public class Utilisateur implements Serializable{
 		this.adresse = adresse;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	@XmlElement
+	public String getDateDeNaissance() {
+		return dateDeNaissance;
 	}
 
+	public void setDateDeNaissance(String dateDeNaissance) {
+		this.dateDeNaissance = dateDeNaissance;
+	}
+
+	
 }
