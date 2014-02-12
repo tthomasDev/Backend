@@ -35,7 +35,7 @@ public class Utilisateur implements Serializable{
 	private String prenom;
 	
 	@Embedded
-	private Connection connexion;
+	private Connexion connexion;
 	
 	@Embedded
 	private Adresse adresse;
@@ -53,7 +53,7 @@ public class Utilisateur implements Serializable{
 		
 	}
 	
-	public Utilisateur(String prenom, String nom, Connection connexion,
+	public Utilisateur(String prenom, String nom, Connexion connexion,
 			String mail, String telephone) {
 		this.prenom = prenom;
 		this.nom = nom;
@@ -62,7 +62,7 @@ public class Utilisateur implements Serializable{
 		this.telephone = telephone;
 	}
 	
-	public Utilisateur(String prenom, String nom, Connection connexion,
+	public Utilisateur(String prenom, String nom, Connexion connexion,
 			String mail, String telephone, Adresse adresse) {
 		this.prenom = prenom;
 		this.nom = nom;
@@ -127,11 +127,11 @@ public class Utilisateur implements Serializable{
 	}
 
 	@XmlElement
-	public Connection getConnexion() {
+	public Connexion getConnexion() {
 		return connexion;
 	}
 
-	public void setConnexion(Connection connexion) {
+	public void setConnexion(Connexion connexion) {
 		this.connexion = connexion;
 	}
 

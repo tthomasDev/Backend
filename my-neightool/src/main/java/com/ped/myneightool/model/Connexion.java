@@ -4,16 +4,16 @@ package com.ped.myneightool.model;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Connection {
+public class Connexion {
 	
 	private String login;
 	private String password;
 	
-	public Connection(){
+	public Connexion(){
 		
 	}
 	
-	public Connection(String login, String password) {
+	public Connexion(String login, String password) {
 		super();
 		this.login = login;
 		this.password = password;
