@@ -1,7 +1,5 @@
 package com.ped.myneightool;
 
-import java.util.Iterator;
-
 import javax.xml.bind.JAXBContext;
 
 import org.junit.Assert;
