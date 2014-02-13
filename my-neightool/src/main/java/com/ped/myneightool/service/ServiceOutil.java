@@ -106,7 +106,7 @@ public class ServiceOutil {
 	}
 	
 	@GET
-	@Path("available/user/{id}")
+	@Path("/user/available/{id}")
 	@Produces({ "application/xml", "application/json" })
 	public OutilsDTO findToolsOfUserAvailable(@PathParam("id") final int UtilisateurId) {
 		OutilsDTO outils = outilDAO.findToolsOfUserAvailable(UtilisateurId);

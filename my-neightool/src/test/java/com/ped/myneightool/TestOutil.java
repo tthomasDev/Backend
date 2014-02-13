@@ -243,11 +243,52 @@ public class TestOutil {
 			
 			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Rateau","savoir ratisser",true,"Jardinage",50), "tool/create");
 			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Pelle","savoir pelleter",true,"Jardinage",50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tronçonneuse","savoir tronçonner",true,"Jardinage",50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tronçonneuse","savoir tronçonner",false,"Jardinage",50), "tool/create");
 			
 			
 			int i = utilisateurPost.getId();
 			OutilsDTO dto =(OutilsDTO) crb.httpGetRequest("tool/user",i );
+			
+			LOG.info("\n\n\n");
+			LOG.info("taille liste Outils:" +dto.size());
+			LOG.info("\n\n\n");
+			
+			LOG.info("liste des outils:\n");
+			
+			Iterator<Outil> ito=dto.getListeOutils().iterator();
+			while(ito.hasNext()){
+				
+				final Outil Outil = ito.next();
+				LOG.info(Outil.getId()+" "+Outil.getNom()+" "+Outil.getCategorie()+" "+Outil.getDescription());
+				
+			}
+			
+			
+			Assert.assertTrue( dto.getListeOutils().size() >= 0);
+			LOG.info("\n\n\n");
+		}
+		catch(final RuntimeException r){
+			LOG.error("getAllOutils failed",r);
+			throw r;
+		}
+	}
+	
+	/**
+	 * test unitaire pour obtenir la liste des Outils DISPONIBLE d'un utilisateur en particulier
+	 */
+	@Test
+	public final void testGetAllOutilsAvailableFromUser() {
+		try{
+			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils");
+			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
+			
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Rateau","savoir ratisser",true,"Jardinage",50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Pelle","savoir pelleter",true,"Jardinage",50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tronçonneuse","savoir tronçonner",false,"Jardinage",50), "tool/create");
+			
+			
+			int i = utilisateurPost.getId();
+			OutilsDTO dto =(OutilsDTO) crb.httpGetRequest("tool/user/available",i );
 			
 			LOG.info("\n\n\n");
 			LOG.info("taille liste Outils:" +dto.size());
