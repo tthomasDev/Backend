@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfConnexionDAO;
 import com.ped.myneightool.model.Connexion;
+import com.ped.myneightool.model.Utilisateur;
 
 
 
@@ -28,17 +29,21 @@ public class ConnexionDAOImpl extends GenericDAOImpl implements ItfConnexionDAO 
 					.createQuery("SELECT c FROM Utilisateur c where c.connexion.login =:lo and c.connexion.password =:pa");
 			q.setParameter("lo", connexion.getLogin());
 			q.setParameter("pa", connexion.getPassword());
-			//final Utilisateur utilisateur = (Utilisateur) q.getResultList().get(0);
+			final Utilisateur utilisateur = (Utilisateur) q.getResultList()
+					.get(0);
 			tx.commit();
 
-			
+			if (utilisateur != null) {
+				//renvois l'id utilisateur 
+				return Integer.toString(utilisateur.getId());
+			}
 		} catch (final Exception re) {
 			LOG.error("connexion DAO failed", re);
 			tx.rollback();
 
 		}
-
-		return null;
+		String str = new String("Mauvaise connexion");
+		return str;
 	}
 
 	

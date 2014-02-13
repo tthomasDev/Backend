@@ -2,8 +2,11 @@ package com.ped.myneightool.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Embeddable
+@XmlRootElement(name = "adresse")
 public class Adresse {
 	
 	private String rue;
@@ -32,6 +35,7 @@ public class Adresse {
 		this.latitude = latitude;
 	}
 	
+	@XmlElement
 	public String getRue() {
 		return rue;
 	}
@@ -40,6 +44,7 @@ public class Adresse {
 		this.rue = rue;
 	}
 	
+	@XmlElement
 	public String getcodePostale() {
 		return codePostale;
 	}
@@ -48,6 +53,7 @@ public class Adresse {
 		this.codePostale = codePostale;
 	}
 	
+	@XmlElement
 	public String getVille() {
 		return ville;
 	}
@@ -56,6 +62,7 @@ public class Adresse {
 		this.ville = ville;
 	}
 	
+	@XmlElement
 	public String getPays() {
 		return pays;
 	}
@@ -64,6 +71,7 @@ public class Adresse {
 		this.pays = pays;
 	}
 	
+	@XmlElement
 	public float getLongitude() {
 		return longitude;
 	}
@@ -72,6 +80,7 @@ public class Adresse {
 		this.longitude = longitude;
 	}
 	
+	@XmlElement
 	public float getLatitude() {
 		return latitude;
 	}

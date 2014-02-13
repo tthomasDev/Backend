@@ -30,10 +30,10 @@ public class ServiceConnexion {
 	@Path("/try")
 	@Consumes("application/xml")
 	@Produces("application/xml")
-	public Response connection(final Connexion connection) {
-		LOG.info("login " + connection.getLogin() + " mdp "
-				+ connection.getPassword());
-		final String status = connexionDAOImpl.isValidConnection(connection);
+	public Response connexion(final Connexion connexion) {
+		LOG.info("login> " + connexion.getLogin() + " password> "
+				+ connexion.getPassword());
+		final String status = connexionDAOImpl.isValidConnection(connexion);
 		return Response.ok(status).build();
 
 	}

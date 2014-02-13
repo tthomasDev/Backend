@@ -2,8 +2,11 @@ package com.ped.myneightool.model;
 
 
 import javax.persistence.Embeddable;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Embeddable
+@XmlRootElement(name = "connexion")
 public class Connexion {
 	
 	private String login;
@@ -19,7 +22,7 @@ public class Connexion {
 		this.password = password;
 	}
 	
-	
+	@XmlElement
 	public String getLogin() {
 		return login;
 	}
@@ -28,7 +31,7 @@ public class Connexion {
 		this.login = login;
 	}
 	
-	
+	@XmlElement
 	public String getPassword() {
 		return password;
 	}
