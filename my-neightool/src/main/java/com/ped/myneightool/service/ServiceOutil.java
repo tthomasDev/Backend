@@ -83,10 +83,33 @@ public class ServiceOutil {
 	}
 	
 	@GET
+	@Path("/list/available")
+	@Produces("application/xml")
+	public OutilsDTO getAllToolsAvailable() {
+		OutilsDTO outils = new OutilsDTO();
+		try {
+			outils = outilDAO.findAllAvailable();
+		} catch (Exception e) {
+			LOG.error("erreur service /list/available");
+			e.printStackTrace();
+		}
+		return outils;
+
+	}
+	
+	@GET
 	@Path("/user/{id}")
 	@Produces({ "application/xml", "application/json" })
 	public OutilsDTO findToolsOfUser(@PathParam("id") final int UtilisateurId) {
 		OutilsDTO outils = outilDAO.findToolsOfUser(UtilisateurId);
+		return outils;
+	}
+	
+	@GET
+	@Path("available/user/{id}")
+	@Produces({ "application/xml", "application/json" })
+	public OutilsDTO findToolsOfUserAvailable(@PathParam("id") final int UtilisateurId) {
+		OutilsDTO outils = outilDAO.findToolsOfUserAvailable(UtilisateurId);
 		return outils;
 	}
 		

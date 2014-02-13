@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import org.slf4j.LoggerFactory;
 
@@ -120,9 +121,37 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 	}
 
 	
+	@Override
+	public OutilsDTO findAllAvailable() {
+		LOG.info("find all outils");
+		List<Outil> res = new ArrayList<Outil>();
+				
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			final Query q = em.createQuery("SELECT p FROM Outil p where p.disponible =:par");
+			q.setParameter("par",true);
+			res = TypeSafetyChecking.castList(Outil.class, q.getResultList());
+			tx.commit();
+			LOG.debug("recherche de tous les outils disponible réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		Set<Outil> set = new HashSet<Outil>(res);
+		OutilsDTO odto= new OutilsDTO();
+		odto.setListeOutils(set);
+		return odto;
+	}
+
 	
 	@Override
 	public OutilsDTO findToolsOfUser(int utilisateurId) {
+		LOG.info("find all outils from user ID : " + utilisateurId);
 		Set<Outil> res = new HashSet<Outil>();
 		final EntityManager em = createEntityManager();
 		final Utilisateur u = em.getReference(Utilisateur.class, utilisateurId);
@@ -133,4 +162,11 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 		odto.setListeOutils(set);
 		return odto;
 	}
+
+	@Override
+	public OutilsDTO findToolsOfUserAvailable(int utilisateurId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

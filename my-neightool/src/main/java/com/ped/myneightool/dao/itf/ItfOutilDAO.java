@@ -15,7 +15,11 @@ public interface ItfOutilDAO {
 	public abstract void deleteOutil(Outil outil);
 
 	public abstract OutilsDTO findAll();
+	
+	public abstract OutilsDTO findAllAvailable();
 
 	public abstract OutilsDTO findToolsOfUser(int utilisateurId);
+
+	public abstract OutilsDTO findToolsOfUserAvailable(int utilisateurId);
 
 }
