@@ -59,35 +59,13 @@ public class TestUtilisateur {
 	*/
 	
 	
-	/**
-	 * test unitaire création d'utilisateur
-	 */
-	@Test
-	public void testCreateUserXMLWithAddress() {
-		try {
-			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
-			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
-			
-			//final Utilisateur utilisateur = new Utilisateur("test", "xml");
-			final Utilisateur utilisateur2= new Utilisateur("JeanCreate","DucheminCreate",connexion,"jean-duchemin@gmail.com","0606060606",adresse);
-			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
-			
-						
-			Assert.assertNotSame(utilisateurPost,null);
-			
-			
-		} catch (final RuntimeException re) {
-			LOG.error("echec de creation de l'utilisateur", re);
-			throw re;
-		}
-	}
 	
 	
 	/**
 	 * test unitaire création d'utilisateur sans adresse
 	 */
 	@Test
-	public void testCreateUserXML() {
+	public void testCreateUser() {
 		try {
 			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
 			

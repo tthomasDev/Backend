@@ -42,7 +42,7 @@ public class TestConnexion {
 	 * test unitaire pour une bonne connexion
 	 */
 	@Test
-	public final void testConnexion() {
+	public final void testValidConnexion() {
 
 		try {
 
@@ -82,7 +82,7 @@ public class TestConnexion {
 	 * test unitaire pour une mauvaise connexion
 	 */
 	@Test
-	public final void testBadConnexion() {
+	public final void testNotValidConnexion() {
 
 		try {
 
