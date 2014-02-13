@@ -4,9 +4,12 @@ package com.ped.myneightool.model;
 
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -22,57 +25,61 @@ public class Message {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@XmlElement
 	private int id;
 	
-	@XmlElement
-	private int idSource;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="utilisateur_id_emetteur")
+	private Utilisateur emetteur;
 	
-	@XmlElement
-	private int idDestinataire;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="utilisateur_id_destinataire")
+	private Utilisateur destinataire;
 	
-	@XmlElement
 	private String objet;
 	
-	@XmlElement
 	private String corps;
 	
 	public Message(){
 		
 	}
 	
-	public Message(int idSource, int idDestinataire, String objet, String corps) {
+	public Message(Utilisateur emetteur, Utilisateur destinataire, String objet, String corps) {
 		super();
-		this.idSource = idSource;
-		this.idDestinataire = idDestinataire;
+		this.emetteur = emetteur;
+		this.destinataire = destinataire;
 		this.objet = objet;
 		this.corps = corps;
 	}
 
-	public int getIdSource() {
-		return idSource;
+	
+	@XmlElement
+	public Utilisateur getEmetteur() {
+		return emetteur;
 	}
 
-	public void setIdSource(int idSource) {
-		this.idSource = idSource;
+	public void setEmetteur(Utilisateur emetteur) {
+		this.emetteur = emetteur;
 	}
 
-	public int getIdDestinataire() {
-		return idDestinataire;
+	@XmlElement
+	public Utilisateur getDestinataire() {
+		return destinataire;
 	}
 
-	public void setIdDestinataire(int idDestinataire) {
-		this.idDestinataire = idDestinataire;
+	public void setDestinataire(Utilisateur destinataire) {
+		this.destinataire = destinataire;
 	}
 
+	@XmlElement
 	public String getObjet() {
 		return objet;
 	}
-
+	
 	public void setObjet(String objet) {
 		this.objet = objet;
 	}
 
+	@XmlElement
 	public String getCorps() {
 		return corps;
 	}
@@ -81,6 +88,7 @@ public class Message {
 		this.corps = corps;
 	}
 
+	@XmlElement
 	public int getId() {
 		return id;
 	}

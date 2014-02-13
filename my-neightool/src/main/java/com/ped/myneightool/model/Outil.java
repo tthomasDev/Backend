@@ -21,8 +21,6 @@ public class Outil {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
-	private int idProprio;
-	
 	private String nom;
 	
 	private String description;
@@ -116,15 +114,6 @@ public class Outil {
 
 	public void setCaution(int caution) {
 		this.caution = caution;
-	}
-
-	@XmlElement
-	public int getIdProprio() {
-		return idProprio;
-	}
-
-	public void setIdProprio(int idProprio) {
-		this.idProprio = idProprio;
 	}
 
 }

@@ -68,8 +68,8 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 	@Override
 	public Utilisateur findById(int id) {
 		final EntityManager em = createEntityManager();
-		final Utilisateur Utilisateur = em.find(Utilisateur.class, id);
-		return Utilisateur;
+		final Utilisateur utilisateur = em.find(Utilisateur.class, id);
+		return utilisateur;
 	}
 
 	

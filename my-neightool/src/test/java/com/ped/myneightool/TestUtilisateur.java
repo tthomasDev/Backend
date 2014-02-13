@@ -69,9 +69,8 @@ public class TestUtilisateur {
 		try {
 			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
 			
-			//final Utilisateur utilisateur = new Utilisateur("test", "xml");
-			final Utilisateur utilisateur2= new Utilisateur("JeanCreate","DucheminCreate",connexion,"jean-duchemin@gmail.com","0606060606");
-			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
+			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 						
 			Assert.assertNotSame(utilisateurPost,null);
