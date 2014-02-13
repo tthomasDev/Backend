@@ -74,7 +74,7 @@ public class ServiceUtilisateur {
 	public UtilisateursDTO getAllUtilisateurs() {
 		UtilisateursDTO Utilisateurs = new UtilisateursDTO();
 		try {
-		Utilisateurs = utilisateurDAO.findAll();
+			Utilisateurs = utilisateurDAO.findAll();
 		} catch (Exception e) {
 			LOG.error("erreur service /list");
 			e.printStackTrace();

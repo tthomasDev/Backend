@@ -194,28 +194,26 @@ public class TestUtilisateur {
 	@Test
 	public final void testGetAllUsers() {
 		try{
-		//ne marche pas car erreur de type list	 
-		//List<Oeuvre> lo = (List<Oeuvre>) httpGetRequest("serviceOeuvre/Utilisateurs",0);
 		
-		UtilisateursDTO dto =(UtilisateursDTO) crb.httpGetRequestWithoutArgument("user/list");
-		
-		LOG.info("\n\n\n");
-		LOG.info("taille liste utilisateurs:" +dto.size());
-		LOG.info("\n\n\n");
-		
-		LOG.info("liste des artistes:\n");
-		
-		Iterator<Utilisateur> ito=dto.getListeUtilisateurs().iterator();
-		while(ito.hasNext()){
+			UtilisateursDTO dto =(UtilisateursDTO) crb.httpGetRequestWithoutArgument("user/list");
 			
-			final Utilisateur utilisateur = ito.next();
-			LOG.info(utilisateur.getId()+" "+utilisateur.getPrenom()+" "+utilisateur.getNom()+" "+utilisateur.getMail());
+			LOG.info("\n\n\n");
+			LOG.info("taille liste utilisateurs:" +dto.size());
+			LOG.info("\n\n\n");
 			
-		}
-		
-		
-		Assert.assertTrue( dto.getListeUtilisateurs().size() >= 0);
-		LOG.info("\n\n\n");
+			LOG.info("liste des artistes:\n");
+			
+			Iterator<Utilisateur> ito=dto.getListeUtilisateurs().iterator();
+			while(ito.hasNext()){
+				
+				final Utilisateur utilisateur = ito.next();
+				LOG.info(utilisateur.getId()+" "+utilisateur.getPrenom()+" "+utilisateur.getNom()+" "+utilisateur.getMail());
+				
+			}
+			
+			
+			Assert.assertTrue( dto.getListeUtilisateurs().size() >= 0);
+			LOG.info("\n\n\n");
 		}
 		catch(final RuntimeException r){
 			LOG.error("getAllUtilisateurs failed",r);

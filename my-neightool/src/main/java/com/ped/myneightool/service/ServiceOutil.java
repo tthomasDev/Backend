@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.impl.OutilDAOImpl;
 import com.ped.myneightool.dao.itf.ItfOutilDAO;
+import com.ped.myneightool.dto.OutilsDTO;
 import com.ped.myneightool.model.Outil;
 
 
@@ -66,7 +67,27 @@ public class ServiceOutil {
 		return o;
 	}
 
+	@GET
+	@Path("/list")
+	@Produces("application/xml")
+	public OutilsDTO getAllTools() {
+		OutilsDTO outils = new OutilsDTO();
+		try {
+			outils = outilDAO.findAll();
+		} catch (Exception e) {
+			LOG.error("erreur service /list");
+			e.printStackTrace();
+		}
+		return outils;
+
+	}
 	
-	
+	@GET
+	@Path("/user/{id}")
+	@Produces({ "application/xml", "application/json" })
+	public OutilsDTO findToolsOfUser(@PathParam("id") final int UtilisateurId) {
+		OutilsDTO outils = outilDAO.findToolsOfUser(UtilisateurId);
+		return outils;
+	}
 		
 }

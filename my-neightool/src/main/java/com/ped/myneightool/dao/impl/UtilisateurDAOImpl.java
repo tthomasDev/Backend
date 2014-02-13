@@ -94,7 +94,7 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 	
 	@Override
 	public UtilisateursDTO findAll() {
-		LOG.info("find all oeuvres");
+		LOG.info("find all utilisateurs");
 		List<Utilisateur> res = new ArrayList<Utilisateur>();
 				
 		final EntityManager em = createEntityManager();
@@ -105,7 +105,7 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 			tx.begin();
 			res = TypeSafetyChecking.castList(Utilisateur.class, em.createQuery("SELECT p FROM Utilisateur p ORDER BY id ASC").getResultList());
 			tx.commit();
-			LOG.debug("recherche de toutes les oeuvres réussis, taille du résultat :"+res.size());
+			LOG.debug("recherche de tous les utilisateurs réussis, taille du résultat :"+res.size());
 		}
 		catch(final RuntimeException re){
 			

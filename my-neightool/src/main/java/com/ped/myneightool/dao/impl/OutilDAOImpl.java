@@ -1,13 +1,21 @@
 package com.ped.myneightool.dao.impl;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfOutilDAO;
+import com.ped.myneightool.dto.OutilsDTO;
 import com.ped.myneightool.model.Outil;
+import com.ped.myneightool.model.Utilisateur;
+
 
 
 
@@ -86,5 +94,43 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 
 	}
 
+	@Override
+	public OutilsDTO findAll() {
+		LOG.info("find all outils");
+		List<Outil> res = new ArrayList<Outil>();
+				
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			res = TypeSafetyChecking.castList(Outil.class, em.createQuery("SELECT p FROM Outil p ORDER BY id ASC").getResultList());
+			tx.commit();
+			LOG.debug("recherche de tous les outils réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		Set<Outil> set = new HashSet<Outil>(res);
+		OutilsDTO odto= new OutilsDTO();
+		odto.setListeOutils(set);
+		return odto;
+	}
+
 	
+	
+	@Override
+	public OutilsDTO findToolsOfUser(int utilisateurId) {
+		Set<Outil> res = new HashSet<Outil>();
+		final EntityManager em = createEntityManager();
+		final Utilisateur u = em.getReference(Utilisateur.class, utilisateurId);
+		res = u.getOutils();
+
+		Set<Outil> set = new HashSet<Outil>(res);
+		OutilsDTO odto= new OutilsDTO();
+		odto.setListeOutils(set);
+		return odto;
+	}
 }

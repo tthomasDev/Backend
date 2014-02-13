@@ -15,22 +15,22 @@ import com.ped.myneightool.model.Utilisateur;
 @XmlRootElement(name = "utilisateursdto")
 public class UtilisateursDTO {
 	
-	protected Set<Utilisateur> listeUtilisateurs = new HashSet<Utilisateur>();
+	protected Set<Utilisateur> utilisateur = new HashSet<Utilisateur>();
 	
 	public UtilisateursDTO(){
 		
 	}
 
-	@XmlElement(name ="listeUtilisateurs")
+	@XmlElement(name ="utilisateur")
 	public Set<Utilisateur> getListeUtilisateurs() {
-		return listeUtilisateurs;
+		return utilisateur;
 	}
 
-	public void setListeUtilisateurs(Set<Utilisateur> listeUtilisateurs) {
-		this.listeUtilisateurs = listeUtilisateurs;
+	public void setListeUtilisateurs(Set<Utilisateur> utilisateur) {
+		this.utilisateur = utilisateur;
 	}
 
 	public int size() {
-		return listeUtilisateurs.size();
+		return utilisateur.size();
 		}
 }
