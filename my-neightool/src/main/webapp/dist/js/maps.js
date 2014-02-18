@@ -22,7 +22,7 @@ function initialize() {
 						map : map,
 						position : pos,
 						zoom : z,
-						content : 'Vous êtes ici actuellement !'
+						content : 'Vous etes ici actuellement !'
 					});
 					map.setCenter(pos);
 				}, function() {
@@ -64,10 +64,16 @@ function codeAddress() {
 		if (status == google.maps.GeocoderStatus.OK) {
 			map.setCenter(results[0].geometry.location);			      
 			addMarker(results[0].geometry.location);
+			setLatLongInFields(markers[0].getPosition().lat();,markers[0].getPosition().lng(););
 		} else {
 			alert('Geocode was not successful for the following reason: ' + status);
 		}
 	});
+}
+
+function setLatLongInFields(la, lo) {
+	document.getElementById('lat').value=la;
+	document.getElementById('long').value=lo;
 }
 
 function codeLatLng(marker) {
@@ -94,6 +100,7 @@ function codeLatLng(marker) {
 					addMarker(latlng);
 				}
 				document.getElementById('location').value=results[1].formatted_address;
+				setLatLongInFields(lat,lng);
 				//infowindow.setContent(results[1].formatted_address);
 				//infowindow.open(map, marker);
 			} else {

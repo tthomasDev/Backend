@@ -36,10 +36,13 @@ if(request.getParameter("attemp") != null){
 		//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
 		JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class);
 		
+		System.out.println("LAT : "+request.getParameter("lat"));
+		
 		//ici on va créer l'utilisateur avec les données rentrés dans le formulaire
-		final Adresse adresse = new Adresse("","","","",0,0);
+		final Adresse adresse = new Adresse(request.getParameter("location"), 0, 0);
 		final Connexion connexion = new Connexion(request.getParameter("username"),request.getParameter("password"));
-		final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse);
+		String dateNaissance = request.getParameter("day")+"/"+request.getParameter("month")+"/"+request.getParameter("year");
+		final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse,dateNaissance);
 		
 		
 		//ici il faut sérialiser l'utilisateur
@@ -248,10 +251,12 @@ if(request.getParameter("attemp") != null){
 								<hr />
 								<label class="checkbox"><input type="checkbox"
 									name="checkbox" required> J'ai lu et j'accepte les <a
-									href="#">Conditions générales d'utilisation</a></label> <br /> <input
-									type="hidden" name="signUp" id="signUp"> <input
-									type="submit" value="Inscription"
-									class="pull-right btn btn-info btn-lg"> <br />
+									href="#">Conditions générales d'utilisation</a></label> <br />
+									<input type="hidden" name="signUp" id="signUp"> 
+									<input type="hidden" value="" name="lat" id="lat"> 
+									<input type="hidden" value="" name="long" id="long"> 
+									<input type="submit" value="Inscription" class="pull-right btn btn-info btn-lg"> 
+									<br />
 								<br />
 								<br />
 							</div>
