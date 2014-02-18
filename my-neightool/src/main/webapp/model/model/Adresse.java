@@ -11,11 +11,9 @@ public class Adresse {
 	private String codePostale;
 	private String ville;
 	private String pays;
-		
+	private String adresseComplete;
 	
 	private float longitude;
-		
-	
 	private float latitude;
 	
 	public Adresse(){
@@ -32,6 +30,26 @@ public class Adresse {
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
+	
+	public Adresse(String adresseComplete,float longitude, float latitude){
+		this.adresseComplete = adresseComplete;
+		this.longitude = longitude;
+		this.latitude = latitude;
+	}
+	
+	public Adresse(String adresseComplete){
+		this.adresseComplete = adresseComplete;
+	}
+	
+	@XmlElement
+	public String getadresseComplete() {
+		return adresseComplete;
+	}
+
+	public void setadresseComplete(String adresseComplete) {
+		this.adresseComplete = adresseComplete;
+	}
+	
 	
 	@XmlElement
 	public String getRue() {
@@ -91,3 +109,4 @@ public class Adresse {
 	
 
 }
+

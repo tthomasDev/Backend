@@ -17,12 +17,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement(name = "utilisateur")
 public class Utilisateur implements Serializable{
 	
-		
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5093615844709160143L;
+	private static final long serialVersionUID = -3624001811076326632L;
 
 	private int id;
 	
@@ -30,9 +29,7 @@ public class Utilisateur implements Serializable{
 	
 	private String prenom;
 	
-	
 	private Connexion connexion;
-	
 	
 	private Adresse adresse;
 	
@@ -73,6 +70,17 @@ public class Utilisateur implements Serializable{
 		this.nom = nom;
 		this.prenom = prenom;
 		
+	}
+	
+	public Utilisateur(String prenom, String nom, Connexion connexion,
+			String mail, String telephone, Adresse adresse, String dateDeNaissance) {
+		this.prenom = prenom;
+		this.nom = nom;
+		this.connexion = connexion;
+		this.mail = mail;
+		this.telephone = telephone;
+		this.adresse = adresse;
+		this.dateDeNaissance= dateDeNaissance;
 	}
 	
 	@XmlTransient
@@ -174,3 +182,4 @@ public class Utilisateur implements Serializable{
 	
 	
 }
+

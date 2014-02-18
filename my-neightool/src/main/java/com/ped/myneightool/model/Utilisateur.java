@@ -80,6 +80,17 @@ public class Utilisateur implements Serializable{
 		
 	}
 	
+	public Utilisateur(String prenom, String nom, Connexion connexion,
+			String mail, String telephone, Adresse adresse, String dateDeNaissance) {
+		this.prenom = prenom;
+		this.nom = nom;
+		this.connexion = connexion;
+		this.mail = mail;
+		this.telephone = telephone;
+		this.adresse = adresse;
+		this.dateDeNaissance= dateDeNaissance;
+	}
+	
 	@XmlTransient
 	public Set<Outil> getOutils(){
 		return outils;
