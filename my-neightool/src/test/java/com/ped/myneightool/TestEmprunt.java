@@ -48,10 +48,10 @@ public class TestEmprunt {
 	
 	
 	/**
-	 * test unitaire création d'un message
+	 * test unitaire création d'un emprunt
 	 */
 	@Test
-	public void testCreateMessage() {
+	public void testCreateEmprunt() {
 		try {
 			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
 			
