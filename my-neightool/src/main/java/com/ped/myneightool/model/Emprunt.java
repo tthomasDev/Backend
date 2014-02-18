@@ -1,6 +1,8 @@
 package com.ped.myneightool.model;
 
-import java.sql.Timestamp;
+
+
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,9 +11,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 @Entity
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "emprunt")
 public class Emprunt {
 	
@@ -24,57 +32,73 @@ public class Emprunt {
 	@JoinColumn(name = "outil_id")
 	protected Outil outil;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="utilisateur_id_emprunteur")
+	private Utilisateur emprunteur;
 	
-	private int idEmprunteur;
+	@XmlElement(name = "dateDebut", required = true) 
+	@XmlJavaTypeAdapter(DateAdapter.class)
+	private Date dateDebut;
+	
+	@XmlElement(name = "dateFin", required = true) 
+	@XmlJavaTypeAdapter(DateAdapter.class)
+	private Date dateFin;
 	
 	
-	private Timestamp dateDebut;
-	
-	
-	private Timestamp dateFin;
 	
 	public Emprunt(){
 		
 	}
 	
-	public Emprunt(int id, Outil tool, int idEmprunteur, Timestamp dateDebut,
-			Timestamp dateFin) {
+	public Emprunt(Outil tool, Utilisateur emprunteur, Date dateDebut,
+			Date dateFin) {
 		super();
-		this.id = id;
 		this.outil = tool;
-		this.idEmprunteur = idEmprunteur;
+		this.emprunteur = emprunteur;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 	}
 	
+	@XmlElement
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Outil getTool() {
+	
+	@XmlElement
+	public Outil getOutil() {
 		return outil;
 	}
-	public void setTool(Outil tool) {
-		this.outil = tool;
+	
+	public void setOutil(Outil outil) {
+		this.outil = outil;
 	}
-	public int getIdEmprunteur() {
-		return idEmprunteur;
+	
+	@XmlElement
+	public Utilisateur getEmprunteur() {
+		return emprunteur;
 	}
-	public void setIdEmprunteur(int idEmprunteur) {
-		this.idEmprunteur = idEmprunteur;
+
+	public void setEmprunteur(Utilisateur emprunteur) {
+		this.emprunteur = emprunteur;
 	}
-	public Timestamp getDateDebut() {
+
+	public Date getDateDebut() {
 		return dateDebut;
 	}
-	public void setDateDebut(Timestamp dateDebut) {
+	
+	public void setDateDebut(Date dateDebut) {
 		this.dateDebut = dateDebut;
 	}
-	public Timestamp getDateFin() {
+	
+	public Date getDateFin() {
 		return dateFin;
 	}
-	public void setDateFin(Timestamp dateFin) {
+	
+	public void setDateFin(Date dateFin) {
 		this.dateFin = dateFin;
 	}
 	

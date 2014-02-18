@@ -46,7 +46,7 @@ public class ServiceMessage {
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
-	public Response updateOeuvre(final Message u) {
+	public Response updateMessage(final Message u) {
 		messageDAO.updateMessage(u);
 		return Response.ok(u).build();
 	}
