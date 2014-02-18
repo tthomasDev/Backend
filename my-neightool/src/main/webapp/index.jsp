@@ -15,7 +15,10 @@
 
 
 <%@ page import="model.Utilisateur"%>
-<%@ page import="model.*"%>
+<%@ page import="model.Connexion"%>
+<%@ page import="model.Adresse"%>
+
+
 
 
 <%
@@ -34,7 +37,9 @@ if(request.getParameter("attemp") != null){
 		JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class);
 		
 		//ici on va créer l'utilisateur avec les données rentrés dans le formulaire
-		final Utilisateur user = new Utilisateur(request.getParameter("firstname"),request.getParameter("lastname"));
+		final Adresse adresse = new Adresse("","","","",0,0);
+		final Connexion connexion = new Connexion(request.getParameter("username"),request.getParameter("password"));
+		final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse);
 		
 		
 		//ici il faut sérialiser l'utilisateur
@@ -59,11 +64,14 @@ if(request.getParameter("attemp") != null){
 			final Unmarshaller un = jaxbc.createUnmarshaller();
 			final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
 			// et ici on peut vérifier que c'est bien le bonne objet
+			messageValue = "Vous avez bien été enregistré";
+			messageType = "success";
+		} else {
+			messageValue = "Une erreur est survenue";
+			messageType = "danger";
 		}
 		
 		// on affiche ces messages qu'une fois la reponse de la requete valide
-		messageType = "success";
-		messageValue = "Inscription réussie";
 		
 		
 	} else {
@@ -148,78 +156,108 @@ if(request.getParameter("attemp") != null){
 						<h3>Créez un compte gratuitement</h3>
 						<h4>Echangez dès maintenant près de chez vous !</h4>
 						<hr />
-						<form action="index.jsp?attemp=1" method="POST">
-							<div class="row">
-								<div class="col-md-6">
-									<input type="text" placeholder="Nom" id="firstname" name="firstname" class="form-control" required="required"/>
-								</div>
-								<div class="col-md-6">
-									<input type="text" placeholder="Prénom" id="lastname" name="last" class="form-control" required="required"/>
-								</div>
-								<div class="col-md-12">
-									<br />
-									<input type="text" placeholder="Nom d'utilisateur" id="username" name="username" class="form-control" required="required"/>
-									<br />
-									<input type="email" placeholder="Adresse email" id="email" name="email" class="form-control" required="required"/>
-									<br />
-									<input type="password" placeholder="Mot de passe" id="password" name="password" class="form-control" required="required"/>
-									<br />
-									Date de naissance :
-								</div>
-								<div class="col-md-4">
-									<select class="form-control" id="day" name="day">
-										<%
-										for (int i = 1; i <= 31; i++) { 
-											  out.println("<option value='" + i + "'>" + i + "</option>"); 
-										}
-										 %>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<select class="form-control" id="month" name="month">
-										<%
-										String[] arrMois = {"Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"};
-										for(String m:arrMois) { 
-											out.println("<option value='" + m + "'>" + m + "</option>"); 
-										} 
-										 %>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<select class="form-control" id="year" name="year">
-										<%
-										int yyyy = Calendar.getInstance().get(Calendar.YEAR);
-										for(int i = 1900; i < yyyy; i++) {
-											out.println("<option value='" + yyyy + "'>" + i + "</option>"); 
-										}
-										out.println("<option selected='selected'>" + yyyy + "</option>"); 
-										 %>
-									</select>
-									<br />
-								</div>
-								<div class="col-lg-12">
-									<div class="input-group">
-										<input type="text" placeholder="Adresse complète (Rue, Ville, Pays, Code Postal)" id="location" name="location" class="form-control" required="required">
-										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Vérifier la carte" onclick="codeAddress()"><span class="glyphicon glyphicon-search"></span></button>
-										</span>
-										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Me trouver sur la carte" onclick="codeLatLng(null)"><span class="glyphicon glyphicon-screenshot"></span></button>
-										</span>
-										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="top" title="Récupérer la position sur la carte" onclick="getMyMarker()"><span class="glyphicon glyphicon-pushpin"></span></button>
-										</span>
-									</div>
-									<hr />
-									<label class="checkbox"><input type="checkbox" name="checkbox" required> J'ai lu et j'accepte les <a href="#">Conditions générales d'utilisation</a></label>
-									<br />
-									<input type="hidden" name="signUp" id="signUp">
-									<input type="submit" value="Inscription" class="pull-right btn btn-info btn-lg">
-									<br /><br /><br />
-								</div>
+					<form action="index.jsp?attemp=1" method="POST">
+						<div class="row">
+							<div class="col-md-6">
+								<input type="text" placeholder="Nom" id="firstname"
+									name="firstname" class="form-control" required="required" />
 							</div>
-						</form>
-					</div>
+							<div class="col-md-6">
+								<input type="text" placeholder="Prénom" id="lastname"
+									name="lastname" class="form-control" required="required" />
+							</div>
+							<div class="col-md-12">
+								<br /> <input type="text" placeholder="Nom d'utilisateur"
+									id="username" name="username" class="form-control"
+									required="required" /> <br /> <input type="email"
+									placeholder="Adresse email" id="email" name="email"
+									class="form-control" required="required" /> <br /> <input
+									type="password" placeholder="Mot de passe" id="password"
+									name="password" class="form-control" required="required" />
+							</div>
+							<br />
+							<div class="col-md-6">
+							<br />
+								<input type="text" placeholder="Numéro de téléphone"
+									id="telephone" name="telephone" class="form-control"
+									required="required" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<br /> Date de naissance :
+							</div>
+							<div class="col-md-4">
+								<select class="form-control" id="day" name="day">
+									<%
+										for (int i = 1; i <= 31; i++) {
+											out.println("<option value='" + i + "'>" + i + "</option>");
+										}
+									%>
+								</select>
+							</div>
+							<div class="col-md-4">
+								<select class="form-control" id="month" name="month">
+									<%
+										String[] arrMois = { "Janvier", "Fevrier", "Mars", "Avril", "Mai",
+												"Juin", "Juillet", "Aout", "Septembre", "Octobre",
+												"Novembre", "Decembre" };
+										for (String m : arrMois) {
+											out.println("<option value='" + m + "'>" + m + "</option>");
+										}
+									%>
+								</select>
+							</div>
+							<div class="col-md-4">
+								<select class="form-control" id="year" name="year">
+									<%
+										int yyyy = Calendar.getInstance().get(Calendar.YEAR);
+										for (int i = 1900; i < yyyy; i++) {
+											out.println("<option value='" + yyyy + "'>" + i + "</option>");
+										}
+										out.println("<option selected='selected'>" + yyyy + "</option>");
+									%>
+								</select> <br />
+							</div>
+							<div class="col-lg-12">
+								<div class="input-group">
+									<input type="text"
+										placeholder="Adresse complète (Rue, Ville, Pays, Code Postal)"
+										id="location" name="location" class="form-control"
+										required="required"> <span class="input-group-btn">
+										<button class="btn btn-default" type="button"
+											data-toggle="tooltip" data-placement="top"
+											title="Vérifier la carte" onclick="codeAddress()">
+											<span class="glyphicon glyphicon-search"></span>
+										</button>
+									</span> <span class="input-group-btn">
+										<button class="btn btn-default" type="button"
+											data-toggle="tooltip" data-placement="top"
+											title="Me trouver sur la carte" onclick="codeLatLng(null)">
+											<span class="glyphicon glyphicon-screenshot"></span>
+										</button>
+									</span> <span class="input-group-btn">
+										<button class="btn btn-default" type="button"
+											data-toggle="tooltip" data-placement="top"
+											title="Récupérer la position sur la carte"
+											onclick="getMyMarker()">
+											<span class="glyphicon glyphicon-pushpin"></span>
+										</button>
+									</span>
+								</div>
+								<hr />
+								<label class="checkbox"><input type="checkbox"
+									name="checkbox" required> J'ai lu et j'accepte les <a
+									href="#">Conditions générales d'utilisation</a></label> <br /> <input
+									type="hidden" name="signUp" id="signUp"> <input
+									type="submit" value="Inscription"
+									class="pull-right btn btn-info btn-lg"> <br />
+								<br />
+								<br />
+							</div>
+						</div>
+					</form>
+				</div>
 				</div>
 			</div>
 		</div>
