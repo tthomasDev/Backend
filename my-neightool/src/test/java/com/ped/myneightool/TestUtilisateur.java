@@ -70,9 +70,9 @@ public class TestUtilisateur {
 	@Test
 	public void testCreateUser() {
 		try {
-			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
+			final Connexion connexion = new Connexion("loginCreate1","passwordCreate");
 			
-			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"1jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 						
@@ -92,10 +92,10 @@ public class TestUtilisateur {
 	@Test
 	public void testCreateUserWithBirthDate() {
 		try {
-			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
+			final Connexion connexion = new Connexion("2loginCreate","passwordCreate");
 			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
 			final Date birthDate = new Date();
-			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"jean-duchemin@gmail.com","0606060606",adresse,birthDate);
+			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"2jean-duchemin@gmail.com","0606060606",adresse,birthDate);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 						
@@ -115,8 +115,8 @@ public class TestUtilisateur {
 	@Test
 	public final void testUpdateUser() {
 		try {
-			final Connexion connexion = new Connexion("loginUpdate","passwordUpdate");
-			final Utilisateur utilisateur= new Utilisateur("JeanUpdate","DucheminUpdate",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Connexion connexion = new Connexion("3loginUpdate","passwordUpdate");
+			final Utilisateur utilisateur= new Utilisateur("JeanUpdate","DucheminUpdate",connexion,"3jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			String str="1234567890";
@@ -141,8 +141,8 @@ public class TestUtilisateur {
 	public final void testGetUser() {
 
 		try{
-			final Connexion connexion = new Connexion("loginGet","passwordGet");
-			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Connexion connexion = new Connexion("4loginGet","passwordGet");
+			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"4jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			LOG.info("");
@@ -180,8 +180,8 @@ public class TestUtilisateur {
 	public final void testDeleteUser() {
 
 		try{
-			final Connexion connexion = new Connexion("loginDelete","passwordDelete");
-			final Utilisateur utilisateur= new Utilisateur("JeanDelete","DucheminDelete",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Connexion connexion = new Connexion("5loginDelete","passwordDelete");
+			final Utilisateur utilisateur= new Utilisateur("JeanDelete","DucheminDelete",connexion,"5jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 					
 					

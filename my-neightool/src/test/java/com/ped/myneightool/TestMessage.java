@@ -35,6 +35,9 @@ public class TestMessage {
 										Adresse.class,
 										Message.class);
 		crb= new ClientRequestBuilder(jaxbc);
+		
+			
+		
 	}
 		
 	
@@ -49,13 +52,13 @@ public class TestMessage {
 	@Test
 	public void testCreateMessage() {
 		try {
-			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
-			
-			
-			final Utilisateur utilisateur= new Utilisateur("JeanEmetteur","DucheminEmetteur",connexion,"","");
+			final Connexion connexion = new Connexion("loginCreateMessage","passwordCreateMessage");
+			final Utilisateur utilisateur= new Utilisateur("JeanEmetteur","DucheminEmetteur",connexion);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
-			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire",connexion,"","");
+			
+			final Connexion connexion2 = new Connexion("loginCreateMessage2","passwordCreateMessage2");
+			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire",connexion2);
 			final Utilisateur utilisateurPost2 = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
 						
 			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre message","Corps du message");

@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
+import javax.persistence.Column;
 
 
 
@@ -43,6 +43,7 @@ public class Utilisateur implements Serializable{
 	@Embedded
 	private Adresse adresse;
 	
+	@Column(name = "mail",unique=true)
 	private String mail;
 	
 	private String telephone;
@@ -63,6 +64,12 @@ public class Utilisateur implements Serializable{
 	*/
 	public Utilisateur(){
 		
+	}
+	
+	public Utilisateur(String prenom, String nom, Connexion connexion) {
+		this.prenom = prenom;
+		this.nom = nom;
+		this.connexion = connexion;
 	}
 	
 	public Utilisateur(String prenom, String nom, Connexion connexion,
@@ -105,6 +112,8 @@ public class Utilisateur implements Serializable{
 	
 	//outils
 	
+	
+
 	@XmlTransient
 	public Set<Outil> getOutils(){
 		return outils;

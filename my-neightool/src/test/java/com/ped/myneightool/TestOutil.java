@@ -63,7 +63,7 @@ public class TestOutil {
 	public final void testUpdateTool() {
 		try {
 			
-			final Utilisateur utilisateur= new Utilisateur("JeanUpdateTool","DucheminUpdateTool",null,"jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateur= new Utilisateur("JeanUpdateTool","DucheminUpdateTool");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			

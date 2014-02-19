@@ -4,12 +4,16 @@ package com.ped.myneightool.model;
 import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.Column;
 
 @Embeddable
 @XmlRootElement(name = "connexion")
 public class Connexion {
 	
+	
+	@Column(name = "login",unique=true)
 	private String login;
+		
 	private String password;
 	
 	public Connexion(){

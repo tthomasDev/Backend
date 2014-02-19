@@ -46,7 +46,7 @@ public class TestEmprunt {
 		try {
 			final Connexion connexion = new Connexion("loginCreateEmprunt","passwordCreateEmprunt");
 			
-			final Utilisateur u = new Utilisateur("userPrenomEmprunt","userNomEmprunt",connexion,"","");
+			final Utilisateur u = new Utilisateur("userPrenomEmprunt","userNomEmprunt",connexion);
 			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
 		
 			final Outil o= new Outil(uPost,"RateauTestEmprunt","savoir ratisser",true,"Jardinage",50);
@@ -73,7 +73,7 @@ public class TestEmprunt {
 		try {
 			final Connexion connexion = new Connexion("loginCreateEmpruntDate","passwordCreateEmpruntDate");
 			
-			final Utilisateur u = new Utilisateur("userPrenomEmpruntDate","userNomEmpruntDate",connexion,"","");
+			final Utilisateur u = new Utilisateur("userPrenomEmpruntDate","userNomEmpruntDate",connexion);
 			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
 		
 			final Outil o= new Outil(uPost,"RateauTestEmpruntDate","savoir ratisser",true,"Jardinage",50);

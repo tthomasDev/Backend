@@ -46,8 +46,8 @@ public class TestConnexion {
 
 		try {
 
-			final Connexion connexion = new Connexion("login","password");
-			final Utilisateur utilisateur= new Utilisateur("JeanConnexion","DucheminConnexion",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Connexion connexion = new Connexion("loginTestValidConnexion","password");
+			final Utilisateur utilisateur= new Utilisateur("JeanConnexion","DucheminConnexion",connexion);
 			final Utilisateur utilisateurPost=(Utilisateur)crb.httpRequestXMLBody(utilisateur, "user/create");
 						
 			
