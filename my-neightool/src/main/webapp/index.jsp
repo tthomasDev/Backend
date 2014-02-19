@@ -28,8 +28,49 @@ String messageValue = "";
 if(request.getParameter("attemp") != null){
 	actionValid = true;
 	if(request.getParameter("signIn") != null) {
-		messageType = "success";
-		messageValue = "Connexion réussie";
+		System.out.println("CONNECTION EN COURS");
+		/*Contexte*/
+		JAXBContext jaxbc=JAXBContext.newInstance(Connexion.class);
+		
+		/*On créé une tentative de connexion avec les logins et mdp entrés*/
+		final Connexion connexion = new Connexion(request.getParameter("login_username"),request.getParameter("login_password"));
+		
+		System.out.println(request.getParameter("login_username")+" "+request.getParameter("login_password"));
+		/*On sérialise*/
+		final Marshaller marshaller = jaxbc.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+		final java.io.StringWriter sw = new StringWriter();
+		marshaller.marshal(connexion, sw);
+		
+		/*On envoie la requete au webservice*/
+		final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/connection/try");
+		clientRequest.body("application/xml", sw.toString());
+		
+		/*on récupère la réponse de la requete*/
+		final ClientResponse<String> clientResponse = clientRequest.post(String.class);
+		System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
+				
+		if (clientResponse.getStatus() == 200) {
+			
+				//Si on récupère un ID
+				try {
+					Integer.parseInt(clientResponse.getEntity());
+					
+					messageType = "success";
+					messageValue = "Connexion réussie";
+					
+				
+					//Sinon c'est que les identifiants sont mauvais
+				} catch (NumberFormatException e){
+					messageValue = "Echec de la connexion, login ou mot de passe incorrect";
+					messageType = "danger";
+				}		
+		}
+		else
+		{
+			messageValue = "Problème de connexion, ressayez plus tard";
+			messageType = "danger";
+		}
 	} else if(request.getParameter("signUp") != null) {
 		
 		
