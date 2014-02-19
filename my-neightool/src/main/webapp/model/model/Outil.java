@@ -1,11 +1,18 @@
 package model;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+
 
 @XmlRootElement(name = "outil")
 public class Outil {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
 	private String nom;

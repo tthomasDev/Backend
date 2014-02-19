@@ -1,13 +1,16 @@
 package model;
 
 
+import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+@Embeddable
 @XmlRootElement(name = "connexion")
 public class Connexion {
 	
 	private String login;
+	
 	private String password;
 	
 	public Connexion(){

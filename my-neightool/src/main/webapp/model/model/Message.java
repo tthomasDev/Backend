@@ -11,15 +11,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 
+
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "message")
 public class Message {
 	
-
+	
 	private int id;
 	
 	
 	private Utilisateur emetteur;
+	
 	
 	private Utilisateur destinataire;
 	
