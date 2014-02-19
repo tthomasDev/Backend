@@ -53,7 +53,7 @@
 	        			<li><a href="dashboard.jsp?page=manageItems">Gérer mes objets</a></li>
 	        			<li><a href="dashboard.jsp?page=mailbox">Mes messages <span class="badge">0</span></a></li>
         				<li><a href="dashboard.jsp?page=account">Mon compte</a></li>
-        				<li><a href="#">Déconnexion</a></li>
+        				<li><a href="index.jsp?attemp=0">Déconnexion</a></li>
 					</ul>
 				</div>
 			</div>

@@ -26,102 +26,119 @@ boolean actionValid = false;
 String messageType = "";
 String messageValue = "";
 if(request.getParameter("attemp") != null){
-	actionValid = true;
-	if(request.getParameter("signIn") != null) {
-		System.out.println("CONNECTION EN COURS");
-		/*Contexte*/
-		JAXBContext jaxbc=JAXBContext.newInstance(Connexion.class);
+	if(request.getParameter("attemp").equals("0")) {
+		session.removeAttribute("ID");
+		session.removeAttribute("userName");
 		
-		/*On créé une tentative de connexion avec les logins et mdp entrés*/
-		final Connexion connexion = new Connexion(request.getParameter("login_username"),request.getParameter("login_password"));
-		
-		System.out.println(request.getParameter("login_username")+" "+request.getParameter("login_password"));
-		/*On sérialise*/
-		final Marshaller marshaller = jaxbc.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-		final java.io.StringWriter sw = new StringWriter();
-		marshaller.marshal(connexion, sw);
-		
-		/*On envoie la requete au webservice*/
-		final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/connection/try");
-		clientRequest.body("application/xml", sw.toString());
-		
-		/*on récupère la réponse de la requete*/
-		final ClientResponse<String> clientResponse = clientRequest.post(String.class);
-		System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
-				
-		if (clientResponse.getStatus() == 200) {
+	} else if(request.getParameter("attemp").equals("1")) {
+		actionValid = true;
+		if(request.getParameter("signIn") != null) {
+			System.out.println("CONNECTION EN COURS");
+			/*Contexte*/
+			JAXBContext jaxbc=JAXBContext.newInstance(Connexion.class);
 			
-				//Si on récupère un ID
-				try {
-					Integer.parseInt(clientResponse.getEntity());
+			/*On créé une tentative de connexion avec les logins et mdp entrés*/
+			final Connexion connexion = new Connexion(request.getParameter("login_username"),request.getParameter("login_password"));
+			
+			System.out.println(request.getParameter("login_username")+" "+request.getParameter("login_password"));
+			/*On sérialise*/
+			final Marshaller marshaller = jaxbc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(connexion, sw);
+			
+			/*On envoie la requete au webservice*/
+			final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/connection/try");
+			clientRequest.body("application/xml", sw.toString());
+			
+			/*on récupère la réponse de la requete*/
+			final ClientResponse<String> clientResponse = clientRequest.post(String.class);
+			System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
 					
-					messageType = "success";
-					messageValue = "Connexion réussie";
-					
+			if (clientResponse.getStatus() == 200) {
 				
-					//Sinon c'est que les identifiants sont mauvais
-				} catch (NumberFormatException e){
-					messageValue = "Echec de la connexion, login ou mot de passe incorrect";
-					messageType = "danger";
-				}		
-		}
-		else
-		{
-			messageValue = "Problème de connexion, ressayez plus tard";
-			messageType = "danger";
-		}
-	} else if(request.getParameter("signUp") != null) {
-		
-		
-		//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-		JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class);
-		
-		System.out.println("LAT : "+request.getParameter("lat"));
-		
-		//ici on va créer l'utilisateur avec les données rentrés dans le formulaire
-		final Adresse adresse = new Adresse(request.getParameter("location"), 0, 0);
-		final Connexion connexion = new Connexion(request.getParameter("username"),request.getParameter("password"));
-		String dateNaissance = request.getParameter("day")+"/"+request.getParameter("month")+"/"+request.getParameter("year");
-		final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse,dateNaissance);
-		
-		
-		//ici il faut sérialiser l'utilisateur
-		final Marshaller marshaller = jaxbc.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-		final java.io.StringWriter sw = new StringWriter();
-		marshaller.marshal(user, sw);
-		
-		
-		//ici on envois la requete au webservice createUtilisateur
-		final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/user/create");
-		clientRequest.body("application/xml", user );
-		
-		
-		//ici on va récuperer la réponse de la requete
-		final ClientResponse<String> clientResponse = clientRequest.post(String.class);
-		//test affichage
-		System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
-		if (clientResponse.getStatus() == 200) { // si la réponse est valide !
-			// on désérialiser la réponse si on veut vérifier que l'objet retourner
-			// est bien celui qu'on a voulu créer , pas obligatoire
-			final Unmarshaller un = jaxbc.createUnmarshaller();
-			final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
-			// et ici on peut vérifier que c'est bien le bonne objet
-			messageValue = "Vous avez bien été enregistré";
-			messageType = "success";
+					//Si on récupère un ID
+					try {
+						Integer.parseInt(clientResponse.getEntity());
+						
+						messageType = "success";
+						messageValue = "Connexion réussie";
+						
+						session.setAttribute("ID", clientResponse.getEntity());
+						session.setAttribute("userName", request.getParameter("login_username"));
+					
+						//Sinon c'est que les identifiants sont mauvais
+					} catch (NumberFormatException e){
+						messageValue = "Echec de la connexion, login ou mot de passe incorrect";
+						messageType = "danger";
+					}		
+			}
+			else
+			{
+				messageValue = "Problème de connexion, ressayez plus tard";
+				messageType = "danger";
+			}
+		} else if(request.getParameter("signUp") != null) {
+			
+			
+			//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
+			JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class);
+			
+			System.out.println("LAT : "+request.getParameter("lat"));
+			
+			//ici on va créer l'utilisateur avec les données rentrés dans le formulaire
+			final Adresse adresse = new Adresse(request.getParameter("location"), 0, 0);
+			final Connexion connexion = new Connexion(request.getParameter("username"),request.getParameter("password"));
+			String dateNaissance = request.getParameter("day")+"/"+request.getParameter("month")+"/"+request.getParameter("year");
+			final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse,dateNaissance);
+			
+			
+			//ici il faut sérialiser l'utilisateur
+			final Marshaller marshaller = jaxbc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(user, sw);
+			
+			
+			//ici on envois la requete au webservice createUtilisateur
+			final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/user/create");
+			clientRequest.body("application/xml", user );
+			
+			
+			//ici on va récuperer la réponse de la requete
+			final ClientResponse<String> clientResponse = clientRequest.post(String.class);
+			//test affichage
+			System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
+			if (clientResponse.getStatus() == 200) { // si la réponse est valide !
+				// on désérialiser la réponse si on veut vérifier que l'objet retourner
+				// est bien celui qu'on a voulu créer , pas obligatoire
+				final Unmarshaller un = jaxbc.createUnmarshaller();
+				final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
+				// et ici on peut vérifier que c'est bien le bonne objet
+				messageValue = "Vous avez bien été enregistré";
+				messageType = "success";
+			} else {
+				messageValue = "Une erreur est survenue";
+				messageType = "danger";
+			}
+			
+			// on affiche ces messages qu'une fois la reponse de la requete valide
+			
+			
 		} else {
-			messageValue = "Une erreur est survenue";
 			messageType = "danger";
+			messageValue = "Il semble y avoir une erreur lors de votre connexion/inscription.";
 		}
-		
-		// on affiche ces messages qu'une fois la reponse de la requete valide
-		
-		
-	} else {
-		messageType = "danger";
-		messageValue = "Il semble y avoir une erreur lors de votre connexion/inscription.";
 	}
+}
+
+
+//Si l'utilisateur est déjà connecté on redirige vers dashboard
+if(session.getAttribute("ID") != null)
+{
+	RequestDispatcher rd =
+	request.getRequestDispatcher("dashboard.jsp");
+	rd.forward(request, response);
 }
 %>
 <!doctype html>
