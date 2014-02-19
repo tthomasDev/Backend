@@ -2,6 +2,7 @@ package com.ped.myneightool.model;
 
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +17,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 
 
@@ -44,11 +47,20 @@ public class Utilisateur implements Serializable{
 	
 	private String telephone;
 	
-	private String dateDeNaissance;
+	@XmlElement(name="dateDeNaissance",required=true)
+	@XmlJavaTypeAdapter(DateAdapter.class)
+	private Date dateDeNaissance;
 	
 	@OneToMany(mappedBy = "utilisateur",orphanRemoval=true)
 	private Set<Outil> outils = new HashSet<Outil>();
 	
+	
+	//pour faire un historique par utilisateur
+	/*  
+	@OneToMany(mappedBy = "emprunteur",orphanRemoval=true)
+	private Set<Emprunt> emprunts = new HashSet<Emprunt>();
+	
+	*/
 	public Utilisateur(){
 		
 	}
@@ -81,7 +93,7 @@ public class Utilisateur implements Serializable{
 	}
 	
 	public Utilisateur(String prenom, String nom, Connexion connexion,
-			String mail, String telephone, Adresse adresse, String dateDeNaissance) {
+			String mail, String telephone, Adresse adresse, Date dateDeNaissance) {
 		this.prenom = prenom;
 		this.nom = nom;
 		this.connexion = connexion;
@@ -90,6 +102,8 @@ public class Utilisateur implements Serializable{
 		this.adresse = adresse;
 		this.dateDeNaissance= dateDeNaissance;
 	}
+	
+	//outils
 	
 	@XmlTransient
 	public Set<Outil> getOutils(){
@@ -109,6 +123,33 @@ public class Utilisateur implements Serializable{
 	public void removeOutil(Outil o) {
 		this.outils.remove(o);
 	}
+	
+	
+	
+	//pour faire un historique par utilisateur
+	//emprunts=historique
+	/*
+	@XmlTransient
+	public Set<Emprunt> getEmprunts(){
+		return emprunts;
+	}
+	
+	public void setEmprunts(Set<Emprunt> emprunts){
+		this.emprunts=emprunts;
+	}
+	*/
+	// methode metier :
+	/*
+	public void addEmprunts(Emprunt e) {
+		this.emprunts.add(e);
+	}
+		
+	public void removeEmprunts(Emprunt e) {
+		this.emprunts.remove(e);
+	}
+	*/
+	
+	
 	
 	@XmlElement
 	public int getId() {
@@ -178,12 +219,12 @@ public class Utilisateur implements Serializable{
 		this.adresse = adresse;
 	}
 
-	@XmlElement
-	public String getDateDeNaissance() {
+	
+	public Date getDateDeNaissance() {
 		return dateDeNaissance;
 	}
 
-	public void setDateDeNaissance(String dateDeNaissance) {
+	public void setDateDeNaissance(Date dateDeNaissance) {
 		this.dateDeNaissance = dateDeNaissance;
 	}
 

@@ -1,16 +1,11 @@
 package com.ped.myneightool;
 
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.GregorianCalendar;
-
 import javax.xml.bind.JAXBContext;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
-
 import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Emprunt;
 import com.ped.myneightool.model.Outil;
@@ -36,45 +31,64 @@ public class TestEmprunt {
 										Utilisateur.class,
 										Outil.class,
 										Connexion.class,
-										Date.class,
-										Timestamp.class);
+										Date.class);
 		crb= new ClientRequestBuilder(jaxbc);
 	}
 		
 	
 	
 	
-	
-	
-	
 	/**
-	 * test unitaire création d'un emprunt
+	 * test unitaire création d'un emprunt sans date
 	 */
 	@Test
-	public void testCreateEmprunt() {
+	public void testCreateEmpruntWithoutDate() {
 		try {
-			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
+			final Connexion connexion = new Connexion("loginCreateEmprunt","passwordCreateEmprunt");
 			
 			final Utilisateur u = new Utilisateur("userPrenomEmprunt","userNomEmprunt",connexion,"","");
 			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
 		
 			final Outil o= new Outil(uPost,"RateauTestEmprunt","savoir ratisser",true,"Jardinage",50);
 			final Outil oPost=(Outil) crb.httpRequestXMLBody(o, "tool/create");
+					
 			
-			Assert.assertNotSame(oPost,null);
+			final Emprunt e = new Emprunt(oPost,uPost);
+			final Emprunt ePost = (Emprunt) crb.httpRequestXMLBody(e,"emprunt/create");
+					
+			Assert.assertNotSame(ePost,null);
+			
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'emprunt", re);
+			throw re;
+		}
+	}
+	
+	
+	/**
+	 * test unitaire création d'un emprunt avec date
+	 */
+	@Test
+	public void testCreateEmpruntWithDate() {
+		try {
+			final Connexion connexion = new Connexion("loginCreateEmpruntDate","passwordCreateEmpruntDate");
+			
+			final Utilisateur u = new Utilisateur("userPrenomEmpruntDate","userNomEmpruntDate",connexion,"","");
+			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
+		
+			final Outil o= new Outil(uPost,"RateauTestEmpruntDate","savoir ratisser",true,"Jardinage",50);
+			final Outil oPost=(Outil) crb.httpRequestXMLBody(o, "tool/create");
+			
+						
 			
 			
-			
-			GregorianCalendar cal = new GregorianCalendar(2013, 9 - 1, 23);
-			long millis = cal.getTimeInMillis();
-			final Date debutT = new Date(millis);
-			
-			GregorianCalendar cal2 = new GregorianCalendar(2014, 9 - 1, 23);
-			long millis2 = cal2.getTimeInMillis();
-			final Date finT = new Date(millis2);
+			final Date debutT = new Date(0);
 			
 			
-			final Emprunt e = new Emprunt(o,u,debutT,finT);
+			final Date finT = new Date(0);
+			
+			
+			final Emprunt e = new Emprunt(oPost,uPost,debutT,finT);
 			final Emprunt ePost = (Emprunt) crb.httpRequestXMLBody(e,"emprunt/create");
 					
 			Assert.assertNotSame(ePost,null);

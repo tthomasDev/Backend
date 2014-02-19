@@ -2,6 +2,7 @@ package com.ped.myneightool.model;
 
 
 
+
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -18,29 +19,32 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
+
 @Entity
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "emprunt")
-public class Emprunt {
+public class Emprunt{
 	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "outil_id")
-	protected Outil outil;
-	
+	private Outil outil;
+		
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="utilisateur_id_emprunteur")
 	private Utilisateur emprunteur;
 	
-	@XmlElement(name = "dateDebut", required = true) 
+	
+	@XmlElement(name = "dateDebut",required =true) 
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	private Date dateDebut;
 	
-	@XmlElement(name = "dateFin", required = true) 
+	@XmlElement(name = "dateFin",required =true) 
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	private Date dateFin;
 	
@@ -50,10 +54,15 @@ public class Emprunt {
 		
 	}
 	
-	public Emprunt(Outil tool, Utilisateur emprunteur, Date dateDebut,
+	public Emprunt(Outil outil,Utilisateur emprunteur){
+		this.outil = outil;
+		this.emprunteur = emprunteur;
+	}
+	
+	public Emprunt(Outil outil, Utilisateur emprunteur, Date dateDebut,
 			Date dateFin) {
 		super();
-		this.outil = tool;
+		this.outil = outil;
 		this.emprunteur = emprunteur;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
@@ -77,6 +86,7 @@ public class Emprunt {
 		this.outil = outil;
 	}
 	
+	
 	@XmlElement
 	public Utilisateur getEmprunteur() {
 		return emprunteur;
@@ -86,15 +96,17 @@ public class Emprunt {
 		this.emprunteur = emprunteur;
 	}
 
+	
 	public Date getDateDebut() {
 		return dateDebut;
 	}
 	
-	public void setDateDebut(Date dateDebut) {
+	public void setDateDebut( Date dateDebut) {
 		this.dateDebut = dateDebut;
 	}
 	
-	public Date getDateFin() {
+	
+	public  Date getDateFin() {
 		return dateFin;
 	}
 	

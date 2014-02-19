@@ -1,5 +1,6 @@
 package com.ped.myneightool;
 
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.xml.bind.JAXBContext;
@@ -33,7 +34,9 @@ public class TestUtilisateur {
 		jaxbc=JAXBContext.newInstance(	Utilisateur.class,
 										UtilisateursDTO.class,
 										Connexion.class,
-										Adresse.class);
+										Adresse.class,
+										Adresse.class,
+										Date.class);
 		crb= new ClientRequestBuilder(jaxbc);
 	}
 		
@@ -70,6 +73,29 @@ public class TestUtilisateur {
 			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
 			
 			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
+			
+						
+			Assert.assertNotSame(utilisateurPost,null);
+			
+			
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'utilisateur", re);
+			throw re;
+		}
+	}
+	
+	
+	/**
+	 * test unitaire création d'utilisateur avec adresse et date
+	 */
+	@Test
+	public void testCreateUserWithBirthDate() {
+		try {
+			final Connexion connexion = new Connexion("loginCreate","passwordCreate");
+			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Date birthDate = new Date();
+			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"jean-duchemin@gmail.com","0606060606",adresse,birthDate);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 						
