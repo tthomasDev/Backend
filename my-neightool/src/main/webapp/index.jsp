@@ -308,8 +308,8 @@ if(session.getAttribute("ID") != null)
 								</div>
 								<hr />
 								<label class="checkbox"><input type="checkbox"
-									name="checkbox" required> J'ai lu et j'accepte les <a
-									href="#">Conditions générales d'utilisation</a></label> <br />
+									name="checkbox" required> J'ai lu et j'accepte les <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a>
+								</label> <br />
 									<input type="hidden" name="signUp" id="signUp"> 
 									<input type="hidden" value="" name="lat" id="lat"> 
 									<input type="hidden" value="" name="long" id="long"> 
