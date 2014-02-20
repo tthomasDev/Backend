@@ -82,6 +82,91 @@ public class TestMessage {
 	
 	
 	/**
+	 * test unitaire obtenir un message
+	 */
+	
+	@Test
+	public final void testGetMessage() {
+
+		try{
+			
+			
+			final Utilisateur utilisateur= new Utilisateur("JeanEmetteurGet","DucheminEmetteurGet");
+			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
+			
+			
+			
+			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataireGet","DucheminDestinataireGet");
+			final Utilisateur utilisateurPost2 = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
+						
+			final Date d = new Date();
+			
+			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre messageGet","Corps du messageGetMessage",d);
+			final Message messagePost = (Message) crb.httpRequestXMLBody(message,"message/create");
+			
+			Assert.assertNotSame(messagePost,null);
+			
+			int i = messagePost.getId();
+			LOG.info(""+messagePost.getId()+""+messagePost.getObjet()+""+messagePost.getCorps()+"");
+			
+			
+			final Message messageGet =(Message) crb.httpGetRequest("message",i);
+			LOG.info(""+messageGet.getId()+""+messageGet.getObjet()+""+messageGet.getCorps()+"");
+			
+			Assert.assertNotSame(messageGet,null);
+						
+			
+		}
+		catch(final RuntimeException r){
+			LOG.error("testGetUser failed",r);
+			throw r;
+		}
+	}
+	
+	
+	
+	/**
+	 * test unitaire création puis suppression d'un message
+	 */
+	@Test
+	public void testDeleteMessage() {
+		try {
+			final Connexion connexion = new Connexion("loginCreateMessage","passwordCreateMessage");
+			final Utilisateur utilisateur= new Utilisateur("JeanEmetteur","DucheminEmetteur",connexion);
+			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
+			
+			
+			final Connexion connexion2 = new Connexion("loginCreateMessage2","passwordCreateMessage2");
+			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire",connexion2);
+			final Utilisateur utilisateurPost2 = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
+						
+			final Date d = new Date();
+			
+			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre message","Corps du message",d);
+			final Message messagePost = (Message) crb.httpRequestXMLBody(message,"message/create");
+			
+			Assert.assertNotSame(messagePost,null);
+			
+			int i = messagePost.getId();
+			crb.httpGetRequest("message/delete",i);
+			
+			try{
+				final Message messageGet = (Message) crb.httpGetRequest("message", i);
+				Assert.assertSame(messageGet, null);
+			}
+			catch(final RuntimeException r){
+				LOG.error("testDeleteMessage failed",r);
+				throw r;
+			}	
+			
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'utilisateur", re);
+			throw re;
+		}
+	}
+	
+	
+	/**
 	 * test unitaire trouver les messages envoyés par l'utilisateur
 	 */
 	
