@@ -66,6 +66,14 @@ public class ServiceUtilisateur {
 		final Utilisateur a = utilisateurDAO.findById(id);
 		return a;
 	}
+	
+	@GET
+	@Path("/login/{login}")
+	@Produces("application/xml")
+	public Utilisateur getUtilisateurIdByLogin(@PathParam("login") final String login) {
+		final Utilisateur a = utilisateurDAO.findByLogin(login);
+		return a;
+	}
 
 	
 	@GET

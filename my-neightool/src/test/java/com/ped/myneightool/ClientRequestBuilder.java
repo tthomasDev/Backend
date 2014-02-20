@@ -161,7 +161,7 @@ public class ClientRequestBuilder {
 	
 	
 	/**
-	 * Requete GET
+	 * Requete GET avec parametre INT
 	 * @param resourceURI
 	 * @param id
 	 * @return
@@ -184,8 +184,42 @@ public class ClientRequestBuilder {
 		}
 		return null;
 	}
+	
 
-
+	/**
+	 * Requete GET avec parametre String
+	 * @param resourceURI
+	 * @param id
+	 * @return
+	 * 
+	 */
+	public Object httpGetRequest(String resourceURI,String id){
+		try {
+			ClientRequest request;
+			request = new ClientRequest("http://localhost:8080/rest/" + resourceURI + "/" + id);
+			request.accept("application/xml");
+			ClientResponse<String> response = request.get(String.class);
+			if (response.getStatus() == 200)
+			{
+				Unmarshaller un = this.jc.createUnmarshaller();
+				Object o = un.unmarshal(new StringReader(response.getEntity()));
+				return o;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
+	/**
+	 * Requete GET sans parametre
+	 * @param resourceURI
+	 * @param id
+	 * @return
+	 * 
+	 */
 
 	public Object httpGetRequestWithoutArgument(String resourceURI) {
 		try {

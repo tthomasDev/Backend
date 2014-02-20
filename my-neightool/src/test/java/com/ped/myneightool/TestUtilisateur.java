@@ -134,11 +134,11 @@ public class TestUtilisateur {
 	
 	
 	/**
-	 * test unitaire obtenir un utilisateur
+	 * test unitaire obtenir un utilisateur par son id
 	 */
 	
 	@Test
-	public final void testGetUser() {
+	public final void testGetUserById() {
 
 		try{
 			final Connexion connexion = new Connexion("4loginGet","passwordGet");
@@ -170,6 +170,44 @@ public class TestUtilisateur {
 		}
 	}
 	
+	
+	/**
+	 * test unitaire obtenir un utilisateur par son login
+	 */
+	
+	@Test
+	public final void testGetUserByLogin() {
+
+		try{
+			final Connexion connexion = new Connexion("loginGetUserByLogin","fdkjfds");
+			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"pommeDeTerre@gmail.com","0606060606");
+			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
+			
+			LOG.info("");
+			LOG.info("");
+			LOG.info(utilisateurPost.getId()+" "+utilisateurPost.getPrenom()+" "+utilisateurPost.getNom()+" "+utilisateurPost.getTelephone());	
+			
+			String i = utilisateurPost.getConnexion().getLogin();
+			LOG.info("");
+			LOG.info("");
+			LOG.info("Login: "+i);
+			LOG.info("");
+			LOG.info("");
+			
+			final Utilisateur utilisateurGet = (Utilisateur) crb.httpGetRequest("user/login", i);
+			LOG.info(utilisateurGet.getId()+" "+utilisateurGet.getPrenom()+" "+utilisateurGet.getNom()+" "+utilisateurGet.getTelephone());
+			LOG.info("");
+			LOG.info("");
+			Assert.assertNotSame(utilisateurGet, null);
+			LOG.info("");
+			LOG.info("");
+			
+		}
+		catch(final RuntimeException r){
+			LOG.error("testGetUser failed",r);
+			throw r;
+		}
+	}
 	
 	
 	/**

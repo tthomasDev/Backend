@@ -10,6 +10,8 @@ public interface ItfUtilisateurDAO {
 	public abstract void updateUtilisateur(Utilisateur utilisateur);
 
 	public abstract Utilisateur findById(int id);
+	
+	public abstract Utilisateur findByLogin(String login);
 
 	public abstract void deleteUtilisateur(Utilisateur utilisateur);
 

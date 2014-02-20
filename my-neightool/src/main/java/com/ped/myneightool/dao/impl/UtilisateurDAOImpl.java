@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import org.slf4j.LoggerFactory;
 
@@ -71,6 +72,31 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 		final Utilisateur utilisateur = em.find(Utilisateur.class, id);
 		return utilisateur;
 	}
+	
+	
+	
+	@Override
+	public Utilisateur findByLogin(String login) {
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		Utilisateur utilisateur = null;
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			final Query q = em.createQuery("SELECT u FROM Utilisateur u WHERE u.connexion.login = :par");
+			q.setParameter("par",login);
+			utilisateur = (Utilisateur) q.getResultList().get(0);
+			tx.commit();
+			LOG.debug("utilisateur"+utilisateur.getId()+" trouvé");
+			
+		}
+		catch(final RuntimeException re){
+			LOG.error("findByLogin failed", re);
+			tx.rollback();
+		}
+		return utilisateur;
+	}
+
 
 	
 	@Override
@@ -117,5 +143,6 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 		return odto;
 	}
 
+	
 	
 }
