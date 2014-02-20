@@ -1,18 +1,20 @@
 package model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 
+@XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "outil")
 public class Outil {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	private int id;
 	
 	private String nom;
@@ -25,8 +27,19 @@ public class Outil {
 	
 	private int caution;
 	
-	
 	private Utilisateur utilisateur;
+	
+		
+	@XmlElement(name = "dateDebut",required =true)
+	@XmlJavaTypeAdapter(DateAdapter.class)
+	private Date dateDebut;
+	
+	@XmlElement(name = "dateFin",required =true)
+	@XmlJavaTypeAdapter(DateAdapter.class)
+	private Date dateFin;
+	
+	private String cheminImage;
+	
 
 	public Outil(){
 		
@@ -43,6 +56,67 @@ public class Outil {
 		this.disponible = disponible;
 		this.categorie = categorie;
 		this.caution = caution;
+	}
+	
+	public Outil(Utilisateur utilisateur,String nom, String description,
+			boolean disponible, String categorie, int caution,
+			Date dateDebut,Date dateFin) {
+				
+		this.utilisateur=utilisateur;
+		this.utilisateur.addOutil(this);
+				
+		this.nom = nom;
+		this.description = description;
+		this.disponible = disponible;
+		this.categorie = categorie;
+		this.caution = caution;
+		this.dateDebut=dateDebut;
+		this.dateFin=dateFin;
+	}
+	
+	public Outil(Utilisateur utilisateur,String nom, String description,
+			boolean disponible, String categorie, int caution,
+			Date dateDebut,Date dateFin, String cheminImage) {
+				
+		this.utilisateur=utilisateur;
+		this.utilisateur.addOutil(this);
+				
+		this.nom = nom;
+		this.description = description;
+		this.disponible = disponible;
+		this.categorie = categorie;
+		this.caution = caution;
+		this.dateDebut=dateDebut;
+		this.dateFin=dateFin;
+		this.cheminImage=cheminImage;
+	}
+	
+	
+	
+	@XmlElement
+	public String getCheminImage() {
+		return cheminImage;
+	}
+
+	public void setCheminImage(String cheminImage) {
+		this.cheminImage = cheminImage;
+	}
+
+	public Date getDateDebut() {
+		return dateDebut;
+	}
+
+	public void setDateDebut(Date dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+
+	
+	public Date getDateFin() {
+		return dateFin;
+	}
+
+	public void setDateFin(Date dateFin) {
+		this.dateFin = dateFin;
 	}
 	
 	@XmlElement
@@ -109,4 +183,5 @@ public class Outil {
 		this.caution = caution;
 	}
 
+	
 }

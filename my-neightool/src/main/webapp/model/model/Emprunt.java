@@ -5,9 +5,6 @@ package model;
 
 import java.util.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -16,20 +13,16 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 
+
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "emprunt")
 public class Emprunt{
 	
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
-	
-	
+		
 	private Outil outil;
 		
-	
 	private Utilisateur emprunteur;
 	
 	

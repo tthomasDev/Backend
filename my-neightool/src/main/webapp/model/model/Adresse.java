@@ -1,11 +1,9 @@
 package model;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@Embeddable
+
 @XmlRootElement(name = "adresse")
 public class Adresse {
 	
@@ -17,10 +15,10 @@ public class Adresse {
 		
 	
 
-	@Column(nullable = true)
+	
 	private float longitude;
 		
-	@Column(nullable = true)
+	
 	private float latitude;
 	
 	public Adresse(){

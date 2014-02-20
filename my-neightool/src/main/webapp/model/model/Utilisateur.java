@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Embedded;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -16,25 +15,22 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 
-
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "utilisateur")
 public class Utilisateur implements Serializable{
 	
 		
-	
 	private int id;
 	
 	private String nom;
 	
 	private String prenom;
 	
-	@Embedded
 	private Connexion connexion;
 	
-	@Embedded
 	private Adresse adresse;
+	
 	
 	private String mail;
 	
@@ -44,9 +40,10 @@ public class Utilisateur implements Serializable{
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	private Date dateDeNaissance;
 	
-	
 	private Set<Outil> outils = new HashSet<Outil>();
 	
+	
+	private String cheminImage;
 	
 	//pour faire un historique par utilisateur
 	/*  
@@ -56,6 +53,12 @@ public class Utilisateur implements Serializable{
 	*/
 	public Utilisateur(){
 		
+	}
+	
+	public Utilisateur(String prenom, String nom, Connexion connexion) {
+		this.prenom = prenom;
+		this.nom = nom;
+		this.connexion = connexion;
 	}
 	
 	public Utilisateur(String prenom, String nom, Connexion connexion,
@@ -94,10 +97,34 @@ public class Utilisateur implements Serializable{
 		this.telephone = telephone;
 		this.adresse = adresse;
 		this.dateDeNaissance= dateDeNaissance;
-		
 	}
 	
+	public Utilisateur(String prenom, String nom, Connexion connexion,
+			String mail, String telephone, Adresse adresse, Date dateDeNaissance,String cheminImage) {
+		this.prenom = prenom;
+		this.nom = nom;
+		this.connexion = connexion;
+		this.mail = mail;
+		this.telephone = telephone;
+		this.adresse = adresse;
+		this.dateDeNaissance= dateDeNaissance;
+		this.cheminImage=cheminImage;
+	}
+	
+	
+	@XmlElement
+	public String getCheminImage() {
+		return cheminImage;
+	}
+
+	public void setCheminImage(String cheminImage) {
+		this.cheminImage = cheminImage;
+	}
+
+	
+	
 	//outils
+	
 	
 	@XmlTransient
 	public Set<Outil> getOutils(){
