@@ -1,5 +1,6 @@
 package com.ped.myneightool;
 
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.xml.bind.JAXBContext;
@@ -50,6 +51,33 @@ public class TestOutil {
 			
 			Assert.assertNotSame(outilPost,null);
 			
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'outil", re);
+			throw re;
+		}
+	}
+	
+	
+	/**
+	 * test unitaire création d'Outil avec dates de dispo
+	 */
+	@Test
+	public void testCreateOutilWithAvailableDate() {
+		try {
+			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutilWithAvailableDate","nomCreateOutilWithAvailableDate");
+			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
+			
+			final Date debutT = new Date(0);
+			
+			
+			final Date finT = new Date(0);
+			
+			final Outil outil= new Outil(utilisateurPost,"Rateau","savoir ratisser",true,"Jardinage",50,debutT,finT);
+			final Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
+			
+			Assert.assertNotSame(outilPost,null);
+			
+						
 		} catch (final RuntimeException re) {
 			LOG.error("echec de creation de l'outil", re);
 			throw re;

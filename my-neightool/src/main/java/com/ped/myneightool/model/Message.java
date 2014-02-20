@@ -14,8 +14,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-
+import java.util.Date;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 @Entity
@@ -39,18 +39,31 @@ public class Message {
 	
 	private String corps;
 	
+	@XmlElement(name = "date",required =true) 
+	@XmlJavaTypeAdapter(DateAdapter.class)
+	private Date date;
+	
+	
 	public Message(){
 		
 	}
 	
-	public Message(Utilisateur emetteur, Utilisateur destinataire, String objet, String corps) {
+	public Message(Utilisateur emetteur, Utilisateur destinataire, String objet, String corps,Date date) {
 		super();
 		this.emetteur = emetteur;
 		this.destinataire = destinataire;
 		this.objet = objet;
 		this.corps = corps;
+		this.date = date;
 	}
 
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	
 	@XmlElement
 	public Utilisateur getEmetteur() {

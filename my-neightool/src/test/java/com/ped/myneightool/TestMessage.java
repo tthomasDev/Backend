@@ -1,5 +1,7 @@
 package com.ped.myneightool;
 
+import java.util.Date;
+
 import javax.xml.bind.JAXBContext;
 
 import org.junit.Assert;
@@ -61,7 +63,9 @@ public class TestMessage {
 			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire",connexion2);
 			final Utilisateur utilisateurPost2 = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
 						
-			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre message","Corps du message");
+			final Date d = new Date();
+			
+			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre message","Corps du message",d);
 			final Message messagePost = (Message) crb.httpRequestXMLBody(message,"message/create");
 			
 			Assert.assertNotSame(messagePost,null);

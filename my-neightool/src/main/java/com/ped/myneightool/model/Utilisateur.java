@@ -56,6 +56,8 @@ public class Utilisateur implements Serializable{
 	private Set<Outil> outils = new HashSet<Outil>();
 	
 	
+	private String cheminImage;
+	
 	//pour faire un historique par utilisateur
 	/*  
 	@OneToMany(mappedBy = "emprunteur",orphanRemoval=true)
@@ -110,10 +112,33 @@ public class Utilisateur implements Serializable{
 		this.dateDeNaissance= dateDeNaissance;
 	}
 	
+	public Utilisateur(String prenom, String nom, Connexion connexion,
+			String mail, String telephone, Adresse adresse, Date dateDeNaissance,String cheminImage) {
+		this.prenom = prenom;
+		this.nom = nom;
+		this.connexion = connexion;
+		this.mail = mail;
+		this.telephone = telephone;
+		this.adresse = adresse;
+		this.dateDeNaissance= dateDeNaissance;
+		this.cheminImage=cheminImage;
+	}
+	
+	
+	@XmlElement
+	public String getCheminImage() {
+		return cheminImage;
+	}
+
+	public void setCheminImage(String cheminImage) {
+		this.cheminImage = cheminImage;
+	}
+
+	
+	
 	//outils
 	
 	
-
 	@XmlTransient
 	public Set<Outil> getOutils(){
 		return outils;

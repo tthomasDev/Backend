@@ -9,7 +9,8 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 
 		<properties>
-
+		    					
+			
 			<!-- auto detection des class java -->
 			<property name="hibernate.archive.autodetection" value="class, hbm" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
