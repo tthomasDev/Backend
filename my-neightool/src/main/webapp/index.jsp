@@ -1,6 +1,7 @@
 <%@include file="constantes.jsp" %>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.util.Calendar"%>
+<%@ page import="java.text.*"%>
 
 
 <%@ page import="javax.xml.bind.JAXBContext"%>
@@ -89,9 +90,22 @@ if(request.getParameter("attemp") != null){
 			//ici on va créer l'utilisateur avec les données rentrés dans le formulaire
 			final Adresse adresse = new Adresse(request.getParameter("location"), 0, 0);
 			final Connexion connexion = new Connexion(request.getParameter("username"),request.getParameter("password"));
-			String dateNaissance = request.getParameter("day")+"/"+request.getParameter("month")+"/"+request.getParameter("year");
-			final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse,dateNaissance);
 			
+			
+			String m = request.getParameter("month");
+			String day = request.getParameter("day");
+			String y = request.getParameter("year");
+			
+		
+			String target = day + "-" + m + "-" + y;
+			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+			Date d = df.parse(target);
+			System.out.println(target);
+			System.out.println(d);
+			
+			
+			final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse,d);
+			System.out.println("test");
 			
 			//ici il faut sérialiser l'utilisateur
 			final Marshaller marshaller = jaxbc.createMarshaller();
@@ -263,8 +277,10 @@ if(session.getAttribute("ID") != null)
 										String[] arrMois = { "Janvier", "Fevrier", "Mars", "Avril", "Mai",
 												"Juin", "Juillet", "Aout", "Septembre", "Octobre",
 												"Novembre", "Decembre" };
+										int mois=0;
 										for (String m : arrMois) {
-											out.println("<option value='" + m + "'>" + m + "</option>");
+											mois++;
+											out.println("<option value='" + mois + "'>" + m + "</option>");
 										}
 									%>
 								</select>
@@ -273,10 +289,9 @@ if(session.getAttribute("ID") != null)
 								<select class="form-control" id="year" name="year">
 									<%
 										int yyyy = Calendar.getInstance().get(Calendar.YEAR);
-										for (int i = 1900; i < yyyy; i++) {
-											out.println("<option value='" + yyyy + "'>" + i + "</option>");
+										for (int i = yyyy; i >= 1900; i--) {
+											out.println("<option value='" + i + "'>" + i + "</option>");
 										}
-										out.println("<option selected='selected'>" + yyyy + "</option>");
 									%>
 								</select> <br />
 							</div>

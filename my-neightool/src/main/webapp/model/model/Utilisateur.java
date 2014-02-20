@@ -94,6 +94,7 @@ public class Utilisateur implements Serializable{
 		this.telephone = telephone;
 		this.adresse = adresse;
 		this.dateDeNaissance= dateDeNaissance;
+		
 	}
 	
 	//outils
