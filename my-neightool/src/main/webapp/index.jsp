@@ -91,21 +91,20 @@ if(request.getParameter("attemp") != null){
 			final Adresse adresse = new Adresse(request.getParameter("location"), 0, 0);
 			final Connexion connexion = new Connexion(request.getParameter("username"),request.getParameter("password"));
 			
-			/*
-			String dateNaissance = request.getParameter("day")+"/"+request.getParameter("month")+"/"+request.getParameter("year");
-			final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse,dateNaissance);
-			*/
+			
+			String m = request.getParameter("month");
+			String day = request.getParameter("day");
+			String y = request.getParameter("year");
+			
 		
-			String target = request.getParameter("month") + "-" + request.getParameter("day") + "-" + request.getParameter("year");
+			String target = day + "-" + m + "-" + y;
 			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 			Date d = df.parse(target);
 			System.out.println(target);
 			System.out.println(d);
-			//Date d = new Date();
 			
 			
 			final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse,d);
-			//user.setDateDeNaissance(d);
 			System.out.println("test");
 			
 			//ici il faut sérialiser l'utilisateur
