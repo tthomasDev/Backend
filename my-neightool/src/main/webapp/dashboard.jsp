@@ -24,10 +24,4 @@ String filePath = "contents/"+fileName+".jsp";
 			<jsp:include page="<%=filePath%>" />
 		</div>
 	
-<%
-out.print(session.getAttribute("ID"));
-out.print(session.getAttribute("userName"));
-
-%>
-	
 <%@include file="template/footer.jsp" %>
