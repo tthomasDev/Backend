@@ -20,15 +20,18 @@
 
 <%
 	boolean actionValid = false;
+	boolean cautionCorrecte = true;
 	String messageType = "";
 	String messageValue = "";
-	if ((request.getParameter("itemName") != null)
-	&& (request.getParameter("itemCategory") != null)
-	&& (request.getParameter("itemDetails") != null)
-	&& (request.getParameter("itemCaution") != null)
-	&& (request.getParameter("start") != null)
-	&& (request.getParameter("end") != null)
-	&& (request.getParameter("termsofuse") != null)) {
+
+	
+	if ((request.getParameter("itemName") != "" )
+	&& (request.getParameter("itemCategory") != "" )
+	&& (request.getParameter("itemDetails") != "" )
+	&& (request.getParameter("itemCaution") != null )
+	&& (request.getParameter("start") != "" )
+	&& (request.getParameter("end") != "" )
+	&& (request.getParameter("termsofuse") != "" )) {
 
 		actionValid = true;
 		
@@ -39,11 +42,21 @@
 	// Utilisateur
 	Utilisateur user = new Utilisateur(); 
 	
+	cautionCorrecte = request.getParameter("itemCaution").matches("[0-9]*");
+	System.out.println("CAUTION CORRECTE " + cautionCorrecte);
+	
 	//ici on va créer l'outil avec les données rentrées dans le formulaire
 	final String name = request.getParameter("itemName");
 	final String category = request.getParameter("itemCategory");
 	final String description = request.getParameter("itemDetails");
-	final int caution = Integer.parseInt(request.getParameter("itemCaution"));
+	final int caution;
+	if ( cautionCorrecte ){
+		caution = Integer.parseInt(request.getParameter("itemCaution"));
+	}
+	else {
+		caution = 0;
+	}
+		
 	final String startDate = request.getParameter("start");
 	final String endDate = request.getParameter("end");
 	final String terms = request.getParameter("termsofuse");
@@ -51,64 +64,76 @@
 	final String id = String.valueOf(session.getAttribute("ID"));
 	final String userName = String.valueOf(session.getAttribute("userName"));
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	Date parsedDateD = sdf.parse(startDate);
-	System.out.println("test date debut : " + parsedDateD);
+	//Si la caution est correcte, on poursuit. Sinon on ne fait pas l'ajout en base de donnée
+	if ( cautionCorrecte )
+	{
 	
-	Date parsedDateF = sdf.parse(endDate);
-	System.out.println("test date fin : " + parsedDateF);
-	
-	//ici on envoit la requete au webservice createTool
-	try {
-		ClientRequest clientRequest ;
-		clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + id);
-		clientRequest.accept("application/xml");
-		ClientResponse<String> response2 = clientRequest.get(String.class);
-		if (response2.getStatus() == 200)
-		{
-			Unmarshaller un = jaxbc.createUnmarshaller();
-			user = (Utilisateur) un.unmarshal(new StringReader(response2.getEntity()));
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date parsedDateD = sdf.parse(startDate);
+		System.out.println("test date debut : " + parsedDateD);
+		
+		Date parsedDateF = sdf.parse(endDate);
+		System.out.println("test date fin : " + parsedDateF);
+		
+		//ici on envoit la requete au webservice createTool
+		try {
+			ClientRequest clientRequest ;
+			clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + id);
+			clientRequest.accept("application/xml");
+			ClientResponse<String> response2 = clientRequest.get(String.class);
+			if (response2.getStatus() == 200)
+			{
+		Unmarshaller un = jaxbc.createUnmarshaller();
+		user = (Utilisateur) un.unmarshal(new StringReader(response2.getEntity()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	} catch (Exception e) {
-		e.printStackTrace();
+		
+		final Outil tool = new Outil(user, name, description, true, category, caution,
+		parsedDateD, parsedDateF);
+	
+		//ici il faut sérialiser l'outil
+		final Marshaller marshaller = jaxbc.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+		final java.io.StringWriter sw = new StringWriter();
+		marshaller.marshal(tool, sw);			
+		
+		//ici on envoit la requete au webservice createUtilisateur
+		final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/tool/create");
+		clientRequest.body("application/xml", tool);
+		
+		
+		//ici on va récuperer la réponse de la requete
+		final ClientResponse<String> clientResponse = clientRequest.post(String.class);
+		//test affichage
+		System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
+		if (clientResponse.getStatus() == 200) { // si la réponse est valide !
+			// on désérialiser la réponse si on veut vérifier que l'objet retourner
+			// est bien celui qu'on a voulu créer , pas obligatoire
+			final Unmarshaller un = jaxbc.createUnmarshaller();
+			final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
+			// et ici on peut vérifier que c'est bien le bon objet
+			messageValue = "L'outil a bien été assigné";
+			messageType = "success";
+		} else {
+			messageValue = "Une erreur est survenue";
+			messageType = "danger";
+		}
+	
+			// on affiche ces messages qu'une fois la reponse de la requete valide
+		
 	}
-	
-	final Outil tool = new Outil(user, name, description, true, category, caution,
-			parsedDateD, parsedDateF);
-
-	//ici il faut sérialiser l'outil
-	final Marshaller marshaller = jaxbc.createMarshaller();
-	marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-	final java.io.StringWriter sw = new StringWriter();
-	marshaller.marshal(tool, sw);			
-	
-	//ici on envoit la requete au webservice createUtilisateur
-	final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/tool/create");
-	clientRequest.body("application/xml", tool);
-	
-	
-	//ici on va récuperer la réponse de la requete
-	final ClientResponse<String> clientResponse = clientRequest.post(String.class);
-	//test affichage
-	System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
-	if (clientResponse.getStatus() == 200) { // si la réponse est valide !
-		// on désérialiser la réponse si on veut vérifier que l'objet retourner
-		// est bien celui qu'on a voulu créer , pas obligatoire
-		final Unmarshaller un = jaxbc.createUnmarshaller();
-		final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
-		// et ici on peut vérifier que c'est bien le bon objet
-		messageValue = "L'outil a bien été assigné";
-		messageType = "success";
-	} else {
-		messageValue = "Une erreur est survenue";
+	else {
 		messageType = "danger";
+		messageValue = "Caution incorrecte";	
 	}
-
-		// on affiche ces messages qu'une fois la reponse de la requete valide
-
-	} else {
+	}
+	
+	else {
 		messageType = "danger";
 		messageValue = "Tous les champs n'ont pas été remplis.";
+	
 	}
 %>
 
@@ -129,6 +154,15 @@
 	<li class="active">Ajout d'un nouvel objet à prêter</li>
 </ol>
 
+<%
+	if (actionValid) {
+		out.println("<div class='row'><div class='col-md-12' style='margin-top:-20px'>");
+		out.println("<div class='alert alert-" + messageType + "'>"
+				+ messageValue + "</div>");
+		out.println("</div></div>");
+	}
+%>
+
 <form action="dashboard.jsp?page=manageItems&sub=add"
 	class="form-horizontal" role="form" method="POST">
 	<div class="">
@@ -137,7 +171,7 @@
 				l'objet</label>
 			<div class="col-sm-6">
 				<input type="text" class="form-control" id="itemName"
-					name="itemName" placeholder="Nom de l'objet" />
+					name="itemName" placeholder="Nom de l'objet" required />
 			</div>
 			<br />
 		</div>
@@ -145,7 +179,8 @@
 		<div class="form-group">
 			<label for="itemCategory" class="col-sm-3 control-label">Catégorie</label>
 			<div class="col-sm-6">
-				<select class="form-control" id="itemCategory" name="itemCategory">
+				<select class="form-control" id="itemCategory" name="itemCategory"
+					required>
 					<option value="option1">Categorie 1</option>
 					<option value="option2">Categorie 2</option>
 					<option value="optioncol-md-6 3">Categorie 3</option>
@@ -157,16 +192,17 @@
 			<label for="itemDetails" class="col-sm-3 control-label">Description</label>
 			<div class="col-sm-6">
 				<textarea class="form-control" rows="5" id="itemDetails"
-					name="itemDetails" placeholder="Description de l'objet"></textarea>
+					name="itemDetails" placeholder="Description de l'objet" required></textarea>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="itemCaution" class="col-sm-3 control-label">Montant
 				de la caution</label>
-			<div class="col-sm-4">
-				<input type="text" class="form-control" id="itemCaution"
-					name="itemCaution" placeholder="Prix (euros)" />
+			<div class="col-sm-2">
+				<input type="text" class="form-control" maxlength="7"
+					id="itemCaution" name="itemCaution" placeholder="Prix" required />
 			</div>
+			<label for="itemCaution" class="col-sm-1 control-label">euros</label>
 			<br />
 		</div>
 		<hr />
@@ -176,9 +212,9 @@
 				<div class="input-daterange input-group" id="datepicker">
 					<span class="input-group-addon">du </span> <input type="text"
 						data-provide="datepicker" class="datepicker input-sm form-control"
-						name="start" /> <span class="input-group-addon"> au </span> <input
-						type="text" data-provide="datepicker"
-						class="datepicker input-sm form-control" name="end" />
+						name="start" required /> <span class="input-group-addon">
+						au </span> <input type="text" data-provide="datepicker"
+						class="datepicker input-sm form-control" name="end" required />
 				</div>
 			</div>
 		</div>
@@ -214,8 +250,8 @@
 					les <a href="#" data-toggle="modal" data-target="#terms">conditions
 						générales d'utilisation</a>.
 				</label> -->
-				<input type="checkbox" id="termsofuse" name="termsofuse" /> <label
-					for="termsofuse">En mettant cet objet, je m'engage à
+				<input type="checkbox" id="termsofuse" name="termsofuse" required />
+				<label for="termsofuse">En mettant cet objet, je m'engage à
 					respecter les <a href="#" data-toggle="modal" data-target="#terms">conditions
 						générales d'utilisation</a>
 				</label>
