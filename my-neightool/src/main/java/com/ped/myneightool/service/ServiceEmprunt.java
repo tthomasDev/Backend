@@ -11,9 +11,6 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
-
 import com.ped.myneightool.dao.impl.EmpruntDAOImpl;
 import com.ped.myneightool.dao.itf.ItfEmpruntDAO;
 import com.ped.myneightool.model.Emprunt;

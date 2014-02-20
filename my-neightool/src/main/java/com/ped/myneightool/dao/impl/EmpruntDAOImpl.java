@@ -1,12 +1,12 @@
 package com.ped.myneightool.dao.impl;
 
-import com.ped.myneightool.dao.itf.ItfEmpruntDAO;
-import com.ped.myneightool.model.Emprunt;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import org.slf4j.LoggerFactory;
+
+import com.ped.myneightool.dao.itf.ItfEmpruntDAO;
+import com.ped.myneightool.model.Emprunt;
 
 public class EmpruntDAOImpl extends GenericDAOImpl implements ItfEmpruntDAO {
 

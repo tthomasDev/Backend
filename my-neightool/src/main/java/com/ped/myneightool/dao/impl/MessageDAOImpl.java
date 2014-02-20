@@ -1,11 +1,18 @@
 package com.ped.myneightool.dao.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfMessageDAO;
+import com.ped.myneightool.dto.MessagesDTO;
 import com.ped.myneightool.model.Message;
 
 public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
@@ -80,5 +87,60 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		}
 		
 	}
+
+	@Override
+	public MessagesDTO findMessagesSendOfUser(int utilisateurId) {
+		LOG.info("find all messages send of user");
+		List<Message> res = new ArrayList<Message>();
+				
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.emetteur.id = :por");
+			q.setParameter("por",utilisateurId);
+			res = TypeSafetyChecking.castList(Message.class, q.getResultList());
+			tx.commit();
+			LOG.debug("recherche de tous les messages envoyés de l'utilisateur"+utilisateurId+" réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		Set<Message> set = new HashSet<Message>(res);
+		MessagesDTO mdto= new MessagesDTO();
+		mdto.setListeMessages(set);
+		return mdto;
+	}
+
+	@Override
+	public MessagesDTO findMessagesReceiveOfUser(int utilisateurId) {
+		
+		LOG.info("find all messages receive of user");
+		List<Message> res = new ArrayList<Message>();
+				
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.destinataire.id = :por");
+			q.setParameter("por",utilisateurId);
+			res = TypeSafetyChecking.castList(Message.class, q.getResultList());
+			tx.commit();
+			LOG.debug("recherche de tous les messages reçus par l'utilisateur"+utilisateurId+" réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		Set<Message> set = new HashSet<Message>(res);
+		MessagesDTO mdto= new MessagesDTO();
+		mdto.setListeMessages(set);
+		return mdto;
+		}
 
 }

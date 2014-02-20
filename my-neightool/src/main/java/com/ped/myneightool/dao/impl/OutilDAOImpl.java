@@ -165,7 +165,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 
 	@Override
 	public OutilsDTO findToolsOfUserAvailable(int utilisateurId) {
-		LOG.info("find all outils");
+		LOG.info("find all available outils of user");
 		List<Outil> res = new ArrayList<Outil>();
 				
 		final EntityManager em = createEntityManager();
@@ -179,7 +179,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 			q.setParameter("por",utilisateurId);
 			res = TypeSafetyChecking.castList(Outil.class, q.getResultList());
 			tx.commit();
-			LOG.debug("recherche de tous les outils disponible réussis, taille du résultat :"+res.size());
+			LOG.debug("recherche de tous les outils disponible de l'utilisateur"+utilisateurId+" réussis, taille du résultat :"+res.size());
 		}
 		catch(final RuntimeException re){
 			
