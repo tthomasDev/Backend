@@ -1,21 +1,119 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="../constantes.jsp"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="java.util.Calendar"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.text.DateFormat"%>
+<%@ page import="java.sql.Timestamp"%>
+
+<%@ page import="javax.xml.bind.JAXBContext"%>
+<%@ page import="javax.xml.bind.Marshaller"%>
+<%@ page import="javax.xml.bind.Unmarshaller"%>
+
+<%@ page import="java.io.StringReader"%>
+<%@ page import="java.io.StringWriter"%>
+
+<%@ page import="org.jboss.resteasy.client.ClientRequest"%>
+<%@ page import="org.jboss.resteasy.client.ClientResponse"%>
+
+<%@ page import="model.Utilisateur"%>
+
+<%@ page import="com.ped.myneightool.model.Outil"%>
+<%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
+
 <%
-String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="", itemDateEnd="", itemPrice="", itemDistance="";
+	String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="", itemDateEnd="", itemPrice="", itemDistance="";
 boolean itemFound = false;
 if(request.getParameter("id") != null) {
 	itemFound = true;
-	/** TODO **/
+
+	String messageType = "";
+	String messageValue = "";
 	/* Parser le résultat, valeur en dure mise en exemple */
-	itemName = "Exemple objet 1";
+	/* itemName = "Exemple objet 1";
 	itemVendor = "Utilisateur";
 	itemDescription = "Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.";
 	itemCategory = "Categorie 1";
+	 */
+	 
 	/* Convertion de la date en string à réaliser */
-	itemDateStart = "01/02/2014";
+	/* itemDateStart = "01/02/2014";
 	itemDateEnd = "31/03/2014";
 	itemPrice = "50€";
-	itemDistance = "9,3km";
-}
+	itemDistance = "9,3km"; */
+	
+	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
+		final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
+		final JAXBContext jaxbc2 = JAXBContext.newInstance(OutilsDTO.class);
+
+		// Utilisateur
+		Utilisateur user = new Utilisateur();
+
+		// L'outil résultant de la requête souhaitée
+		Outil outil = new Outil();
+
+		// On récupère les données de session de l'utilisateur
+		final String id = String.valueOf(session.getAttribute("ID"));
+		final String userName = String.valueOf(session
+		.getAttribute("userName"));
+
+		// ici on envoit la requete permettant de récupérer les données complètes
+		// sur l'utilisateur en ligne
+		try {
+	ClientRequest clientRequest;
+	clientRequest = new ClientRequest(
+			"http://localhost:8080/rest/user/" + id);
+	clientRequest.accept("application/xml");
+	ClientResponse<String> response2 = clientRequest.get(String.class);
+	if (response2.getStatus() == 200) {
+		Unmarshaller un = jaxbc.createUnmarshaller();
+		user = (Utilisateur) un.unmarshal(new StringReader(
+				response2.getEntity()));
+	}
+		} catch (Exception e) {
+	e.printStackTrace();
+		}
+
+		//ici on va récuperer la réponse de la requete
+		try {
+	ClientRequest requestTools;
+	requestTools = new ClientRequest(
+			"http://localhost:8080/rest/tool/" + request.getParameter("id"));
+	requestTools.accept("application/xml");
+	ClientResponse<String> responseTools = requestTools
+			.get(String.class);
+	if (responseTools.getStatus() == 200) {
+		Unmarshaller un2 = jaxbc2.createUnmarshaller();
+		outil = (Outil) un2.unmarshal(new StringReader(
+				responseTools.getEntity()));
+
+		// et ici on peut vérifier que c'est bien le bon objet
+		messageValue = "Les détails de l'objet ont bien été récupérés.";
+		messageType = "success";
+	} else {
+		messageValue = "Une erreur est survenue";
+		messageType = "danger";
+	}
+		} catch (Exception e) {
+	e.printStackTrace();
+		}
+		
+		itemName = outil.getNom();
+		itemVendor = user.getNom();;
+		itemDescription = outil.getDescription();
+		itemCategory = outil.getCategorie();
+		
+		// Conversion des dates
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+		itemDateStart = df.format(outil.getDateDebut());
+		System.out.println("Start date: " + itemDateStart);
+
+		DateFormat df2 = new SimpleDateFormat("MM/dd/yyyy");
+		itemDateEnd = df2.format(outil.getDateFin());
+		System.out.println("End date: " + itemDateEnd);
+
+		itemPrice = String.valueOf(outil.getCaution());
+	}
 %>
 
 <% if(itemFound) { %>
@@ -80,7 +178,7 @@ if(request.getParameter("id") != null) {
 				<tr><td>&nbsp;</td></tr>
 				<tr>
 					<td class="tableTmp">Caution (<a href="#">?</a>) : </td>
-					<td><%=itemPrice%></td>
+					<td><%=itemPrice%> euros</td>
 				</tr>
 			</table>
 			<hr />
