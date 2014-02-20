@@ -12,8 +12,10 @@ import javax.persistence.Query;
 import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfMessageDAO;
+import com.ped.myneightool.dto.Messages;
 import com.ped.myneightool.dto.MessagesDTO;
 import com.ped.myneightool.model.Message;
+
 
 public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 
@@ -99,7 +101,7 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		try{
 			tx=em.getTransaction();
 			tx.begin();
-			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.emetteur.id = :por");
+			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.emetteur.id = :por ORDER BY m.date");
 			q.setParameter("por",utilisateurId);
 			res = TypeSafetyChecking.castList(Message.class, q.getResultList());
 			tx.commit();
@@ -115,6 +117,35 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		return mdto;
 	}
 
+	
+	@Override
+	public Messages findMessagesSendOfUserByList(int utilisateurId) {
+		LOG.info("find all messages send of user");
+		List<Message> res = new ArrayList<Message>();
+				
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.emetteur.id = :por ORDER BY m.date");
+			q.setParameter("por",utilisateurId);
+			res = TypeSafetyChecking.castList(Message.class, q.getResultList());
+			tx.commit();
+			LOG.debug("recherche de tous les messages envoyés de l'utilisateur"+utilisateurId+" réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		List<Message> set = new ArrayList<Message>(res);
+		Messages mdto= new Messages();
+		mdto.setListeMessages(set);
+		return mdto;
+	}
+	
+	
 	@Override
 	public MessagesDTO findMessagesReceiveOfUser(int utilisateurId) {
 		
@@ -142,5 +173,9 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		mdto.setListeMessages(set);
 		return mdto;
 		}
+
+	
+
+	
 
 }

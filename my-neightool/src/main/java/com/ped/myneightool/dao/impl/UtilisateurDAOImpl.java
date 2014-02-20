@@ -124,13 +124,13 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 		List<Utilisateur> res = new ArrayList<Utilisateur>();
 				
 		final EntityManager em = createEntityManager();
-		EntityTransaction tx=null;
+		//EntityTransaction tx=null;
 		
 		try{
-			tx=em.getTransaction();
-			tx.begin();
-			res = TypeSafetyChecking.castList(Utilisateur.class, em.createQuery("SELECT p FROM Utilisateur p ORDER BY id ASC").getResultList());
-			tx.commit();
+			//tx=em.getTransaction();
+			//tx.begin();
+			res = TypeSafetyChecking.castList(Utilisateur.class, em.createQuery("SELECT p FROM Utilisateur p ORDER BY p.id").getResultList());
+			//tx.commit();
 			LOG.debug("recherche de tous les utilisateurs réussis, taille du résultat :"+res.size());
 		}
 		catch(final RuntimeException re){

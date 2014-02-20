@@ -131,13 +131,13 @@ public class TestMessage {
 	@Test
 	public void testDeleteMessage() {
 		try {
-			final Connexion connexion = new Connexion("loginCreateMessage","passwordCreateMessage");
-			final Utilisateur utilisateur= new Utilisateur("JeanEmetteur","DucheminEmetteur",connexion);
+			
+			final Utilisateur utilisateur= new Utilisateur("JeanEmetteur","DucheminEmetteur");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			
-			final Connexion connexion2 = new Connexion("loginCreateMessage2","passwordCreateMessage2");
-			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire",connexion2);
+			
+			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire");
 			final Utilisateur utilisateurPost2 = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
 						
 			final Date d = new Date();

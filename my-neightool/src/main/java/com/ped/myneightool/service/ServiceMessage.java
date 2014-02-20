@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.impl.MessageDAOImpl;
 import com.ped.myneightool.dao.itf.ItfMessageDAO;
+import com.ped.myneightool.dto.Messages;
 import com.ped.myneightool.dto.MessagesDTO;
 import com.ped.myneightool.model.Message;
 
@@ -70,8 +71,16 @@ public class ServiceMessage {
 	@GET
 	@Path("/list/send/{id}")
 	@Produces({ "application/xml", "application/json" })
-	public MessagesDTO findMessagesSendOfUser(@PathParam("id") final int UtilisateurId) {
+	public MessagesDTO findMessagesSendOfUserByHashSet(@PathParam("id") final int UtilisateurId) {
 		MessagesDTO messages = messageDAO.findMessagesSendOfUser(UtilisateurId);
+		return messages;
+	}
+	
+	@GET
+	@Path("/list/sendList/{id}")
+	@Produces({ "application/xml", "application/json" })
+	public Messages findMessagesSendOfUserByList(@PathParam("id") final int UtilisateurId) {
+		Messages messages = messageDAO.findMessagesSendOfUserByList(UtilisateurId);
 		return messages;
 	}
 	
