@@ -1,4 +1,4 @@
-<%@include file="constantes.jsp" %>
+<%@include file="constantes.jsp"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="java.util.Calendar"%>
 <%@ page import="java.text.*"%>
@@ -91,7 +91,7 @@ if(request.getParameter("attemp") != null){
 			final Adresse adresse = new Adresse(request.getParameter("location"), 0, 0);
 			final Connexion connexion = new Connexion(request.getParameter("username"),request.getParameter("password"));
 			
-			
+			//Formatage de la date
 			String m = request.getParameter("month");
 			String day = request.getParameter("day");
 			String y = request.getParameter("year");
@@ -101,38 +101,69 @@ if(request.getParameter("attemp") != null){
 			DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 			Date d = df.parse(target);
 			System.out.println(target);
-			System.out.println(d);
+			System.out.println(d.toString());
 			
+			boolean dateCorrecte = false;
+			DateFormat sdf = new SimpleDateFormat("d-M-yyyy");
+	        try {
+	            String dateFormatee = sdf.format(d);
+	            System.out.println("Date formatée : " + dateFormatee);
+	            if(dateFormatee.compareTo(target) !=  0)
+	            	dateCorrecte = false;
+	            else
+	            	dateCorrecte = true;
+	        } catch (Exception e) {
+	        	System.out.println("Exception");
+	        }
 			
-			final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),request.getParameter("telephone"),adresse,d);
-			System.out.println("test");
+			//Verification numéro de tel
+			String numTel = request.getParameter("telephone");
+			boolean correctTel = numTel.matches("[0-9]{10}");
+			System.out.println("NUMERO DE TELEPHONE CORRECT : " + correctTel);
 			
-			//ici il faut sérialiser l'utilisateur
-			final Marshaller marshaller = jaxbc.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-			final java.io.StringWriter sw = new StringWriter();
-			marshaller.marshal(user, sw);
-			
-			
-			//ici on envois la requete au webservice createUtilisateur
-			final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/user/create");
-			clientRequest.body("application/xml", user );
-			
-			
-			//ici on va récuperer la réponse de la requete
-			final ClientResponse<String> clientResponse = clientRequest.post(String.class);
-			//test affichage
-			System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
-			if (clientResponse.getStatus() == 200) { // si la réponse est valide !
-				// on désérialiser la réponse si on veut vérifier que l'objet retourner
-				// est bien celui qu'on a voulu créer , pas obligatoire
-				final Unmarshaller un = jaxbc.createUnmarshaller();
-				final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
-				// et ici on peut vérifier que c'est bien le bonne objet
-				messageValue = "Vous avez bien été enregistré";
-				messageType = "success";
-			} else {
-				messageValue = "Une erreur est survenue";
+			if (correctTel && dateCorrecte){
+				final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),numTel,adresse,d);
+				System.out.println("test");
+				
+				//ici il faut sérialiser l'utilisateur
+				final Marshaller marshaller = jaxbc.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+				final java.io.StringWriter sw = new StringWriter();
+				marshaller.marshal(user, sw);
+				
+				
+				//ici on envois la requete au webservice createUtilisateur
+				final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/user/create");
+				clientRequest.body("application/xml", user );
+				
+				
+				//ici on va récuperer la réponse de la requete
+				final ClientResponse<String> clientResponse = clientRequest.post(String.class);
+				//test affichage
+				System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
+				if (clientResponse.getStatus() == 200) { 
+					// si la réponse est valide !
+						// on désérialiser la réponse si on veut vérifier que l'objet retourner
+						// est bien celui qu'on a voulu créer , pas obligatoire
+						final Unmarshaller un = jaxbc.createUnmarshaller();
+						final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
+						// et ici on peut vérifier que c'est bien le bonne objet
+						messageValue = "Vous avez bien été enregistré";
+						messageType = "success";
+
+				} else {
+					messageValue = "Une erreur est survenue";
+					messageType = "danger";
+				}
+			}
+			else if ( !correctTel )
+			{
+				messageValue = "Numero de téléphone non correct. Format : 10 chiffres";
+				messageType = "danger";
+			}
+			else if ( !dateCorrecte )
+			{
+				messageValue = "La date de naissance est incorecte";
 				messageType = "danger";
 			}
 			
@@ -157,80 +188,97 @@ if(session.getAttribute("ID") != null)
 %>
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
-    	<meta name="description" content="">
-    	<meta name="author" content="">
-		<link rel="icon" type="image/png" href="./dist/img/favicon.png" />
-	
-	    <title><% out.print(siteName); %></title>
-	
-	    <!-- Bootstrap core CSS -->
-	    <link href="./dist/css/bootstrap.min.css" rel="stylesheet">
-	    <link href="./dist/css/jumbotron.css" rel="stylesheet">
-	
-	    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-	    <script src="./dist/js/bootstrap.min.js"></script>
-	    <script src="./dist/js/config.js"></script>
-	    <script src="./dist/js/maps.js"></script>
-	
-	    <!-- Just for debugging purposes. Don't actually copy this line! -->
-	    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-	
-	    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	    <!--[if lt IE 9]>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="icon" type="image/png" href="./dist/img/favicon.png" />
+
+<title>
+	<% out.print(siteName); %>
+</title>
+
+<!-- Bootstrap core CSS -->
+<link href="./dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="./dist/css/jumbotron.css" rel="stylesheet">
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="./dist/js/bootstrap.min.js"></script>
+<script src="./dist/js/config.js"></script>
+<script src="./dist/js/maps.js"></script>
+
+<!-- Just for debugging purposes. Don't actually copy this line! -->
+<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
 	      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	    <![endif]-->
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsO96nmOiM5A5mef1oNv4PZoETDWvfJ88&sensor=false"></script>
-		<style type="text/css">#map-canvas{height:600px !important;}</style>
-	</head>
-	
-	<body onload="initialize()">
-		<div class="navbar navbar-inverse navbar-fixed-top">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href=""><% out.print(siteName); %></a>
-				</div>
-				<div class="navbar-collapse collapse">
-					<form action="index.jsp?attemp=1" method="POST" class="navbar-form navbar-right">
-						<div class="form-group">
-							<input type="text" placeholder="Nom d'utilisateur" id="login_username" name="login_username" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<input type="password" placeholder="Mot de passe" id="login_password" name="login_password" class="form-control" required>
-						</div>
-						<input type="hidden" name="signIn" id="signIn">
-						<button type="submit" class="btn btn-success">Connexion</button>
-					</form>
-				</div>
-				<!--/.navbar-collapse -->
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsO96nmOiM5A5mef1oNv4PZoETDWvfJ88&sensor=false"></script>
+<style type="text/css">
+#map-canvas {
+	height: 600px !important;
+}
+</style>
+</head>
+
+<body onload="initialize()">
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="">
+					<% out.print(siteName); %>
+				</a>
 			</div>
+			<div class="navbar-collapse collapse">
+				<form action="index.jsp?attemp=1" method="POST"
+					class="navbar-form navbar-right">
+					<div class="form-group">
+						<input type="text" placeholder="Nom d'utilisateur"
+							id="login_username" name="login_username" class="form-control"
+							required>
+					</div>
+					<div class="form-group">
+						<input type="password" placeholder="Mot de passe"
+							id="login_password" name="login_password" class="form-control"
+							required>
+					</div>
+					<input type="hidden" name="signIn" id="signIn">
+					<button type="submit" class="btn btn-success">Connexion</button>
+				</form>
+			</div>
+			<!--/.navbar-collapse -->
 		</div>
-	
-		<div class="jumbotron">
-			<div class="container">
-				<%
+	</div>
+
+	<div class="jumbotron">
+		<div class="container">
+			<%
 				if(actionValid) {
 					out.println("<div class='row'><div class='col-md-12' style='margin-top:-20px'>");
 					out.println("<div class='alert alert-" + messageType + "'>" + messageValue + "</div>");
 					out.println("</div></div>");
 				}
 				%>
-				<div class="row">
-					<div class="col-md-6 img-rounded" id="map-canvas" style="background-color:#DDD; margin-left:20px;"></div>
-					<div class="col-md-1"></div>
-					<div class="col-md-5 img-rounded" style="background-color:#DDD !important; margin-left:60px !important">
-						<h3>Créez un compte gratuitement</h3>
-						<h4>Echangez dès maintenant près de chez vous !</h4>
-						<hr />
+			<div class="row">
+				<div class="col-md-6 img-rounded" id="map-canvas"
+					style="background-color: #DDD; margin-left: 20px;"></div>
+				<div class="col-md-1"></div>
+				<div class="col-md-5 img-rounded"
+					style="background-color: #DDD !important; margin-left: 60px !important">
+					<h3>Créez un compte gratuitement</h3>
+					<h4>Echangez dès maintenant près de chez vous !</h4>
+					<hr />
 					<form action="index.jsp?attemp=1" method="POST">
 						<div class="row">
 							<div class="col-md-6">
@@ -252,10 +300,9 @@ if(session.getAttribute("ID") != null)
 							</div>
 							<br />
 							<div class="col-md-6">
-							<br />
-								<input type="text" placeholder="Numéro de téléphone"
-									id="telephone" name="telephone" class="form-control"
-									required="required" />
+								<br /> <input type="text" placeholder="Numéro de téléphone"
+									id="telephone" name="telephone" maxlength="10"
+									class="form-control" required="required" />
 							</div>
 						</div>
 						<div class="row">
@@ -323,21 +370,20 @@ if(session.getAttribute("ID") != null)
 								</div>
 								<hr />
 								<label class="checkbox"><input type="checkbox"
-									name="checkbox" required> J'ai lu et j'accepte les <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a>
-								</label> <br />
-									<input type="hidden" name="signUp" id="signUp"> 
-									<input type="hidden" value="" name="lat" id="lat"> 
-									<input type="hidden" value="" name="long" id="long"> 
-									<input type="submit" value="Inscription" class="pull-right btn btn-info btn-lg"> 
-									<br />
-								<br />
-								<br />
+									name="checkbox" required> J'ai lu et j'accepte les <a
+									href="#" data-toggle="modal" data-target="#terms">Conditions
+										générales d'utilisation</a> </label> <br /> <input type="hidden"
+									name="signUp" id="signUp"> <input type="hidden"
+									value="" name="lat" id="lat"> <input type="hidden"
+									value="" name="long" id="long"> <input type="submit"
+									value="Inscription" class="pull-right btn btn-info btn-lg">
+								<br /> <br /> <br />
 							</div>
 						</div>
 					</form>
 				</div>
-				</div>
 			</div>
 		</div>
-	
-<%@include file="template/footer.jsp" %>
+	</div>
+
+	<%@include file="template/footer.jsp"%>
