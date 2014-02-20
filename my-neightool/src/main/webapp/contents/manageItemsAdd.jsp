@@ -52,13 +52,11 @@
 	final String userName = String.valueOf(session.getAttribute("userName"));
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	Date parsedDate = sdf.parse(startDate);
-	Timestamp startDateF = new Timestamp(parsedDate.getTime());
-	System.out.println("test date debut : " + startDateF);
+	Date parsedDateD = sdf.parse(startDate);
+	System.out.println("test date debut : " + parsedDateD);
 	
-	parsedDate = sdf.parse(endDate);
-	Timestamp endDateF = new Timestamp(parsedDate.getTime());
-	System.out.println("test date fin : " + endDateF);
+	Date parsedDateF = sdf.parse(endDate);
+	System.out.println("test date fin : " + parsedDateF);
 	
 	//ici on envoit la requete au webservice createTool
 	try {
@@ -75,7 +73,8 @@
 		e.printStackTrace();
 	}
 	
-	final Outil tool = new Outil(user, name, description, true, category, caution);
+	final Outil tool = new Outil(user, name, description, true, category, caution,
+			parsedDateD, parsedDateF);
 
 	//ici il faut sérialiser l'outil
 	final Marshaller marshaller = jaxbc.createMarshaller();
