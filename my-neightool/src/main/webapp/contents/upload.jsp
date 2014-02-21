@@ -13,12 +13,13 @@ if(request.getParameter("maxSize") != null && request.getParameter("maxHeight") 
 $(document).ready(function() {
 	
 	$('#showValue').click(function() {
-		$('#imgUploader').click();
+		$('#file').click();
 	});
-	$('#imgUploader').change(function() {
-		$('#showValue').val($('#imgUploader').val());
+	$('#file').change(function() {
+		$('#showValue').val($('#file').val());
 	});
-	$('#sendFile').click(function(e) {
+	$('#uploadForm').on('submit',function(e) {
+		e.preventDefault();
 		var time = 0;
 		if($('#showValue').val()=="" && $('#imgUploader').val()=="") {
 			$('#noFile').fadeIn();
@@ -28,28 +29,36 @@ $(document).ready(function() {
 			$('#sendFile').html("Envoi en cours...");
 			$('#closeBtn').hide();
 			$('#bodyLoading').show();
-			e.preventDefault();
-			var toUp = $('#imgUploader').val();
+			var toUp = $('#file').val();
+			document.getElementById('uploadForm').target = 'target-iframe';
+			document.getElementById("uploadForm").submit();
 			$.ajax({
-			    url: 'contents/uploadScript.jsp',
-			    data: {fileUp:toUp},
-			    cache: false,
-			    contentType: false,
-			    processData: false,
+			    url: "contents/uploadScript.jsp?file="+toUp,
 			    type: 'POST',
+			    data: null,
+			    contentType: false,
 			    success: function(data){
-			    	alert(data)
+			    	var answer = data.split('@');
+			    	if($.trim(answer[0])=="0") {
+						$('#bodyMain').hide();
+						$('#sendFile').hide();
+						$('#closeBtn').show();
+						$('#bodyLoading').hide();
+						$('#bodyEndFail').show();
+						$('#errorParse').html(answer[1]);
+						$('#sendFile').removeAttr("disabled");
+			    	} else {
+						$('#bodyMain').hide();
+						$('#sendFile').hide();
+						$('#closeBtn').show();
+						$('#bodyLoading').hide();
+						$('#bodyEndSuccess').show();
+						$('#sendFile').removeAttr("disabled");
+			    	}
 			    },
 			    fail: function() {
-			    	alert("Erreur");
 			    }
-			}).done(function() {
-				$('#bodyMain').hide();
-				$('#sendFile').hide();
-				$('#closeBtn').show();
-				$('#bodyLoading').hide();
-				$('#bodyEnd').show();
-			});
+			})
 		}
 	});
 });
@@ -57,13 +66,13 @@ $(document).ready(function() {
 
 <div class="modal fade" id="uploadImg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
-		<form method="POST" id="uploadForm">
+		<form method="post" enctype="multipart/form-data" id="uploadForm">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="myModalLabel">Envoi d'image</h4>
 				</div>
 				<div class="modal-body" id="bodyMain">
-					<input type="file" name="imgUploader" id="imgUploader" style="display:none;"/>
+					<input type="file" name="file" id="file" style="display:none;"/>
 					<div id="noFile" class="alert alert-warning perfectCenter" style="display:none;">
 						Vous devez spécifier une image à envoyer.
 					</div>
@@ -85,13 +94,20 @@ $(document).ready(function() {
 					</ul>
 				</div>
 				<div class="modal-body" id="bodyLoading" style="display:none;">
+					<iframe id="target-iframe" name="target-iframe" style="display:none;"></iframe>
 					<div class="alert alert-info perfectCenter">
 						<img src="./dist/img/ajax-loader.gif" />
 						<br /><br />
 						Envoi de votre fichier en cours...
 					</div>
 				</div>
-				<div class="modal-body" id="bodyEnd" style="display:none;">
+				<div class="modal-body" id="bodyEndFail" style="display:none;">
+					<div class="alert alert-danger perfectCenter">
+						Erreur lors de l'envoi de l'image
+					</div>
+					<p>L'erreur suivante est survenue : <span id="errorParse"></span></p>
+				</div>
+				<div class="modal-body" id="bodyEndSuccess" style="display:none;">
 					<div class="alert alert-success perfectCenter">
 						Envoi de l'image réussi.
 					</div>
@@ -103,7 +119,7 @@ $(document).ready(function() {
 					</div>
 				</div>
 				<div class="modal-footer">
-					<a id="sendFile" class="btn btn-info"><i class="glyphicon glyphicon-cloud-upload"></i> Envoyer</a>
+					<button type="submit" id="sendFile" class="btn btn-info"><i class="glyphicon glyphicon-cloud-upload"></i> Envoyer</button>
 					<a id="closeBtn" class="btn btn-default" data-dismiss="modal">Fermer</a>
 				</div>
 			</div>
