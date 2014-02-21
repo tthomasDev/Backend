@@ -41,7 +41,7 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.jsp"><% out.print(siteName); %></a>
+					<a class="navbar-brand" href="dashboard.jsp"><% out.print(siteName); %></a>
 				</div>
 				<div class="navbar-collapse collapse">
 					<form class="navbar-form navbar-left">

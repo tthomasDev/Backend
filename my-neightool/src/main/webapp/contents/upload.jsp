@@ -29,9 +29,10 @@ $(document).ready(function() {
 			$('#closeBtn').hide();
 			$('#bodyLoading').show();
 			e.preventDefault();
+			var toUp = $('#imgUploader').val();
 			$.ajax({
 			    url: 'contents/uploadScript.jsp',
-			    data: $('#imgUploader').val(),
+			    data: {fileUp:toUp},
 			    cache: false,
 			    contentType: false,
 			    processData: false,

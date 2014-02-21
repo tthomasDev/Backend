@@ -5,6 +5,6 @@
 
 String chemin = "../uploads/img/";
 int tailleTampon = 1024000;
-System.out.println(request.getParameter("imgUploader"));
+System.out.println(request.getParameter("fileUp"));
 
 %>

@@ -68,5 +68,12 @@ avatar = "./dist/img/user_avatar_default.png";
 	</div>
 	<div class="col-md-4 perfectCenter">
 		<img width="80%" height="80%" src="<%=avatar%>" />
+		<br /><br />
+		<a href="#" class="btn-sm btn btn-info" data-toggle="modal" data-target="#uploadImg"><i class="glyphicon glyphicon-camera"></i> Changer la photo de profil</a>
 	</div>
 </div>
+<jsp:include page="../contents/upload.jsp">
+	<jsp:param value="1000" name="maxWidth"/>
+	<jsp:param value="1000" name="maxHeight"/>
+	<jsp:param value="1024000" name="maxSize"/>
+</jsp:include>
