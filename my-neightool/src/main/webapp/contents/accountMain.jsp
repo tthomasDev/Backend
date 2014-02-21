@@ -1,20 +1,68 @@
-<%
+<%@ page import="javax.xml.bind.JAXBContext"%>
+<%@ page import="javax.xml.bind.Marshaller"%>
+<%@ page import="javax.xml.bind.Unmarshaller"%>
 
-String username, email, firstname, lastname, address, city, postalCode, telephone, avatar;
+<%@ page import="java.io.StringReader"%>
+<%@ page import="java.io.StringWriter"%>
+
+<%@ page import="org.jboss.resteasy.client.ClientRequest"%>
+<%@ page import="org.jboss.resteasy.client.ClientResponse"%>
+
+
+<%@ page import="model.Utilisateur"%>
+<%@ page import="model.Connexion"%>
+<%@ page import="model.Adresse"%>
+<%@ page import ="java.util.Date" %>
+<%@ page import ="java.util.Calendar" %>
+
+<%
+String username, email, firstname, lastname, address, telephone, avatar;
 int age;
 /** TODO **/
 /* Récupérer les vraies infos */
-/* Les infos suivantes sont mises à titre d'exemple */
-username = "Utilisateur 1";
-firstname = "Martin";
-lastname = "David";
-age = 25;
-address = "36 rue des Tests";
-city = "Bordeaux";
-postalCode = "33000";
-telephone = "05.66.84.32.17";
-email = "adresse@email.com";
-avatar = "./dist/img/user_avatar_default.png";
+JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class);
+
+
+Utilisateur utilisateurGet = new Utilisateur();
+try {
+	ClientRequest clientRequest;
+	clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+	clientRequest.accept("application/xml");
+	ClientResponse<String> clientResponse = clientRequest.get(String.class);
+	if (clientResponse.getStatus() == 200)
+	{
+		Unmarshaller un = jaxbc.createUnmarshaller();
+		utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
+		
+	}
+} catch (Exception e) {
+	e.printStackTrace();
+}
+			
+username= 		utilisateurGet.getConnexion().getLogin();
+firstname= 		utilisateurGet.getPrenom();
+lastname = 		utilisateurGet.getNom();
+Date date = 	utilisateurGet.getDateDeNaissance();
+
+int yeardiff;
+{
+  Calendar curr = Calendar.getInstance();
+  Calendar birth = Calendar.getInstance();
+  birth.setTime(date);
+  yeardiff = curr.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+  curr.add(Calendar.YEAR,-yeardiff);
+  if(birth.after(curr))
+  {
+    yeardiff = yeardiff - 1;
+  }
+}
+ 
+age = 			yeardiff;
+address = 		utilisateurGet.getAdresse().getadresseComplete();
+telephone = 	utilisateurGet.getTelephone();
+email = 		utilisateurGet.getMail();
+avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage();
+
 
 %>
 <style>
@@ -56,7 +104,7 @@ avatar = "./dist/img/user_avatar_default.png";
 			</tr>
 			<tr>
 				<td class="text-right"><strong>Adresse* :</strong></td>
-				<td><%=address%><br /><%=postalCode%> <%=city%></td>
+				<td><%=address%><br /></td>
 			</tr>
 			<tr>
 				<td class="text-right"><strong>Téléphone* :</strong></td>

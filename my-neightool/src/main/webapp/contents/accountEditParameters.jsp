@@ -1,26 +1,189 @@
+<%@ page import="javax.xml.bind.JAXBContext"%>
+<%@ page import="javax.xml.bind.Marshaller"%>
+<%@ page import="javax.xml.bind.Unmarshaller"%>
+<%@ page import="java.io.StringReader"%>
+<%@ page import="java.io.StringWriter"%>
+<%@ page import="org.jboss.resteasy.client.ClientRequest"%>
+<%@ page import="org.jboss.resteasy.client.ClientResponse"%>
+<%@ page import="model.Utilisateur"%>
+<%@ page import="model.Connexion"%>
+<%@ page import="model.Adresse"%>
 <%
 String username, email, password, alertMessage, alertType;
 boolean showAlertMessage = false;
 alertMessage = "";
 alertType = "";
+
+/* Les vraies infos de l'utilisateur récupérés */
+JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
+
+
+Utilisateur utilisateurGet = new Utilisateur();
+try {
+	ClientRequest clientRequest;
+	clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+	clientRequest.accept("application/xml");
+	ClientResponse<String> clientResponse = clientRequest.get(String.class);
+	if (clientResponse.getStatus() == 200)
+	{
+		Unmarshaller un = jaxbc.createUnmarshaller();
+		utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
+		
+	}
+} catch (Exception e) {
+	e.printStackTrace();
+}
+
+
+
 if(request.getParameter("username") != null) {
+	
 	showAlertMessage = true;
 	alertMessage = "<i class='glyphicon glyphicon-ok'></i> Modifications enregistrées.";
 	alertType = "success";
-	/** TODO **/
-	/* Récupérer les vraies infos apres modifications */
-	/* Les infos suivantes sont mises à titre d'exemple */
-	username = "Utilisateur 1";
-	email = "adresse@email.com";
-	password = "********";
+	
+	utilisateurGet.getConnexion().setLogin(request.getParameter("username"));
+	utilisateurGet.setMail(request.getParameter("email"));
+			
+	
+	Utilisateur utilisateurGet2 = new Utilisateur();
+	try {
+		
+		// marshalling/serialisation pour l'envoyer avec une requete post
+		final Marshaller marshaller = jaxbc.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+		final java.io.StringWriter sw = new StringWriter();
+		marshaller.marshal(utilisateurGet, sw);
+					
+		
+		final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
+		clientRequest2.body("application/xml", utilisateurGet );
+		
+		
+		final ClientResponse<String> clientResponse2 = clientRequest2.post(String.class);
+		
+		System.out.println("\n\n"+clientResponse2.getEntity()+"\n\n");
+		
+		if (clientResponse2.getStatus() == 200) { // ok !
+						
+			final Unmarshaller un = jaxbc.createUnmarshaller();
+			utilisateurGet2 = (Utilisateur) un.unmarshal(new StringReader(clientResponse2.getEntity()));
+						
+		}
+	} catch (final Exception e) {
+		e.printStackTrace();
+	}
+	
+	
+	username = utilisateurGet2.getConnexion().getLogin();
+	email = utilisateurGet2.getMail();
+	password = utilisateurGet2.getConnexion().getPassword();
+	
 } else {
-	/** TODO **/
-	/* Récupérer les vraies infos */
-	/* Les infos suivantes sont mises à titre d'exemple */
-	username = "Utilisateur 1";
-	email = "adresse@email.com";
-	password = "********";
+	
+	username = utilisateurGet.getConnexion().getLogin();
+	email = utilisateurGet.getMail();
+	password = utilisateurGet.getConnexion().getPassword();
 }
+
+
+
+if(request.getParameter("oldPassword") != null) {
+	
+	showAlertMessage = true;
+	alertMessage = "<i class='glyphicon glyphicon-ok'></i> Modifications enregistrées.";
+	alertType = "success";
+		
+	
+	System.out.println("debut de boucle");
+	String str=request.getParameter("oldPassword");
+	System.out.println(str);
+	if(utilisateurGet.getConnexion().getPassword().equals(str)){
+		System.out.println(utilisateurGet.getConnexion().getPassword());
+		
+		String newPass = request.getParameter("newPassword");
+		String confirmNewPass = request.getParameter("confirmNewPassword");
+		
+		System.out.println(newPass);
+		System.out.println(confirmNewPass);
+			
+		if(newPass.equals(confirmNewPass)){
+			utilisateurGet.getConnexion().setPassword(confirmNewPass);
+		}
+	}
+	
+	
+	Utilisateur utilisateurGet2 = new Utilisateur();
+	try {
+		
+		// marshalling/serialisation pour l'envoyer avec une requete post
+		final Marshaller marshaller = jaxbc.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+		final java.io.StringWriter sw = new StringWriter();
+		marshaller.marshal(utilisateurGet, sw);
+					
+		
+		final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
+		clientRequest2.body("application/xml", utilisateurGet );
+		
+		
+		final ClientResponse<String> clientResponse2 = clientRequest2.post(String.class);
+		
+		System.out.println("\n\n"+clientResponse2.getEntity()+"\n\n");
+		
+		if (clientResponse2.getStatus() == 200) { // ok !
+						
+			final Unmarshaller un = jaxbc.createUnmarshaller();
+			utilisateurGet2 = (Utilisateur) un.unmarshal(new StringReader(clientResponse2.getEntity()));
+						
+		}
+	} catch (final Exception e) {
+		e.printStackTrace();
+	}
+		
+	username = utilisateurGet2.getConnexion().getLogin();
+	email = utilisateurGet2.getMail();
+	password = utilisateurGet2.getConnexion().getPassword();
+	
+} else {
+	
+	username = utilisateurGet.getConnexion().getLogin();
+	email = utilisateurGet.getMail();
+	password = utilisateurGet.getConnexion().getPassword();
+}
+
+
+// gérer la suppression du compte , il manque la redirection vers la premiere page sign up
+/*
+if(request.getParameter("deleteAccount") != null) {
+	
+	showAlertMessage = true;
+	alertMessage = "<i class='glyphicon glyphicon-ok'></i> Modifications enregistrées.";
+	alertType = "success";
+		
+	
+	try {
+		ClientRequest clientRequest;
+		clientRequest = new ClientRequest("http://localhost:8080/rest/user/delete/" + utilisateurGet.getId());
+		clientRequest.accept("application/xml");
+		ClientResponse<String> clientResponse = clientRequest.get(String.class);
+		if (clientResponse.getStatus() == 200)
+		{
+			session.removeAttribute("ID");
+			session.removeAttribute("userName");
+			RequestDispatcher rd =request.getRequestDispatcher("index.jsp");
+			rd.forward(request, response);
+			
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+		
+	
+} else {
+	
+}
+*/
 
 %>
 
