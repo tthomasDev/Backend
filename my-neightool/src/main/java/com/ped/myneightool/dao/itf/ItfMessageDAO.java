@@ -19,6 +19,8 @@ public interface ItfMessageDAO {
 	public abstract MessagesDTO findMessagesReceiveOfUser(int utilisateurId);
 
 	public abstract Messages findMessagesSendOfUserByList(int utilisateurId);
+
+	public abstract Messages findMessagesReceiveOfUserByList(int utilisateurId);
 	
 
 }

@@ -18,9 +18,7 @@
 <%@ page import="model.Utilisateur"%>
 <%@ page import="model.Connexion"%>
 <%@ page import="model.Adresse"%>
-
-
-
+<%@ page import="model.SendMailTLS"%>
 
 <%
 boolean actionValid = false;
@@ -148,6 +146,18 @@ if(request.getParameter("attemp") != null){
 						final Unmarshaller un = jaxbc.createUnmarshaller();
 						final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
 						// et ici on peut vérifier que c'est bien le bonne objet
+					
+					/*TODO*/
+					/*	
+					new SendMailTLS(request.getParameter("email"),"Bonjour ! "
+					+ "/n /n Bienvenue sur le site MyNeighTool. Pour rappel voici vos idnetifiants :"
+					+ "/n /n - Login : "+connexion.getLogin()
+					+ "/n - Mot de passe"+connexion.getPassword()
+					+ "/n /n Cordialement, l'équipe de MyNeighTool");  
+			
+				System.out.println("Mail de confirmation envoyé");
+				*/
+				
 						messageValue = "Vous avez bien été enregistré";
 						messageType = "success";
 

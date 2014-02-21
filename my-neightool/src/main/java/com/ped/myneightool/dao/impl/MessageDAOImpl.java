@@ -101,7 +101,7 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		try{
 			tx=em.getTransaction();
 			tx.begin();
-			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.emetteur.id = :por ORDER BY m.date");
+			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.emetteur.id = :por ORDER BY m.date DESC");
 			q.setParameter("por",utilisateurId);
 			res = TypeSafetyChecking.castList(Message.class, q.getResultList());
 			tx.commit();
@@ -129,7 +129,7 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		try{
 			tx=em.getTransaction();
 			tx.begin();
-			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.emetteur.id = :por ORDER BY m.date");
+			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.emetteur.id = :por ORDER BY m.date DESC");
 			q.setParameter("por",utilisateurId);
 			res = TypeSafetyChecking.castList(Message.class, q.getResultList());
 			tx.commit();
@@ -158,7 +158,7 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		try{
 			tx=em.getTransaction();
 			tx.begin();
-			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.destinataire.id = :por");
+			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.destinataire.id = :por ORDER BY m.date DESC");
 			q.setParameter("por",utilisateurId);
 			res = TypeSafetyChecking.castList(Message.class, q.getResultList());
 			tx.commit();
@@ -174,7 +174,33 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		return mdto;
 		}
 
-	
+	@Override
+	public Messages findMessagesReceiveOfUserByList(int utilisateurId) {
+		
+		LOG.info("find all messages receive of user");
+		List<Message> res = new ArrayList<Message>();
+				
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			final Query q = em.createQuery("SELECT m FROM Message m WHERE m.destinataire.id = :por ORDER BY m.date DESC");
+			q.setParameter("por",utilisateurId);
+			res = TypeSafetyChecking.castList(Message.class, q.getResultList());
+			tx.commit();
+			LOG.debug("recherche de tous les messages reçus par l'utilisateur"+utilisateurId+" réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		List<Message> set = new ArrayList<Message>(res);
+		Messages mdto= new Messages();
+		mdto.setListeMessages(set);
+		return mdto;
+		}
 
 	
 

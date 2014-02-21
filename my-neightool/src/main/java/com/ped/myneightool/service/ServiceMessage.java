@@ -77,7 +77,7 @@ public class ServiceMessage {
 	}
 	
 	@GET
-	@Path("/list/sendList/{id}")
+	@Path("/list/sendListByOrder/{id}")
 	@Produces({ "application/xml", "application/json" })
 	public Messages findMessagesSendOfUserByList(@PathParam("id") final int UtilisateurId) {
 		Messages messages = messageDAO.findMessagesSendOfUserByList(UtilisateurId);
@@ -89,6 +89,14 @@ public class ServiceMessage {
 	@Produces({ "application/xml", "application/json" })
 	public MessagesDTO findMessagesReceiveOfUser(@PathParam("id") final int UtilisateurId) {
 		MessagesDTO messages = messageDAO.findMessagesReceiveOfUser(UtilisateurId);
+		return messages;
+	}
+	
+	@GET
+	@Path("/list/receiveListByOrder/{id}")
+	@Produces({ "application/xml", "application/json" })
+	public Messages findMessagesReceiveOfUserByList(@PathParam("id") final int UtilisateurId) {
+		Messages messages = messageDAO.findMessagesReceiveOfUserByList(UtilisateurId);
 		return messages;
 	}
 	
