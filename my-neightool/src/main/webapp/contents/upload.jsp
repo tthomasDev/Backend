@@ -29,14 +29,15 @@ $(document).ready(function() {
 			$('#sendFile').html("Envoi en cours...");
 			$('#closeBtn').hide();
 			$('#bodyLoading').show();
-			var toUp = $('#file').val();
-			document.getElementById('uploadForm').target = 'target-iframe';
-			document.getElementById("uploadForm").submit();
+			alert($('input[name=fileUp]').val());
+			var fd = new FormData();
+			fd.append('file',$('input[name=fileUp]'));
 			$.ajax({
-			    url: "contents/uploadScript.jsp?file="+toUp,
+			    url: "contents/uploadScript.jsp",
 			    type: 'POST',
-			    data: null,
+			    data: fd,
 			    contentType: false,
+			    processData: false,
 			    success: function(data){
 			    	var answer = data.split('@');
 			    	if($.trim(answer[0])=="0") {
@@ -72,11 +73,11 @@ $(document).ready(function() {
 					<h4 class="modal-title" id="myModalLabel">Envoi d'image</h4>
 				</div>
 				<div class="modal-body" id="bodyMain">
-					<input type="file" name="file" id="file" style="display:none;"/>
+					<input type="file" name="fileUp" id="fileUp"/>
 					<div id="noFile" class="alert alert-warning perfectCenter" style="display:none;">
 						Vous devez spécifier une image à envoyer.
 					</div>
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-md-6">
 							<div class="input-group">
 								<input style="cursor:pointer;" id="showValue" name="showValue" type="text" placeholder="Choisissez l'image à envoyer" class="form-control" readonly="readonly" required>
@@ -85,7 +86,7 @@ $(document).ready(function() {
 								</span>
 							</div>
 						</div>
-					</div>
+					</div> -->
 					<br />
 					<strong>Restrictions :</strong>
 					<ul>
@@ -94,7 +95,6 @@ $(document).ready(function() {
 					</ul>
 				</div>
 				<div class="modal-body" id="bodyLoading" style="display:none;">
-					<iframe id="target-iframe" name="target-iframe" style="display:none;"></iframe>
 					<div class="alert alert-info perfectCenter">
 						<img src="./dist/img/ajax-loader.gif" />
 						<br /><br />
@@ -105,7 +105,8 @@ $(document).ready(function() {
 					<div class="alert alert-danger perfectCenter">
 						Erreur lors de l'envoi de l'image
 					</div>
-					<p>L'erreur suivante est survenue : <span id="errorParse"></span></p>
+					<p>L'erreur suivante est survenue :<br />
+					<pre id="errorParse"></pre></p>
 				</div>
 				<div class="modal-body" id="bodyEndSuccess" style="display:none;">
 					<div class="alert alert-success perfectCenter">
