@@ -73,7 +73,7 @@
 		</init-param>
 		<init-param>
 			<param-name>allowedHeaders</param-name>
-			<param-value>origin,content-type,accept,X-Requested-With</param-value>
+			<param-value>origin,content-type,accept,X-Requested-With,multipart/form-data</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>
