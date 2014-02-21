@@ -163,7 +163,7 @@ if(request.getParameter("attemp") != null){
 			}
 			else if ( !dateCorrecte )
 			{
-				messageValue = "La date de naissance est incorecte";
+				messageValue = "La date de naissance est incorrecte";
 				messageType = "danger";
 			}
 			
