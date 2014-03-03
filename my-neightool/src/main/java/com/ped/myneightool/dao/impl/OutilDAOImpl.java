@@ -9,6 +9,10 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.LoggerFactory;
 
@@ -186,6 +190,46 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 		}
 		
 		Set<Outil> set = new HashSet<Outil>(res);
+		OutilsDTO odto= new OutilsDTO();
+		odto.setListeOutils(set);
+		return odto;
+	}
+
+	@Override
+	public OutilsDTO findByCriteria(Outil o) {
+		
+		final List<Outil> Outils = new ArrayList<Outil>();
+
+		final EntityManager em = createEntityManager();
+		
+
+		final CriteriaBuilder cb = em.getCriteriaBuilder();
+		final CriteriaQuery<Outil> cq = cb.createQuery(Outil.class);
+		final Root<Outil> root = cq.from(Outil.class); // FROM
+		cq.select(root); // SELECT
+
+		final List<Predicate> predicateList = new ArrayList<Predicate>();
+
+		if (o.getCategorie() != null) {
+			final Predicate categorie = cb.equal(root.get("categorie"), o.getCategorie());
+			predicateList.add(categorie);
+		}
+
+		if (o.isDisponible() == true) {
+			final Predicate disponible = cb.equal(
+					root.get("disponible"), o.isDisponible());
+			predicateList.add(disponible);
+		}
+
+		final Predicate[] predicates = new Predicate[predicateList.size()];
+		predicateList.toArray(predicates);
+		cq.where(predicates); // WHERE
+
+		for (final Outil Outil : em.createQuery(cq).getResultList()) {
+			Outils.add(Outil);
+		}
+
+		Set<Outil> set = new HashSet<Outil>(Outils);
 		OutilsDTO odto= new OutilsDTO();
 		odto.setListeOutils(set);
 		return odto;

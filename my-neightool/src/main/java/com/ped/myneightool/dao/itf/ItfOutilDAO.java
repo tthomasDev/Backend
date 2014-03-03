@@ -21,5 +21,7 @@ public interface ItfOutilDAO {
 	public abstract OutilsDTO findToolsOfUser(int utilisateurId);
 
 	public abstract OutilsDTO findToolsOfUserAvailable(int utilisateurId);
+	
+	public abstract OutilsDTO findByCriteria(Outil o);
 
 }

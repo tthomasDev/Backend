@@ -112,5 +112,14 @@ public class ServiceOutil {
 		OutilsDTO outils = outilDAO.findToolsOfUserAvailable(UtilisateurId);
 		return outils;
 	}
+	
+	@POST
+	@Path("/criteria")
+	@Produces("application/xml")
+	public OutilsDTO getToolsByCriteria(final Outil o) {
+		final OutilsDTO outils = outilDAO.findByCriteria(o);
+		return outils;
+	}
+	
 		
 }
