@@ -4,28 +4,37 @@
 <%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
 
 <%
+	String finalPath = "http://localhost:8080/uploads/img/";
+	String finalName = "";
 	if(ServletFileUpload.isMultipartContent(request)){
 	    try {
 	        List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
+	        int i = 0;
 	        for(FileItem item : multiparts) {
-	            if(item.isFormField()) {
-	                String name = new File(item.getName()).getName();
+	            if(!item.isFormField()) {
 	                File f;
-	                double r;
+	                int r;
 	                do {
-	                	r = Math.random();
-	                	f = new File("../uploads/img/" + r + name);
+	                	r = 0 + (int)(Math.random()*1000); 
+	                	f = new File("src/main/webapp/uploads/img/" + r + item.getName());
 	                } while(f.exists());
 	                f.createNewFile();
+	                finalName = f.getName();
 	                item.write(f);
+	                i++;
+		        	System.out.println("1@"+finalPath+finalName);
 	            }
 	        }
-	        System.out.println("File Uploaded Successfully");
+	        if(i==0)
+	        	out.print("0@No file uploaded");
+	        else
+	        	out.print("1@"+finalPath+finalName);
 	    } catch (Exception ex) {
-	    	System.out.println("File Upload Failed due to " + ex);
+	    	ex.printStackTrace();
+	    	out.print("0@File Upload Failed due to " + ex);
 	    }          
 	 
 	}else{
-		System.out.println("Sorry this Servlet only handles file upload request");
+		out.print("0@Sorry this Servlet only handles file upload request");
 	}
 %>

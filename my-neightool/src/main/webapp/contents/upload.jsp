@@ -1,10 +1,11 @@
 <%@ page import="java.lang.Math"%>
 
 <%
-if(request.getParameter("maxSize") != null && request.getParameter("maxHeight") != null && request.getParameter("maxWidth") != null) {
+if(request.getParameter("maxSize") != null && request.getParameter("maxHeight") != null && request.getParameter("maxWidth") != null && request.getParameter("imgFieldId") != null) {
 	int maxSize = Integer.parseInt(request.getParameter("maxSize"));
 	int maxHeight = Integer.parseInt(request.getParameter("maxHeight"));
 	int maxWidth = Integer.parseInt(request.getParameter("maxWidth"));
+	String imgFieldId = "'#"+request.getParameter("imgFieldId")+"'";
 	double sizeInMo = Math.round(maxSize / 1024000); 
 	
 %>
@@ -14,6 +15,14 @@ $(document).ready(function() {
 	
 	$('#showValue').click(function() {
 		$('#file').click();
+	});
+	$('#retryBtn').click(function() {
+		$('#bodyMain').show();
+		$('#sendFile').show();
+		$('#closeBtn').show();
+		$('#bodyEndFail').hide();
+		$('#retryBtn').hide();
+		$('#sendFile').html("Envoyer");
 	});
 	$('#file').change(function() {
 		$('#showValue').val($('#file').val());
@@ -29,9 +38,10 @@ $(document).ready(function() {
 			$('#sendFile').html("Envoi en cours...");
 			$('#closeBtn').hide();
 			$('#bodyLoading').show();
-			alert($('input[name=fileUp]').val());
 			var fd = new FormData();
-			fd.append('file',$('input[name=fileUp]'));
+			jQuery.each($('#fileUp')[0].files, function(i, file) {
+				fd.append('file-'+i, file);
+			});
 			$.ajax({
 			    url: "contents/uploadScript.jsp",
 			    type: 'POST',
@@ -47,6 +57,7 @@ $(document).ready(function() {
 						$('#bodyLoading').hide();
 						$('#bodyEndFail').show();
 						$('#errorParse').html(answer[1]);
+						$('#retryBtn').show();
 						$('#sendFile').removeAttr("disabled");
 			    	} else {
 						$('#bodyMain').hide();
@@ -54,6 +65,8 @@ $(document).ready(function() {
 						$('#closeBtn').show();
 						$('#bodyLoading').hide();
 						$('#bodyEndSuccess').show();
+						$('#imgLink').val(answer[1]);
+						$(<%=imgFieldId%>).attr("src", answer[1]);
 						$('#sendFile').removeAttr("disabled");
 			    	}
 			    },
@@ -67,7 +80,7 @@ $(document).ready(function() {
 
 <div class="modal fade" id="uploadImg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
-		<form method="post" enctype="multipart/form-data" id="uploadForm">
+		<form method="POST" enctype="multipart/form-data" id="uploadForm" name="uploadForm">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title" id="myModalLabel">Envoi d'image</h4>
@@ -121,6 +134,7 @@ $(document).ready(function() {
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="sendFile" class="btn btn-info"><i class="glyphicon glyphicon-cloud-upload"></i> Envoyer</button>
+					<a id="retryBtn" class="btn btn-info" style="display:none;">Réessayer</a>
 					<a id="closeBtn" class="btn btn-default" data-dismiss="modal">Fermer</a>
 				</div>
 			</div>

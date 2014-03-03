@@ -115,7 +115,7 @@ avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage
 		<small style="color:#999;"><em>* Champs masqués au public par défaut</em></small>
 	</div>
 	<div class="col-md-4 perfectCenter">
-		<img width="80%" height="80%" src="<%=avatar%>" />
+		<img width="80%" height="80%" src="<%=avatar%>" id="avatar" />
 		<br /><br />
 		<a href="#" class="btn-sm btn btn-info" data-toggle="modal" data-target="#uploadImg"><i class="glyphicon glyphicon-camera"></i> Changer la photo de profil</a>
 	</div>
@@ -124,4 +124,5 @@ avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage
 	<jsp:param value="1000" name="maxWidth"/>
 	<jsp:param value="1000" name="maxHeight"/>
 	<jsp:param value="1024000" name="maxSize"/>
+	<jsp:param value="avatar" name="imgFieldId"/>
 </jsp:include>
