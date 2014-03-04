@@ -19,13 +19,13 @@
 	    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
  		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	    <script src="./dist/js/bootstrap.min.js"></script>
-	    <script src="./dist/js/config.js"></script>
 	    <script type="text/javascript">
 			$(document).ready(function() {
 		    	$(".ttipl").tooltip({placement: "left",container: 'body'});
 		    	$(".ttipr").tooltip({placement: "right",container: 'body'});
 		    	$(".ttipt").tooltip({placement: "top",container: 'body'});
 		    	$(".ttipb").tooltip({placement: "bottom",container: 'body'});
+		    	$(".popov").popover({html: true, placement: "bottom", trigger: "focus"});
 		    });
 	    </script>
 	
@@ -53,14 +53,8 @@
 				</div>
 				<div class="navbar-collapse collapse">
 					<form class="navbar-form navbar-left" method="GET" action="dashboard.jsp">
-						<div class="input-group">
-							<input type="hidden" name="page" value="search" />
-							<input type="text" id="searchField" name="s" class="form-control" placeholder="Rechercher">
-							<span class="input-group-btn">
-								<button class="btn btn-default ttipb" type="submit" data-toggle="tooltip" title="Lancer la recherche"><span class="glyphicon glyphicon-search"></span></button>
-								<a class="btn btn-default ttipb" type="button" data-toggle="tooltip" title="Recherche avancée" href="dashboard.jsp?page=search"><span class="glyphicon glyphicon-plus"></span></a>
-							</span>
-						</div>
+						<input type="hidden" name="page" value="search" />
+						<input type="text" id="searchField" name="s" class="form-control popov" data-content='<p style="text-align:justify">Appuyez sur la touche "Entrée" pour lancer la recherche.</p><p class="perfectCenter"><a class="btn btn-info" href="dashboard.jsp?page=search">Recherche avancée</a></p>' placeholder="Rechercher">
 					</form>
 					<ul class="nav navbar-nav navbar-right" style="margin-right:2px;">
 	        			<li><a href="dashboard.jsp">Accueil</a></li>
