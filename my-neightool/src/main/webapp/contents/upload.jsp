@@ -5,7 +5,7 @@ if(request.getParameter("maxSize") != null && request.getParameter("maxHeight") 
 	int maxSize = Integer.parseInt(request.getParameter("maxSize"));
 	int maxHeight = Integer.parseInt(request.getParameter("maxHeight"));
 	int maxWidth = Integer.parseInt(request.getParameter("maxWidth"));
-	String imgFieldId = "'#"+request.getParameter("imgFieldId")+"'";
+	String imgFieldId = "'."+request.getParameter("imgFieldId")+"'";
 	double sizeInMo = Math.round(maxSize / 1024000); 
 	
 %>
@@ -14,7 +14,7 @@ if(request.getParameter("maxSize") != null && request.getParameter("maxHeight") 
 $(document).ready(function() {
 	
 	$('#showValue').click(function() {
-		$('#file').click();
+		$('#fileUp').click();
 	});
 	$('#retryBtn').click(function() {
 		$('#bodyMain').show();
@@ -24,8 +24,8 @@ $(document).ready(function() {
 		$('#retryBtn').hide();
 		$('#sendFile').html("Envoyer");
 	});
-	$('#file').change(function() {
-		$('#showValue').val($('#file').val());
+	$('#fileUp').change(function() {
+		$('#showValue').val($('#fileUp').val());
 	});
 	$('#uploadForm').on('submit',function(e) {
 		e.preventDefault();
@@ -86,11 +86,11 @@ $(document).ready(function() {
 					<h4 class="modal-title" id="myModalLabel">Envoi d'image</h4>
 				</div>
 				<div class="modal-body" id="bodyMain">
-					<input type="file" name="fileUp" id="fileUp"/>
+					<input type="file" name="fileUp" id="fileUp" style="display:none;"/>
 					<div id="noFile" class="alert alert-warning perfectCenter" style="display:none;">
 						Vous devez spécifier une image à envoyer.
 					</div>
-					<!-- <div class="row">
+					<div class="row">
 						<div class="col-md-6">
 							<div class="input-group">
 								<input style="cursor:pointer;" id="showValue" name="showValue" type="text" placeholder="Choisissez l'image à envoyer" class="form-control" readonly="readonly" required>
@@ -99,7 +99,7 @@ $(document).ready(function() {
 								</span>
 							</div>
 						</div>
-					</div> -->
+					</div>
 					<br />
 					<strong>Restrictions :</strong>
 					<ul>
