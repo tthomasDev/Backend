@@ -227,7 +227,7 @@
 			<div class="col-sm-6" style="margin-top: 4px">
 				<div class="row">
 					<div class="col-md-8">
-						<center><img width="80%" height="80%" src="<%=itemImg%>" class="itemImg" /><input type="hidden" class="itemImg" name="itemImg" value="" />
+						<center><img width="80%" height="80%" src="<%=itemImg%>" id="itemImg" /><input type="hidden" id="itemImgField" name="itemImg" value="" />
 						<br /><br />
 						<a href="#" class="btn-sm btn btn-info" data-toggle="modal" data-target="#uploadImg"><i class="glyphicon glyphicon-camera"></i> Mettre une image</a></center>
 					</div>
@@ -273,4 +273,5 @@
 	<jsp:param value="1000" name="maxHeight"/>
 	<jsp:param value="1024000" name="maxSize"/>
 	<jsp:param value="itemImg" name="imgFieldId"/>
+	<jsp:param value="itemImgField" name="imgHiddenField"/>
 </jsp:include>
