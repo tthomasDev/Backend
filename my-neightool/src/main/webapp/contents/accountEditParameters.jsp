@@ -154,7 +154,7 @@ if(request.getParameter("oldPassword") != null) {
 
 
 // gérer la suppression du compte , il manque la redirection vers la premiere page sign up
-/*
+
 if(request.getParameter("deleteAccount") != null) {
 	
 	showAlertMessage = true;
@@ -169,10 +169,15 @@ if(request.getParameter("deleteAccount") != null) {
 		ClientResponse<String> clientResponse = clientRequest.get(String.class);
 		if (clientResponse.getStatus() == 200)
 		{
+			/*
+			RequestDispatcher rd =request.getRequestDispatcher("index.jsp?attemp=0");
+			rd.forward(request, response);
+			*/
+			
 			session.removeAttribute("ID");
 			session.removeAttribute("userName");
-			RequestDispatcher rd =request.getRequestDispatcher("index.jsp");
-			rd.forward(request, response);
+			
+			//response.sendRedirect("index.jsp?attemp=0");
 			
 		}
 	} catch (Exception e) {
@@ -183,7 +188,7 @@ if(request.getParameter("deleteAccount") != null) {
 } else {
 	
 }
-*/
+
 
 %>
 

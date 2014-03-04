@@ -53,7 +53,8 @@ public class Outil {
 	
 	private String cheminImage;
 	
-
+	private int vue;
+	
 	public Outil(){
 		
 	}
@@ -194,6 +195,14 @@ public class Outil {
 
 	public void setCaution(int caution) {
 		this.caution = caution;
+	}
+
+	public int getVue() {
+		return vue;
+	}
+
+	public void setVue(int vue) {
+		this.vue = vue;
 	}
 
 	
