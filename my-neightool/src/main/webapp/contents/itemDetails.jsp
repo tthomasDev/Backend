@@ -24,7 +24,9 @@
 <%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
 
 <%
-	String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="", itemDateEnd="", itemPrice="", itemDistance="";
+String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
+String itemDateEnd="", itemPrice="", itemDistance="", itemPath="";
+
 boolean itemFound = false;
 if(request.getParameter("id") != null) {
 	itemFound = true;
@@ -92,15 +94,16 @@ if(request.getParameter("id") != null) {
 		itemVendor = user.getNom();;
 		itemDescription = outil.getDescription();
 		itemCategory = outil.getCategorie();
+		itemPath = outil.getCheminImage();
 		
 		// Conversion des dates
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		itemDateStart = df.format(outil.getDateDebut());
-		System.out.println("Start date: " + itemDateStart);
+		//System.out.println("Start date: " + itemDateStart);
 	
 		DateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
 		itemDateEnd = df2.format(outil.getDateFin());
-		System.out.println("End date: " + itemDateEnd);
+		//System.out.println("End date: " + itemDateEnd);
 		
 		itemPrice = String.valueOf(outil.getCaution());
 
@@ -108,18 +111,29 @@ if(request.getParameter("id") != null) {
 				&& request.getParameter("end2") != ""
 				&& request.getParameter("start2") != null
 				&& request.getParameter("end2") != null) {
-			
+				
 			/*Contrôles sur les dates de demande d'emprunt */
 			String dateStart2 = request.getParameter("start2");
 			String dateEnd2 = request.getParameter("end2");
 			Date startDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateStart2);
 			Date endDate = new SimpleDateFormat("dd/MM/yyyy").parse(dateEnd2);
-			
-			if (startDate.after(outil.getDateDebut()) && startDate.before(outil.getDateFin())) {
+		
+			System.out.println("SD / deb : " + startDate.compareTo(outil.getDateDebut()));
+			System.out.println("SD / fin : " + endDate.compareTo(outil.getDateFin()));
+
+			if ((startDate.compareTo(outil.getDateDebut())) != -1
+					&& startDate.compareTo(outil.getDateFin()) != 1
+					&& endDate.compareTo(outil.getDateDebut()) != -1
+					&& endDate.compareTo(outil.getDateFin()) != 1
+					&& outil.isDisponible()) {
+				outil.setDisponible(false);
+				System.out.println("date saisie : " + df.parse(request.getParameter("start2")));
+			}
+			/*if (startDate.after(outil.getDateDebut()) && startDate.before(outil.getDateFin())) {
 				System.out.println("date deb : " + outil.getDateDebut());
 				System.out.println("date saisie : " + df.parse(request.getParameter("start2")));
 				System.out.println("\n connard !!!" + df.parse(request.getParameter("start2")).after(outil.getDateDebut()));
-			}	
+			}*/	
 		}
 	}
 %>
@@ -152,8 +166,7 @@ if(request.getParameter("id") != null) {
 	<div class="col-md-4">
 		<div class="row">
 			<div class="col-md-12 perfectCenter">
-				<img width="100%" height="100%" class="img-rounded"
-					src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIwAAACMCAYAAACuwEE+AAADxElEQVR4nO3X3U7qeBSG8X3/l7KsEQQNWlQkGiuiGPCA+BWMiqC0t/DOEc1s997JvDPjR/U5+J1gm2VYT5s/P4qiEPBP/fjofwDVQjCwEAwsBAMLwcBCMLAQDCwEAwvBwEIwsBAMLAQDC8HAQjCwEAwsBAMLwcBCMLAQDCwEAwvBwEIwsBAMLAQDC8HAQjCwEAwsBAMLwcBCMLAQDCwEAwvBwEIwsBAMLAQDC8HAQjCwEAwsBAMLwcBCMLAQDCwEAwvBwEIwsBAMLAQDC8HAQjCwEAwsBAMLwcBCMLAQDCwEAwvBwEIwsBAMLAQDC8HAQjCwEAwslQrm5uZGWZap3W4rTVONRqPfXvfw8KA0TZWmqYbDYfn5YrFQv9/XxsaGGo2G9vf39fj4WJn5n0Glgul2u1pdXdXa2poiQr1e75dr8jzX1taWIkIRoSzLyr8dHBwoItRoNJSmqSJC9Xpd8/m8EvM/g0oFM5vNlOe5Dg8P/7iws7MzJUlSLmS5sKenJ62srCgiNJ1OVRRFudjBYKCrqytlWVa+NRaLhXq9nrIsK98Cbzn/o7/bLxnM0p8Wdn9/ryRJdHp6qqOjo58WNh6Pyyd6eX2WZYoI7e3t6fn5Wc1mUxGh6+tr9Xo9RYS63e67zP/o7/TbBZPnuVqtllqtlvI8/2Vho9FIEaFms1ne0+/3FRHa3t5WURSaTCZKkkS1Wk0rKytqNpt6eXl5t/lV8GWCubi4UERoNBrp9vZWnU5HEaH9/X3d3d2VT/j6+np5z/HxsSJCnU6n/Gz5Zlm+ad57/mf3ZYIZDAblol9rtVq6v79XRChJkvKtsVzqycmJiqLQfD5XvV4v79vZ2XnX+VVQqWDG47GyLNPm5ma5iCzLdHl5qbu7Ow2Hw9Ly0NlutzUej1UUhdrtdvlELw+nSZKUh9Dd3d3yELq89u8H0reeXwWVCmb5ZL/2u18rr88QRVFoOp3+9JO3VquVyzw/P1dEKE1T5Xmu2WymWq2mJEk0mUzefH5VVCqY/8tsNtPDw4PyPP+W8/+LbxkM/j2CgYVgYCEYWAgGFoKBhWBgIRhYCAYWgoGFYGAhGFgIBhaCgYVgYCEYWAgGFoKBhWBgIRhYCAYWgoGFYGAhGFgIBhaCgYVgYCEYWAgGFoKBhWBgIRhYCAYWgoGFYGAhGFgIBhaCgYVgYCEYWAgGFoKBhWBgIRhYCAYWgoGFYGAhGFgIBhaCgYVgYCEYWAgGFoKBhWBgIRhYCAYWgoGFYGAhGFgIBhaCgYVgYCEYWAgGFoKB5S+0wiW8EyQhYQAAAABJRU5ErkJggg==" />
+				<img width="100%" height="100%" class="img-rounded" src="<%=itemPath%>"/>
 			</div>
 		</div>
 	</div>
