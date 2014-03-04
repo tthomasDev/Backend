@@ -216,7 +216,6 @@ if(session.getAttribute("ID") != null)
  	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
  	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 	<script src="./dist/js/bootstrap.min.js"></script>
-	<script src="./dist/js/config.js"></script>
 	<script src="./dist/js/maps.js"></script>
 	
 	<!-- Just for debugging purposes. Don't actually copy this line! -->
