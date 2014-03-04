@@ -16,8 +16,8 @@ public class SendMailTLS {
 	{
 		System.out.println("Envoi d'un message");
  
-		final String username = "alex.delesse@gmail.com";
-		final String password = "TODO";/* TODO */
+		final String username = "myneightool@gmail.com";
+		final String password = "";/*TODO*/
  
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -25,7 +25,7 @@ public class SendMailTLS {
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 		
-		System.out.println("propriétés fait");
+		System.out.println("PROPRIETE OK");
 		
 		Session session = Session.getInstance(props,
 		  new javax.mail.Authenticator() {
@@ -40,11 +40,13 @@ public class SendMailTLS {
 			message.setFrom(new InternetAddress("myneightool@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
 				InternetAddress.parse(dest));
-			message.setSubject("Testing Subject");
+			message.setSubject("Message de NeighTool");
 			message.setText(myMessage);
- 
+			
+			System.out.println("Message créé");
 			Transport.send(message);
- 
+			
+			System.out.println("Message envoyé");
 			System.out.println("Done");
  
 		} catch (MessagingException e) {
