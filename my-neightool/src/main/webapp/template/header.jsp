@@ -14,10 +14,10 @@
 	    <!-- Bootstrap core CSS -->
 	    <link href="./dist/css/bootstrap.min.css" rel="stylesheet">
 	    <link href="./dist/css/jumbotron.css" rel="stylesheet">
+ 		<link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
 	
-		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-animate.js"></script>
 	    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+ 		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	    <script src="./dist/js/bootstrap.min.js"></script>
 	    <script src="./dist/js/config.js"></script>
 	    <script type="text/javascript">
@@ -52,12 +52,13 @@
 					<a class="navbar-brand" href="dashboard.jsp"><% out.print(siteName); %></a>
 				</div>
 				<div class="navbar-collapse collapse">
-					<form class="navbar-form navbar-left" method="GET" action="dashboard.jsp?page=search">
+					<form class="navbar-form navbar-left" method="GET" action="dashboard.jsp">
 						<div class="input-group">
-							<input type="text" id="searchField" class="form-control" placeholder="Rechercher">
+							<input type="hidden" name="page" value="search" />
+							<input type="text" id="searchField" name="s" class="form-control" placeholder="Rechercher">
 							<span class="input-group-btn">
-								<button class="btn btn-default ttipb" type="submit" data-toggle="tooltip" title="Lancer la recherche""><span class="glyphicon glyphicon-search"></span></button>
-								<button class="btn btn-default ttipb" type="button" data-toggle="tooltip" title="Recherche avancée" href="dashboard.jsp?page=search"><span class="glyphicon glyphicon-plus"></span></button>
+								<button class="btn btn-default ttipb" type="submit" data-toggle="tooltip" title="Lancer la recherche"><span class="glyphicon glyphicon-search"></span></button>
+								<a class="btn btn-default ttipb" type="button" data-toggle="tooltip" title="Recherche avancée" href="dashboard.jsp?page=search"><span class="glyphicon glyphicon-plus"></span></a>
 							</span>
 						</div>
 					</form>
