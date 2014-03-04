@@ -20,6 +20,14 @@
 	    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 	    <script src="./dist/js/bootstrap.min.js"></script>
 	    <script src="./dist/js/config.js"></script>
+	    <script type="text/javascript">
+			$(document).ready(function() {
+		    	$(".ttipl").tooltip({placement: "left",container: 'body'});
+		    	$(".ttipr").tooltip({placement: "right",container: 'body'});
+		    	$(".ttipt").tooltip({placement: "top",container: 'body'});
+		    	$(".ttipb").tooltip({placement: "bottom",container: 'body'});
+		    });
+	    </script>
 	
 	    <!-- Just for debugging purposes. Don't actually copy this line! -->
 	    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -44,13 +52,18 @@
 					<a class="navbar-brand" href="dashboard.jsp"><% out.print(siteName); %></a>
 				</div>
 				<div class="navbar-collapse collapse">
-					<form class="navbar-form navbar-left">
-						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Rechercher">
+					<form class="navbar-form navbar-left" method="GET" action="dashboard.jsp?page=search">
+						<div class="input-group">
+							<input type="text" id="searchField" class="form-control" placeholder="Rechercher">
+							<span class="input-group-btn">
+								<button class="btn btn-default ttipb" type="submit" data-toggle="tooltip" title="Lancer la recherche""><span class="glyphicon glyphicon-search"></span></button>
+								<button class="btn btn-default ttipb" type="button" data-toggle="tooltip" title="Recherche avancée" href="dashboard.jsp?page=search"><span class="glyphicon glyphicon-plus"></span></button>
+							</span>
 						</div>
 					</form>
 					<ul class="nav navbar-nav navbar-right" style="margin-right:2px;">
-	        			<li><a href="dashboard.jsp?page=manageItems">Gérer mes objets</a></li>
+	        			<li><a href="dashboard.jsp">Accueil</a></li>
+	        			<li><a href="dashboard.jsp?page=manageItems">Mes objets</a></li>
 	        			<li><a href="dashboard.jsp?page=mailbox">Mes messages <span class="badge">0</span></a></li>
         				<li><a href="dashboard.jsp?page=account">Mon compte</a></li>
         				<li><a href="index.jsp?attemp=0">Déconnexion</a></li>
