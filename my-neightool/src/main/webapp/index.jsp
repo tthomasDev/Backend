@@ -213,6 +213,8 @@ if(session.getAttribute("ID") != null)
 	<link href="./dist/css/jumbotron.css" rel="stylesheet">
 	
 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+ 	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+ 	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 	<script src="./dist/js/bootstrap.min.js"></script>
 	<script src="./dist/js/config.js"></script>
 	<script src="./dist/js/maps.js"></script>
