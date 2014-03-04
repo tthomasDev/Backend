@@ -1,10 +1,14 @@
 package com.ped.myneightool;
 
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.Iterator;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
+import org.jboss.resteasy.client.ClientRequest;
+import org.jboss.resteasy.client.ClientResponse;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -342,5 +346,48 @@ public class TestOutil {
 		}
 	}
 	
+	/**
+	 * test unitaire de l'API Criteria pour recherche d'outils
+	 */
+	@Test
+	public final void testAPICriteria() throws Exception {
+
+		try {
+
+			final Utilisateur utilisateur= new Utilisateur("prenomAPICriteria","nomAPICriteria");
+			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
+			Assert.assertNotSame(utilisateurPost, null);
+			
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"RateauAPICriteria","savoir ratisser",true,"Jardinage",50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"PelleAPICriteria","savoir pelleter",false,"Jardinage",50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"TondeuseAPICriteria","savoir tondeuser",true,"Jardinage",50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Fourchette","savoir fourchetter",false,"Cuisine",50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Fauteuil","savoir fauteuiler",true,"Salon",50), "tool/create");
+			
+			final Outil o = new Outil();
+			o.setCategorie("Jardinage");
+			o.setDisponible(true);
+			
+			final Marshaller marshaller = jaxbc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(o, sw);
+
+			final ClientRequest request = new ClientRequest(
+					"http://localhost:8080/rest/tool/criteria");
+			request.body("application/xml", sw.toString());
+			final ClientResponse<String> response = request.post(String.class);
+
+			if (response.getStatus() == 200) {
+				LOG.info(response.getEntity());
+				Assert.assertTrue(!response.getEntity().isEmpty());
+			}
+			
+
+		} catch (final RuntimeException re) {
+			LOG.error("criteria failed", re);
+			throw re;
+		}
+	}
 	
 }

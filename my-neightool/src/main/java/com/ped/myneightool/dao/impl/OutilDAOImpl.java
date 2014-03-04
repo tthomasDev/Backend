@@ -110,7 +110,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 		try{
 			tx=em.getTransaction();
 			tx.begin();
-			res = TypeSafetyChecking.castList(Outil.class, em.createQuery("SELECT p FROM Outil p ORDER BY id ASC").getResultList());
+			res = TypeSafetyChecking.castList(Outil.class, em.createQuery("SELECT p FROM Outil p ORDER BY p.id DESC").getResultList());
 			tx.commit();
 			LOG.debug("recherche de tous les outils réussis, taille du résultat :"+res.size());
 		}
@@ -118,7 +118,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 			
 		}
 		
-		Set<Outil> set = new HashSet<Outil>(res);
+		List<Outil> set = new ArrayList<Outil>(res);
 		OutilsDTO odto= new OutilsDTO();
 		odto.setListeOutils(set);
 		return odto;
@@ -136,7 +136,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 		try{
 			tx=em.getTransaction();
 			tx.begin();
-			final Query q = em.createQuery("SELECT p FROM Outil p where p.disponible =:par");
+			final Query q = em.createQuery("SELECT p FROM Outil p where p.disponible =:par ORDER BY p.id DESC");
 			q.setParameter("par",true);
 			res = TypeSafetyChecking.castList(Outil.class, q.getResultList());
 			tx.commit();
@@ -146,7 +146,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 			
 		}
 		
-		Set<Outil> set = new HashSet<Outil>(res);
+		List<Outil> set = new ArrayList<Outil>(res);
 		OutilsDTO odto= new OutilsDTO();
 		odto.setListeOutils(set);
 		return odto;
@@ -161,7 +161,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 		final Utilisateur u = em.getReference(Utilisateur.class, utilisateurId);
 		res = u.getOutils();
 
-		Set<Outil> set = new HashSet<Outil>(res);
+		List<Outil> set = new ArrayList<Outil>(res);
 		OutilsDTO odto= new OutilsDTO();
 		odto.setListeOutils(set);
 		return odto;
@@ -178,7 +178,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 		try{
 			tx=em.getTransaction();
 			tx.begin();
-			final Query q = em.createQuery("SELECT p FROM Outil p WHERE p.disponible = :par AND p.utilisateur.id = :por");
+			final Query q = em.createQuery("SELECT p FROM Outil p WHERE p.disponible = :par AND p.utilisateur.id = :por ORDER BY p.id DESC");
 			q.setParameter("par",true);
 			q.setParameter("por",utilisateurId);
 			res = TypeSafetyChecking.castList(Outil.class, q.getResultList());
@@ -189,7 +189,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 			
 		}
 		
-		Set<Outil> set = new HashSet<Outil>(res);
+		List<Outil> set = new ArrayList<Outil>(res);
 		OutilsDTO odto= new OutilsDTO();
 		odto.setListeOutils(set);
 		return odto;
@@ -216,8 +216,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 		}
 
 		if (o.isDisponible() == true) {
-			final Predicate disponible = cb.equal(
-					root.get("disponible"), o.isDisponible());
+			final Predicate disponible = cb.equal(root.get("disponible"), o.isDisponible());
 			predicateList.add(disponible);
 		}
 
@@ -229,7 +228,7 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 			Outils.add(Outil);
 		}
 
-		Set<Outil> set = new HashSet<Outil>(Outils);
+		List<Outil> set = new ArrayList<Outil>(Outils);
 		OutilsDTO odto= new OutilsDTO();
 		odto.setListeOutils(set);
 		return odto;

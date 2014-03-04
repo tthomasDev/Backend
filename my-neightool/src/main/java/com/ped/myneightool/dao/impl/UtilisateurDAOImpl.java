@@ -2,9 +2,7 @@ package com.ped.myneightool.dao.impl;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -129,7 +127,7 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 		try{
 			//tx=em.getTransaction();
 			//tx.begin();
-			res = TypeSafetyChecking.castList(Utilisateur.class, em.createQuery("SELECT p FROM Utilisateur p ORDER BY p.id").getResultList());
+			res = TypeSafetyChecking.castList(Utilisateur.class, em.createQuery("SELECT p FROM Utilisateur p ORDER BY p.id DESC").getResultList());
 			//tx.commit();
 			LOG.debug("recherche de tous les utilisateurs réussis, taille du résultat :"+res.size());
 		}
@@ -137,7 +135,7 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 			
 		}
 		
-		Set<Utilisateur> set = new HashSet<Utilisateur>(res);
+		List<Utilisateur> set = new ArrayList<Utilisateur>(res);
 		UtilisateursDTO odto= new UtilisateursDTO();
 		odto.setListeUtilisateurs(set);
 		return odto;
