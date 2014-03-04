@@ -203,11 +203,11 @@ if(request.getParameter("firstname") != null) {
 			<h4>Votre adresse</h4>
 			<hr />
 			<div class="input-group">
-				<input type="text" placeholder="Adresse complète (Rue, Ville, Pays, Code Postal)" value="<% out.print(address /*+ ", " + postalCode + " " + city*/); %>" id="location" name="location" class="form-control input-sm" required="required">
+				<input type="text" placeholder="Adresse complète (Rue, Ville, Pays, Code Postal)" value="<% out.print(address /*+ ", " + postalCode + " " + city*/); %>" id="location" name="location" class="form-control" required="required">
 				<span class="input-group-btn">
-					<button class="btn btn-default input-group-addon" type="button" data-toggle="tooltip" data-placement="top" title="Vérifier la carte" onclick="codeAddress()"><span class="glyphicon glyphicon-search"></span></button>
-					<button class="btn btn-default input-group-addon" type="button" data-toggle="tooltip" data-placement="top" title="Me trouver sur la carte" onclick="codeLatLng(null)"><span class="glyphicon glyphicon-screenshot"></span></button>
-					<button class="btn btn-default input-group-addon" type="button" data-toggle="tooltip" data-placement="top" title="Récupérer la position sur la carte"	onclick="getMyMarker()"><span class="glyphicon glyphicon-pushpin"></span></button>
+					<button class="btn btn-default ttipb" type="button" data-toggle="tooltip" title="Vérifier la carte" onclick="codeAddress()"><span class="glyphicon glyphicon-search"></span></button>
+					<button class="btn btn-default ttipb" type="button" data-toggle="tooltip" title="Me trouver sur la carte" onclick="codeLatLng(null)"><span class="glyphicon glyphicon-screenshot"></span></button>
+					<button class="btn btn-default ttipb" type="button" data-toggle="tooltip" title="Récupérer la position sur la carte" onclick="getMyMarker()"><span class="glyphicon glyphicon-pushpin"></span></button>
 				</span>
 			</div>
 		</div>

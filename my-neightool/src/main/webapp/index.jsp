@@ -199,41 +199,48 @@ if(session.getAttribute("ID") != null)
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" type="image/png" href="./dist/img/favicon.png" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" type="image/png" href="./dist/img/favicon.png" />
+	
+	<title><% out.print(siteName); %></title>
+	
+	<!-- Bootstrap core CSS -->
+	<link href="./dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="./dist/css/jumbotron.css" rel="stylesheet">
+	
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="./dist/js/bootstrap.min.js"></script>
+	<script src="./dist/js/config.js"></script>
+	<script src="./dist/js/maps.js"></script>
+	
+	<!-- Just for debugging purposes. Don't actually copy this line! -->
+	<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		    <![endif]-->
+	<script type="text/javascript"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsO96nmOiM5A5mef1oNv4PZoETDWvfJ88&sensor=false"></script>
+	<style type="text/css">
+	#map-canvas {
+		height: 600px !important;
+	}
+	</style>
 
-<title>
-	<% out.print(siteName); %>
-</title>
-
-<!-- Bootstrap core CSS -->
-<link href="./dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="./dist/css/jumbotron.css" rel="stylesheet">
-
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="./dist/js/bootstrap.min.js"></script>
-<script src="./dist/js/config.js"></script>
-<script src="./dist/js/maps.js"></script>
-
-<!-- Just for debugging purposes. Don't actually copy this line! -->
-<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-	      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	    <![endif]-->
-<script type="text/javascript"
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsO96nmOiM5A5mef1oNv4PZoETDWvfJ88&sensor=false"></script>
-<style type="text/css">
-#map-canvas {
-	height: 600px !important;
-}
-</style>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$(".ttipl").tooltip({placement: "left",container: 'body'});
+		$(".ttipr").tooltip({placement: "right",container: 'body'});
+		$(".ttipt").tooltip({placement: "top",container: 'body'});
+		$(".ttipb").tooltip({placement: "bottom",container: 'body'});
+	});
+	</script>
 </head>
 
 <body onload="initialize()">
@@ -357,21 +364,20 @@ if(session.getAttribute("ID") != null)
 									<input type="text"
 										placeholder="Adresse complète (Rue, Ville, Pays, Code Postal)"
 										id="location" name="location" class="form-control"
-										required="required"> <span class="input-group-btn">
-										<button class="btn btn-default" type="button"
-											data-toggle="tooltip" data-placement="top"
+										required="required">
+									<span class="input-group-btn">
+										<button class="btn btn-default ttipb" type="button"
+											data-toggle="tooltip"
 											title="Vérifier la carte" onclick="codeAddress()">
 											<span class="glyphicon glyphicon-search"></span>
 										</button>
-									</span> <span class="input-group-btn">
-										<button class="btn btn-default" type="button"
-											data-toggle="tooltip" data-placement="top"
+										<button class="btn btn-default ttipb" type="button"
+											data-toggle="tooltip"
 											title="Me trouver sur la carte" onclick="codeLatLng(null)">
 											<span class="glyphicon glyphicon-screenshot"></span>
 										</button>
-									</span> <span class="input-group-btn">
-										<button class="btn btn-default" type="button"
-											data-toggle="tooltip" data-placement="top"
+										<button class="btn btn-default ttipb" type="button"
+											data-toggle="tooltip"
 											title="Récupérer la position sur la carte"
 											onclick="getMyMarker()">
 											<span class="glyphicon glyphicon-pushpin"></span>
