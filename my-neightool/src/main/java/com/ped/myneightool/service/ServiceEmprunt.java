@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.impl.EmpruntDAOImpl;
 import com.ped.myneightool.dao.itf.ItfEmpruntDAO;
+import com.ped.myneightool.dto.EmpruntsDTO;
 import com.ped.myneightool.model.Emprunt;
 
 
@@ -66,6 +67,28 @@ public class ServiceEmprunt {
 		return a;
 	}
 	
+	@GET
+	@Path("/list")
+	@Produces("application/xml")
+	public EmpruntsDTO getAllUtilisateurs() {
+		EmpruntsDTO emprunts = new EmpruntsDTO();
+		try {
+			emprunts = empruntDAO.findAll();
+		} catch (Exception e) {
+			LOG.error("erreur service /list");
+			e.printStackTrace();
+		}
+		return emprunts;
+
+	}
+	
+	@GET
+	@Path("/user/{id}")
+	@Produces({ "application/xml", "application/json" })
+	public EmpruntsDTO findToolsOfUser(@PathParam("id") final int emprunteurId) {
+		EmpruntsDTO emprunts = empruntDAO.findEmpruntsOfUser(emprunteurId);
+		return emprunts;
+	}
 	
 		
 }

@@ -55,6 +55,9 @@ public class Utilisateur implements Serializable{
 	@OneToMany(mappedBy = "utilisateur",orphanRemoval=true)
 	private Set<Outil> outils = new HashSet<Outil>();
 	
+	@OneToMany(mappedBy = "emprunteur",orphanRemoval=true)
+	private Set<Emprunt> emprunts = new HashSet<Emprunt>();
+	
 	
 	private String cheminImage;
 	
@@ -137,8 +140,6 @@ public class Utilisateur implements Serializable{
 	
 	
 	//outils
-	
-	
 	@XmlTransient
 	public Set<Outil> getOutils(){
 		return outils;
@@ -158,11 +159,11 @@ public class Utilisateur implements Serializable{
 		this.outils.remove(o);
 	}
 	
-	
+		
 	
 	//pour faire un historique par utilisateur
 	//emprunts=historique
-	/*
+	
 	@XmlTransient
 	public Set<Emprunt> getEmprunts(){
 		return emprunts;
@@ -171,9 +172,9 @@ public class Utilisateur implements Serializable{
 	public void setEmprunts(Set<Emprunt> emprunts){
 		this.emprunts=emprunts;
 	}
-	*/
+	
 	// methode metier :
-	/*
+	
 	public void addEmprunts(Emprunt e) {
 		this.emprunts.add(e);
 	}
@@ -181,7 +182,7 @@ public class Utilisateur implements Serializable{
 	public void removeEmprunts(Emprunt e) {
 		this.emprunts.remove(e);
 	}
-	*/
+	
 	
 	
 	

@@ -80,14 +80,14 @@ public class ServiceUtilisateur {
 	@Path("/list")
 	@Produces("application/xml")
 	public UtilisateursDTO getAllUtilisateurs() {
-		UtilisateursDTO Utilisateurs = new UtilisateursDTO();
+		UtilisateursDTO utilisateurs = new UtilisateursDTO();
 		try {
-			Utilisateurs = utilisateurDAO.findAll();
+			utilisateurs = utilisateurDAO.findAll();
 		} catch (Exception e) {
 			LOG.error("erreur service /list");
 			e.printStackTrace();
 		}
-		return Utilisateurs;
+		return utilisateurs;
 
 	}
 		

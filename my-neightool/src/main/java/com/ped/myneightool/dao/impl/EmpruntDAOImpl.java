@@ -1,12 +1,19 @@
 package com.ped.myneightool.dao.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfEmpruntDAO;
+import com.ped.myneightool.dto.EmpruntsDTO;
 import com.ped.myneightool.model.Emprunt;
+import com.ped.myneightool.model.Utilisateur;
 
 public class EmpruntDAOImpl extends GenericDAOImpl implements ItfEmpruntDAO {
 
@@ -77,4 +84,43 @@ public class EmpruntDAOImpl extends GenericDAOImpl implements ItfEmpruntDAO {
 		}
 	}
 
+	@Override
+	public EmpruntsDTO findAll() {
+		LOG.info("find all Emprunts");
+		List<Emprunt> res = new ArrayList<Emprunt>();
+				
+		final EntityManager em = createEntityManager();
+		//EntityTransaction tx=null;
+		
+		try{
+			//tx=em.getTransaction();
+			//tx.begin();
+			res = TypeSafetyChecking.castList(Emprunt.class, em.createQuery("SELECT p FROM Emprunt p ORDER BY p.id DESC").getResultList());
+			//tx.commit();
+			LOG.debug("recherche de tous les emprunts réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		List<Emprunt> set = new ArrayList<Emprunt>(res);
+		EmpruntsDTO odto= new EmpruntsDTO();
+		odto.setListeEmprunts(set);
+		return odto;
+	}
+
+	@Override
+	public EmpruntsDTO findEmpruntsOfUser(int emprunteurId) {
+		LOG.info("find all emprunts from user ID : " + emprunteurId);
+		Set<Emprunt> res = new HashSet<Emprunt>();
+		final EntityManager em = createEntityManager();
+		final Utilisateur u = em.getReference(Utilisateur.class, emprunteurId);
+		res = u.getEmprunts();
+
+		List<Emprunt> set = new ArrayList<Emprunt>(res);
+		EmpruntsDTO odto= new EmpruntsDTO();
+		odto.setListeEmprunts(set);
+		return odto;
+	}
+	
 }
