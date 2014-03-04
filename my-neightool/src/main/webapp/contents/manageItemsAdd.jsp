@@ -56,7 +56,10 @@
 	else {
 		caution = 0;
 	}
-		
+	
+	// On récupère l'image correspondante à l'objet créé
+	final String cheminImage = request.getParameter("itemImg");
+
 	final String startDate = request.getParameter("start");
 	final String endDate = request.getParameter("end");
 	final String terms = request.getParameter("termsofuse");
@@ -83,15 +86,15 @@
 			ClientResponse<String> response2 = clientRequest.get(String.class);
 			if (response2.getStatus() == 200)
 			{
-		Unmarshaller un = jaxbc.createUnmarshaller();
-		user = (Utilisateur) un.unmarshal(new StringReader(response2.getEntity()));
+				Unmarshaller un = jaxbc.createUnmarshaller();
+				user = (Utilisateur) un.unmarshal(new StringReader(response2.getEntity()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		final Outil tool = new Outil(user, name, description, true, category, caution,
-		parsedDateD, parsedDateF);
+		parsedDateD, parsedDateF, cheminImage);
 	
 		//ici il faut sérialiser l'outil
 		final Marshaller marshaller = jaxbc.createMarshaller();
@@ -227,7 +230,7 @@
 			<div class="col-sm-6" style="margin-top: 4px">
 				<div class="row">
 					<div class="col-md-8">
-						<center><img width="80%" height="80%" src="<%=itemImg%>" class="itemImg" /><input type="hidden" class="itemImg" name="itemImg" value="" />
+						<center><img width="80%" height="80%" src="<%=itemImg%>" id="itemImg" /><input type="hidden" id="itemImgField" name="itemImg" value="" />
 						<br /><br />
 						<a href="#" class="btn-sm btn btn-info" data-toggle="modal" data-target="#uploadImg"><i class="glyphicon glyphicon-camera"></i> Mettre une image</a></center>
 					</div>
@@ -273,4 +276,5 @@
 	<jsp:param value="1000" name="maxHeight"/>
 	<jsp:param value="1024000" name="maxSize"/>
 	<jsp:param value="itemImg" name="imgFieldId"/>
+	<jsp:param value="itemImgField" name="imgHiddenField"/>
 </jsp:include>

@@ -1,18 +1,29 @@
 <%@ page import="java.lang.Math"%>
 
 <%
-if(request.getParameter("maxSize") != null && request.getParameter("maxHeight") != null && request.getParameter("maxWidth") != null && request.getParameter("imgFieldId") != null) {
+if(request.getParameter("maxSize") != null && request.getParameter("maxHeight") != null && request.getParameter("maxWidth") != null) {
 	int maxSize = Integer.parseInt(request.getParameter("maxSize"));
 	int maxHeight = Integer.parseInt(request.getParameter("maxHeight"));
 	int maxWidth = Integer.parseInt(request.getParameter("maxWidth"));
-	String imgFieldId = "'."+request.getParameter("imgFieldId")+"'";
-	double sizeInMo = Math.round(maxSize / 1024000); 
+	double sizeInMo = Math.round(maxSize / 1024000);
+	String imgFieldId = "", imgHiddenField = "";
+	boolean hiddenField = false, fieldId = false;
+	if(request.getParameter("imgFieldId") != null) {
+		imgFieldId = "'#"+request.getParameter("imgFieldId")+"'";
+		fieldId = true;
+	}
+	if(request.getParameter("imgHiddenField") != null) {
+		imgHiddenField = "'#"+request.getParameter("imgHiddenField")+"'";
+		hiddenField = true;	
+	}
 	
 %>
 
 <script type="text/javascript">
 $(document).ready(function() {
-	
+	$('#showValueBtn').click(function() {
+		$('#fileUp').click();
+	});
 	$('#showValue').click(function() {
 		$('#fileUp').click();
 	});
@@ -66,7 +77,12 @@ $(document).ready(function() {
 						$('#bodyLoading').hide();
 						$('#bodyEndSuccess').show();
 						$('#imgLink').val(answer[1]);
+						<% if(fieldId) { %>
 						$(<%=imgFieldId%>).attr("src", answer[1]);
+						<% } %>
+						<% if(hiddenField) { %>
+						$(<%=imgHiddenField%>).val(answer[1]);
+						<% } %>
 						$('#sendFile').removeAttr("disabled");
 			    	}
 			    },
@@ -95,7 +111,7 @@ $(document).ready(function() {
 							<div class="input-group">
 								<input style="cursor:pointer;" id="showValue" name="showValue" type="text" placeholder="Choisissez l'image à envoyer" class="form-control" readonly="readonly" required>
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-picture"></i></button>
+									<button id="showValueBtn" class="btn btn-default" type="button"><i class="glyphicon glyphicon-picture"></i></button>
 								</span>
 							</div>
 						</div>
