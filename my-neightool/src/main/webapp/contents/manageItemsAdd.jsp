@@ -56,7 +56,10 @@
 	else {
 		caution = 0;
 	}
-		
+	
+	// On récupère l'image correspondante à l'objet créé
+	final String cheminImage = request.getParameter("itemImg");
+
 	final String startDate = request.getParameter("start");
 	final String endDate = request.getParameter("end");
 	final String terms = request.getParameter("termsofuse");
@@ -83,15 +86,15 @@
 			ClientResponse<String> response2 = clientRequest.get(String.class);
 			if (response2.getStatus() == 200)
 			{
-		Unmarshaller un = jaxbc.createUnmarshaller();
-		user = (Utilisateur) un.unmarshal(new StringReader(response2.getEntity()));
+				Unmarshaller un = jaxbc.createUnmarshaller();
+				user = (Utilisateur) un.unmarshal(new StringReader(response2.getEntity()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		final Outil tool = new Outil(user, name, description, true, category, caution,
-		parsedDateD, parsedDateF);
+		parsedDateD, parsedDateF, cheminImage);
 	
 		//ici il faut sérialiser l'outil
 		final Marshaller marshaller = jaxbc.createMarshaller();
