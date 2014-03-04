@@ -18,11 +18,10 @@
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
+<%@ page import="model.Emprunt"%>
+<%@ page import="model.Outil"%>
 <%@ page import="model.Utilisateur"%>
-
-<%@ page import="com.ped.myneightool.model.Outil"%>
-<%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
-
+<%@ page import="dto.OutilsDTO"%>
 <%
 String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
 String itemDateEnd="", itemPrice="", itemDistance="", itemPath="";
@@ -34,8 +33,8 @@ if(request.getParameter("id") != null) {
 	String messageType = "";
 	String messageValue = "";
 	
-	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-		final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
+		//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
+		final JAXBContext jaxbc = JAXBContext.newInstance(Emprunt.class, Utilisateur.class);
 		final JAXBContext jaxbc2 = JAXBContext.newInstance(OutilsDTO.class);
 
 		// Utilisateur
@@ -46,8 +45,7 @@ if(request.getParameter("id") != null) {
 
 		// On récupère les données de session de l'utilisateur
 		final String id = String.valueOf(session.getAttribute("ID"));
-		final String userName = String.valueOf(session
-		.getAttribute("userName"));
+		final String userName = String.valueOf(session.getAttribute("userName"));
 
 		// ici on envoit la requete permettant de récupérer les données complètes
 		// sur l'utilisateur en ligne
@@ -74,6 +72,7 @@ if(request.getParameter("id") != null) {
 			requestTools.accept("application/xml");
 			ClientResponse<String> responseTools = requestTools
 			.get(String.class);
+
 			if (responseTools.getStatus() == 200) {
 				Unmarshaller un2 = jaxbc2.createUnmarshaller();
 				outil = (Outil) un2.unmarshal(new StringReader(
@@ -121,19 +120,45 @@ if(request.getParameter("id") != null) {
 			System.out.println("SD / deb : " + startDate.compareTo(outil.getDateDebut()));
 			System.out.println("SD / fin : " + endDate.compareTo(outil.getDateFin()));
 
+			final ClientRequest clientRequestEmprunt = new ClientRequest("http://localhost:8080/rest/emprunt/create");
+			
 			if ((startDate.compareTo(outil.getDateDebut())) != -1
 					&& startDate.compareTo(outil.getDateFin()) != 1
 					&& endDate.compareTo(outil.getDateDebut()) != -1
 					&& endDate.compareTo(outil.getDateFin()) != 1
 					&& outil.isDisponible()) {
+				final Emprunt emprunt = new Emprunt(outil, user, startDate, endDate);
+				
+				//ici il faut sérialiser l'emprunt
+				final Marshaller marshaller = jaxbc.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+				final java.io.StringWriter sw = new StringWriter();
+				marshaller.marshal(emprunt, sw);			
+				
+				//ici on envoit la requete au webservice createEmprunt
+				clientRequestEmprunt.body("application/xml", emprunt);
+				
 				outil.setDisponible(false);
-				System.out.println("date saisie : " + df.parse(request.getParameter("start2")));
 			}
-			/*if (startDate.after(outil.getDateDebut()) && startDate.before(outil.getDateFin())) {
-				System.out.println("date deb : " + outil.getDateDebut());
-				System.out.println("date saisie : " + df.parse(request.getParameter("start2")));
-				System.out.println("\n connard !!!" + df.parse(request.getParameter("start2")).after(outil.getDateDebut()));
-			}*/	
+			
+			//ici on va récuperer la réponse de la requete
+			final ClientResponse<String> clientResponse = clientRequestEmprunt.post(String.class);
+			
+			//test affichage
+			System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
+
+			if (clientResponse.getStatus() == 200) { // si la réponse est valide !
+				// on désérialiser la réponse si on veut vérifier que l'objet retourner
+				// est bien celui qu'on a voulu créer , pas obligatoire
+				final Unmarshaller un = jaxbc.createUnmarshaller();
+				final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
+				// et ici on peut vérifier que c'est bien le bon objet
+				messageValue = "L'emprunt a bien été assigné";
+				messageType = "success";
+			} else {
+				messageValue = "Une erreur est survenue";
+				messageType = "danger";
+			}
 		}
 	}
 %>
@@ -166,7 +191,8 @@ if(request.getParameter("id") != null) {
 	<div class="col-md-4">
 		<div class="row">
 			<div class="col-md-12 perfectCenter">
-				<img width="100%" height="100%" class="img-rounded" src="<%=itemPath%>"/>
+				<img width="100%" height="100%" class="img-rounded"
+					src="<%=itemPath%>" />
 			</div>
 		</div>
 	</div>
