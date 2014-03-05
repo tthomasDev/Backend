@@ -165,21 +165,21 @@ if(request.getParameter("deleteAccount") != null) {
 	try {
 		
 		
-		utilisateurGet.getAdresse().setadresseComplete("Compte supprimé");
-		utilisateurGet.getAdresse().setcodePostale("Compte supprimé");
+		utilisateurGet.getAdresse().setadresseComplete("Compte inactif");
+		utilisateurGet.getAdresse().setcodePostale("Compte inactif");
 		utilisateurGet.getAdresse().setLatitude(0);
 		utilisateurGet.getAdresse().setLongitude(0);
-		utilisateurGet.getAdresse().setPays("Compte supprimé");
-		utilisateurGet.getAdresse().setRue("Compte supprimé");
-		utilisateurGet.getAdresse().setVille("Compte supprimé");
-		utilisateurGet.setCheminImage("Compte supprimé");
+		utilisateurGet.getAdresse().setPays("Compte inactif");
+		utilisateurGet.getAdresse().setRue("Compte inactif");
+		utilisateurGet.getAdresse().setVille("Compte inactif");
+		utilisateurGet.setCheminImage("Compte inactif");
 		utilisateurGet.getConnexion().setLogin(null);
 		utilisateurGet.getConnexion().setPassword(null);
 		utilisateurGet.setDateDeNaissance(null);
-		utilisateurGet.setMail("Compte supprimé");
-		utilisateurGet.setNom("Compte supprimé");
-		utilisateurGet.setPrenom("Compte supprimé");
-		utilisateurGet.setTelephone("Compte supprimé");
+		utilisateurGet.setMail("Compte inactif");
+		utilisateurGet.setNom("Compte inactif");
+		utilisateurGet.setPrenom("Compte inactif");
+		utilisateurGet.setTelephone("Compte inactif");
 		
 		Utilisateur utilisateurGet3 = new Utilisateur();
 		try {
