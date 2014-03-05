@@ -3,7 +3,7 @@
 <%
 
 String keywordsDisplay = "Aucun recherche effectuée.", keywords = "";
-int dMax = 80, dMin = 20, cMax = 50;
+int dMax = 20, cMax = 50;
 boolean isSearch = false;
 
 ArrayList<Integer> categoriesIdSelected = new ArrayList<Integer>();
@@ -28,8 +28,7 @@ if(request.getParameter("category") != null) {
 if(request.getParameter("cMax") != null && request.getParameter("cMax") != "") {
 	cMax = Integer.parseInt(request.getParameter("cMax"));
 }
-if(request.getParameter("dMin") != null && request.getParameter("dMin")!="" && request.getParameter("dMax") != null && request.getParameter("dMax")!="") {
-	dMin = Integer.parseInt(request.getParameter("dMin"));
+if(request.getParameter("dMax") != null && request.getParameter("dMax")!="") {
 	dMax = Integer.parseInt(request.getParameter("dMax"));
 }
 	
@@ -37,14 +36,18 @@ if(request.getParameter("dMin") != null && request.getParameter("dMin")!="" && r
 			<script>
 				$(function() {
 					$("#sliderDistance").slider({
-						range : true,
-						min : 1,
+						range : "min",
+						value: <%=dMax%>,
+						min : 0,
 						max : 100,
-						values : [ <%=dMin%>, <%=dMax%> ],
+						step: 5,
+						values : <%=dMax%>,
 						slide : function(event, ui) {
-							$("#amountDistance").html(ui.values[0] + " km - " + ui.values[1] + " km");
-							$("#dMin").val(ui.values[0]);
-							$("#dMax").val(ui.values[1]);
+							if(ui.value == 0)
+								$("#amountDistance").html("< 1 km");
+							else
+								$("#amountDistance").html(ui.value + " km maximum");
+							$("#dMax").val(ui.value);
 						}
 					}); 
 					$("#sliderCaution").slider({
@@ -59,9 +62,11 @@ if(request.getParameter("dMin") != null && request.getParameter("dMin")!="" && r
 					});
 					$("#amountCaution").html($("#sliderCaution").slider("value") + "€");
 					$("#cMax").val(<%=cMax%>);
-					$("#amountDistance").html($("#sliderDistance").slider("values", 0) + " km - " + $("#sliderDistance").slider("values", 1) + " km");
-					$("#dMin").val($("#sliderDistance").slider("values", 0));
-					$("#dMax").val($("#sliderDistance").slider("values", 1));
+					if($("#sliderDistance").slider("value")==0)
+						$("#amountDistance").html("< 1 km");
+					else
+						$("#amountDistance").html($("#sliderDistance").slider("value") + " km maximum");
+					$("#dMax").val($("#sliderDistance").slider("value"));
 				});
 			</script>
 			<div class="col-md-3 well">
@@ -89,7 +94,6 @@ if(request.getParameter("dMin") != null && request.getParameter("dMin")!="" && r
 					<div class="form-group">
     					<label for="distance">Distance : <span id="amountDistance"></span></label>
 						<div id="sliderDistance"></div>
-						<input type="hidden" id="dMin" name="dMin" value="" />
 						<input type="hidden" id="dMax" name="dMax" value="" />
 					</div>
 					<div class="form-group">
