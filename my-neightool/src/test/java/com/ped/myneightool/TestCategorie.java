@@ -1,0 +1,100 @@
+package com.ped.myneightool;
+
+import java.util.Date;
+import java.util.Iterator;
+
+import javax.xml.bind.JAXBContext;
+
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.slf4j.LoggerFactory;
+
+import com.ped.myneightool.dto.CategoriesDTO;
+import com.ped.myneightool.dto.UtilisateursDTO;
+import com.ped.myneightool.model.Adresse;
+import com.ped.myneightool.model.Connexion;
+import com.ped.myneightool.model.Categorie;
+import com.ped.myneightool.model.Utilisateur;
+
+
+
+
+
+public class TestCategorie {
+
+	private static final org.slf4j.Logger LOG = LoggerFactory
+			.getLogger(TestCategorie.class);
+
+	
+	private static JAXBContext jaxbc;
+	private static ClientRequestBuilder crb;
+	
+
+	@BeforeClass
+	public static void setUp() throws Exception {
+		jaxbc=JAXBContext.newInstance(	Utilisateur.class,
+										UtilisateursDTO.class,
+										Connexion.class,
+										Adresse.class,
+										Categorie.class,
+										CategoriesDTO.class);
+		crb= new ClientRequestBuilder(jaxbc);
+		
+			
+		
+	}
+	
+	/**
+	 * test unitaire création d'un categorie
+	 */
+	@Test
+	public void testCreateCategorie() {
+		try {
+			
+			final Categorie categorie = new Categorie("Jardin");
+			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie,"categorie/create");
+			
+			Assert.assertNotSame(categoriePost,null);
+						
+			
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de la categorie", re);
+			throw re;
+		}
+	}
+	
+	
+	/**
+	 * test unitaire obtenir un categorie
+	 */
+	/*
+	@Test
+	public final void testGetCategorie() {
+
+		try{
+			
+			final Categorie categorie = new Categorie("Eau");
+			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie,"categorie/create");
+			
+			Assert.assertNotSame(categoriePost,null);
+			
+			int i = categoriePost.getId();
+			LOG.info(""+categoriePost.getId()+""+categoriePost.getObjet()+""+categoriePost.getCorps()+"");
+			
+			
+			final Categorie categorieGet =(Categorie) crb.httpGetRequest("categorie",i);
+			LOG.info(""+categorieGet.getId()+""+categorieGet.getObjet()+""+categorieGet.getCorps()+"");
+			
+			Assert.assertNotSame(categorieGet,null);
+						
+			
+		}
+		catch(final RuntimeException r){
+			LOG.error("testGetUser failed",r);
+			throw r;
+		}
+	}
+	*/
+	
+}
