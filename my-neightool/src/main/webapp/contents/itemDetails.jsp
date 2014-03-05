@@ -28,15 +28,16 @@ String itemDateEnd="", itemPrice="", itemDistance="", itemPath="", userID="";
 
 boolean itemFound = false;
 
+boolean displayMessage = false;
+String messageType = "";
+String messageValue = "";
+
 //On récupère les données de session de l'utilisateur
 final String id = String.valueOf(session.getAttribute("ID"));
 final String userName = String.valueOf(session.getAttribute("userName"));
 
 if(request.getParameter("id") != null) {
 	itemFound = true;
-
-	String messageType = "";
-	String messageValue = "";
 	
 		//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
 		final JAXBContext jaxbc = JAXBContext.newInstance(Emprunt.class, Outil.class,
@@ -185,9 +186,14 @@ if(request.getParameter("id") != null) {
 				final Unmarshaller un = jaxbc.createUnmarshaller();
 				final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
 				// et ici on peut vérifier que c'est bien le bon objet
+				displayMessage = true;
+				
 				messageValue = "L'emprunt a bien été assigné";
 				messageType = "success";
 			} else {
+				
+				displayMessage = true;
+				
 				messageValue = "Une erreur est survenue";
 				messageType = "danger";
 			}
@@ -219,6 +225,17 @@ if(request.getParameter("id") != null) {
 		</ol>
 	</div>
 </div>
+
+<%
+if (displayMessage) {
+out.println("<div class='row'><div class='col-md-12' style='margin-top:-20px'>");
+out.println("<div class='alert alert-" + messageType + "'>"
+		+ messageValue + "</div>");
+out.println("</div></div>");
+}
+%>
+
+
 <div class="row">
 	<div class="col-md-4">
 		<div class="row">
