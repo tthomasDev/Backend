@@ -74,7 +74,7 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 
 <ol class="breadcrumb">
 	<li><a href="dashboard.jsp">Accueil</a></li>
-	<li class="active">Boite de réception (<%=messagesDto.size()%> messages)</li>
+	<li class="active">Boite de réception (<%=messagesDto.size()%>/50 messages)</li>
 </ol>
 
 <div class="table-responsive">
@@ -90,10 +90,10 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		<tbody id="accordion">
 		
 		
-		<% if(list)
-			{
-				for (Message m : messagesDto.getListeMessages()) { %>
-				<tr style="vertical-align: middle;">
+		<%
+		if(list) {
+			for (Message m : messagesDto.getListeMessages()) { %>
+			<tr style="vertical-align: middle;" class="toPaginate">
 				<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
 				<td class="perfectCenter"><strong><a
 						data-toggle="collapse" data-parent="#accordion"
@@ -103,39 +103,32 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 						<div style="text-align: justify !important"><%=m.getCorps()%></div>
 					</div></td>
 				<td class="perfectCenter">
-				<% String date = df.format(m.getDate());
-				out.print(date);
+				<%
+					String date = df.format(m.getDate());
+					out.print(date);
 				%>				
 				</td>
 				<td class="perfectCenter">
 					<div class="btn-group">
-						<button type="button" class="btn btn-default">
+						<a href="dashboard.jsp?page=mailbox&userId=<%=m.getEmetteur().getId()%>" target="_blank" class="ttipb btn btn-default" title="Répondre à l'expéditeur">
 							<span class="glyphicon glyphicon-envelope"></span>
-						</button>
-						<button type="button" class="btn btn-default">
+						</a>
+						<a href="dashboard.jsp?page=mailbox&del=<%=m.getId()%>" class="ttipb btn btn-default" title="Supprimer le message">
 							<span class="glyphicon glyphicon-remove"></span>
-						</button>
+						</a>
 					</div>
 				</td>
 			</tr>
-	 	<%		}
-			}else{		System.out.print("toto");	
-			%>
+	 	<%
+	 		}
+		} else {	
+		%>
 		 	<tr class="perfectCenter">
-					<td colspan="4">Aucun message reçu</td>
+				<td colspan="4">Aucun message reçu</td>
 			</tr>
-			<% } %>
-					
+		<% } %>			
 		</tbody>
 	</table>
 </div>
 
-<div class="row">
-	<div class="col-md-12" style="text-align: center;">
-		<ul class="pagination">
-			<li><a href="#">&laquo;</a></li>
-			<li><a href="#">1</a></li>
-			<li><a href="#">&raquo;</a></li>
-		</ul>
-	</div>
-</div>
+<div id="paginator"></div>
