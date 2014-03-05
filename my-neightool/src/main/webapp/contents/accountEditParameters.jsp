@@ -167,15 +167,13 @@ if(request.getParameter("deleteAccount") != null) {
 		clientRequest = new ClientRequest("http://localhost:8080/rest/user/delete/" + utilisateurGet.getId());
 		clientRequest.accept("application/xml");
 		ClientResponse<String> clientResponse = clientRequest.get(String.class);
-		if (clientResponse.getStatus() == 200)
+		if (clientResponse.getStatus() == 204)
 		{
-			/*
+			//session.removeAttribute("ID");
+			//session.removeAttribute("userName");
 			RequestDispatcher rd =request.getRequestDispatcher("index.jsp?attemp=0");
 			rd.forward(request, response);
-			*/
 			
-			session.removeAttribute("ID");
-			session.removeAttribute("userName");
 			
 			//response.sendRedirect("index.jsp?attemp=0");
 			

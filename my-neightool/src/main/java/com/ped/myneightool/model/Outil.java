@@ -197,6 +197,7 @@ public class Outil {
 		this.caution = caution;
 	}
 
+	@XmlElement
 	public int getVue() {
 		return vue;
 	}
