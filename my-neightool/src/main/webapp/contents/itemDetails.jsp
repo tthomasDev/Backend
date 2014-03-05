@@ -24,9 +24,14 @@
 <%@ page import="dto.OutilsDTO"%>
 <%
 String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
-String itemDateEnd="", itemPrice="", itemDistance="", itemPath="";
+String itemDateEnd="", itemPrice="", itemDistance="", itemPath="", userID="";
 
 boolean itemFound = false;
+
+//On récupère les données de session de l'utilisateur
+final String id = String.valueOf(session.getAttribute("ID"));
+final String userName = String.valueOf(session.getAttribute("userName"));
+
 if(request.getParameter("id") != null) {
 	itemFound = true;
 
@@ -46,10 +51,6 @@ if(request.getParameter("id") != null) {
 		
 		// L'outil que l'on récupère après modification (isDisponible)
 		Outil toolUpdated = new Outil();
-
-		// On récupère les données de session de l'utilisateur
-		final String id = String.valueOf(session.getAttribute("ID"));
-		final String userName = String.valueOf(session.getAttribute("userName"));
 
 		// ici on envoit la requete permettant de récupérer les données complètes
 		// sur l'utilisateur en ligne
@@ -94,10 +95,13 @@ if(request.getParameter("id") != null) {
 		}
 		
 		itemName = outil.getNom();
-		itemVendor = user.getNom();;
+		itemVendor = user.getPrenom() + " " + user.getNom();
 		itemDescription = outil.getDescription();
 		itemCategory = outil.getCategorie();
 		itemPath = outil.getCheminImage();
+		
+		// ID utilisateur
+		userID = String.valueOf(user.getId());
 		
 		// Conversion des dates
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -276,7 +280,17 @@ if(request.getParameter("id") != null) {
 			</tr>
 		</table>
 		<hr />
-		<a href="#" data-toggle="modal" data-target="#confirmBorrow"
+		<a
+			<%int diff = 100;
+				if (Integer.parseInt(id) == Integer.parseInt(userID))
+					diff = 0;
+				else
+					diff = 1;%>
+			<%if (diff == 1) {%> href="#" data-toggle="modal"
+			data-target="#confirmBorrow" <%} else {
+				// Ajouter message informant l'user qu'il ne peut emprunter
+				// ses propres objets
+			}%>
 			class="btn btn-success pull-right btn-lg"><i
 			class="glyphicon glyphicon-shopping-cart"></i> Demander l'emprunt de
 			l'objet</a>
