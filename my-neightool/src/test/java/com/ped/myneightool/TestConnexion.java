@@ -19,6 +19,7 @@ import com.ped.myneightool.model.Utilisateur;
 
 
 
+
 public class TestConnexion {
 
 	private static final org.slf4j.Logger LOG = LoggerFactory
@@ -41,6 +42,7 @@ public class TestConnexion {
 	/**
 	 * test unitaire pour une bonne connexion
 	 */
+	
 	@Test
 	public final void testValidConnexion() {
 

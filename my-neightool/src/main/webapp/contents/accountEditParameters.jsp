@@ -181,7 +181,7 @@ if(request.getParameter("deleteAccount") != null) {
 		utilisateurGet.setPrenom("Compte inactif");
 		utilisateurGet.setTelephone("Compte inactif");
 		
-		Utilisateur utilisateurGet3 = new Utilisateur();
+		
 		try {
 			
 			// marshalling/serialisation pour l'envoyer avec une requete post
@@ -200,11 +200,11 @@ if(request.getParameter("deleteAccount") != null) {
 			System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
 			
 			if (clientResponse.getStatus() == 200) { // ok !
-							
-				final Unmarshaller un = jaxbc.createUnmarshaller();
-				utilisateurGet3 = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
-				RequestDispatcher rd =request.getRequestDispatcher("index.jsp?attemp=0");
+				session.removeAttribute("ID");	
+				session.removeAttribute("userName");
+				RequestDispatcher rd =request.getRequestDispatcher("index.jsp");
 				rd.forward(request, response);
+				//response.sendRedirect("index.jsp");
 			}
 		} catch (final Exception e) {
 			e.printStackTrace();

@@ -1,11 +1,14 @@
 package com.ped.myneightool;
 
 import java.util.Date;
+
 import javax.xml.bind.JAXBContext;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
+
 import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Emprunt;
 import com.ped.myneightool.model.Outil;
