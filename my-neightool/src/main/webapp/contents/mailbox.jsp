@@ -145,7 +145,7 @@ if(request.getParameter("userId") != null) {
 		<% if(!newMessageHidden) { %>
 		<script type="text/javascript">
 		    $(document).ready(function () {
-		        $('#newMessageModal').modal('show');
+		    	$('#newMessageModal').modal('show');
 		    });
 		</script>
 		<% } %>

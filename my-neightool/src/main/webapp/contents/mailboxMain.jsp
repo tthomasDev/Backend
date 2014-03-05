@@ -70,7 +70,15 @@
 DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		
 %>
-
+<script>
+$(function(){
+	$(".answerBtn").click(function(e) {
+		var strTmp = this.id.split("answerName");
+		$("#userTo").val(strTmp[1]);
+		$('#newMessageModal').modal('show');
+	});
+});
+</script>
 
 <ol class="breadcrumb">
 	<li><a href="dashboard.jsp">Accueil</a></li>
@@ -110,7 +118,7 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 				</td>
 				<td class="perfectCenter">
 					<div class="btn-group">
-						<a href="dashboard.jsp?page=mailbox&userId=<%=m.getEmetteur().getId()%>" target="_blank" class="ttipb btn btn-default" title="Répondre à l'expéditeur">
+						<a id="isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipb btn btn-default" title="Répondre à l'expéditeur">
 							<span class="glyphicon glyphicon-envelope"></span>
 						</a>
 						<a href="dashboard.jsp?page=mailbox&del=<%=m.getId()%>" class="ttipb btn btn-default" title="Supprimer le message">
