@@ -34,7 +34,8 @@ if(request.getParameter("id") != null) {
 	String messageValue = "";
 	
 		//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-		final JAXBContext jaxbc = JAXBContext.newInstance(Emprunt.class, Utilisateur.class);
+		final JAXBContext jaxbc = JAXBContext.newInstance(Emprunt.class, Outil.class,
+				Utilisateur.class);
 		final JAXBContext jaxbc2 = JAXBContext.newInstance(OutilsDTO.class);
 
 		// Utilisateur
@@ -42,6 +43,9 @@ if(request.getParameter("id") != null) {
 
 		// L'outil résultant de la requête souhaitée
 		Outil outil = new Outil();
+		
+		// L'outil que l'on récupère après modification (isDisponible)
+		Outil toolUpdated = new Outil();
 
 		// On récupère les données de session de l'utilisateur
 		final String id = String.valueOf(session.getAttribute("ID"));
@@ -138,9 +142,33 @@ if(request.getParameter("id") != null) {
 				//ici on envoit la requete au webservice createEmprunt
 				clientRequestEmprunt.body("application/xml", emprunt);
 				
+				// On rend l'outil indisponible désormais
 				outil.setDisponible(false);
+				
+				try {
+					final ClientRequest requestToolUpdate = new ClientRequest("http://localhost:8080/rest/tool/update");
+
+					//ici il faut sérialiser l'outil
+					final Marshaller marshaller2 = jaxbc.createMarshaller();
+					marshaller2.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+					final java.io.StringWriter sw2 = new StringWriter();
+					marshaller2.marshal(outil, sw2);
+
+					requestToolUpdate.body("application/xml", outil);
+					final ClientResponse<String> responseToolUpdate = requestToolUpdate.post(String.class);
+				
+					if (responseToolUpdate.getStatus() == 200) { // OK
+						final Unmarshaller un = jaxbc.createUnmarshaller();
+						final StringReader sr = new StringReader(responseToolUpdate.getEntity());
+						final Object object = (Object) un.unmarshal(sr);
+						toolUpdated = (Outil) object;
+					}
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
-			
+		
 			//ici on va récuperer la réponse de la requete
 			final ClientResponse<String> clientResponse = clientRequestEmprunt.post(String.class);
 			
@@ -242,7 +270,7 @@ if(request.getParameter("id") != null) {
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
-				<td class="tableTmp">Caution (<a href="#">?</a>) :
+				<td class="tableTmp">Caution (<a href="#" class="ttipr" title="Montant que vous devrez verser lors de l'emprunt et qui vous sera restitué à la fin de celui-ci">?</a>) :
 				</td>
 				<td><%=itemPrice%> euros</td>
 			</tr>
