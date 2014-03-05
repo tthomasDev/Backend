@@ -63,6 +63,8 @@ public class Utilisateur implements Serializable{
 	
 	private boolean actif = true ;
 	
+	private String role ="USER";
+	
 	//pour faire un historique par utilisateur
 	/*  
 	@OneToMany(mappedBy = "emprunteur",orphanRemoval=true)
@@ -272,6 +274,15 @@ public class Utilisateur implements Serializable{
 
 	public void setActif(boolean actif) {
 		this.actif = actif;
+	}
+
+	@XmlElement
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	
