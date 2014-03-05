@@ -68,23 +68,22 @@ public class TestCategorie {
 	/**
 	 * test unitaire obtenir un categorie
 	 */
-	/*
 	@Test
 	public final void testGetCategorie() {
 
 		try{
 			
-			final Categorie categorie = new Categorie("Eau");
+			final Categorie categorie = new Categorie("Voiture");
 			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie,"categorie/create");
 			
 			Assert.assertNotSame(categoriePost,null);
 			
 			int i = categoriePost.getId();
-			LOG.info(""+categoriePost.getId()+""+categoriePost.getObjet()+""+categoriePost.getCorps()+"");
+			LOG.info(""+categoriePost.getId()+"");
 			
 			
 			final Categorie categorieGet =(Categorie) crb.httpGetRequest("categorie",i);
-			LOG.info(""+categorieGet.getId()+""+categorieGet.getObjet()+""+categorieGet.getCorps()+"");
+			LOG.info(""+categorieGet.getId()+"");
 			
 			Assert.assertNotSame(categorieGet,null);
 						
@@ -95,6 +94,5 @@ public class TestCategorie {
 			throw r;
 		}
 	}
-	*/
 	
 }
