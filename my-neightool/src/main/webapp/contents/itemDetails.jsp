@@ -303,12 +303,12 @@ out.println("</div></div>");
 					diff = 0;
 				else
 					diff = 1;%>
-			<%if (diff == 1) {%> href="#" data-toggle="modal"
-			data-target="#confirmBorrow" <%} else {
-				// Ajouter message informant l'user qu'il ne peut emprunter
-				// ses propres objets
-			}%>
-			class="btn btn-success pull-right btn-lg"><i
+			<%if (diff == 1) {%> 
+				href="#" data-toggle="modal" data-target="#confirmBorrow" class="btn btn-success pull-right btn-lg"
+			<%} else { %>
+				href="#" class="btn btn-default pull-right btn-lg ttipr" title="Vous ne pouvez pas emprunter vos propres objets" 
+			<%}%>
+			><i
 			class="glyphicon glyphicon-shopping-cart"></i> Demander l'emprunt de
 			l'objet</a>
 	</div>
