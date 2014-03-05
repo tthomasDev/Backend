@@ -71,8 +71,31 @@ public class TestUtilisateur {
 	public void testCreateUser() {
 		try {
 			final Connexion connexion = new Connexion("loginCreate1","passwordCreate");
-			
+						
 			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"1jean-duchemin@gmail.com","0606060606");
+			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
+			
+						
+			Assert.assertNotSame(utilisateurPost,null);
+			
+			
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'utilisateur", re);
+			throw re;
+		}
+	}
+	
+	/**
+	 * test unitaire création d'utilisateur sans adresse
+	 */
+	@Test
+	public void testCreateUserForFrontEnd() {
+		try {
+			final Connexion connexion = new Connexion("tthomas","olol");
+			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Date birthDate = new Date();
+			
+			final Utilisateur utilisateur= new Utilisateur("thibaut","thomas",connexion,"tthomas@gmail.com","0606060606",adresse,birthDate);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 						

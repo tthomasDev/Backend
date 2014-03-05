@@ -163,21 +163,74 @@ if(request.getParameter("deleteAccount") != null) {
 		
 	
 	try {
+		
+		
+		utilisateurGet.getAdresse().setadresseComplete("Compte supprimé");
+		utilisateurGet.getAdresse().setcodePostale("Compte supprimé");
+		utilisateurGet.getAdresse().setLatitude(0);
+		utilisateurGet.getAdresse().setLongitude(0);
+		utilisateurGet.getAdresse().setPays("Compte supprimé");
+		utilisateurGet.getAdresse().setRue("Compte supprimé");
+		utilisateurGet.getAdresse().setVille("Compte supprimé");
+		utilisateurGet.setCheminImage("Compte supprimé");
+		utilisateurGet.getConnexion().setLogin(null);
+		utilisateurGet.getConnexion().setPassword(null);
+		utilisateurGet.setDateDeNaissance(null);
+		utilisateurGet.setMail("Compte supprimé");
+		utilisateurGet.setNom("Compte supprimé");
+		utilisateurGet.setPrenom("Compte supprimé");
+		utilisateurGet.setTelephone("Compte supprimé");
+		
+		Utilisateur utilisateurGet3 = new Utilisateur();
+		try {
+			
+			// marshalling/serialisation pour l'envoyer avec une requete post
+			final Marshaller marshaller = jaxbc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(utilisateurGet, sw);
+						
+			
+			final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/user/update/");
+			clientRequest.body("application/xml", utilisateurGet );
+			
+			
+			final ClientResponse<String> clientResponse = clientRequest.post(String.class);
+			
+			System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
+			
+			if (clientResponse.getStatus() == 200) { // ok !
+							
+				final Unmarshaller un = jaxbc.createUnmarshaller();
+				utilisateurGet3 = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
+				RequestDispatcher rd =request.getRequestDispatcher("index.jsp?attemp=0");
+				rd.forward(request, response);
+			}
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+		
+		/*
 		ClientRequest clientRequest;
-		clientRequest = new ClientRequest("http://localhost:8080/rest/user/delete/" + utilisateurGet.getId());
+		clientRequest = new ClientRequest("http://localhost:8080/rest/user/update/" + utilisateurGet.getId());
+		*/
+		//clientRequest = new ClientRequest("http://localhost:8080/rest/user/delete/" + utilisateurGet.getId());
+		/*
 		clientRequest.accept("application/xml");
 		ClientResponse<String> clientResponse = clientRequest.get(String.class);
-		if (clientResponse.getStatus() == 204)
+		if (clientResponse.getStatus() == 200)
 		{
+			*/
 			//session.removeAttribute("ID");
 			//session.removeAttribute("userName");
+			/*
 			RequestDispatcher rd =request.getRequestDispatcher("index.jsp?attemp=0");
 			rd.forward(request, response);
-			
+			*/
 			
 			//response.sendRedirect("index.jsp?attemp=0");
 			
-		}
+		//}
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
