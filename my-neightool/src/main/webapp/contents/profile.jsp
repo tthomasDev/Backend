@@ -21,6 +21,8 @@ OutilsDTO outilsDto = new OutilsDTO();
 
 String messageType = "";
 String messageValue = "";
+String imgCoche = "./dist/img/coche.jpg";
+String imgCroix = "./dist/img/croix.jpg";
 	
 /* Les vraies infos de l'utilisateur récupérés */
 JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
@@ -139,8 +141,9 @@ if(request.getParameter("userId") != null) {
 								<table class="table table-hover">
 									<thead>
 										<tr>
-											<th style="text-align: center;" width="30%">Nom</th>
-											<th style="text-align: center;" width="20%">Caution</th>
+											<th style="text-align: center;" width="25%">Nom</th>
+											<th style="text-align: center;" width="15%">Caution</th>
+											<th style="text-align: center;" width="20%">Disponible ?</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -148,6 +151,11 @@ if(request.getParameter("userId") != null) {
 										<tr style="vertical-align: middle;">
 											<td style="vertical-align: middle; text-align: center;"><strong><%=t.getNom() %></strong><br />
 											<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() %></td>
+											<% if (t.isDisponible()) { %>
+												<td style="vertical-align: middle; text-align: center;"><img  width="20px" height="20px" src="<%=imgCoche%>" /></td>
+											<% } else { %>
+												<td style="vertical-align: middle; text-align: center;"><img  width="20px" height="20px" src="<%=imgCroix%>" /></td>
+											<% } %>
 										</tr>
 										<% } %>
 									</tbody>
