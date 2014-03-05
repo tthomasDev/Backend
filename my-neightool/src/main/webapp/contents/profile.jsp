@@ -5,16 +5,26 @@
 <%@ page import="java.io.StringWriter"%>
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
+
 <%@ page import="model.Utilisateur"%>
 <%@ page import="model.Connexion"%>
 <%@ page import="model.Adresse"%>
+<%@ page import="com.ped.myneightool.model.Outil"%>
+<%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
+
 <%@ page import ="java.util.Date" %>
 <%@ page import ="java.util.Calendar" %>
 <%
 
+// Le DTO des outils permettant de récupérer la liste d'outils
+OutilsDTO outilsDto = new OutilsDTO();
+
+String messageType = "";
+String messageValue = "";
+	
 /* Les vraies infos de l'utilisateur récupérés */
 JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
-
+JAXBContext jaxbc2=JAXBContext.newInstance(OutilsDTO.class);
 
 Utilisateur utilisateurGet = new Utilisateur();
 try {
@@ -40,7 +50,7 @@ if(request.getParameter("userId") != null) {
 	
 	userId = utilisateurGet.getId();
 	login = utilisateurGet.getConnexion().getLogin();
-	Date date = 	utilisateurGet.getDateDeNaissance();
+	Date date = utilisateurGet.getDateDeNaissance();
 
 	int yeardiff;
 	{
@@ -56,7 +66,32 @@ if(request.getParameter("userId") != null) {
 	}
 	 
 	age = yeardiff;
-	avatar = "./dist/img/user_avatar_default.png";
+	avatar = "./dist/img/user_avatar_default.png"; // utilisateurGet.getCheminImage();
+	
+	// Récupération de la liste des outils de l'utilisateur
+	//ici on va récuperer la réponse de la requete
+	try {
+		ClientRequest requestTools;
+		requestTools = new ClientRequest(
+				"http://localhost:8080/rest/tool/user/" + session.getAttribute("ID"));
+		requestTools.accept("application/xml");
+		ClientResponse<String> responseTools = requestTools
+				.get(String.class);
+		if (responseTools.getStatus() == 200) {
+			Unmarshaller un2 = jaxbc2.createUnmarshaller();
+			outilsDto = (OutilsDTO) un2.unmarshal(new StringReader(
+					responseTools.getEntity()));
+
+			// et ici on peut vérifier que c'est bien le bon objet
+			messageValue = "La liste a bien été récupérée";
+			messageType = "success";
+		} else {
+			messageValue = "Une erreur est survenue";
+			messageType = "danger";
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
 %>
 
 <div class="modal fade" id="userProfile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -97,7 +132,28 @@ if(request.getParameter("userId") != null) {
 						</div>
 					</div>
 					<div class="tab-pane" id="list">
-						<div class="alert alert-info perfectCenter"><i class="glyphicon glyphicon-warning-sign"></i> Aucun objet n'est actuellement prêté par <%=login%></div>
+						<% if (outilsDto.getListeOutils().size() == 0) { %>
+							<div class="alert alert-info perfectCenter"><i class="glyphicon glyphicon-warning-sign"></i> Aucun objet n'est actuellement prêté par <%=login%></div>
+						<% } else { %>
+							<div class="table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th style="text-align: center;" width="30%">Nom</th>
+											<th style="text-align: center;" width="20%">Caution</th>
+										</tr>
+									</thead>
+									<tbody>
+										<% for (Outil t : outilsDto.getListeOutils()) { %>
+										<tr style="vertical-align: middle;">
+											<td style="vertical-align: middle; text-align: center;"><strong><%=t.getNom() %></strong><br />
+											<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() %></td>
+										</tr>
+										<% } %>
+									</tbody>
+								</table>
+							</div>
+							<% } %>
 					</div>
 				</div>
 			</div>
