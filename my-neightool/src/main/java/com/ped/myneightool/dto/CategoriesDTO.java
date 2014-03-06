@@ -34,5 +34,5 @@ public class CategoriesDTO {
 
 	public int size() {
 		return categorie.size();
-		}
+	}
 }

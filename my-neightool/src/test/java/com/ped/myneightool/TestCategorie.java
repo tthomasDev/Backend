@@ -120,7 +120,7 @@ public class TestCategorie {
 			}
 			
 			
-			Assert.assertTrue( dto.getListeCategories().size() >= 0);
+			Assert.assertTrue( dto.getListeCategories().size() > 0);
 			LOG.info("\n\n\n");
 		}
 		catch(final RuntimeException r){
