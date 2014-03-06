@@ -116,4 +116,4 @@
 </div>
 
 <div id="paginator"></div>
-<input id="paginatorNbElements" type="hidden" value="5" readonly="readonly" />
+<input id="paginatorNbElements" type="hidden" value="5" readonly="readonly"/>
