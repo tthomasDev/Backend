@@ -20,6 +20,7 @@
  		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	    <script src="./dist/js/bootstrap.min.js"></script>
 	    <script src="./dist/js/paginate.js"></script>
+	    <script src="./dist/js/reorder.js"></script>
 	    <script type="text/javascript">
 			$(document).ready(function() {
 		    	$(".ttipl").tooltip({placement: "left",container: 'body'});

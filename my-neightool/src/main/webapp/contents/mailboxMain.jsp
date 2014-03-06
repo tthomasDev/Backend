@@ -118,10 +118,10 @@ $(function(){
 				</td>
 				<td class="perfectCenter">
 					<div class="btn-group">
-						<a id="isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipb btn btn-default" title="Répondre à l'expéditeur">
+						<a id="isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipt btn btn-default" title="Répondre à l'expéditeur">
 							<span class="glyphicon glyphicon-envelope"></span>
 						</a>
-						<a href="dashboard.jsp?page=mailbox&del=<%=m.getId()%>" class="ttipb btn btn-default" title="Supprimer le message">
+						<a href="dashboard.jsp?page=mailbox&del=<%=m.getId()%>" class="ttipt btn btn-default" title="Supprimer le message">
 							<span class="glyphicon glyphicon-remove"></span>
 						</a>
 					</div>
