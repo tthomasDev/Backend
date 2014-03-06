@@ -50,10 +50,13 @@
 			if(categoriesDto.size()>0)
 			{
 				list=true;
+				System.out.println("LISTE TRUE");
 			}
 			else
 			{
 				list=false;	
+				System.out.println("LISTE FALSE");
+				
 			}
 			
 			messageValue = "La liste a bien été récupérée";

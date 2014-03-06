@@ -64,8 +64,9 @@ public class ServiceCategorie {
 	@GET
 	@Path("/list")
 	@Produces("application/xml")
-	public CategoriesDTO getAllTools() {
+	public CategoriesDTO getAllCategories() {
 		CategoriesDTO categories = new CategoriesDTO();
+		
 		try {
 			categories = categorieDAO.findAll();
 		} catch (Exception e) {

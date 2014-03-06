@@ -1,5 +1,7 @@
 package com.ped.myneightool;
 
+import java.util.Iterator;
+
 import javax.xml.bind.JAXBContext;
 
 import org.junit.Assert;
@@ -88,6 +90,41 @@ public class TestCategorie {
 		}
 		catch(final RuntimeException r){
 			LOG.error("testGetUser failed",r);
+			throw r;
+		}
+	}
+	
+	
+	
+	/**
+	 * test unitaire pour obtenir la liste des Categories
+	 */
+	@Test
+	public final void testGetAllCategories() {
+		try{
+			
+			CategoriesDTO dto =(CategoriesDTO) crb.httpGetRequestWithoutArgument("categorie/list");
+			
+			LOG.info("\n\n\n");
+			LOG.info("taille liste Categories:" +dto.size());
+			LOG.info("\n\n\n");
+			
+			LOG.info("liste des categories:\n");
+			
+			Iterator<Categorie> ito=dto.getListeCategories().iterator();
+			while(ito.hasNext()){
+				
+				final Categorie categorie = ito.next();
+				LOG.info(categorie.getId()+" "+categorie.getNom());
+				
+			}
+			
+			
+			Assert.assertTrue( dto.getListeCategories().size() >= 0);
+			LOG.info("\n\n\n");
+		}
+		catch(final RuntimeException r){
+			LOG.error("getAllCategories failed",r);
 			throw r;
 		}
 	}

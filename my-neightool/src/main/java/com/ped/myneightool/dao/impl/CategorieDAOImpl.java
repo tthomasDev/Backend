@@ -75,7 +75,7 @@ public class CategorieDAOImpl extends GenericDAOImpl implements ItfCategorieDAO 
 	
 	@Override
 	public CategoriesDTO findAll() {
-		LOG.info("find all outils");
+		LOG.info("find all categories");
 		List<Categorie> res = new ArrayList<Categorie>();
 				
 		final EntityManager em = createEntityManager();
@@ -86,13 +86,14 @@ public class CategorieDAOImpl extends GenericDAOImpl implements ItfCategorieDAO 
 			tx.begin();
 			res = TypeSafetyChecking.castList(Categorie.class, em.createQuery("SELECT p FROM CATEGORIE p ORDER BY p.id DESC").getResultList());
 			tx.commit();
-			LOG.debug("recherche de tous les categories réussis, taille du résultat :"+res.size());
+			LOG.debug("\n \n AFFICHAGE 2 !!!");
+			LOG.debug("recherche de toutes les categories réussis, taille du résultat :"+res.size());
 		}
 		catch(final RuntimeException re){
 			
 		}
 		
-		Set<Categorie> set = new HashSet<Categorie>(res);
+		List<Categorie> set = new ArrayList<Categorie>(res);
 		CategoriesDTO odto= new CategoriesDTO();
 		odto.setListeCategories(set);
 		return odto;
