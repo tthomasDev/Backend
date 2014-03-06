@@ -55,8 +55,6 @@ if(request.getParameter("firstname") != null) {
 	showAlertMessage = true;
 	
 	boolean correctLN = (request.getParameter("lastname")).matches("[a-zA-Zιθο-]*");
-	System.out.println(request.getParameter("lastname").matches("[a-zA-Zιθο-]*"));
-	System.out.println("Prout".matches("[a-zA-Z]*"));
 	boolean correctFN = (request.getParameter("firstname")).matches("[a-zA-Zιθο-]*");	
 	boolean correctTel = (request.getParameter("telephone")).matches("[0-9]{10}");
 	

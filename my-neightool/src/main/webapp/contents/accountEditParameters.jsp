@@ -110,6 +110,11 @@ if(request.getParameter("oldPassword") != null) {
 		if(newPass.equals(confirmNewPass)){
 			utilisateurGet.getConnexion().setPassword(confirmNewPass);
 		}
+		else
+		{
+			alertMessage = "<i class='glyphicon glyphicon-ok'></i> Vous n'avez pas confirmé votre nouveau mot de passe correctement.";
+			alertType = "danger";
+		}
 	}
 	
 	
@@ -256,7 +261,7 @@ if(request.getParameter("deleteAccount") != null) {
 	<div class="row">
 		<div class="col-md-6">
 			Nom d'utilisateur :<br />
-			<input type="text" placeholder="Nom d'utilisateur" value="<%=username%>" id="username" name="username" class="form-control" required="required" /><br />
+			<input type="text" placeholder="Nom d'utilisateur" value="<%=username%>" id="username" name="username" maxlength="20" class="form-control" required="required" /><br />
 		</div>
 	</div>
 	<div class="row">
