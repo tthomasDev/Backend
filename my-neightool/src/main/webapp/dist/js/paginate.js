@@ -25,7 +25,7 @@ function changePage(index, nbElements) {
 }
 
 $(function() {
-	var nbElements = 10;
+	var nbElements = $("#paginatorNbElements").val();
 	$(".toPaginate").hide();
 	
 	$("#paginator").html(function() {
