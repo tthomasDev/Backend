@@ -50,66 +50,96 @@ try {
 
 
 if(request.getParameter("firstname") != null) {
+	
+	
 	showAlertMessage = true;
-	alertMessage = "<i class='glyphicon glyphicon-ok'></i> Modifications enregistrées.";
-	alertType = "success";
 	
-		
-	utilisateurGet.setPrenom(request.getParameter("firstname"));
-	utilisateurGet.setNom(request.getParameter("lastname"));
-	//Formatage de la date
-	String m = request.getParameter("month");
-	String day = request.getParameter("day");
-	String y = request.getParameter("year");
-	String target = day + "-" + m + "-" + y;
-	DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-	Date date2 = df.parse(target);
-	utilisateurGet.setDateDeNaissance(date2);
-	utilisateurGet.setTelephone(request.getParameter("telephone"));
-	utilisateurGet.getAdresse().setadresseComplete(request.getParameter("location"));
+	boolean correctLN = (request.getParameter("lastname")).matches("[a-zA-Zéèï-]*");
+	System.out.println(request.getParameter("lastname").matches("[a-zA-Zéèï-]*"));
+	System.out.println("Prout".matches("[a-zA-Z]*"));
+	boolean correctFN = (request.getParameter("firstname")).matches("[a-zA-Zéèï-]*");	
+	boolean correctTel = (request.getParameter("telephone")).matches("[0-9]{10}");
 	
-	
-	Utilisateur utilisateurGet2 = new Utilisateur();
-	try {
+	if ( correctLN && correctFN && correctTel )
+		{
 		
-		// marshalling/serialisation pour l'envoyer avec une requete post
-		final Marshaller marshaller = jaxbc.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-		final java.io.StringWriter sw = new StringWriter();
-		marshaller.marshal(utilisateurGet, sw);
-					
+		alertMessage = "<i class='glyphicon glyphicon-ok'></i> Modifications enregistrées.";
+		alertType = "success";
 		
-		final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
-		clientRequest2.body("application/xml", utilisateurGet );
+			
+		utilisateurGet.setPrenom(request.getParameter("firstname"));
+		utilisateurGet.setNom(request.getParameter("lastname"));
+		//Formatage de la date
+		String m = request.getParameter("month");
+		String day = request.getParameter("day");
+		String y = request.getParameter("year");
+		String target = day + "-" + m + "-" + y;
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		Date date2 = df.parse(target);
+		utilisateurGet.setDateDeNaissance(date2);
+		utilisateurGet.setTelephone(request.getParameter("telephone"));
+		utilisateurGet.getAdresse().setadresseComplete(request.getParameter("location"));
 		
 		
-		final ClientResponse<String> clientResponse2 = clientRequest2.post(String.class);
-		
-		System.out.println("\n\n"+clientResponse2.getEntity()+"\n\n");
-		
-		if (clientResponse2.getStatus() == 200) { // ok !
+		Utilisateur utilisateurGet2 = new Utilisateur();
+		try {
+			
+			// marshalling/serialisation pour l'envoyer avec une requete post
+			final Marshaller marshaller = jaxbc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(utilisateurGet, sw);
 						
-			final Unmarshaller un = jaxbc.createUnmarshaller();
-			utilisateurGet2 = (Utilisateur) un.unmarshal(new StringReader(clientResponse2.getEntity()));
-						
+			
+			final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
+			clientRequest2.body("application/xml", utilisateurGet );
+			
+			
+			final ClientResponse<String> clientResponse2 = clientRequest2.post(String.class);
+			
+			System.out.println("\n\n"+clientResponse2.getEntity()+"\n\n");
+			
+			if (clientResponse2.getStatus() == 200) { // ok !
+							
+				final Unmarshaller un = jaxbc.createUnmarshaller();
+				utilisateurGet2 = (Utilisateur) un.unmarshal(new StringReader(clientResponse2.getEntity()));
+							
+			}
+		} catch (final Exception e) {
+			e.printStackTrace();
 		}
-	} catch (final Exception e) {
-		e.printStackTrace();
+		
+		
+		firstname=utilisateurGet2.getPrenom();
+		lastname = utilisateurGet2.getNom();
+		Date d =		utilisateurGet2.getDateDeNaissance();
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		bDay = c.get(Calendar.DAY_OF_MONTH);
+		bMonth = c.get(Calendar.MONTH);
+		bYear = c.get(Calendar.YEAR);
+		address = 		utilisateurGet2.getAdresse().getadresseComplete();
+		telephone = 	utilisateurGet2.getTelephone();
+		avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage();
+		
+		}
+	else {
+		if ( !correctFN )
+		{
+		alertMessage = "<i class='glyphicon glyphicon-remove'></i> Votre prénom est incorrecte.";
+		alertType = "danger";
+		}
+		if ( !correctLN )
+		{
+		alertMessage = "<i class='glyphicon glyphicon-remove'></i> Votre nom est incorrecte.";
+		alertType = "danger";
+		}
+		if ( !correctTel )
+		{
+		alertMessage = "<i class='glyphicon glyphicon-remove'></i> Le numéro de téléphone doit contenir 10 chiffres.";
+		alertType = "danger";
+		}
 	}
-	
-	
-	firstname=utilisateurGet2.getPrenom();
-	lastname = utilisateurGet2.getNom();
-	Date d =		utilisateurGet2.getDateDeNaissance();
-	Calendar c = Calendar.getInstance();
-	c.setTime(d);
-	bDay = c.get(Calendar.DAY_OF_MONTH);
-	bMonth = c.get(Calendar.MONTH);
-	bYear = c.get(Calendar.YEAR);
-	address = 		utilisateurGet2.getAdresse().getadresseComplete();
-	telephone = 	utilisateurGet2.getTelephone();
-	avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage();
-	
 	
 } else {
 						
@@ -142,11 +172,11 @@ if(request.getParameter("firstname") != null) {
 	<div class="row">
 		<div class="col-md-4">
 			Nom :<br />
-			<input type="text" placeholder="Nom" value="<%=firstname%>" id="firstname" name="firstname" class="form-control" required="required" />
+			<input type="text" placeholder="Nom" value="<%=firstname%>" id="firstname" maxlength="20" name="firstname" class="form-control" required="required" />
 		</div>
 		<div class="col-md-4">
 			Prénom :<br />
-			<input type="text" placeholder="Prénom" value="<%=lastname%>" id="lastname" name="lastname" class="form-control" required="required" />
+			<input type="text" placeholder="Prénom" value="<%=lastname%>" id="lastname" maxlength="20" name="lastname" class="form-control" required="required" />
 		</div>
 	</div>
 	<div class="row">
