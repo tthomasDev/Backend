@@ -101,7 +101,7 @@
 				</thead>
 				<tbody>
 					<% for (Outil t : outilsDto.getListeOutils()) { %>
-					<tr style="vertical-align: middle;">
+					<tr style="vertical-align: middle;" class="toPaginate">
 						<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
 						<td style="vertical-align: middle;"><strong><a
 								href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
@@ -112,19 +112,8 @@
 				</tbody>
 			</table>
 		</div>
-	
-		<div class="row">
-			<div class="col-md-12" style="text-align: center;">
-				<ul class="pagination">
-					<li><a href="#">&laquo;</a></li>
-					<li><a href="#">1</a></li>
-					<!-- <li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li> -->
-					<li><a href="#">&raquo;</a></li>
-				</ul>
-			</div>
-		</div>
 	</div>
 </div>
+
+<div id="paginator"></div>
+<input id="paginatorNbElements" type="hidden" value="5" readonly="readonly" />
