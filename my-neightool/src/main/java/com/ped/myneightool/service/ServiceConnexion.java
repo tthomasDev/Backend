@@ -1,5 +1,6 @@
 package com.ped.myneightool.service;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -26,6 +27,7 @@ public class ServiceConnexion {
 
 	}
 
+	@RolesAllowed("USER")
 	@POST
 	@Path("/try")
 	@Consumes("application/xml")

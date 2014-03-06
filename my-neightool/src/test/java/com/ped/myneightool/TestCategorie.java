@@ -1,8 +1,5 @@
 package com.ped.myneightool;
 
-import java.util.Date;
-import java.util.Iterator;
-
 import javax.xml.bind.JAXBContext;
 
 import org.junit.Assert;
@@ -13,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import com.ped.myneightool.dto.CategoriesDTO;
 import com.ped.myneightool.dto.UtilisateursDTO;
 import com.ped.myneightool.model.Adresse;
-import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Categorie;
+import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Utilisateur;
 
 

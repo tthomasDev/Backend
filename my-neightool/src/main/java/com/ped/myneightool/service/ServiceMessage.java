@@ -1,5 +1,6 @@
 package com.ped.myneightool.service;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,7 +19,7 @@ import com.ped.myneightool.dto.MessagesDTO;
 import com.ped.myneightool.model.Message;
 
 
-
+@PermitAll
 @Path("/message")
 public class ServiceMessage {
 

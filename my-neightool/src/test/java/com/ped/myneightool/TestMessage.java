@@ -90,13 +90,14 @@ public class TestMessage {
 
 		try{
 			
-			
-			final Utilisateur utilisateur= new Utilisateur("JeanEmetteurGet","DucheminEmetteurGet");
+			Connexion co = new Connexion("totdsqdo","titi");
+			Connexion co3 = new Connexion("totgfddsqdo","titi");
+			final Utilisateur utilisateur= new Utilisateur("JeanEmetteurGet","DucheminEmetteurGet",co);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			
 			
-			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataireGet","DucheminDestinataireGet");
+			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataireGet","DucheminDestinataireGet",co3);
 			final Utilisateur utilisateurPost2 = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
 						
 			final Date d = new Date();
@@ -131,13 +132,14 @@ public class TestMessage {
 	@Test
 	public void testDeleteMessage() {
 		try {
-			
-			final Utilisateur utilisateur= new Utilisateur("JeanEmetteur","DucheminEmetteur");
+			Connexion co = new Connexion("totdsaaaaqdo","titi");
+			Connexion co3 = new Connexion("totgaaaaaafddsqdo","titi");
+			final Utilisateur utilisateur= new Utilisateur("JeanEmetteur","DucheminEmetteur",co);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			
 			
-			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire");
+			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire",co3);
 			final Utilisateur utilisateurPost2 = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
 						
 			final Date d = new Date();
@@ -173,13 +175,17 @@ public class TestMessage {
 	@Test
 	public void testFindSendMessagesByUser(){
 		try{
-			final Utilisateur user1 = new Utilisateur("Toto","Titi");
+			Connexion c1=new Connexion("1","25");
+			Connexion c2=new Connexion("2","25");
+			Connexion c3=new Connexion("3","25");
+			Connexion c4=new Connexion("4","25");
+			final Utilisateur user1 = new Utilisateur("Toto","Titi",c1);
 			final Utilisateur user1Post= (Utilisateur) crb.httpRequestXMLBody(user1,"user/create");
-			final Utilisateur user2 = new Utilisateur("Momo","Mimi");
+			final Utilisateur user2 = new Utilisateur("Momo","Mimi",c2);
 			final Utilisateur user2Post= (Utilisateur) crb.httpRequestXMLBody(user2,"user/create");
-			final Utilisateur user3 = new Utilisateur("Momo","Mimi");
+			final Utilisateur user3 = new Utilisateur("Momo","Mimi",c3);
 			final Utilisateur user3Post= (Utilisateur) crb.httpRequestXMLBody(user3,"user/create");
-			final Utilisateur user4 = new Utilisateur("Momo","Mimi");
+			final Utilisateur user4 = new Utilisateur("Momo","Mimi",c4);
 			final Utilisateur user4Post= (Utilisateur) crb.httpRequestXMLBody(user4,"user/create");
 
 			final Date d= new Date();
@@ -233,13 +239,17 @@ public class TestMessage {
 	@Test
 	public void testFindReceiveMessagesByUser(){
 		try{
-			final Utilisateur user1 = new Utilisateur("Toto","Titi");
+			Connexion c1=new Connexion("10","25");
+			Connexion c2=new Connexion("20","25");
+			Connexion c3=new Connexion("30","25");
+			Connexion c4=new Connexion("40","25");
+			final Utilisateur user1 = new Utilisateur("Toto","Titi",c1);
 			final Utilisateur user1Post= (Utilisateur) crb.httpRequestXMLBody(user1,"user/create");
-			final Utilisateur user2 = new Utilisateur("Momo","Mimi");
+			final Utilisateur user2 = new Utilisateur("Momo","Mimi",c2);
 			final Utilisateur user2Post= (Utilisateur) crb.httpRequestXMLBody(user2,"user/create");
-			final Utilisateur user3 = new Utilisateur("Momo","Mimi");
+			final Utilisateur user3 = new Utilisateur("Momo","Mimi",c3);
 			final Utilisateur user3Post= (Utilisateur) crb.httpRequestXMLBody(user3,"user/create");
-			final Utilisateur user4 = new Utilisateur("Momo","Mimi");
+			final Utilisateur user4 = new Utilisateur("Momo","Mimi",c4);
 			final Utilisateur user4Post= (Utilisateur) crb.httpRequestXMLBody(user4,"user/create");
 
 			final Date d= new Date();

@@ -1,5 +1,6 @@
 package com.ped.myneightool.service;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,7 +18,7 @@ import com.ped.myneightool.dto.EmpruntsDTO;
 import com.ped.myneightool.model.Emprunt;
 
 
-
+@PermitAll
 @Path("/emprunt")
 public class ServiceEmprunt {
 

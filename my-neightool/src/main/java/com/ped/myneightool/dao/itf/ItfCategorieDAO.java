@@ -1,6 +1,5 @@
 package com.ped.myneightool.dao.itf;
 
-import com.ped.myneightool.dto.CategoriesDTO;
 import com.ped.myneightool.model.Categorie;
 
 public interface ItfCategorieDAO {

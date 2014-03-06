@@ -10,7 +10,7 @@
 
 <%@ page import="java.io.StringReader"%>
 <%@ page import="java.io.StringWriter"%>
-
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
@@ -19,6 +19,7 @@
 <%@ page import="model.Connexion"%>
 <%@ page import="model.Adresse"%>
 <%@ page import="model.SendMailTLS"%>
+
 
 <%
 boolean actionValid = false;
@@ -49,6 +50,15 @@ if(request.getParameter("attemp") != null){
 			/*On envoie la requete au webservice*/
 			final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/connection/try");
 			clientRequest.body("application/xml", sw.toString());
+							
+				
+			//CREDENTIALS		
+			String username = connexion.getLogin();
+			String password = connexion.getPassword();
+			String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+			clientRequest.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+			///////////////////
+			
 			
 			/*on récupère la réponse de la requete*/
 			final ClientResponse<String> clientResponse = clientRequest.post(String.class);

@@ -3,6 +3,7 @@ package com.ped.myneightool;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -10,12 +11,15 @@ import javax.xml.bind.Unmarshaller;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
+import com.ped.myneightool.model.Utilisateur;
+
 
 
 public class ClientRequestBuilder {
 	
 	
 	private JAXBContext jc;
+	private Utilisateur u;
 	
 	
 	public ClientRequestBuilder( JAXBContext jc){
@@ -34,7 +38,10 @@ public class ClientRequestBuilder {
 		this.jc = jc;
 	}
 
-
+	private static String base64Encode(String stringToEncode)
+	{
+		return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
+	}
 
 	/**
 	 * Requete POST XML
@@ -45,21 +52,28 @@ public class ClientRequestBuilder {
 	
 	public Object httpRequestXMLBody(Object o, String resourceURI) {
 		try {
-
-			
 			// marshalling/serialisation pour l'envoyer avec une requete post
 			final Marshaller marshaller = this.jc.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 			final java.io.StringWriter sw = new StringWriter();
 			marshaller.marshal(o, sw);
-						
+			
+									
 			
 			final ClientRequest request = new ClientRequest(
 					"http://localhost:8080/rest/" + resourceURI);
 
 			//request.accept("application/xml");
 			request.body("application/xml", o );
-			
+
+			if(o instanceof Utilisateur){
+				u = (Utilisateur) o;
+				String username = u.getConnexion().getLogin();
+				String password = u.getConnexion().getPassword();
+				String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+				request.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+			}
+						
 			
 			final ClientResponse<String> response = request.post(String.class);
 			

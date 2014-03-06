@@ -1,5 +1,7 @@
 package com.ped.myneightool.service;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -30,6 +32,7 @@ public class ServiceUtilisateur {
 
 	}
 
+	@RolesAllowed("USER")
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -44,6 +47,7 @@ public class ServiceUtilisateur {
 		return Response.ok(u).build();
 	}
 
+	@PermitAll
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
@@ -52,13 +56,16 @@ public class ServiceUtilisateur {
 		return Response.ok(u).build();
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/delete/{id}")
 	public void deleteUtilisateur(@PathParam("id") final int id) {
+		
 		final Utilisateur utilisateur = utilisateurDAO.findById(id);
 		utilisateurDAO.deleteUtilisateur(utilisateur);
 	}
 
+	@PermitAll
 	@GET
 	@Path("/{id}")
 	@Produces("application/xml")
@@ -67,6 +74,7 @@ public class ServiceUtilisateur {
 		return a;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/login/{login}")
 	@Produces("application/xml")
@@ -75,7 +83,7 @@ public class ServiceUtilisateur {
 		return a;
 	}
 
-	
+	@PermitAll
 	@GET
 	@Path("/list")
 	@Produces("application/xml")

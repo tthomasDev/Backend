@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dto.OutilsDTO;
+import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Outil;
 import com.ped.myneightool.model.Utilisateur;
 
@@ -36,7 +37,8 @@ public class TestOutil {
 	public static void setUp() throws Exception {
 		jaxbc=JAXBContext.newInstance(	Outil.class, 
 										OutilsDTO.class,
-										Utilisateur.class);
+										Utilisateur.class,
+										Connexion.class);
 		crb= new ClientRequestBuilder(jaxbc);
 	}
 		
@@ -46,7 +48,8 @@ public class TestOutil {
 	@Test
 	public void testCreateOutil() {
 		try {
-			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutil","nomCreateOutil");
+			Connexion co = new Connexion("laaaaabbbbbbbaodqsaqadaaasdqgb","psqdqassb");
+			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutil","nomCreateOutil",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			
@@ -68,7 +71,8 @@ public class TestOutil {
 	@Test
 	public void testCreateOutilWithAvailableDate() {
 		try {
-			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutilWithAvailableDate","nomCreateOutilWithAvailableDate");
+			Connexion co = new Connexion("laaaaaaodqsaqabbbbbdaaasdqgb","psqdqassb");
+			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutilWithAvailableDate","nomCreateOutilWithAvailableDate",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			final Date debutT = new Date(0);
@@ -94,8 +98,8 @@ public class TestOutil {
 	@Test
 	public final void testUpdateTool() {
 		try {
-			
-			final Utilisateur utilisateur= new Utilisateur("JeanUpdateTool","DucheminUpdateTool");
+			Connexion co = new Connexion("laaaaaaodqsaqadaaasdqgb","psqdqassb");
+			final Utilisateur utilisateur= new Utilisateur("JeanUpdateTool","DucheminUpdateTool",co);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			
@@ -125,7 +129,8 @@ public class TestOutil {
 	public final void testGetOutil() {
 
 		try{
-			final Utilisateur utilisateur= new Utilisateur("prenomGetOutil","nomGetOutil");
+			Connexion co = new Connexion("laaaaaoaaaaqsqdaaasdqgb","psqdqassb");
+			final Utilisateur utilisateur= new Utilisateur("prenomGetOutil","nomGetOutil",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			final Outil outil= new Outil(utilisateurPost,"RateauGet","savoir ratisserGET",true,"Jardinage",50);
@@ -164,7 +169,8 @@ public class TestOutil {
 	@Test
 	public void testDeleteOutil() {
 		try {
-			final Utilisateur utilisateur= new Utilisateur("prenomDeleteOutil","nomDeleteOutil");
+			Connexion co = new Connexion("lodaaaaqsqdaaasdqgb","psqdqassb");
+			final Utilisateur utilisateur= new Utilisateur("prenomDeleteOutil","nomDeleteOutil",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			
@@ -231,7 +237,8 @@ public class TestOutil {
 	@Test
 	public final void testGetAllOutilsAvailable() {
 		try{
-			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils");
+			Connexion co = new Connexion("loddsqqsdqgb","psqdqasdqssb");
+			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Rateau","savoir ratisser mais rateau pas disponible",false,"Jardinage",50), "tool/create");
@@ -270,7 +277,8 @@ public class TestOutil {
 	@Test
 	public final void testGetAllOutilsFromUser() {
 		try{
-			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils");
+			Connexion co = new Connexion("lodqsdqgb","psqdqassb");
+			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Rateau","savoir ratisser",true,"Jardinage",50), "tool/create");
@@ -311,7 +319,8 @@ public class TestOutil {
 	@Test
 	public final void testGetAllOutilsAvailableFromUser() {
 		try{
-			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils");
+			Connexion co = new Connexion("logb","passb");
+			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Rateau","savoir ratisser",true,"Jardinage",50), "tool/create");
@@ -354,7 +363,8 @@ public class TestOutil {
 
 		try {
 
-			final Utilisateur utilisateur= new Utilisateur("prenomAPICriteria","nomAPICriteria");
+			Connexion co = new Connexion("logbfsd","passbdfsfs");
+			final Utilisateur utilisateur= new Utilisateur("prenomAPICriteria","nomAPICriteria",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			Assert.assertNotSame(utilisateurPost, null);
 			

@@ -1,5 +1,6 @@
 package com.ped.myneightool.service;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,11 +14,10 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.impl.CategorieDAOImpl;
 import com.ped.myneightool.dao.itf.ItfCategorieDAO;
-import com.ped.myneightool.dto.CategoriesDTO;
 import com.ped.myneightool.model.Categorie;
 
 
-
+@PermitAll
 @Path("/categorie")
 public class ServiceCategorie {
 

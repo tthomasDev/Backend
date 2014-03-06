@@ -2,6 +2,7 @@ package com.ped.myneightool;
 
 import java.io.StringWriter;
 
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
@@ -43,6 +44,11 @@ public class TestConnexion {
 	 * test unitaire pour une bonne connexion
 	 */
 	
+	private static String base64Encode(String stringToEncode)
+	{
+		return DatatypeConverter.printBase64Binary(stringToEncode.getBytes());
+	}
+	
 	@Test
 	public final void testValidConnexion() {
 
@@ -62,6 +68,11 @@ public class TestConnexion {
 
 			final ClientRequest request = new ClientRequest("http://localhost:8080/rest/connection/try");
 			request.body("application/xml", sw.toString());
+			String username = connexionGet.getLogin();
+			String password = connexionGet.getPassword();
+			String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+			request.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+			
 			LOG.info(sw.toString());
 			final ClientResponse<String> response = request.post(String.class);
 
