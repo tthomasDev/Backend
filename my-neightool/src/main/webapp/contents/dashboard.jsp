@@ -37,16 +37,16 @@
 
 	//ici on va récuperer la réponse de la requete
 	try {
-		ClientRequest requestMessages;
-		requestMessages = new ClientRequest(
-				"http://localhost:8080/rest/message/list/receiveListByOrder/" + session.getAttribute("ID"));
-		requestMessages.accept("application/xml");
-		ClientResponse<String> responseMessages = requestMessages
+		ClientRequest requestCategories;
+		requestCategories = new ClientRequest(
+				"http://localhost:8080/rest/categorie/list/");
+		requestCategories.accept("application/xml");
+		ClientResponse<String> responseCategories = requestCategories
 				.get(String.class);
-		if (responseMessages.getStatus() == 200) {
+		if (responseCategories.getStatus() == 200) {
 			Unmarshaller un2 = jaxbc.createUnmarshaller();
 			categoriesDto = (CategoriesDTO) un2.unmarshal(new StringReader(
-					responseMessages.getEntity()));
+					responseCategories.getEntity()));
 			if(categoriesDto.size()>0)
 			{
 				list=true;
@@ -73,9 +73,12 @@
 				</ul>
 				<hr />
 				<ul class="nav nav-pills nav-stacked">
-				<%
+				<% System.out.println("AFFICHAGE : ");
 				if(list) {
-					for (Categorie c : categoriesDto.getListeCategories()) { %>
+					System.out.println("LISTE EXISTANTE");
+					for (Categorie c : categoriesDto.getListeCategories()) { 
+					System.out.println("UNE CAT !!");
+					%>
 					<li><a href="#"><%=c.getNom()%> <span class="badge pull-right">0</span></a></li>
 					<%
 					}
