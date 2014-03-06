@@ -21,8 +21,6 @@ OutilsDTO outilsDto = new OutilsDTO();
 
 String messageType = "";
 String messageValue = "";
-String imgCoche = "./dist/img/coche.jpg";
-String imgCroix = "./dist/img/croix.jpg";
 	
 /* Les vraies infos de l'utilisateur récupérés */
 JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
@@ -152,9 +150,9 @@ if(request.getParameter("userId") != null) {
 											<td style="vertical-align: middle; text-align: center;"><strong><%=t.getNom() %></strong><br />
 											<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() %></td>
 											<% if (t.isDisponible()) { %>
-												<td style="vertical-align: middle; text-align: center;"><img  width="20px" height="20px" src="<%=imgCoche%>" /></td>
+												<td style="vertical-align: middle; text-align: center;"><i class="glyphicon glyphicon-ok"></i></td>
 											<% } else { %>
-												<td style="vertical-align: middle; text-align: center;"><img  width="20px" height="20px" src="<%=imgCroix%>" /></td>
+												<td style="vertical-align: middle; text-align: center;"><i class="glyphicon glyphicon-remove"></i></td>
 											<% } %>
 										</tr>
 										<% } %>

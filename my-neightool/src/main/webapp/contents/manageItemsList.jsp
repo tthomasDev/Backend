@@ -106,7 +106,7 @@
 						<td style="vertical-align: middle;"><strong><a
 								href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 							<p><%=t.getDescription() %></p></td>
-						<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() %></td>
+						<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
 					</tr>
 					<% } %>
 				</tbody>
