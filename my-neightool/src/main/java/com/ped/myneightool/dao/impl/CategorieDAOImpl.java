@@ -1,11 +1,19 @@
 package com.ped.myneightool.dao.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
 import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfCategorieDAO;
+import com.ped.myneightool.dto.CategoriesDTO;
+import com.ped.myneightool.dto.CategoriesDTO;
+import com.ped.myneightool.model.Categorie;
 import com.ped.myneightool.model.Categorie;
 
 
@@ -64,4 +72,30 @@ public class CategorieDAOImpl extends GenericDAOImpl implements ItfCategorieDAO 
 		}
 		
 	}
+	
+	@Override
+	public CategoriesDTO findAll() {
+		LOG.info("find all outils");
+		List<Categorie> res = new ArrayList<Categorie>();
+				
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			res = TypeSafetyChecking.castList(Categorie.class, em.createQuery("SELECT p FROM CATEGORIE p ORDER BY p.id DESC").getResultList());
+			tx.commit();
+			LOG.debug("recherche de tous les categories réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		Set<Categorie> set = new HashSet<Categorie>(res);
+		CategoriesDTO odto= new CategoriesDTO();
+		odto.setListeCategories(set);
+		return odto;
+	}		
+	
 }

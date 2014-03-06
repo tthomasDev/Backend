@@ -23,7 +23,7 @@ public class Outil {
 	
 	private boolean disponible = true;
 	
-	private String categorie;
+	private Categorie categorie;
 	
 	private int caution;
 	
@@ -46,7 +46,7 @@ public class Outil {
 	}
 	
 	public Outil(Utilisateur utilisateur,String nom, String description,
-			boolean disponible, String categorie, int caution) {
+			boolean disponible, Categorie categorie, int caution) {
 				
 		this.utilisateur=utilisateur;
 		this.utilisateur.addOutil(this);
@@ -59,7 +59,7 @@ public class Outil {
 	}
 	
 	public Outil(Utilisateur utilisateur,String nom, String description,
-			boolean disponible, String categorie, int caution,
+			boolean disponible, Categorie categorie, int caution,
 			Date dateDebut,Date dateFin) {
 				
 		this.utilisateur=utilisateur;
@@ -75,7 +75,7 @@ public class Outil {
 	}
 	
 	public Outil(Utilisateur utilisateur,String nom, String description,
-			boolean disponible, String categorie, int caution,
+			boolean disponible, Categorie categorie, int caution,
 			Date dateDebut,Date dateFin, String cheminImage) {
 				
 		this.utilisateur=utilisateur;
@@ -166,11 +166,11 @@ public class Outil {
 	}
 
 	@XmlElement
-	public String getCategorie() {
+	public Categorie getCategorie() {
 		return categorie;
 	}
 
-	public void setCategorie(String categorie) {
+	public void setCategorie(Categorie categorie) {
 		this.categorie = categorie;
 	}
 

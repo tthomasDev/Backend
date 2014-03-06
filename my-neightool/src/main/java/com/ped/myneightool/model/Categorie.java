@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlRootElement(name = "outil")
+@XmlRootElement(name = "categorie")
 public class Categorie {
 	
 	@Id

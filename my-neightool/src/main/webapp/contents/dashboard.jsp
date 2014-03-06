@@ -1,15 +1,86 @@
-			<div class="col-md-3 well">
+<%@include file="../constantes.jsp"%>
+<%@ page import="java.util.Date"%>
+<%@ page import="java.util.Calendar"%>
+<%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.text.DateFormat"%>
+<%@ page import="java.sql.Timestamp"%>
+
+<%@ page import="javax.xml.bind.JAXBContext"%>
+<%@ page import="javax.xml.bind.Marshaller"%>
+<%@ page import="javax.xml.bind.Unmarshaller"%>
+
+<%@ page import="java.io.StringReader"%>
+<%@ page import="java.io.StringWriter"%>
+
+<%@ page import="org.jboss.resteasy.client.ClientRequest"%>
+<%@ page import="org.jboss.resteasy.client.ClientResponse"%>
+
+<%@ page import="model.Utilisateur"%>
+
+<%@ page import="com.ped.myneightool.model.Categorie"%>
+<%@ page import="com.ped.myneightool.dto.CategoriesDTO"%>
+
+
+<%
+	boolean actionValid = false;
+	String messageType = "";
+	String messageValue = "";
+	boolean list=false;
+
+	actionValid = true;
+
+	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
+	final JAXBContext jaxbc = JAXBContext.newInstance(CategoriesDTO.class);
+
+	// Le DTO des outils permettant de récupérer la liste des categories
+	CategoriesDTO categoriesDto = new CategoriesDTO();
+
+	//ici on va récuperer la réponse de la requete
+	try {
+		ClientRequest requestMessages;
+		requestMessages = new ClientRequest(
+				"http://localhost:8080/rest/message/list/receiveListByOrder/" + session.getAttribute("ID"));
+		requestMessages.accept("application/xml");
+		ClientResponse<String> responseMessages = requestMessages
+				.get(String.class);
+		if (responseMessages.getStatus() == 200) {
+			Unmarshaller un2 = jaxbc.createUnmarshaller();
+			categoriesDto = (CategoriesDTO) un2.unmarshal(new StringReader(
+					responseMessages.getEntity()));
+			if(categoriesDto.size()>0)
+			{
+				list=true;
+			}
+			else
+			{
+				list=false;	
+			}
+			
+			messageValue = "La liste a bien été récupérée";
+			messageType = "success";
+		} else {
+			messageValue = "Une erreur est survenue";
+			messageType = "danger";
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+		
+%>
+		<div class="col-md-3 well">
 				<ul class="nav nav-pills nav-stacked">
 					<li class="active"><a href="#">Objets populaires dans ma région</a></li>
 				</ul>
 				<hr />
 				<ul class="nav nav-pills nav-stacked">
-					<li><a href="#">Catégorie 1 <span class="badge pull-right">0</span></a></li>
-					<li><a href="#">Catégorie 2 <span class="badge pull-right">0</span></a></li>
-					<li><a href="#">Catégorie 3 <span class="badge pull-right">0</span></a></li>
-					<li><a href="#">Catégorie 4 <span class="badge pull-right">0</span></a></li>
-					<li><a href="#">Catégorie 5 <span class="badge pull-right">0</span></a></li>
-					<li><a href="#">Catégorie 6 <span class="badge pull-right">0</span></a></li>
+				<%
+				if(list) {
+					for (Categorie c : categoriesDto.getListeCategories()) { %>
+					<li><a href="#"><%=c.getNom()%> <span class="badge pull-right">0</span></a></li>
+					<%
+					}
+				}
+				%>
 				</ul>
 			</div> 
 			<div class="col-md-9">

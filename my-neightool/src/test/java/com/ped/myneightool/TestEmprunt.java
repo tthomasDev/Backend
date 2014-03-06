@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import com.ped.myneightool.model.Categorie;
 import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Emprunt;
 import com.ped.myneightool.model.Outil;
@@ -19,7 +20,10 @@ import com.ped.myneightool.model.Utilisateur;
 
 
 public class TestEmprunt {
-
+	
+	public Categorie cat1= new Categorie("Jardin");
+	public Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+	
 	private static final org.slf4j.Logger LOG = LoggerFactory
 			.getLogger(TestEmprunt.class);
 
@@ -52,7 +56,7 @@ public class TestEmprunt {
 			final Utilisateur u = new Utilisateur("userPrenomEmprunt","userNomEmprunt",connexion);
 			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
 		
-			final Outil o= new Outil(uPost,"RateauTestEmprunt","savoir ratisser",true,"Jardinage",50);
+			final Outil o= new Outil(uPost,"RateauTestEmprunt","savoir ratisser",true,cat,50);
 			final Outil oPost=(Outil) crb.httpRequestXMLBody(o, "tool/create");
 					
 			
@@ -79,7 +83,7 @@ public class TestEmprunt {
 			final Utilisateur u = new Utilisateur("userPrenomEmpruntDate","userNomEmpruntDate",connexion);
 			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
 		
-			final Outil o= new Outil(uPost,"RateauTestEmpruntDate","savoir ratisser",true,"Jardinage",50);
+			final Outil o= new Outil(uPost,"RateauTestEmpruntDate","savoir ratisser",true,cat,50);
 			final Outil oPost=(Outil) crb.httpRequestXMLBody(o, "tool/create");
 			
 						

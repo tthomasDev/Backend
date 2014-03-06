@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.impl.CategorieDAOImpl;
 import com.ped.myneightool.dao.itf.ItfCategorieDAO;
+import com.ped.myneightool.dto.CategoriesDTO;
 import com.ped.myneightool.model.Categorie;
 
 
@@ -59,5 +60,19 @@ public class ServiceCategorie {
 		return c;
 	}
 	
-		
+	
+	@GET
+	@Path("/list")
+	@Produces("application/xml")
+	public CategoriesDTO getAllTools() {
+		CategoriesDTO categories = new CategoriesDTO();
+		try {
+			categories = categorieDAO.findAll();
+		} catch (Exception e) {
+			LOG.error("erreur service /list");
+			e.printStackTrace();
+		}
+		return categories;
+
+	}
 }
