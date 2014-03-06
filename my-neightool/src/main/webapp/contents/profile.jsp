@@ -146,9 +146,9 @@ if(request.getParameter("userId") != null) {
 									</thead>
 									<tbody>
 										<% for (Outil t : outilsDto.getListeOutils()) { %>
-										<tr style="vertical-align: middle;">
+										<tr style="vertical-align: middle;" class="toPaginate">
 											<td style="vertical-align: middle; text-align: center;"><strong><%=t.getNom() %></strong><br />
-											<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() %></td>
+											<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " " %><i class="glyphicon glyphicon-euro"></i></td>
 											<% if (t.isDisponible()) { %>
 												<td style="vertical-align: middle; text-align: center;"><i class="glyphicon glyphicon-ok"></i></td>
 											<% } else { %>
@@ -159,6 +159,8 @@ if(request.getParameter("userId") != null) {
 									</tbody>
 								</table>
 							</div>
+							<div id="paginator"></div>
+							<input id="paginatorNbElements" type="hidden" value="5" readonly="readonly"/>
 							<% } %>
 					</div>
 				</div>
