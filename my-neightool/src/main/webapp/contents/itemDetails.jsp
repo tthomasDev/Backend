@@ -98,7 +98,7 @@ if(request.getParameter("id") != null) {
 		itemName = outil.getNom();
 		itemVendor = user.getPrenom() + " " + user.getNom();
 		itemDescription = outil.getDescription();
-		itemCategory = outil.getCategorie();
+		itemCategory = outil.getCategorie().getName();
 		itemPath = outil.getCheminImage();
 		
 		// ID utilisateur

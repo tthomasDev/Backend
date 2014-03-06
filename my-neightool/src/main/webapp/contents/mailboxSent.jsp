@@ -92,7 +92,7 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		<% if(list)
 			{
 				for (Message m : messagesDto.getListeMessages()) { %>
-				<tr style="vertical-align: middle;">
+				<tr style="vertical-align: middle;" class="toPaginate">
 				<td class="perfectCenter"><%=m.getDestinataire().getConnexion().getLogin()%></td>
 				<td class="perfectCenter"><strong><a
 						data-toggle="collapse" data-parent="#accordion"
@@ -107,14 +107,9 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 				%>				
 				</td>
 				<td class="perfectCenter">
-					<div class="btn-group">
-						<button type="button" class="btn btn-default">
-							<span class="glyphicon glyphicon-envelope"></span>
-						</button>
-						<button type="button" class="btn btn-default">
-							<span class="glyphicon glyphicon-remove"></span>
-						</button>
-					</div>
+					<button type="button" class="btn btn-default ttipt" title="Supprimer ce message">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
 				</td>
 			</tr>
 	 	<%		}
@@ -128,12 +123,5 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 	</table>
 </div>
 
-<div class="row">
-	<div class="col-md-12" style="text-align: center;">
-		<ul class="pagination">
-			<li><a href="#">&laquo;</a></li>
-			<li><a href="#">1</a></li>
-			<li><a href="#">&raquo;</a></li>
-		</ul>
-	</div>
-</div>
+<div id="paginator"></div>
+<input id="paginatorNbElements" type="hidden" value="10" readonly="readonly" />
