@@ -91,12 +91,12 @@
 		</ol>
 	
 		<div class="table-responsive">
-			<table class="table table-hover">
+			<table class="table table-hover" id="toReorder">
 				<thead>
 					<tr>
 						<th style="text-align: center;" width="140px">Photo</th>
 						<th style="text-align: center;" width="80%">Description</th>
-						<th style="text-align: center;" width="20%">Caution</th>
+						<th style="text-align: center;" width="20%">Caution  <span class="reorderer" name="caution"></span></th>
 					</tr>
 				</thead>
 				<tbody>

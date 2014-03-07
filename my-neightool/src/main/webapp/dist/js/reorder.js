@@ -19,17 +19,21 @@ function reorderBy(sens, col) {
 	var i = 0;
 	var tmp;
 	$("#toReorder").find("tbody").find("tr").each(function() {
+		$(this).fadeOut("slow");
 		tmp = $(this).attr('id');
 		$(this).find('.reorderable').each(function() {
 			order[i] = [parseInt(tmp.split("row")[1],10), splitCol(col,$(this).html())];
 			i++;
 		});
 	});
+	var nbCol = $("toReorder").find("tr:first td");
+	$("#toReorder").find("tbody").fadeIn("slow", function() {
+		$("#toReorder").find("tbody").html("<tr><td colspan='" + nbCol.length + "' class='perfectCenter'><img src='dist/img/ajax-loader.gif' alt='' /></td></tr>");
+	});
 	order = sorter(order,sens,col);
-	console.log(order);
 	$("#toReorder").find("tbody").html("");
 	for(i = 0; i < order.length; i++) {
-		$("#toReorder").find("tbody").append(store[order[i][0]]);
+		$("#toReorder").find("tbody").append(store[order[i][0]]).fadeIn("slow");
 	}
 	if($("#paginatorNbElements").length>0) {
 		changePage(0,$("#paginatorNbElements").val());
@@ -48,8 +52,7 @@ function sorter(arrayToSort, sens, colName) {
 			return arrayToSort.sort(function(a, b) { return a[1]-b[1] });
 		else
 			return arrayToSort.sort(function(a, b) { return b[1]-a[1] });
-	}
-			
+	}	
 }
 
 function splitCol(colName, colContent) {

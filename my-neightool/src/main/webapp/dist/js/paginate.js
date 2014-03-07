@@ -5,7 +5,9 @@
  * Il est nécessaire de charger l'intégralité des éléments à paginer.
  */
 
+// Default values
 var previousPage = 0;
+var nbElements = $("#paginatorNbElements").val();
 
 function changePage(index, nbElements) {
 	var inc = 0;
@@ -22,6 +24,27 @@ function changePage(index, nbElements) {
 	$('#page'+previousPage).removeClass("active");
 	$('#page'+index).addClass("active");
 	previousPage = index;
+}
+
+function recalculateNbPage() {
+	$("#paginator").html(function() {
+		var count = 0;
+		$(".toPaginate").each(function() {count++});
+		var paginator = "";
+		if(count>0) {
+			count = count / nbElements;
+			paginator = "<div class='row'>" +
+				"<div class='col-md-12' style='text-align: center;'>" +
+					"<ul class='pagination'>" + 
+						"<li class='disabled'><a href='javascript:void(0);'>Page : </a></li>";
+			for(var i = 0; i < count; i++)
+				paginator += "<li id='page" + i + "'><a href='javascript:void(0);' onclick='changePage(" + i + ", "+ nbElements +");'>" + (i+1) + "</a></li>";
+			paginator += "</ul>" +
+				"</div>" +
+			"</div>";
+		}
+		return paginator;
+	});
 }
 
 $(function() {

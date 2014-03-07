@@ -72,17 +72,33 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 %>
 <script>
 $(function(){
+	var nbMessages = <%=messagesDto.size()%>;
+	
 	$(".answerBtn").click(function(e) {
 		var strTmp = this.id.split("answerName");
 		$("#userTo").val(strTmp[1]);
 		$('#newMessageModal').modal('show');
+	});
+	$('.delMessage').click(function() {
+		$(this).tooltip('hide');
+		$(this).closest('tr').fadeOut(400, function() {
+			nbMessages--;
+			$("#nbMessageInbox").html(nbMessages);
+			$(this).html("<td colspan='4' class='perfectCenter alert-success'>Message supprimé avec succès</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
+				$(this).remove();
+				if($("#paginatorNbElements").length>0) {
+					changePage(previousPage,$("#paginatorNbElements").val());
+					recalculateNbPage();
+				}
+			});
+		});
 	});
 });
 </script>
 
 <ol class="breadcrumb">
 	<li><a href="dashboard.jsp">Accueil</a></li>
-	<li class="active">Boite de réception (<%=messagesDto.size()%>/50 messages)</li>
+	<li class="active">Boite de réception (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/50 messages)</li>
 </ol>
 
 <div class="table-responsive">
@@ -91,7 +107,7 @@ $(function(){
 			<tr>
 				<th style="text-align: center;" width="20">Expéditeur</th>
 				<th style="text-align: center;" width="55%">Sujet</th>
-				<th style="text-align: center;" width="15%">Date <span class="reorderer" name="date"></span></th>
+				<th style="text-align: center;" width="15%">Date</th>
 				<th style="text-align: center;" width="15%">Actions</th>
 			</tr>
 		</thead>
@@ -103,9 +119,9 @@ $(function(){
 			for (Message m : messagesDto.getListeMessages()) { %>
 			<tr style="vertical-align: middle;" class="toPaginate">
 				<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
-				<td class="perfectCenter"><strong><a
+				<td class="perfectCenter"><a
 						data-toggle="collapse" data-parent="#accordion"
-						href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a></strong>
+						href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a>
 					<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
 						<hr />
 						<div style="text-align: justify !important"><%=m.getCorps()%></div>
@@ -121,7 +137,7 @@ $(function(){
 						<a id="isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipt btn btn-default" title="Répondre à l'expéditeur">
 							<span class="glyphicon glyphicon-envelope"></span>
 						</a>
-						<a href="dashboard.jsp?page=mailbox&del=<%=m.getId()%>" class="ttipt btn btn-default" title="Supprimer le message">
+						<a class="ttipt btn btn-default delMessage" title="Supprimer le message">
 							<span class="glyphicon glyphicon-remove"></span>
 						</a>
 					</div>
@@ -140,4 +156,4 @@ $(function(){
 </div>
 
 <div id="paginator"></div>
-<input id="paginatorNbElements" type="hidden" value="5" readonly="readonly" />
+<input id="paginatorNbElements" type="hidden" value="10" readonly="readonly" />
