@@ -15,25 +15,24 @@ public class Categorie {
 	private int id;
 	
 	
-	private String name;
+	private String nom;
 	
 	public Categorie(){
 		
 	}
 	
-	public Categorie(String name) {
-		super();
-		this.name = name;
+	public Categorie(String nom) {
+		this.nom = nom;
 	}
 
 
 	@XmlElement
-	public String getName() {
-		return name;
+	public String getNom() {
+		return nom;
 	}
 
-	public void setname(String name) {
-		this.name = name;
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 	
 	@XmlElement

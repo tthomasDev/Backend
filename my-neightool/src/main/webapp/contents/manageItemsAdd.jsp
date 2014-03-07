@@ -14,9 +14,9 @@
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
+<%@ page import="model.Categorie"%>
 <%@ page import="dto.CategoriesDTO"%>
 
-<%@ page import="model.Categorie"%>
 <%@ page import="model.Outil"%>
 <%@ page import="model.Utilisateur"%>
 
@@ -91,6 +91,7 @@
 		caution = 0;
 	}
 	
+	
 	// On parse l'ID de la catégorie
 	final int category_id = Integer.parseInt(category);
 	
@@ -153,8 +154,8 @@
 			e.printStackTrace();
 		}
 		
-		final Outil tool = new Outil(user, name, description, true, categorieRes, caution,
-		parsedDateD, parsedDateF, cheminImage);
+		final Outil tool = new Outil(user, name, description, true, categorieRes, caution, parsedDateD, parsedDateF, cheminImage);
+		//final Outil tool = new Outil();
 	
 		//ici il faut sérialiser l'outil
 		final Marshaller marshaller = jaxbc.createMarshaller();
@@ -249,9 +250,10 @@
 					<option value="optioncol-md-6 3">Categorie 3</option>
 					<option value="option4">Categorie 4</option> -->
 					<% for (Categorie c : categoriesDto.getListeCategories()) {
+						System.out.println("NOM de la CAT : "+c.getNom());
 						cpt++;
 					%>
-					<option value="option<%=cpt %>"><%=c.getId() %></option>
+					<option value="<%=c.getId()%>"><%=c.getNom()%></option>
 					<% } %>
 				</select> <br />
 			</div>
