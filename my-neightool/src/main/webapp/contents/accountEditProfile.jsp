@@ -16,6 +16,7 @@
 <%@ page import="model.Adresse"%>
 <%@ page import="java.text.DateFormat"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%
 
 
@@ -91,6 +92,13 @@ if(request.getParameter("firstname") != null) {
 			
 			final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
 			clientRequest2.body("application/xml", utilisateurGet );
+			
+			//CREDENTIALS		
+			String username = utilisateurGet.getConnexion().getLogin();
+			String password = utilisateurGet.getConnexion().getPassword();
+			String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+			clientRequest2.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+			///////////////////
 			
 			
 			final ClientResponse<String> clientResponse2 = clientRequest2.post(String.class);

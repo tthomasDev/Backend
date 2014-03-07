@@ -8,6 +8,7 @@
 <%@ page import="model.Utilisateur"%>
 <%@ page import="model.Connexion"%>
 <%@ page import="model.Adresse"%>
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%
 String username, email, password, alertMessage, alertType;
 boolean showAlertMessage = false;
@@ -42,6 +43,8 @@ if(request.getParameter("username") != null) {
 	alertMessage = "<i class='glyphicon glyphicon-ok'></i> Modifications enregistrées.";
 	alertType = "success";
 	
+	String currentLogin= utilisateurGet.getConnexion().getLogin();
+		
 	utilisateurGet.getConnexion().setLogin(request.getParameter("username"));
 	utilisateurGet.setMail(request.getParameter("email"));
 			
@@ -58,6 +61,13 @@ if(request.getParameter("username") != null) {
 		
 		final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
 		clientRequest2.body("application/xml", utilisateurGet );
+		
+		//CREDENTIALS		
+		String username2 = currentLogin;
+		String password2 = utilisateurGet.getConnexion().getPassword();
+		String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username2 + ":" + password2).getBytes());
+		clientRequest2.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+		///////////////////
 		
 		
 		final ClientResponse<String> clientResponse2 = clientRequest2.post(String.class);
@@ -131,6 +141,13 @@ if(request.getParameter("oldPassword") != null) {
 		final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
 		clientRequest2.body("application/xml", utilisateurGet );
 		
+		//CREDENTIALS		
+		String username2 = utilisateurGet.getConnexion().getLogin();
+		String password2 = utilisateurGet.getConnexion().getPassword();
+		String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username2 + ":" + password2).getBytes());
+		clientRequest2.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+		///////////////////
+		
 		
 		final ClientResponse<String> clientResponse2 = clientRequest2.post(String.class);
 		
@@ -169,6 +186,8 @@ if(request.getParameter("deleteAccount") != null) {
 	
 	try {
 		
+		String currentLog= utilisateurGet.getConnexion().getLogin();
+		String currentPass= utilisateurGet.getConnexion().getPassword();
 		
 		utilisateurGet.getAdresse().setadresseComplete("Compte inactif");
 		utilisateurGet.getAdresse().setcodePostale("Compte inactif");
@@ -181,7 +200,7 @@ if(request.getParameter("deleteAccount") != null) {
 		utilisateurGet.getConnexion().setLogin(null);
 		utilisateurGet.getConnexion().setPassword(null);
 		utilisateurGet.setDateDeNaissance(null);
-		utilisateurGet.setMail("Compte inactif");
+		utilisateurGet.setMail(null);
 		utilisateurGet.setNom("Compte inactif");
 		utilisateurGet.setPrenom("Compte inactif");
 		utilisateurGet.setTelephone("Compte inactif");
@@ -199,7 +218,12 @@ if(request.getParameter("deleteAccount") != null) {
 			
 			final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/user/update/");
 			clientRequest.body("application/xml", utilisateurGet );
-			
+			//CREDENTIALS		
+			String username2 = currentLog;
+			String password2 = currentPass;
+			String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username2 + ":" + password2).getBytes());
+			clientRequest.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+			///////////////////
 			
 			final ClientResponse<String> clientResponse = clientRequest.post(String.class);
 			

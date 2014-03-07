@@ -86,16 +86,41 @@ public class TestUtilisateur {
 	}
 	
 	/**
-	 * test unitaire création d'utilisateur sans adresse
+	 * test unitaire création d'utilisateur fonctionnel pour le frontend
 	 */
 	@Test
 	public void testCreateUserForFrontEnd() {
 		try {
-			final Connexion connexion = new Connexion("tthomas","olol");
+			final Connexion connexion = new Connexion("user","user");
 			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
 			final Date birthDate = new Date();
 			
-			final Utilisateur utilisateur= new Utilisateur("thibaut","thomas",connexion,"tthomas@gmail.com","0606060606",adresse,birthDate);
+			final Utilisateur utilisateur= new Utilisateur("user","user",connexion,"user@myneightool.com","0000000000",adresse,birthDate);
+			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
+			
+						
+			Assert.assertNotSame(utilisateurPost,null);
+			
+			
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'utilisateur", re);
+			throw re;
+		}
+	}
+	
+	
+	/**
+	 * test unitaire création d'utilisateur fonctionnel pour le frontend
+	 */
+	@Test
+	public void testCreateAdminForFrontEnd() {
+		try {
+			final Connexion connexion = new Connexion("admin","admin");
+			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Date birthDate = new Date();
+			
+			final Utilisateur utilisateur= new Utilisateur("admin","admin",connexion,"admin@myneightool.com","0000000000",adresse,birthDate);
+			utilisateur.setRole("ADMIN");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 						

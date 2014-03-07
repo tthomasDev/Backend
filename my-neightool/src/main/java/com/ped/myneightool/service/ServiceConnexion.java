@@ -27,7 +27,7 @@ public class ServiceConnexion {
 
 	}
 
-	@RolesAllowed("USER")
+	@RolesAllowed({"USER","ADMIN"})
 	@POST
 	@Path("/try")
 	@Consumes("application/xml")
