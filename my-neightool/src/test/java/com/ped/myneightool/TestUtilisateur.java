@@ -110,7 +110,7 @@ public class TestUtilisateur {
 	
 	
 	/**
-	 * test unitaire création d'utilisateur fonctionnel pour le frontend
+	 * test unitaire création d'un administrateur fonctionnel pour le frontend
 	 */
 	@Test
 	public void testCreateAdminForFrontEnd() {
@@ -266,8 +266,9 @@ public class TestUtilisateur {
 	public final void testDeleteUser() {
 
 		try{
-			final Connexion connexion = new Connexion("5loginDelete","passwordDelete");
+			final Connexion connexion = new Connexion("admin1","admin1");
 			final Utilisateur utilisateur= new Utilisateur("JeanDelete","DucheminDelete",connexion,"5jean-duchemin@gmail.com","0606060606");
+			utilisateur.setRole("ADMIN");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 					
 					
@@ -278,12 +279,13 @@ public class TestUtilisateur {
 			LOG.info("");
 			LOG.info("");
 					 
-			crb.httpGetRequest("user/delete", i);
+			crb.httpGetRequest("user/delete", i,utilisateurPost);
 					
 			
 			try{
 				final Utilisateur utilisateurGet = (Utilisateur) crb.httpGetRequest("user", i);
 				Assert.assertSame(utilisateurGet, null);
+				Assert.assertTrue(true);
 			}
 			catch(final RuntimeException r){
 				LOG.error("testDeleteOeuvre failed",r);

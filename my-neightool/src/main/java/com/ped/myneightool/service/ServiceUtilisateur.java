@@ -8,7 +8,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,9 @@ public class ServiceUtilisateur {
 			.getLogger(ServiceUtilisateur.class);
 	
 	private static ItfUtilisateurDAO utilisateurDAO = new UtilisateurDAOImpl();
+	
+	@Context
+	private SecurityContext security;
 
 	public ServiceUtilisateur() {
 
@@ -56,11 +61,11 @@ public class ServiceUtilisateur {
 		return Response.ok(u).build();
 	}
 	
-	@PermitAll
+	@RolesAllowed("ADMIN")
 	@GET
 	@Path("/delete/{id}")
 	public void deleteUtilisateur(@PathParam("id") final int id) {
-		
+					
 		final Utilisateur utilisateur = utilisateurDAO.findById(id);
 		utilisateurDAO.deleteUtilisateur(utilisateur);
 	}
