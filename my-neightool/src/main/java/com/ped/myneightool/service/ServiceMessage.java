@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.impl.MessageDAOImpl;
 import com.ped.myneightool.dao.itf.ItfMessageDAO;
-import com.ped.myneightool.dto.Messages;
 import com.ped.myneightool.dto.MessagesDTO;
 import com.ped.myneightool.model.Message;
 
@@ -86,8 +85,8 @@ public class ServiceMessage {
 	@GET
 	@Path("/list/sendListByOrder/{id}")
 	@Produces({ "application/xml", "application/json" })
-	public Messages findMessagesSendOfUserByList(@PathParam("id") final int UtilisateurId) {
-		Messages messages = messageDAO.findMessagesSendOfUserByList(UtilisateurId);
+	public MessagesDTO findMessagesSendOfUserByList(@PathParam("id") final int UtilisateurId) {
+		MessagesDTO messages = messageDAO.findMessagesSendOfUserByList(UtilisateurId);
 		return messages;
 	}
 	
@@ -104,8 +103,8 @@ public class ServiceMessage {
 	@GET
 	@Path("/list/receiveListByOrder/{id}")
 	@Produces({ "application/xml", "application/json" })
-	public Messages findMessagesReceiveOfUserByList(@PathParam("id") final int UtilisateurId) {
-		Messages messages = messageDAO.findMessagesReceiveOfUserByList(UtilisateurId);
+	public MessagesDTO findMessagesReceiveOfUserByList(@PathParam("id") final int UtilisateurId) {
+		MessagesDTO messages = messageDAO.findMessagesReceiveOfUserByList(UtilisateurId);
 		return messages;
 	}
 	

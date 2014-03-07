@@ -1,9 +1,7 @@
 package com.ped.myneightool.dao.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -12,7 +10,6 @@ import javax.persistence.Query;
 import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfMessageDAO;
-import com.ped.myneightool.dto.Messages;
 import com.ped.myneightool.dto.MessagesDTO;
 import com.ped.myneightool.model.Message;
 
@@ -111,7 +108,7 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 			
 		}
 		
-		Set<Message> set = new HashSet<Message>(res);
+		List<Message> set = new ArrayList<Message>(res);
 		MessagesDTO mdto= new MessagesDTO();
 		mdto.setListeMessages(set);
 		return mdto;
@@ -119,7 +116,7 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 
 	
 	@Override
-	public Messages findMessagesSendOfUserByList(int utilisateurId) {
+	public MessagesDTO findMessagesSendOfUserByList(int utilisateurId) {
 		LOG.info("find all messages send of user");
 		List<Message> res = new ArrayList<Message>();
 				
@@ -140,7 +137,7 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		}
 		
 		List<Message> set = new ArrayList<Message>(res);
-		Messages mdto= new Messages();
+		MessagesDTO mdto= new MessagesDTO();
 		mdto.setListeMessages(set);
 		return mdto;
 	}
@@ -168,14 +165,14 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 			
 		}
 		
-		Set<Message> set = new HashSet<Message>(res);
+		List<Message> set = new ArrayList<Message>(res);
 		MessagesDTO mdto= new MessagesDTO();
 		mdto.setListeMessages(set);
 		return mdto;
 		}
 
 	@Override
-	public Messages findMessagesReceiveOfUserByList(int utilisateurId) {
+	public MessagesDTO findMessagesReceiveOfUserByList(int utilisateurId) {
 		
 		LOG.info("find all messages receive of user");
 		List<Message> res = new ArrayList<Message>();
@@ -197,7 +194,7 @@ public class MessageDAOImpl extends GenericDAOImpl implements ItfMessageDAO {
 		}
 		
 		List<Message> set = new ArrayList<Message>(res);
-		Messages mdto= new Messages();
+		MessagesDTO mdto= new MessagesDTO();
 		mdto.setListeMessages(set);
 		return mdto;
 		}

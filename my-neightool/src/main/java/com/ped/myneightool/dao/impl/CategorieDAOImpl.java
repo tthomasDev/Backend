@@ -1,9 +1,7 @@
 package com.ped.myneightool.dao.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -12,8 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfCategorieDAO;
 import com.ped.myneightool.dto.CategoriesDTO;
-import com.ped.myneightool.dto.CategoriesDTO;
-import com.ped.myneightool.model.Categorie;
 import com.ped.myneightool.model.Categorie;
 
 
