@@ -1,7 +1,7 @@
 package dto;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,25 +10,27 @@ import model.Categorie;
 
 
 
+
+
 @XmlRootElement(name = "categoriesDTO")
 public class CategoriesDTO {
 	
-	protected Set<Categorie> categorie = new HashSet<Categorie>();
+	protected List<Categorie> categorie = new ArrayList<Categorie>();
 	
 	public CategoriesDTO(){
 		
 	}
 
 	@XmlElement(name ="categorie")
-	public Set<Categorie> getListeCategories() {
+	public List<Categorie> getListeCategories() {
 		return categorie;
 	}
 
-	public void setListeCategories(Set<Categorie> categorie) {
+	public void setListeCategories(List<Categorie> categorie) {
 		this.categorie = categorie;
 	}
 
 	public int size() {
 		return categorie.size();
-		}
+	}
 }

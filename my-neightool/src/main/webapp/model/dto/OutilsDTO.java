@@ -1,7 +1,7 @@
 package dto;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -9,16 +9,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 import model.Outil;
 
 
-
-
-
-
-
 @XmlRootElement(name = "outilsDTO")
 public class OutilsDTO {
 	
-	protected Set<Outil> outil = new HashSet<Outil>();
+	protected List<Outil> outil = new ArrayList<Outil>();
+		
+	public OutilsDTO(){
+		
+	}
+
+	@XmlElement(name ="outil")
+	public List<Outil> getListeOutils() {
+		return outil;
+	}
+
+	public void setListeOutils(List<Outil> outil) {
+		this.outil = outil;
+	}
+
+	public int size() {
+		return outil.size();
+	}
 	
+	/*
+	protected Set<Outil> outil = new HashSet<Outil>();
+		
 	public OutilsDTO(){
 		
 	}
@@ -34,5 +49,6 @@ public class OutilsDTO {
 
 	public int size() {
 		return outil.size();
-		}
+	}
+	*/
 }

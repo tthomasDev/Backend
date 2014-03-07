@@ -1,7 +1,9 @@
 package com.ped.myneightool.dto;
 
-import java.util.HashSet;
-import java.util.Set;
+
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,18 +17,18 @@ import com.ped.myneightool.model.Message;
 @XmlRootElement(name = "messagesDTO")
 public class MessagesDTO {
 	
-	protected Set<Message> message = new HashSet<Message>();
+	protected List<Message> message = new ArrayList<Message>();
 	
 	public MessagesDTO(){
 		
 	}
 
 	@XmlElement(name ="message")
-	public Set<Message> getListeMessages() {
+	public List<Message> getListeMessages() {
 		return message;
 	}
 
-	public void setListeMessages(Set<Message> message) {
+	public void setListeMessages(List<Message> message) {
 		this.message = message;
 	}
 

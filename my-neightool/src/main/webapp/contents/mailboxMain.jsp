@@ -17,8 +17,8 @@
 
 <%@ page import="model.Utilisateur"%>
 
-<%@ page import="com.ped.myneightool.model.Message"%>
-<%@ page import="com.ped.myneightool.dto.Messages"%>
+<%@ page import="model.Message"%>
+<%@ page import="dto.MessagesDTO"%>
 
 
 <%
@@ -30,10 +30,10 @@
 	actionValid = true;
 
 	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-	final JAXBContext jaxbc = JAXBContext.newInstance(Messages.class);
+	final JAXBContext jaxbc = JAXBContext.newInstance(MessagesDTO.class,Message.class);
 
 	// Le DTO des outils permettant de récupérer la liste d'outils
-	Messages messagesDto = new Messages();
+	MessagesDTO messagesDto = new MessagesDTO();
 
 	//ici on va récuperer la réponse de la requete
 	try {
@@ -45,7 +45,7 @@
 				.get(String.class);
 		if (responseMessages.getStatus() == 200) {
 			Unmarshaller un2 = jaxbc.createUnmarshaller();
-			messagesDto = (Messages) un2.unmarshal(new StringReader(
+			messagesDto = (MessagesDTO) un2.unmarshal(new StringReader(
 					responseMessages.getEntity()));
 			if(messagesDto.size()>0)
 			{

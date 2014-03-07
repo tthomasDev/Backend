@@ -1,6 +1,5 @@
 package com.ped.myneightool.dao.itf;
 
-import com.ped.myneightool.dto.Messages;
 import com.ped.myneightool.dto.MessagesDTO;
 import com.ped.myneightool.model.Message;
 
@@ -18,9 +17,9 @@ public interface ItfMessageDAO {
 
 	public abstract MessagesDTO findMessagesReceiveOfUser(int utilisateurId);
 
-	public abstract Messages findMessagesSendOfUserByList(int utilisateurId);
+	public abstract MessagesDTO findMessagesSendOfUserByList(int utilisateurId);
 
-	public abstract Messages findMessagesReceiveOfUserByList(int utilisateurId);
+	public abstract MessagesDTO findMessagesReceiveOfUserByList(int utilisateurId);
 	
 
 }

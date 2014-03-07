@@ -18,7 +18,7 @@ import com.ped.myneightool.dto.EmpruntsDTO;
 import com.ped.myneightool.model.Emprunt;
 
 
-@PermitAll
+
 @Path("/emprunt")
 public class ServiceEmprunt {
 
@@ -31,6 +31,7 @@ public class ServiceEmprunt {
 
 	}
 
+	@PermitAll
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -45,6 +46,7 @@ public class ServiceEmprunt {
 		return Response.ok(u).build();
 	}
 
+	@PermitAll
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
@@ -53,6 +55,7 @@ public class ServiceEmprunt {
 		return Response.ok(u).build();
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/delete/{id}")
 	public void deleteEmprunt(@PathParam("id") final int id) {
@@ -60,6 +63,7 @@ public class ServiceEmprunt {
 		empruntDAO.deleteEmprunt(emprunt);
 	}
 
+	@PermitAll
 	@GET
 	@Path("/{id}")
 	@Produces("application/xml")
@@ -68,6 +72,7 @@ public class ServiceEmprunt {
 		return a;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list")
 	@Produces("application/xml")
@@ -83,6 +88,7 @@ public class ServiceEmprunt {
 
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/user/{id}")
 	@Produces({ "application/xml", "application/json" })

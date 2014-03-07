@@ -24,6 +24,13 @@ import org.jboss.resteasy.spi.HttpRequest;
 import org.jboss.resteasy.spi.interception.PreProcessInterceptor;
 import org.jboss.resteasy.util.Base64;
 
+import com.ped.myneightool.dao.impl.ConnexionDAOImpl;
+import com.ped.myneightool.dao.impl.UtilisateurDAOImpl;
+import com.ped.myneightool.dao.itf.ItfConnexionDAO;
+import com.ped.myneightool.dao.itf.ItfUtilisateurDAO;
+import com.ped.myneightool.model.Connexion;
+import com.ped.myneightool.model.Utilisateur;
+
 /**
  * This interceptor verify the access permissions for a user 
  * based on username and passowrd provided in request
@@ -37,6 +44,10 @@ public class SecurityInterceptor implements PreProcessInterceptor
 	private static final ServerResponse ACCESS_DENIED = new ServerResponse("Access denied for this resource", 401, new Headers<Object>());;
 	private static final ServerResponse ACCESS_FORBIDDEN = new ServerResponse("Nobody can access this resource", 403, new Headers<Object>());;
 	private static final ServerResponse SERVER_ERROR = new ServerResponse("INTERNAL SERVER ERROR", 500, new Headers<Object>());;
+	
+	private static ItfConnexionDAO connexionDAOImpl = new ConnexionDAOImpl();
+	private static ItfUtilisateurDAO utilisateurDAO = new UtilisateurDAOImpl();
+
 	
 	@Override
 	public ServerResponse preProcess(HttpRequest request, ResourceMethod methodInvoked) throws Failure, WebApplicationException
@@ -65,8 +76,8 @@ public class SecurityInterceptor implements PreProcessInterceptor
 	    if(authorization == null || authorization.isEmpty())
 	    {
 	    	///A CHANGER POUR QUE CA MARCHE QUAND TOUTES LES REQUETES AURONT DES HEADERS ET TOUS LES WEBSERVICES AURONT LEUR ROLE
-	    	//return ACCESS_DENIED;
-	    	return null;
+	    	return ACCESS_DENIED;
+	    	//return null;
 	    }
 	    
 	    //Get encoded username and password
@@ -110,13 +121,22 @@ public class SecurityInterceptor implements PreProcessInterceptor
 	private boolean isUserAllowed(final String username, final String password,	final Set<String> rolesSet) 
 	{
 		boolean isAllowed = false;
+		String userRole="";
+		System.out.println("PRINTLN DU DEBUT DE BOUCLE de userRole :"+userRole);
 		
 		//Step 1. Fetch password from database and match with password in argument
 		//If both match then get the defined role for user from database and continue; else return isAllowed [false]
 		//Access the database and do this part yourself
 		//String userRole = userMgr.getUserRole(username);
+		Connexion c = new Connexion(username,password);
+		if(connexionDAOImpl.isValidConnection(c) !=null){
+			Utilisateur u = utilisateurDAO.findByLogin(username);
+			System.out.println(u);
+			userRole = u.getRole();
+			System.out.println("PRINTLN DANS LA BOUCLE de userRole :"+userRole);
+		}
+		System.out.println("PRINTLN APRES LA BOUCLE de userRole :"+userRole);
 		
-		String userRole = "USER";
 		
 		//Step 2. Verify user role
 		if(rolesSet.contains(userRole))

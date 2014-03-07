@@ -14,12 +14,11 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.impl.MessageDAOImpl;
 import com.ped.myneightool.dao.itf.ItfMessageDAO;
-import com.ped.myneightool.dto.Messages;
 import com.ped.myneightool.dto.MessagesDTO;
 import com.ped.myneightool.model.Message;
 
 
-@PermitAll
+
 @Path("/message")
 public class ServiceMessage {
 
@@ -32,6 +31,7 @@ public class ServiceMessage {
 
 	}
 
+	@PermitAll
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -46,6 +46,7 @@ public class ServiceMessage {
 		return Response.ok(u).build();
 	}
 
+	@PermitAll
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
@@ -54,6 +55,7 @@ public class ServiceMessage {
 		return Response.ok(u).build();
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/delete/{id}")
 	public void deleteMessage(@PathParam("id") final int id) {
@@ -61,6 +63,7 @@ public class ServiceMessage {
 		messageDAO.deleteMessage(Message);
 	}
 
+	@PermitAll
 	@GET
 	@Path("/{id}")
 	@Produces("application/xml")
@@ -69,6 +72,7 @@ public class ServiceMessage {
 		return a;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list/send/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -77,14 +81,16 @@ public class ServiceMessage {
 		return messages;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list/sendListByOrder/{id}")
 	@Produces({ "application/xml", "application/json" })
-	public Messages findMessagesSendOfUserByList(@PathParam("id") final int UtilisateurId) {
-		Messages messages = messageDAO.findMessagesSendOfUserByList(UtilisateurId);
+	public MessagesDTO findMessagesSendOfUserByList(@PathParam("id") final int UtilisateurId) {
+		MessagesDTO messages = messageDAO.findMessagesSendOfUserByList(UtilisateurId);
 		return messages;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list/receive/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -93,11 +99,12 @@ public class ServiceMessage {
 		return messages;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list/receiveListByOrder/{id}")
 	@Produces({ "application/xml", "application/json" })
-	public Messages findMessagesReceiveOfUserByList(@PathParam("id") final int UtilisateurId) {
-		Messages messages = messageDAO.findMessagesReceiveOfUserByList(UtilisateurId);
+	public MessagesDTO findMessagesReceiveOfUserByList(@PathParam("id") final int UtilisateurId) {
+		MessagesDTO messages = messageDAO.findMessagesReceiveOfUserByList(UtilisateurId);
 		return messages;
 	}
 	

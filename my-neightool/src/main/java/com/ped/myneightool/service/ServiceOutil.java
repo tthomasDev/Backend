@@ -18,7 +18,7 @@ import com.ped.myneightool.dto.OutilsDTO;
 import com.ped.myneightool.model.Outil;
 
 
-@PermitAll
+
 @Path("/tool")
 public class ServiceOutil {
 
@@ -31,6 +31,7 @@ public class ServiceOutil {
 
 	}
 
+	@PermitAll
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -45,6 +46,7 @@ public class ServiceOutil {
 		return Response.ok(o).build();
 	}
 
+	@PermitAll
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
@@ -53,6 +55,7 @@ public class ServiceOutil {
 		return Response.ok(o).build();
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/delete/{id}")
 	public void deleteOutil(@PathParam("id") final int id) {
@@ -60,6 +63,7 @@ public class ServiceOutil {
 		outilDAO.deleteOutil(o);
 	}
 
+	@PermitAll
 	@GET
 	@Path("/{id}")
 	@Produces("application/xml")
@@ -68,6 +72,7 @@ public class ServiceOutil {
 		return o;
 	}
 
+	@PermitAll
 	@GET
 	@Path("/list")
 	@Produces("application/xml")
@@ -83,6 +88,7 @@ public class ServiceOutil {
 
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list/available")
 	@Produces("application/xml")
@@ -98,6 +104,7 @@ public class ServiceOutil {
 
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/user/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -106,6 +113,7 @@ public class ServiceOutil {
 		return outils;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/user/available/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -114,6 +122,7 @@ public class ServiceOutil {
 		return outils;
 	}
 	
+	@PermitAll
 	@POST
 	@Path("/criteria")
 	@Produces("application/xml")
