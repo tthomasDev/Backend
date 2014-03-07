@@ -1,4 +1,19 @@
 <%@include file="../constantes.jsp" %>
+<%
+/* TODO */
+/* Service de gestion des nouveaux messages privés */
+int nbNewMessage = 0;
+String tooltip = "";
+
+if(nbNewMessage == 0)
+	tooltip = "Aucun nouveau message";
+else if(nbNewMessage == 1)
+	tooltip = "1 nouveau message dans votre boite de réception. Cliquez pour le consulter.";
+else if(nbNewMessage > 1)
+	tooltip = nbNewMessage + " nouveaux messages dans votre boite de réception. Cliquez pour les consulter.";
+
+%>
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -28,6 +43,9 @@
 		    	$(".ttipt").tooltip({placement: "top",container: 'body'});
 		    	$(".ttipb").tooltip({placement: "bottom",container: 'body'});
 		    	$(".popov").popover({html: true, placement: "bottom", trigger: "focus"});
+		    	<% if(nbNewMessage > 0) { %>
+		    	$('#messageReceivedModal').modal('show');
+		    	<% } %>
 		    });
 	    </script>
 	
@@ -61,10 +79,29 @@
 					<ul class="nav navbar-nav navbar-right" style="margin-right:2px;">
 	        			<li><a href="dashboard.jsp">Accueil</a></li>
 	        			<li><a href="dashboard.jsp?page=manageItems">Mes objets</a></li>
-	        			<li><a href="dashboard.jsp?page=mailbox">Mes messages <span class="badge">0</span></a></li>
+	        			<li class="ttipb" title="<%=tooltip%>"><a href="dashboard.jsp?page=mailbox">Mes messages <span class="badge"><%=nbNewMessage%></span></a></li>
         				<li><a href="dashboard.jsp?page=account">Mon compte</a></li>
         				<li><a href="index.jsp?attemp=0">Déconnexion</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
+		<% if(nbNewMessage > 0) { %>
+		<div class="modal fade" id="messageReceivedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Nouveau message</h4>
+					</div>
+					<div class="modal-body perfectCenter">
+						<div class="alert alert-info">Vous avez reçu un nouveau message privé dans votre messagerie.</div>
+					</div>
+					<div class="modal-footer">
+						<a class="btn btn-default" data-dismiss="modal">Fermer</a>
+						<a class="btn btn-info" href="dashboard.jsp?page=mailbox">Consulter</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<% } %>
