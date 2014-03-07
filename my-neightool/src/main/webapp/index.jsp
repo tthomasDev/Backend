@@ -96,7 +96,7 @@ if(request.getParameter("attemp") != null){
 			System.out.println("LAT : "+request.getParameter("lat"));
 			
 			//ici on va créer l'utilisateur avec les données rentrés dans le formulaire
-			final Adresse adresse = new Adresse(request.getParameter("location"), 0, 0);
+			final Adresse adresse = new Adresse(request.getParameter("location"), Float.valueOf(request.getParameter("lat")), Float.valueOf(request.getParameter("long")));
 			final Connexion connexion = new Connexion(request.getParameter("username"),request.getParameter("password"));
 			
 			//Formatage de la date
