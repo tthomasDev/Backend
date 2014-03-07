@@ -86,12 +86,12 @@ $(function(){
 </ol>
 
 <div class="table-responsive">
-	<table class="table table-hover">
+	<table class="table table-hover" id="toReorder">
 		<thead>
 			<tr>
-				<th style="text-align: center;" width="20">Expéditeur</th>
+				<th style="text-align: center;" width="20">Expéditeur <span class="reorderer" name="user"></span></th>
 				<th style="text-align: center;" width="55%">Sujet</th>
-				<th style="text-align: center;" width="15%">Date</th>
+				<th style="text-align: center;" width="15%">Date <span class="reorderer" name="date"></span></th>
 				<th style="text-align: center;" width="15%">Actions</th>
 			</tr>
 		</thead>
@@ -114,7 +114,7 @@ $(function(){
 				<%
 					String date = df.format(m.getDate());
 					out.print(date);
-				%>				
+				%>
 				</td>
 				<td class="perfectCenter">
 					<div class="btn-group">

@@ -7,6 +7,11 @@ $(function() {
 		store[nbRow] = [$(this)[0].outerHTML];
 		nbRow++;
 	});
+	
+	$(".reorderer").each(function() {
+		var tmp = $(this).attr('name');
+		$(this).html('<a href="javascript:void(0);" onclick="reorderBy(\'asc\',\'' + tmp + '\');"><span class="glyphicon glyphicon-chevron-up"></span></a><a href="javascript:void(0);" onclick="reorderBy(\'desc\',\''+ tmp +'\');"><span class="glyphicon glyphicon-chevron-down"></span></a>');
+	});
 });
 
 function reorderBy(sens, col) {
@@ -20,19 +25,40 @@ function reorderBy(sens, col) {
 			i++;
 		});
 	});
-	if(sens=="asc")
-		order = order.sort(function(a, b) { return a[1]-b[1] });
-	if(sens=="desc")
-		order = order.sort(function(a, b) { return b[1]-a[1] });
+	order = sorter(order,sens,col);
+	console.log(order);
 	$("#toReorder").find("tbody").html("");
 	for(i = 0; i < order.length; i++) {
 		$("#toReorder").find("tbody").append(store[order[i][0]]);
 	}
+	if($("#paginatorNbElements").length>0) {
+		changePage(0,$("#paginatorNbElements").val());
+	}
+}
+
+function sorter(arrayToSort, sens, colName) {
+	if(colName=="date") {
+		if(sens=="asc")
+			return arrayToSort.sort(function(a, b) { alert (new Date( a[1].text() ) < new Date( b[1].text() )) });
+		else
+			return arrayToSort.sort(function(a, b) { alert (new Date( a[1].text() ) > new Date( b[1].text() )) });
+	}
+	if(colName=="distance" || colName=="caution") {
+		if(sens=="asc")
+			return arrayToSort.sort(function(a, b) { return a[1]-b[1] });
+		else
+			return arrayToSort.sort(function(a, b) { return b[1]-a[1] });
+	}
+			
 }
 
 function splitCol(colName, colContent) {
 	if(colName=="distance")
 		return spliter(colContent," km", 0);
+	if(colName=="caution")
+		return spliter(colContent," euros", 0);
+	else
+		return colContent;
 }
 
 function spliter(word, needle, element) {
