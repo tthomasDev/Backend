@@ -128,8 +128,10 @@ if(request.getParameter("attemp") != null){
 			String numTel = request.getParameter("telephone");
 			boolean correctTel = numTel.matches("[0-9]{10}");
 			System.out.println("NUMERO DE TELEPHONE CORRECT : " + correctTel);
+			boolean correctLN = (request.getParameter("lastname")).matches("[a-zA-Zéèï-]*");
+			boolean correctFN = (request.getParameter("firstname")).matches("[a-zA-Zéèï-]*");
 			
-			if (correctTel && dateCorrecte){
+			if (correctTel && dateCorrecte && correctLN && correctFN){
 				final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),numTel,adresse,d);
 				System.out.println("test");
 				
@@ -183,6 +185,16 @@ if(request.getParameter("attemp") != null){
 			else if ( !dateCorrecte )
 			{
 				messageValue = "La date de naissance est incorrecte";
+				messageType = "danger";
+			}
+			else if ( !correctFN )
+			{
+				messageValue = "Prénom inccorect";
+				messageType = "danger";
+			}
+			else if ( !correctLN )
+			{
+				messageValue = "Nom incorrecte";
 				messageType = "danger";
 			}
 			
