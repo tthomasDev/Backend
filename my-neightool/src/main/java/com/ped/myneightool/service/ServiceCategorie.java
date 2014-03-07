@@ -18,7 +18,7 @@ import com.ped.myneightool.dto.CategoriesDTO;
 import com.ped.myneightool.model.Categorie;
 
 
-@PermitAll
+
 @Path("/categorie")
 public class ServiceCategorie {
 
@@ -31,6 +31,7 @@ public class ServiceCategorie {
 
 	}
 
+	@PermitAll
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -45,6 +46,7 @@ public class ServiceCategorie {
 		return Response.ok(c).build();
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/delete/{id}")
 	public void deleteCategorie(@PathParam("id") final int id) {
@@ -52,6 +54,7 @@ public class ServiceCategorie {
 		categorieDAO.deleteCategorie(categorie);
 	}
 
+	@PermitAll
 	@GET
 	@Path("/{id}")
 	@Produces("application/xml")
@@ -60,7 +63,7 @@ public class ServiceCategorie {
 		return c;
 	}
 	
-	
+	@PermitAll
 	@GET
 	@Path("/list")
 	@Produces("application/xml")

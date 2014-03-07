@@ -19,7 +19,7 @@ import com.ped.myneightool.dto.MessagesDTO;
 import com.ped.myneightool.model.Message;
 
 
-@PermitAll
+
 @Path("/message")
 public class ServiceMessage {
 
@@ -32,6 +32,7 @@ public class ServiceMessage {
 
 	}
 
+	@PermitAll
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -46,6 +47,7 @@ public class ServiceMessage {
 		return Response.ok(u).build();
 	}
 
+	@PermitAll
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
@@ -54,6 +56,7 @@ public class ServiceMessage {
 		return Response.ok(u).build();
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/delete/{id}")
 	public void deleteMessage(@PathParam("id") final int id) {
@@ -61,6 +64,7 @@ public class ServiceMessage {
 		messageDAO.deleteMessage(Message);
 	}
 
+	@PermitAll
 	@GET
 	@Path("/{id}")
 	@Produces("application/xml")
@@ -69,6 +73,7 @@ public class ServiceMessage {
 		return a;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list/send/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -77,6 +82,7 @@ public class ServiceMessage {
 		return messages;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list/sendListByOrder/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -85,6 +91,7 @@ public class ServiceMessage {
 		return messages;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list/receive/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -93,6 +100,7 @@ public class ServiceMessage {
 		return messages;
 	}
 	
+	@PermitAll
 	@GET
 	@Path("/list/receiveListByOrder/{id}")
 	@Produces({ "application/xml", "application/json" })

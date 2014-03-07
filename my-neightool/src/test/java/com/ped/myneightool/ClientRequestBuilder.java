@@ -73,6 +73,7 @@ public class ClientRequestBuilder {
 				String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
 				request.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
 			}
+			
 						
 			
 			final ClientResponse<String> response = request.post(String.class);

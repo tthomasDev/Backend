@@ -32,7 +32,7 @@ public class ServiceUtilisateur {
 
 	}
 
-	@RolesAllowed("USER")
+	@PermitAll
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -51,7 +51,7 @@ public class ServiceUtilisateur {
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
-	public Response updateOeuvre(final Utilisateur u) {
+	public Response updateUtilisateur(final Utilisateur u) {
 		utilisateurDAO.updateUtilisateur(u);
 		return Response.ok(u).build();
 	}
