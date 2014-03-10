@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dto.OutilsDTO;
+import com.ped.myneightool.model.Adresse;
 import com.ped.myneightool.model.Categorie;
 import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Outil;
@@ -28,6 +29,8 @@ public class TestOutil {
 
 	public Categorie cat1= new Categorie("Jardin");
 	public Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+	public Utilisateur user1= new Utilisateur("Jean", "Dupont", new Connexion("log", "pwd"), "test@test", "0505050505", new Adresse(), new Date());
+	public Utilisateur user= (Utilisateur) crb.httpRequestXMLBody(user1, "user/create");
 	
 	private static final org.slf4j.Logger LOG = LoggerFactory
 			.getLogger(TestOutil.class);
@@ -350,7 +353,7 @@ public class TestOutil {
 			}
 			
 			
-			Assert.assertTrue( dto.getListeOutils().size() >= 0);
+			Assert.assertTrue( dto.getListeOutils().size() > 0);
 			LOG.info("\n\n\n");
 		}
 		catch(final RuntimeException r){
@@ -409,6 +412,45 @@ public class TestOutil {
 		} catch (final RuntimeException re) {
 			LOG.error("criteria failed", re);
 			throw re;
+		}
+	}
+	
+	/**
+	 * test unitaire pour obtenir la liste des Outils d'une catégorie en particulier
+	 */
+	@Test
+	public final void testGetAllOutilsFromCategory() {
+		try{
+			final Categorie categorie = new Categorie("nomGetOutils");
+			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie, "categorie/create");
+			
+			crb.httpRequestXMLBody(new Outil(user,"Rateau","savoir ratisser",true,categoriePost,50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(user,"Pelle","savoir pelleter",true,categoriePost,50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(user,"Tronçonneuse","savoir tronçonner",false,categoriePost,50), "tool/create");
+
+			int i = categoriePost.getId();
+			OutilsDTO dto =(OutilsDTO) crb.httpGetRequest("tool/categorie",i );
+			
+			LOG.info("\n\n\n");
+			LOG.info("taille liste Outils:" +dto.size());
+			LOG.info("\n\n\n");
+			
+			LOG.info("liste des outils:\n");
+			
+			Iterator<Outil> ito=dto.getListeOutils().iterator();
+			while(ito.hasNext()){
+				
+				final Outil Outil = ito.next();
+				LOG.info(Outil.getId()+" "+Outil.getNom()+" "+Outil.getCategorie()+" "+Outil.getDescription());
+				
+			}			
+			
+			Assert.assertTrue( dto.getListeOutils().size() == 3);
+			LOG.info("\n\n\n");
+		}
+		catch(final RuntimeException r){
+			LOG.error("getAllOutils failed",r);
+			throw r;
 		}
 	}
 	

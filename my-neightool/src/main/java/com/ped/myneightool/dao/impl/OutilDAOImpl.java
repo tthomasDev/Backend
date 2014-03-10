@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfOutilDAO;
 import com.ped.myneightool.dto.OutilsDTO;
+import com.ped.myneightool.model.Categorie;
 import com.ped.myneightool.model.Outil;
 import com.ped.myneightool.model.Utilisateur;
 
@@ -233,5 +234,31 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 		odto.setListeOutils(set);
 		return odto;
 	}
-
+	
+	@Override
+	public OutilsDTO findToolsOfCategory(int categorieId) {
+		LOG.info("find all tools of a category");
+		List<Outil> res = new ArrayList<Outil>();
+				
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			final Query q = em.createQuery("SELECT p FROM Outil p WHERE p.categorie.id = :cat ORDER BY p.id DESC");
+			q.setParameter("cat",categorieId);
+			res = TypeSafetyChecking.castList(Outil.class, q.getResultList());
+			tx.commit();
+			LOG.debug("recherche de tous les outils de la categorie " + categorieId + "réussie, taille du résultat : " + res.size());
+		}
+		catch(final RuntimeException re){
+			LOG.error("findToolsOfCategory failed");
+		}
+		
+		List<Outil> set = new ArrayList<Outil>(res);
+		OutilsDTO odto= new OutilsDTO();
+		odto.setListeOutils(set);
+		return odto;
+	}
 }
