@@ -24,4 +24,5 @@ public interface ItfOutilDAO {
 	
 	public abstract OutilsDTO findByCriteria(Outil o);
 
+	public abstract OutilsDTO findToolsOfCategory(int categoryId);
 }

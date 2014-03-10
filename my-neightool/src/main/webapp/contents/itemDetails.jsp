@@ -248,18 +248,18 @@ out.println("</div></div>");
 	<div class="col-md-8">
 		<h4>
 			<%=itemName%>
-			<a class="btn btn-danger pull-right btn-xs"><i
+			<a href="#" data-toggle="modal" data-target="#contact" class="btn btn-danger pull-right btn-xs"><i
 				class="glyphicon glyphicon-warning-sign"></i> Signaler cet objet</a>
 		</h4>
 		<hr />
 		<style>
-.tableTmp {
-	padding-right: 3px;
-	text-align: right;
-	font-weight: bold;
-	vertical-align: top
-}
-</style>
+			.tableTmp {
+				padding-right: 3px;
+				text-align: right;
+				font-weight: bold;
+				vertical-align: top
+			}
+			</style>
 		<table width="100%">
 			<tr>
 				<td class="tableTmp" width="30%">Vendeur :</td>
