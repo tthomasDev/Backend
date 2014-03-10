@@ -79,6 +79,7 @@ $(function(){
 		$("#userTo").val(strTmp[1]);
 		$('#newMessageModal').modal('show');
 	});
+	
 	$('.delMessage').click(function() {
 		$(this).tooltip('hide');
 		$(this).closest('tr').fadeOut(400, function() {
@@ -93,6 +94,19 @@ $(function(){
 			});
 		});
 	});
+	
+	$('.msg').click(function(e) {
+		var idMsg = $(this).attr("id").split("msg")[1];
+		e.preventDefault();
+		$.ajax({
+		    url: "contents/luScript.jsp",
+		    type: 'POST',
+		    data: {id: idMsg},
+		    success: function() {
+		    	$("#unread"+idMsg).removeClass("unread");
+		    }
+		});
+	});
 });
 </script>
 
@@ -100,6 +114,13 @@ $(function(){
 	<li><a href="dashboard.jsp">Accueil</a></li>
 	<li class="active">Boite de réception (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/50 messages)</li>
 </ol>
+
+<style>
+.unread {
+	border-left: solid 5px #D9EDF7;
+	font-weight: bold;
+}
+</style>
 
 <div class="table-responsive">
 	<table class="table table-hover" id="toReorder">
@@ -118,10 +139,17 @@ $(function(){
 		if(list) {
 			for (Message m : messagesDto.getListeMessages()) { %>
 			<tr style="vertical-align: middle;" class="toPaginate">
+			<% if(!m.isLu()){ %>
+				<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
+				<td class="perfectCenter unread" id="unread<%=m.getId()%>"><a
+						data-toggle="collapse" data-parent="#accordion"
+						href="#collapse<%=m.getId()%>" class="msg" id="msg<%=m.getId()%>"><%=m.getObjet()%></a>
+			<% } else { %>
 				<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
 				<td class="perfectCenter"><a
 						data-toggle="collapse" data-parent="#accordion"
 						href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a>
+			<% } %>			
 					<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
 						<hr />
 						<div style="text-align: justify !important"><%=m.getCorps()%></div>

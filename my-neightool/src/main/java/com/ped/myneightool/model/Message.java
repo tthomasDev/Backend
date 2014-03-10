@@ -40,6 +40,8 @@ public class Message {
 	
 	private String corps;
 	
+	private boolean lu;
+	
 	@XmlElement(name = "date",required =true) 
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	private Date date;
@@ -49,13 +51,14 @@ public class Message {
 		
 	}
 	
-	public Message(Utilisateur emetteur, Utilisateur destinataire, String objet, String corps,Date date) {
+	public Message(Utilisateur emetteur, Utilisateur destinataire, String objet, String corps,Date date, boolean lu) {
 		super();
 		this.emetteur = emetteur;
 		this.destinataire = destinataire;
 		this.objet = objet;
 		this.corps = corps;
 		this.date = date;
+		this.lu = lu;
 	}
 
 	public Date getDate() {
@@ -109,6 +112,15 @@ public class Message {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	@XmlElement
+	public boolean isLu() {
+		return lu;
+	}
+
+	public void setLu(boolean lu) {
+		this.lu = lu;
 	}
 	
 
