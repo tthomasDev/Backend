@@ -147,7 +147,8 @@ if(request.getParameter("userId") != null) {
 									<tbody>
 										<% for (Outil t : outilsDto.getListeOutils()) { %>
 										<tr style="vertical-align: middle;" class="toPaginate">
-											<td style="vertical-align: middle; text-align: center;"><strong><%=t.getNom() %></strong><br />
+											<td style="vertical-align: middle; text-align: center;"><strong>
+												<a href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 											<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " " %><i class="glyphicon glyphicon-euro"></i></td>
 											<% if (t.isDisponible()) { %>
 												<td style="vertical-align: middle; text-align: center;"><i class="glyphicon glyphicon-ok"></i></td>
