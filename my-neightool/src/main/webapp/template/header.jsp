@@ -1,8 +1,76 @@
 <%@include file="../constantes.jsp" %>
+
+<%@ page import="javax.xml.bind.JAXBContext"%>
+<%@ page import="javax.xml.bind.Marshaller"%>
+<%@ page import="javax.xml.bind.Unmarshaller"%>
+
+<%@ page import="java.io.StringReader"%>
+<%@ page import="java.io.StringWriter"%>
+
+<%@ page import="org.jboss.resteasy.client.ClientRequest"%>
+<%@ page import="org.jboss.resteasy.client.ClientResponse"%>
+
+<%@ page import="model.Utilisateur"%>
+
+<%@ page import="model.Message"%>
+<%@ page import="dto.MessagesDTO"%>
+
+
 <%
-/* TODO */
+	int nbNewMessage = 0;
+	boolean actionValid = false;
+	String messageType = "";
+	String messageValue = "";
+	boolean list=false;
+
+	actionValid = true;
+
+	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
+	final JAXBContext jaxbc = JAXBContext.newInstance(MessagesDTO.class,Message.class);
+
+	// Le DTO des outils permettant de récupérer la liste d'outils
+	MessagesDTO messagesDto = new MessagesDTO();
+
+	//ici on va récuperer la réponse de la requete
+	try {
+		ClientRequest requestMessages;
+		requestMessages = new ClientRequest(
+				"http://localhost:8080/rest/message/list/receiveListByOrder/" + session.getAttribute("ID"));
+		requestMessages.accept("application/xml");
+		ClientResponse<String> responseMessages = requestMessages
+				.get(String.class);
+		if (responseMessages.getStatus() == 200) {
+			Unmarshaller un2 = jaxbc.createUnmarshaller();
+			messagesDto = (MessagesDTO) un2.unmarshal(new StringReader(
+					responseMessages.getEntity()));
+			if(messagesDto.size()>0)
+			{
+				list=true;
+				
+				for(Message m : messagesDto.getListeMessages()) {
+					
+					if(!m.isLu())
+						nbNewMessage++;
+					
+				}
+			}
+			else
+			{
+				list=false;	
+			}
+			
+			messageValue = "La liste a bien été récupérée";
+			messageType = "success";
+		} else {
+			messageValue = "Une erreur est survenue";
+			messageType = "danger";
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+		
+
 /* Service de gestion des nouveaux messages privés */
-int nbNewMessage = 0;
 String tooltip = "";
 
 if(nbNewMessage == 0)
@@ -95,7 +163,7 @@ else if(nbNewMessage > 1)
 						<h4 class="modal-title" id="myModalLabel">Nouveau message</h4>
 					</div>
 					<div class="modal-body perfectCenter">
-						<div class="alert alert-info">Vous avez reçu un nouveau message privé dans votre messagerie.</div>
+						<div class="alert alert-info">Vous avez reçu <%=nbNewMessage%> nouveau(x) message(s) privé(s) dans votre messagerie.</div>
 					</div>
 					<div class="modal-footer">
 						<a class="btn btn-default" data-dismiss="modal">Fermer</a>
