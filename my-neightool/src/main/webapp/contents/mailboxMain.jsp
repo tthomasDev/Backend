@@ -110,78 +110,110 @@ $(function(){
 });
 </script>
 
-<ol class="breadcrumb">
-	<li><a href="dashboard.jsp">Accueil</a></li>
-	<li class="active">Boite de réception (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/50 messages)</li>
-</ol>
-
 <style>
-.unread {
-	border-left: solid 5px #D9EDF7;
-	font-weight: bold;
-}
+	.unread { font-weight: bold; }
+	.unread td:first-child, .unread:hover td:first-child { background: #428BCA; }
+	.answered td:first-child, .answered:hover td:first-child { background: #3C763D; }
 </style>
 
-<div class="table-responsive">
-	<table class="table table-hover" id="toReorder">
-		<thead>
-			<tr>
-				<th style="text-align: center;" width="20">Expéditeur</th>
-				<th style="text-align: center;" width="55%">Sujet</th>
-				<th style="text-align: center;" width="15%">Date</th>
-				<th style="text-align: center;" width="15%">Actions</th>
-			</tr>
-		</thead>
-		<tbody id="accordion">
-		
-		
-		<%
-		if(list) {
-			for (Message m : messagesDto.getListeMessages()) { %>
-			<tr style="vertical-align: middle;" class="toPaginate">
-			<% if(!m.isLu()){ %>
-				<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
-				<td class="perfectCenter unread" id="unread<%=m.getId()%>"><a
-						data-toggle="collapse" data-parent="#accordion"
-						href="#collapse<%=m.getId()%>" class="msg" id="msg<%=m.getId()%>"><%=m.getObjet()%></a>
-			<% } else { %>
-				<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
-				<td class="perfectCenter"><a
-						data-toggle="collapse" data-parent="#accordion"
-						href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a>
-			<% } %>			
-					<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
-						<hr />
-						<div style="text-align: justify !important"><%=m.getCorps()%></div>
-					</div></td>
-				<td class="perfectCenter">
-				<%
-					String date = df.format(m.getDate());
-					out.print(date);
-				%>
-				</td>
-				<td class="perfectCenter">
-					<div class="btn-group">
-						<a id="isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipt btn btn-default" title="Répondre à l'expéditeur">
-							<span class="glyphicon glyphicon-envelope"></span>
-						</a>
-						<a class="ttipt btn btn-default delMessage" title="Supprimer le message">
-							<span class="glyphicon glyphicon-remove"></span>
-						</a>
-					</div>
-				</td>
-			</tr>
-	 	<%
-	 		}
-		} else {	
-		%>
-		 	<tr class="perfectCenter">
-				<td colspan="4">Aucun message reçu</td>
-			</tr>
-		<% } %>			
-		</tbody>
-	</table>
-</div>
+<div class="row">
 
-<div id="paginator"></div>
-<input id="paginatorNbElements" type="hidden" value="10" readonly="readonly" />
+	<div class="col-md-12">
+		<ol class="breadcrumb">
+			<li><a href="dashboard.jsp">Accueil</a></li>
+			<li class="active">Boite de réception (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/50 messages)</li>
+		</ol>
+	</div>
+	
+	<div class="col-md-offset-8 col-md-4">
+		<table class="table">
+			<thead>
+				<tr>
+					<th width="15px"></th>
+					<th>Légende</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="unread">
+					<td></td>
+					<td style="font-weight: normal">Message non lu</td>
+				</tr>
+				<tr class="answered">
+					<td></td>
+					<td>Message répondu</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="col-md-12">
+		<div class="table-responsive">
+			<table class="table table-hover" id="toReorder">
+				<thead>
+					<tr>
+						<th style="text-align: center;" width="5px"></th>
+						<th style="text-align: center;" width="20%">Expéditeur</th>
+						<th style="text-align: center;" width="50%">Sujet</th>
+						<th style="text-align: center;" width="15%">Date</th>
+						<th style="text-align: center;" width="15%">Actions</th>
+					</tr>
+				</thead>
+				<tbody id="accordion">
+				
+				
+				<%
+				if(list) {
+					for (Message m : messagesDto.getListeMessages()) { %>
+					<% if(!m.isLu()){ %>
+					<tr style="vertical-align: middle;" class="toPaginate unread" id="unread<%=m.getId()%>">
+						<td></td>
+						<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
+						<td class="perfectCenter"><a
+								data-toggle="collapse" data-parent="#accordion"
+								href="#collapse<%=m.getId()%>" class="msg" id="msg<%=m.getId()%>"><%=m.getObjet()%></a>
+					<% } else { %>
+					<tr style="vertical-align: middle;" class="toPaginate">
+						<td></td>
+						<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
+						<td class="perfectCenter"><a
+								data-toggle="collapse" data-parent="#accordion"
+								href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a>
+					<% } %>			
+							<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
+								<hr />
+								<div style="text-align: justify !important"><%=m.getCorps()%></div>
+							</div></td>
+						<td class="perfectCenter">
+						<%
+							String date = df.format(m.getDate());
+							out.print(date);
+						%>
+						</td>
+						<td class="perfectCenter">
+							<div class="btn-group">
+								<a id="isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipt btn btn-default" title="Répondre à l'expéditeur">
+									<span class="glyphicon glyphicon-envelope"></span>
+								</a>
+								<a class="ttipt btn btn-default delMessage" title="Supprimer le message">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							</div>
+						</td>
+					</tr>
+			 	<%
+			 		}
+				} else {	
+				%>
+				 	<tr class="perfectCenter">
+						<td colspan="4">Aucun message reçu</td>
+					</tr>
+				<% } %>			
+				</tbody>
+			</table>
+		</div>
+		
+		<div id="paginator"></div>
+		<input id="paginatorNbElements" type="hidden" value="10" readonly="readonly" />
+	
+	</div>
+</div>
