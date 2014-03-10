@@ -144,34 +144,47 @@ if(request.getParameter("s") != null && request.getParameter("s") == "" && other
 				</form>
 			</div> 
 			<div class="col-md-9">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#list" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> Liste des objets</a></li>
+					<li><a href="#map" data-toggle="tab"><i class="glyphicon glyphicon-map-marker"></i> Carte</a></li>
+				</ul>
+				<br />
 				<ol class="breadcrumb">
 					<li><%=keywordsDisplay%></li>
 				</ol>
 				
-				<div class="table-responsive">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th class="perfectCenter" width="140px">Photo</th>
-								<th class="perfectCenter" width="80%">Description</th>
-								<th class="perfectCenter" width="20%">Distance <a href="#"><span class="glyphicon glyphicon-chevron-up"></span></a><a href="#"><span class="glyphicon glyphicon-chevron-down"></span></a></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="perfectCenter">
-								<td colspan="3">Aucune recherche actuellement effectuée</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			
-				<div class="row">
-					<div class="col-md-12" style="text-align:center;">
-						<ul class="pagination">
-							<li><a href="#">&laquo;</a></li>
-							<li><a href="#">1</a></li>
-							<li><a href="#">&raquo;</a></li>
-						</ul>
+				
+				<div class="tab-content">
+  					<div class="tab-pane active" id="list">
+						<div class="table-responsive">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th class="perfectCenter" width="140px">Photo</th>
+										<th class="perfectCenter" width="80%">Description</th>
+										<th class="perfectCenter" width="20%">Distance <a href="#"><span class="glyphicon glyphicon-chevron-up"></span></a><a href="#"><span class="glyphicon glyphicon-chevron-down"></span></a></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="perfectCenter">
+										<td colspan="3">Aucune recherche actuellement effectuée</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					
+						<div class="row">
+							<div class="col-md-12" style="text-align:center;">
+								<ul class="pagination">
+									<li><a href="#">&laquo;</a></li>
+									<li><a href="#">1</a></li>
+									<li><a href="#">&raquo;</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="map">
+						Google map here
 					</div>
 				</div>
 			</div>
