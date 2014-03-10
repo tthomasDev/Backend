@@ -96,9 +96,9 @@ if(request.getParameter("id") != null) {
 		}
 		
 		itemName = outil.getNom();
-		itemVendor = user.getPrenom() + " " + user.getNom();
+		itemVendor = user.getConnexion().getLogin();
 		itemDescription = outil.getDescription();
-		itemCategory = outil.getCategorie().getName();
+		itemCategory = outil.getCategorie().getNom();
 		itemPath = outil.getCheminImage();
 		
 		// ID utilisateur
@@ -263,7 +263,7 @@ out.println("</div></div>");
 		<table width="100%">
 			<tr>
 				<td class="tableTmp" width="30%">Vendeur :</td>
-				<td width="70%"><a href="#" data-toggle="modal"
+				<td width="70%"><a href="#" data-Dtoggle="modal"
 					data-target="#userProfile"><%=itemVendor%></a></td>
 			</tr>
 			<tr>
