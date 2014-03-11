@@ -72,7 +72,7 @@ $(function(){
 	var nbMessages = <%=messagesDto.size()%>;
 	
 	$(".answerBtn").click(function(e) {
-		var strTmp = this.id.split("answerName");
+		var strTmp = this.id.split("isanswerName");
 		$("#userTo").val(strTmp[1]);
 		$('#newMessageModal').modal('show');
 	});
@@ -99,6 +99,11 @@ $(function(){
 			}
 		});
 	});
+	
+	$('.answerBtn').click(function(e) {
+		var strTmp = this.id.split("isanswerName");
+		$("#idAnswer").val(strTmp[0]);
+	}
 	
 	$('.msg').click(function(e) {
 		var idMsg = $(this).attr("id").split("msg")[1];
@@ -203,7 +208,7 @@ $(function(){
 						</td>
 						<td class="perfectCenter">
 							<div class="btn-group">
-								<a id="isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipt btn btn-default" title="Répondre à l'expéditeur">
+								<a id="<%=m.getId()%>isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipt btn btn-default" title="Répondre à l'expéditeur">
 									<span class="glyphicon glyphicon-envelope"></span>
 								</a>
 								<a class="ttipt btn btn-default delMessage" id="delMsg<%=m.getId()%>" title="Supprimer le message">
