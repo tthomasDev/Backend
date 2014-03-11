@@ -219,7 +219,7 @@ try {
 
 <div class="col-md-3 well">
 	<ul class="nav nav-pills nav-stacked">
-		<li><a href="#" data-toggle="modal"
+		<li><a href="#" data-toggle="modal" id="newMsgModal"
 			data-target="#newMessageModal"><span
 				class="glyphicon glyphicon-envelope"></span> Nouveau message</a></li>
 		<hr />
@@ -272,7 +272,7 @@ try {
 					</div>
 				</div>
 				<div class="modal-footer">
-					<input type="hidden" name="idAnswer" value="" />
+					<input type="hidden" name="idAnswer" id="idAnswer" value="" />
 					<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
 					<button type="submit" class="btn btn-info">Envoyer</button>
 					<input type="hidden" name="posted" id="posted">

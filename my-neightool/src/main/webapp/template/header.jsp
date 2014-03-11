@@ -104,6 +104,7 @@ else if(nbNewMessage > 1)
 	    <script src="./dist/js/bootstrap.min.js"></script>
 	    <script src="./dist/js/paginate.js"></script>
 	    <script src="./dist/js/reorder.js"></script>
+	    <script src="./dist/js/jquery.cookie.js"></script>
 	    <script type="text/javascript">
 			$(document).ready(function() {
 		    	$(".ttipl").tooltip({placement: "left",container: 'body'});
@@ -111,8 +112,13 @@ else if(nbNewMessage > 1)
 		    	$(".ttipt").tooltip({placement: "top",container: 'body'});
 		    	$(".ttipb").tooltip({placement: "bottom",container: 'body'});
 		    	$(".popov").popover({html: true, placement: "bottom", trigger: "focus"});
+		    	$(".createHide").click(function() {
+		    		$.cookie('hideNewMessageModal','true');
+		    	});
 		    	<% if(nbNewMessage > 0) { %>
-		    	$('#messageReceivedModal').modal('show');
+		    		var hide = $.cookie('hideNewMessageModal');
+		    		if(!hide || hide!="true")
+		    			$('#messageReceivedModal').modal('show');
 		    	<% } %>
 		    });
 	    </script>
@@ -166,8 +172,8 @@ else if(nbNewMessage > 1)
 						<div class="alert alert-info">Vous avez reçu <%=nbNewMessage%> nouveau(x) message(s) privé(s) dans votre messagerie.</div>
 					</div>
 					<div class="modal-footer">
-						<a class="btn btn-default" data-dismiss="modal">Fermer</a>
-						<a class="btn btn-info" href="dashboard.jsp?page=mailbox">Consulter</a>
+						<a class="btn btn-default createHide" data-dismiss="modal">Ne plus afficher cette fenêtre</a>
+						<a class="btn btn-info createHide" href="dashboard.jsp?page=mailbox">Consulter</a>
 					</div>
 				</div>
 			</div>

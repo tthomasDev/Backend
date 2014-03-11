@@ -102,8 +102,13 @@ $(function(){
 	
 	$('.answerBtn').click(function(e) {
 		var strTmp = this.id.split("isanswerName");
+		alert(strTmp[0]);
 		$("#idAnswer").val(strTmp[0]);
-	}
+	});
+	
+	$("#newMsgModal").click(function(e) {
+		$("#idAnswer").val("");
+	});
 	
 	$('.msg').click(function(e) {
 		var idMsg = $(this).attr("id").split("msg")[1];
