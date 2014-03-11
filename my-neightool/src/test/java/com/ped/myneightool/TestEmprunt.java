@@ -54,7 +54,7 @@ public class TestEmprunt {
 			final Utilisateur u = new Utilisateur("userPrenomEmpruntDate","userNomEmpruntDate",connexion);
 			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
 		
-			final Outil o= new Outil(uPost,"RateauTestEmpruntDate","savoir ratisser",true,cat,50);
+			final Outil o= new Outil(uPost,"RateauTestEmpruntDate","savoir ratisser",true,cat,50,new Date(0),new Date());
 			final Outil oPost=(Outil) crb.httpRequestXMLBody(o, "tool/create");
 			
 						
