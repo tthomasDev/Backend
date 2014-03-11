@@ -24,7 +24,7 @@
 <%@ page import="dto.OutilsDTO"%>
 <%
 String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
-String itemDateEnd="", itemPrice="", itemDistance="", itemPath="", userID="";
+String itemDateEnd="", itemPrice="", itemDistance="", itemPath="", userID="", itemCategoryID="";
 
 boolean itemFound = false;
 
@@ -99,6 +99,7 @@ if(request.getParameter("id") != null) {
 		itemVendor = user.getConnexion().getLogin();
 		itemDescription = outil.getDescription();
 		itemCategory = outil.getCategorie().getNom();
+		itemCategoryID = String.valueOf(outil.getCategorie().getId());
 		itemPath = outil.getCheminImage();
 		
 		// ID utilisateur
@@ -213,6 +214,12 @@ if(request.getParameter("id") != null) {
 			language : "fr",
 			todayBtn : "linked"
 		});
+		$('#btnSignal').click(function(){
+			$('#subjectOfMessage').val("Signalement de l'objet <%=itemName%>") 
+		})
+		$('#contactLink').click(function(){
+			$('#subjectOfMessage').val("") 
+		})
 	});
 </script>
 <link href="./dist/css/datepicker.css" rel="stylesheet">
@@ -248,7 +255,7 @@ out.println("</div></div>");
 	<div class="col-md-8">
 		<h4>
 			<%=itemName%>
-			<a href="#" data-toggle="modal" data-target="#contact" class="btn btn-danger pull-right btn-xs"><i
+			<a href="#" data-toggle="modal" data-target="#contact" class="btn btn-danger pull-right btn-xs" id="btnSignal"><i
 				class="glyphicon glyphicon-warning-sign"></i> Signaler cet objet</a>
 		</h4>
 		<hr />
@@ -263,15 +270,18 @@ out.println("</div></div>");
 		<table width="100%">
 			<tr>
 				<td class="tableTmp" width="30%">Vendeur :</td>
-				<td width="70%"><a href="#" data-Dtoggle="modal"
+				<td width="70%"><a href="#" data-toggle="modal"
 					data-target="#userProfile"><%=itemVendor%></a></td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
-				<td class="tableTmp">Catégorie :</td>
-				<td><a href="#"><%=itemCategory%></a></td>
+				<%-- <td class="tableTmp">Catégorie :</td>
+				<td><a href="#"><%=itemCategory%></a></td> --%>
+				<td class="tableTmp" width="30%">Catégorie :</td>
+				<td width="70%"><a href="#" data-toggle="modal"
+					data-target="#catProfile"><%=itemCategory%></a></td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>

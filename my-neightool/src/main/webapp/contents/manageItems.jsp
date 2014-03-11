@@ -109,9 +109,6 @@
 	</ul>
 </div>
 
-<div id="paginator"></div>
-<input id="paginatorNbElements" type="hidden" value="5" readonly="readonly" />
-
 <div class="col-md-9">
 	<jsp:include page="<%=subInclude%>" />
 </div>
