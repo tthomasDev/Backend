@@ -51,7 +51,7 @@ public class TestCategorie {
 	public void testCreateCategorie() {
 		try {
 			
-			final Categorie categorie = new Categorie("Jardin");
+			final Categorie categorie = new Categorie("Salle de Bain");
 			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie,"categorie/create");
 			
 			Assert.assertNotSame(categoriePost,null);

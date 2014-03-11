@@ -17,10 +17,6 @@ import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Message;
 import com.ped.myneightool.model.Utilisateur;
 
-
-
-
-
 public class TestMessage {
 
 	private static final org.slf4j.Logger LOG = LoggerFactory
@@ -44,12 +40,6 @@ public class TestMessage {
 			
 		
 	}
-		
-	
-	
-	
-	
-	
 	
 	/**
 	 * test unitaire création d'un message
@@ -119,7 +109,7 @@ public class TestMessage {
 			
 		}
 		catch(final RuntimeException r){
-			LOG.error("testGetUser failed",r);
+			LOG.error("testGetMessage failed",r);
 			throw r;
 		}
 	}
@@ -162,7 +152,7 @@ public class TestMessage {
 			}	
 			
 		} catch (final RuntimeException re) {
-			LOG.error("echec de creation de l'utilisateur", re);
+			LOG.error("echec de creation de du message", re);
 			throw re;
 		}
 	}

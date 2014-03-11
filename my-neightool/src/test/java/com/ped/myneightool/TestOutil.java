@@ -22,13 +22,8 @@ import com.ped.myneightool.model.Outil;
 import com.ped.myneightool.model.Utilisateur;
 
 
-
-
-
 public class TestOutil {
-
-	public Categorie cat1= new Categorie("Jardin");
-	public Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+	
 	public Utilisateur user1= new Utilisateur("Jean", "Dupont", new Connexion("log", "pwd"), "test@test", "0505050505", new Adresse(), new Date());
 	public Utilisateur user= (Utilisateur) crb.httpRequestXMLBody(user1, "user/create");
 	
@@ -55,65 +50,57 @@ public class TestOutil {
 	@Test
 	public void testCreateOutil() {
 		try {
-			Connexion co = new Connexion("laaaaabbbbbbbaodqsaqadaaasdqgb","psqdqassb");
+			
+			
+			//Elements nécéssaires à un outil (cat, utilisateur, date)
+			final Categorie cat1= new Categorie("Jardin");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");			
+			
+			Connexion co = new Connexion("login1","pass1");
 			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutil","nomCreateOutil",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
-			
-			final Outil outil= new Outil(utilisateurPost,"Rateau","savoir ratisser",true,cat,50);
-			final Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
-			
-			Assert.assertNotSame(outilPost,null);
-			
-		} catch (final RuntimeException re) {
-			LOG.error("echec de creation de l'outil", re);
-			throw re;
-		}
-	}
-	
-	
-	/**
-	 * test unitaire création d'Outil avec dates de dispo
-	 */
-	@Test
-	public void testCreateOutilWithAvailableDate() {
-		try {
-			Connexion co = new Connexion("laaaaaaodqsaqabbbbbdaaasdqgb","psqdqassb");
-			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutilWithAvailableDate","nomCreateOutilWithAvailableDate",co);
-			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
-			
 			final Date debutT = new Date(0);
+			final Date finT = new Date();
 			
-			
-			final Date finT = new Date(0);
-			
-			final Outil outil= new Outil(utilisateurPost,"Rateau","savoir ratisser",true,cat,50,debutT,finT);
-			final Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
-			
+		
+			//test unitaire création d'Outil
+			Outil outil= new Outil(utilisateurPost,"Rateau1","savoir ratisser",true,cat,50, new Date(0), new Date());
+			Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			Assert.assertNotSame(outilPost,null);
 			
-						
+			//test unitaire création d'Outil avec dates de dispo
+			outil= new Outil(utilisateurPost,"Rateau2","savoir ratisser",true,cat,50,debutT,finT);
+			outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
+			Assert.assertNotSame(outilPost,null);
+			
 		} catch (final RuntimeException re) {
 			LOG.error("echec de creation de l'outil", re);
 			throw re;
 		}
 	}
 	
+
+
 	/**
 	 * test unitaire mis à jour d'outil
 	 */
 	@Test
 	public final void testUpdateTool() {
 		try {
-			Connexion co = new Connexion("laaaaaaodqsaqadaaasdqgb","psqdqassb");
+			
+			final Categorie cat1= new Categorie("Piscine");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			
+			Connexion co = new Connexion("login2","pass2");
 			final Utilisateur utilisateur= new Utilisateur("JeanUpdateTool","DucheminUpdateTool",co);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			
-			final Outil outil= new Outil(utilisateurPost,"RateauUPDATE","savoir ratisser",true,cat,50);
+			final Outil outil= new Outil(utilisateurPost,"AspirateurPiscineUPDATE","savoir aspirer",true,cat,50, new Date(0), new Date());
 			final Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			
-			String str ="MEGA Rateau UPDATE";
+			String str ="MEGA AspirateurPiscine UPDATE";
 			outilPost.setNom(str);
 			
 			final Outil outilPost2 = (Outil) crb.httpRequestXMLBody(outilPost,"tool/update");						
@@ -121,7 +108,7 @@ public class TestOutil {
 			Assert.assertTrue(str.equals(outilPost2.getNom()));
 
 		} catch (final RuntimeException re) {
-			LOG.error("echec de mis a jour de l'utilisateur", re);
+			LOG.error("echec de mis a jour de l'outil", re);
 			throw re;
 		}
 	}
@@ -136,11 +123,14 @@ public class TestOutil {
 	public final void testGetOutil() {
 
 		try{
-			Connexion co = new Connexion("laaaaaoaaaaqsqdaaasdqgb","psqdqassb");
+			final Categorie cat1= new Categorie("Cuisine");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			
+			Connexion co = new Connexion("login3","pass3");
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutil","nomGetOutil",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
-			final Outil outil= new Outil(utilisateurPost,"RateauGet","savoir ratisserGET",true,cat,50);
+			final Outil outil= new Outil(utilisateurPost,"CasserolleGet","savoir cuisiner",true,cat,50, new Date(0), new Date());
 			final Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			
 			
@@ -164,7 +154,7 @@ public class TestOutil {
 			
 		}
 		catch(final RuntimeException r){
-			LOG.error("testGetUser failed",r);
+			LOG.error("testGetTool failed",r);
 			throw r;
 		}
 	}
@@ -176,12 +166,15 @@ public class TestOutil {
 	@Test
 	public void testDeleteOutil() {
 		try {
-			Connexion co = new Connexion("lodaaaaqsqdaaasdqgb","psqdqassb");
+			final Categorie cat1= new Categorie("Salon");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			
+			Connexion co = new Connexion("login4","pass4");
 			final Utilisateur utilisateur= new Utilisateur("prenomDeleteOutil","nomDeleteOutil",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			
-			final Outil outil= new Outil(utilisateurPost,"RateauDelete","savoir ratisser, outil a supprimer",true,cat,50);
+			final Outil outil= new Outil(utilisateurPost,"TélévisionDelete","savoir regarder la télé, outil a supprimer",true,cat,50, new Date(0), new Date());
 			final Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			
 			int i = outilPost.getId();
@@ -244,12 +237,16 @@ public class TestOutil {
 	@Test
 	public final void testGetAllOutilsAvailable() {
 		try{
-			Connexion co = new Connexion("loddsqqsdqgb","psqdqasdqssb");
+			
+			final Categorie cat1= new Categorie("Voiture");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			
+			Connexion co = new Connexion("login5","pass5");
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Rateau","savoir ratisser mais rateau pas disponible",false,cat,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Rateau","savoir ratisser mais rateau disponible",true,cat,50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Cric","savoir cric mais cric pas disponible",false,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Pneu","savoir mettre un pneu mais pneu disponible",true,cat,50, new Date(0), new Date()), "tool/create");
 			
 			OutilsDTO dto =(OutilsDTO) crb.httpGetRequestWithoutArgument("tool/list/available");
 			
@@ -284,13 +281,17 @@ public class TestOutil {
 	@Test
 	public final void testGetAllOutilsFromUser() {
 		try{
-			Connexion co = new Connexion("lodqsdqgb","psqdqassb");
+			
+			final Categorie cat1= new Categorie("Autre");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			
+			Connexion co = new Connexion("login6","pass6");
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Rateau","savoir ratisser",true,cat,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Pelle","savoir pelleter",true,cat,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tronçonneuse","savoir tronçonner",false,cat,50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Autre1","savoir autre1",true,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Autre2","savoir autre2",true,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Autre3","savoir autre3",false,cat,50, new Date(0), new Date()), "tool/create");
 			
 			
 			int i = utilisateurPost.getId();
@@ -326,13 +327,17 @@ public class TestOutil {
 	@Test
 	public final void testGetAllOutilsAvailableFromUser() {
 		try{
-			Connexion co = new Connexion("logb","passb");
+			
+			final Categorie cat1= new Categorie("Professionnels");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			
+			Connexion co = new Connexion("login8","pass8");
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Rateau","savoir ratisser",true,cat,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Pelle","savoir pelleter",true,cat,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tronçonneuse","savoir tronçonner",false,cat,50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"OutilPro1","savoir être pro",true,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"OutilPro2","savoir être pro",true,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"OutilPro3","savoir être pro",false,cat,50, new Date(0), new Date()), "tool/create");
 			
 			
 			int i = utilisateurPost.getId();
@@ -370,24 +375,27 @@ public class TestOutil {
 
 		try {
 
-			Connexion co = new Connexion("logbfsd","passbdfsfs");
+			Categorie cat1= new Categorie("Plomberie");
+			Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			
+			Connexion co = new Connexion("login9","pass9");
 			final Utilisateur utilisateur= new Utilisateur("prenomAPICriteria","nomAPICriteria",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			Assert.assertNotSame(utilisateurPost, null);
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"RateauAPICriteria","savoir ratisser",true,cat,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"PelleAPICriteria","savoir pelleter",false,cat,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"TondeuseAPICriteria","savoir tondeuser",true,cat,50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Plummeau","savoir plummer",true,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tournevis","savoir tournevisser",false,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Clé molette","savoir clé molette",true,cat,50, new Date(0), new Date()), "tool/create");
 
 
-			cat1= new Categorie("Cuisine");
+			cat1= new Categorie("Toiture");
 			Categorie cat3= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
 			
-			cat1= new Categorie("Salon");
+			cat1= new Categorie("BTP");
 			Categorie cat2= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Fourchette","savoir fourchetter",false,cat2,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Fauteuil","savoir fauteuiler",true,cat3,50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tuile","savoir tuiller",false,cat2,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Remorque","savoir remorquer",true,cat3,50, new Date(0), new Date()), "tool/create");
 			
 			final Outil o = new Outil();
 			o.setCategorie(cat);
@@ -421,12 +429,12 @@ public class TestOutil {
 	@Test
 	public final void testGetAllOutilsFromCategory() {
 		try{
-			final Categorie categorie = new Categorie("nomGetOutils");
+			final Categorie categorie = new Categorie("Nouvelles Technologies");
 			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie, "categorie/create");
 			
-			crb.httpRequestXMLBody(new Outil(user,"Rateau","savoir ratisser",true,categoriePost,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(user,"Pelle","savoir pelleter",true,categoriePost,50), "tool/create");
-			crb.httpRequestXMLBody(new Outil(user,"Tronçonneuse","savoir tronçonner",false,categoriePost,50), "tool/create");
+			crb.httpRequestXMLBody(new Outil(user,"Rateau","savoir ratisser",true,categoriePost,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(user,"Pelle","savoir pelleter",true,categoriePost,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(user,"Tronçonneuse","savoir tronçonner",false,categoriePost,50, new Date(0), new Date()), "tool/create");
 
 			int i = categoriePost.getId();
 			OutilsDTO dto =(OutilsDTO) crb.httpGetRequest("tool/categorie",i );
