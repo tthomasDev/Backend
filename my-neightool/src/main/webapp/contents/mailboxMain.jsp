@@ -71,12 +71,6 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 $(function(){
 	var nbMessages = <%=messagesDto.size()%>;
 	
-	$(".answerBtn").click(function(e) {
-		var strTmp = this.id.split("isanswerName");
-		$("#userTo").val(strTmp[1]);
-		$('#newMessageModal').modal('show');
-	});
-	
 	$('.delMessage').click(function() {
 		var idMsg = $(this).attr("id").split("delMsg")[1];
 		var msg = $(this);
@@ -103,6 +97,8 @@ $(function(){
 	
 	$('.answerBtn').click(function(e) {
 		var strTmp = this.id.split("isanswerName");
+		$("#userTo").val(strTmp[1]);
+		$('#newMessageModal').modal('show');
 		$("#idAnswer").val(strTmp[0]);
 	});
 	
@@ -124,7 +120,6 @@ $(function(){
 	});	
 });
 </script>
-
 <style>
 	.unread { font-weight: bold; }
 	.unread td:first-child, .unread:hover td:first-child { background: #428BCA; }

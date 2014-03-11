@@ -76,19 +76,20 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 $(function(){
 var nbMessages = <%=messagesDto.size()%>;
 
-	$('.delMessage').click(function() {		
+
+	$('.delMessage').click(function() {
 		var idMsg = $(this).attr("id").split("delMsg")[1];
-		
+		var msg = $(this);
 		$.ajax({
 		    url: "contents/etatScript.jsp",
 		    type: 'POST',
-		    data: {id: idMsg, etat: 1, page: 2},
+		    data: {id: idMsg, etat: 3, page: 2},
 		    success: function() {
-		    	$(this).tooltip('hide');
-				$(this).closest('tr').fadeOut(400, function() {
+		    	msg.tooltip('hide');
+		    	msg.closest('tr').fadeOut(400, function() {
 					nbMessages--;
 					$("#nbMessageInbox").html(nbMessages);
-					$(this).html("<td colspan='4' class='perfectCenter alert-success'>Message supprimé avec succès</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
+					$(this).removeClass("unread").html("<td colspan='5' class='perfectCenter alert-success'>Message supprimé avec succès</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
 						$(this).remove();
 						if($("#paginatorNbElements").length>0) {
 							changePage(previousPage,$("#paginatorNbElements").val());
