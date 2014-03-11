@@ -16,6 +16,8 @@
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
 <%@ page import="model.Utilisateur"%>
+<%@ page import="model.Outil"%>
+<%@ page import="dto.OutilsDTO"%>
 
 <%@ page import="com.ped.myneightool.model.Categorie"%>
 <%@ page import="com.ped.myneightool.dto.CategoriesDTO"%>
@@ -31,9 +33,14 @@
 
 	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
 	final JAXBContext jaxbc = JAXBContext.newInstance(CategoriesDTO.class);
+	final JAXBContext jaxbc2 = JAXBContext.newInstance(OutilsDTO.class, Outil.class);
 
 	// Le DTO des outils permettant de récupérer la liste des categories
 	CategoriesDTO categoriesDto = new CategoriesDTO();
+	
+	// Le DTO des outils permettant de récupérer la liste des outils par catégorie
+	OutilsDTO listeOutilsCat = new OutilsDTO();
+	OutilsDTO listeOutilsCatOthers = new OutilsDTO();
 
 	//ici on va récuperer la réponse de la requete
 	try {
@@ -68,7 +75,32 @@
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-		
+	
+	if (request.getParameter("idCat") != null) {
+		// On récupère ensuite la liste des outils correspondants une catégorie spécifique
+		try {
+			ClientRequest requestTools;
+			requestTools = new ClientRequest(
+			"http://localhost:8080/rest/tool/categorie/" + request.getParameter("idCat"));
+			requestTools.accept("application/xml");
+			ClientResponse<String> responseTools = requestTools.get(String.class);
+	
+				if (responseTools.getStatus() == 200) {
+				Unmarshaller un2 = jaxbc2.createUnmarshaller();
+				listeOutilsCat = (OutilsDTO) un2.unmarshal(new StringReader(
+				responseTools.getEntity()));
+				
+				// et ici on peut vérifier que c'est bien le bon objet
+				messageValue = "Les détails de la catégorie ont bien été récupérés.";
+				messageType = "success";
+			} else {
+				messageValue = "Une erreur est survenue";
+				messageType = "danger";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 %>
 		<div class="col-md-3 well">
 				<ul class="nav nav-pills nav-stacked">
@@ -79,11 +111,28 @@
 				<% System.out.println("AFFICHAGE : ");
 				if(list) {
 					for (Categorie c : categoriesDto.getListeCategories()) { 
-						if (request.getParameter("id")!=null) {
-							if (c.getId() == Integer.parseInt(request.getParameter("id"))) {
-				%>
-								<li class="active"><a href="#"><%=c.getNom()%> <span class="badge pull-right">0</span></a></li>
+						if (request.getParameter("idCat")!=null) {
+							if (c.getId() == Integer.parseInt(request.getParameter("idCat"))) { %>
+								<li class="active"><a href="#"><%=c.getNom()%> <span class="badge pull-right"><%=listeOutilsCat.size() %></span></a></li>
 						 <% }
+							else { %>
+							<% try {
+								ClientRequest requestTools;
+								requestTools = new ClientRequest(
+								"http://localhost:8080/rest/tool/categorie/" + c.getId());
+								requestTools.accept("application/xml");
+								ClientResponse<String> responseTools = requestTools.get(String.class);
+						
+								if (responseTools.getStatus() == 200) {
+									Unmarshaller un2 = jaxbc2.createUnmarshaller();
+									listeOutilsCatOthers = (OutilsDTO) un2.unmarshal(new StringReader(
+									responseTools.getEntity()));
+									%> <li><a href="#"><%=c.getNom()%> <span class="badge pull-right"><%=listeOutilsCatOthers.size() %></span></a></li> <%
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
 						}
 						else { %>
 							<li><a href="#"><%=c.getNom()%> <span class="badge pull-right">0</span></a></li>
@@ -97,7 +146,16 @@
 			<div class="col-md-9">
 				<ol class="breadcrumb">
 					<li><a href="#">Accueil</a></li>
-					<li class="active">Les plus regardés dans votre région (< 50km)</li>
+					<% if (request.getParameter("idCat")!=null) {
+						for (Categorie c : categoriesDto.getListeCategories()) {
+							if (c.getId() == Integer.parseInt(request.getParameter("idCat"))) {%>
+								<li class="active"><a href="#"><%=c.getNom()%></a></li>
+							<% }
+						}
+					}
+					else { %>
+						<li class="active">Les plus regardés dans votre région (< 50km)</li>
+					<% } %>
 				</ol>
 				
 				<div class="table-responsive">

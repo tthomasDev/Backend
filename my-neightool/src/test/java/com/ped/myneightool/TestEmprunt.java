@@ -21,7 +21,7 @@ import com.ped.myneightool.model.Utilisateur;
 
 public class TestEmprunt {
 	
-	public Categorie cat1= new Categorie("Jardin");
+	public Categorie cat1= new Categorie("Sport");
 	public Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
 	
 	private static final org.slf4j.Logger LOG = LoggerFactory
@@ -40,35 +40,6 @@ public class TestEmprunt {
 										Connexion.class,
 										Date.class);
 		crb= new ClientRequestBuilder(jaxbc);
-	}
-		
-	
-	
-	
-	/**
-	 * test unitaire création d'un emprunt sans date
-	 */
-	@Test
-	public void testCreateEmpruntWithoutDate() {
-		try {
-			final Connexion connexion = new Connexion("loginCreateEmprunt","passwordCreateEmprunt");
-			
-			final Utilisateur u = new Utilisateur("userPrenomEmprunt","userNomEmprunt",connexion);
-			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
-		
-			final Outil o= new Outil(uPost,"RateauTestEmprunt","savoir ratisser",true,cat,50);
-			final Outil oPost=(Outil) crb.httpRequestXMLBody(o, "tool/create");
-					
-			
-			final Emprunt e = new Emprunt(oPost,uPost);
-			final Emprunt ePost = (Emprunt) crb.httpRequestXMLBody(e,"emprunt/create");
-					
-			Assert.assertNotSame(ePost,null);
-			
-		} catch (final RuntimeException re) {
-			LOG.error("echec de creation de l'emprunt", re);
-			throw re;
-		}
 	}
 	
 	

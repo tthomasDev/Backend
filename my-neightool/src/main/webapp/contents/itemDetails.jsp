@@ -98,7 +98,7 @@ if(request.getParameter("id") != null) {
 			e.printStackTrace();
 		}
 		
-		// On récupère ensuite la liste des outils correspondants à l'utilisateur
+		// On récupère ensuite la liste des outils correspondants une catégorie spécifique
 		try {
 			ClientRequest requestTools;
 			requestTools = new ClientRequest(
@@ -305,8 +305,8 @@ out.println("</div></div>");
 			</tr>
 			<tr>
 				<td class="tableTmp" width="30%">Catégorie :</td>
-				<td width="70%"><a href="#" data-toggle="modal"
-					data-target="#categoryProfile"><%=itemCategory%></a></td>
+				<td width="70%"><a href="dashboard.jsp?idCat=<%=itemCategoryID%>" data-toggle="modal">
+				<!-- data-target="#categoryProfile" --><%=itemCategory%></a></td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>

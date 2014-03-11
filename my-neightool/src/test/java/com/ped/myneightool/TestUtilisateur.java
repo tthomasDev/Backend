@@ -62,8 +62,6 @@ public class TestUtilisateur {
 	*/
 	
 	
-	
-	
 	/**
 	 * test unitaire création d'utilisateur sans adresse
 	 */
@@ -92,7 +90,7 @@ public class TestUtilisateur {
 	public void testCreateUserForFrontEnd() {
 		try {
 			final Connexion connexion = new Connexion("user","user");
-			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Adresse adresse = new Adresse("666 rue des allées","33000","Bordeaux","France",-666,666);
 			final Date birthDate = new Date();
 			
 			final Utilisateur utilisateur= new Utilisateur("user","user",connexion,"user@myneightool.com","0000000000",adresse,birthDate);
