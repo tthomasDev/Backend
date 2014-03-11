@@ -25,6 +25,7 @@
 <%
 String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
 String itemDateEnd="", itemPrice="", itemDistance="", itemPath="", userID="", itemCategoryID="";
+int itemId = -1;
 
 boolean itemFound = false;
 
@@ -73,7 +74,7 @@ if(request.getParameter("id") != null) {
 			e.printStackTrace();
 		}
 
-		// On récupère ensuite la liste des outils correspondants à l'utilisateur
+		// On récupère ensuite la liste des outils correspondants une catégorie spécifique
 		try {
 			ClientRequest requestTools;
 			requestTools = new ClientRequest(
@@ -122,6 +123,7 @@ if(request.getParameter("id") != null) {
 			e.printStackTrace();
 		}
 		
+		itemId = outil.getId();
 		itemName = outil.getNom();
 		itemVendor = user.getConnexion().getLogin();
 		itemDescription = outil.getDescription();
@@ -249,6 +251,23 @@ if(request.getParameter("id") != null) {
 		})
 	});
 </script>
+
+<script>
+$(function(){
+	$('.checkDispo').click(function() {
+		$.ajax({
+		    url: "<%=pluginFolder%>empruntScript.jsp",
+		    type: 'POST',
+		    data: {id: <%=itemId%>, dateDebut: $('#dateDebut').val(), dateFin: $('#dateFin').val() },
+		    success: function() {
+		    	//$('#confirm').removeClass("disabled")
+		    }
+		});
+	});
+});	
+	
+</script>
+	
 <link href="./dist/css/datepicker.css" rel="stylesheet">
 <div class="row">
 	<div class="col-md-12">
@@ -276,7 +295,7 @@ out.println("</div></div>");
 			<div class="col-md-12 perfectCenter">
 				<img width="100%" height="100%" class="img-rounded"
 					src="<%=itemPath%>" />
-			</div>
+			</div>removeClass("unread")
 		</div>
 	</div>
 	<div class="col-md-8">
@@ -304,9 +323,10 @@ out.println("</div></div>");
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
-				<td class="tableTmp" width="30%">Catégorie :</td>
-				<td width="70%"><a href="#" data-toggle="modal"
-					data-target="#categoryProfile"><%=itemCategory%></a></td>
+				<td class="tableTmp" width="30%">Catégorie :</td>					
+				<td width="70%"><a href="dashboard.jsp?idCat=<%=itemCategoryID%>" data-toggle="modal">
+				<!-- data-target="#categoryProfile" --><%=itemCategory%></a></td>
+					
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
@@ -365,20 +385,21 @@ out.println("</div></div>");
 						<%=itemName%><br /> <br /> <strong>Période désirée :</strong><br />
 						<div id="datepicker">
 							<div class="input-daterange input-group" id="datepicker">
-								<span class="input-group-addon">du </span> <input type="text"
+								<span class="input-group-addon">du </span> <input id="dateDebut" type="text"
 									data-provide="datepicker"
 									class="datepicker input-sm form-control" name="start2" required />
-								<span class="input-group-addon"> au </span> <input type="text"
+								<span class="input-group-addon"> au </span> <input id="dateFin" type="text"
 									data-provide="datepicker"
 									class="datepicker input-sm form-control" name="end2" required />
 							</div>
-						</div>
+						</div><br />
+						<a class="btn btn-primary checkDispo" id="checkAvailable">Vérifier la disponibilité sur ces dates</a>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">
 							<i class="glyphicon glyphicon-remove"></i> Annuler
 						</button>
-						<button type="submit" class="btn btn-success">
+						<button type="submit" id="confirm" class="disabled btn btn-success">
 							<i class="glyphicon glyphicon-ok"></i> Confirmer la demande
 						</button>
 					</div>
