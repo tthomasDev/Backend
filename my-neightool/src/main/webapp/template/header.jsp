@@ -49,7 +49,7 @@
 				
 				for(Message m : messagesDto.getListeMessages()) {
 					
-					if(!m.isLu())
+					if(m.getEtatDestinataire() == 0)
 						nbNewMessage++;
 					
 				}

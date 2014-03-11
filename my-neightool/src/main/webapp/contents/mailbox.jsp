@@ -109,7 +109,7 @@ try {
 
 
 //création du message
-final Message message = new Message(userSource,userTarget,subject,corps, new Date(),false);
+final Message message = new Message(userSource,userTarget,subject,corps, new Date(),0,0);
 
 
 final Marshaller marshaller = jaxbc.createMarshaller();
@@ -145,10 +145,6 @@ if (clientResponse.getStatus() == 200) { // si la réponse est valide !
 
 }
 
-
-
-
-
 actionValid = false;
 messageType = "";
 messageValue = "";
@@ -180,9 +176,8 @@ try {
 			
 			for(Message m : messagesDto.getListeMessages()) {
 				
-				if(!m.isLu())
+				if(m.getEtatDestinataire() == 0)
 					nbNewMessage++;
-				
 			}
 		}
 		else

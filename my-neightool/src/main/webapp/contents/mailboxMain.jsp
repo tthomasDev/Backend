@@ -99,14 +99,14 @@ $(function(){
 		var idMsg = $(this).attr("id").split("msg")[1];
 		e.preventDefault();
 		$.ajax({
-		    url: "contents/luScript.jsp",
+		    url: "contents/etatScript.jsp",
 		    type: 'POST',
-		    data: {id: idMsg},
+		    data: {id: idMsg, etat: 1},
 		    success: function() {
 		    	$("#unread"+idMsg).removeClass("unread");
 		    }
 		});
-	});
+	});	
 });
 </script>
 
@@ -164,7 +164,7 @@ $(function(){
 				<%
 				if(list) {
 					for (Message m : messagesDto.getListeMessages()) { %>
-					<% if(!m.isLu()){ %>
+					<% if(m.getEtatDestinataire() == 0){ %>
 					<tr style="vertical-align: middle;" class="toPaginate unread" id="unread<%=m.getId()%>">
 						<td></td>
 						<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>

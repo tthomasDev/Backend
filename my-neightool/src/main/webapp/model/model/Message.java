@@ -29,7 +29,21 @@ public class Message {
 	
 	private String corps;
 	
-	private boolean lu;
+	/*
+	 * Permet de savoir dans quel Etat est le message chez l'émetteur
+	 *  0 = non supprimé
+	 *  1 = supprimé
+	 */
+	private int etatEmetteur;
+	
+	/*
+	 * Permet de savoir dans quel Etat est le message chez le destinataire
+	 *  0 = non lu
+	 *  1 = lu
+	 *  2 = répondu
+	 *  3 = supprimé
+	 */
+	private int etatDestinataire;
 	
 	@XmlElement(name = "date",required =true) 
 	@XmlJavaTypeAdapter(DateAdapter.class)
@@ -40,14 +54,15 @@ public class Message {
 		
 	}
 	
-	public Message(Utilisateur emetteur, Utilisateur destinataire, String objet, String corps,Date date, boolean lu) {
+	public Message(Utilisateur emetteur, Utilisateur destinataire, String objet, String corps,Date date, int etatEmetteur, int etatDestinataire) {
 		super();
 		this.emetteur = emetteur;
 		this.destinataire = destinataire;
 		this.objet = objet;
 		this.corps = corps;
 		this.date = date;
-		this.setLu(lu);
+		this.etatEmetteur = etatEmetteur;
+		this.etatDestinataire = etatDestinataire;
 	}
 
 	public Date getDate() {
@@ -104,12 +119,21 @@ public class Message {
 	}
 
 	@XmlElement
-	public boolean isLu() {
-		return lu;
+	public int getEtatDestinataire() {
+		return etatDestinataire;
 	}
 
-	public void setLu(boolean lu) {
-		this.lu = lu;
+	public void setEtatDestinataire(int etatDestinataire) {
+		this.etatDestinataire = etatDestinataire;
+	}
+
+	@XmlElement
+	public int getEtatEmetteur() {
+		return etatEmetteur;
+	}
+
+	public void setEtatEmetteur(int etatEmetteur) {
+		this.etatEmetteur = etatEmetteur;
 	}
 	
 

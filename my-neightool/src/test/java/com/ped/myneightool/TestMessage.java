@@ -68,7 +68,7 @@ public class TestMessage {
 						
 			final Date d = new Date();
 			
-			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre message","Corps du message",d,false);
+			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre message","Corps du message",d,0,0);
 			final Message messagePost = (Message) crb.httpRequestXMLBody(message,"message/create");
 			
 			Assert.assertNotSame(messagePost,null);
@@ -102,7 +102,7 @@ public class TestMessage {
 						
 			final Date d = new Date();
 			
-			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre messageGet","Corps du messageGetMessage",d,false);
+			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre messageGet","Corps du messageGetMessage",d,0,0);
 			final Message messagePost = (Message) crb.httpRequestXMLBody(message,"message/create");
 			
 			Assert.assertNotSame(messagePost,null);
@@ -144,7 +144,7 @@ public class TestMessage {
 						
 			final Date d = new Date();
 			
-			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre message","Corps du message",d,false);
+			final Message message = new Message(utilisateurPost,utilisateurPost2,"Titre message","Corps du message",d,0,0);
 			final Message messagePost = (Message) crb.httpRequestXMLBody(message,"message/create");
 			
 			Assert.assertNotSame(messagePost,null);
@@ -190,17 +190,17 @@ public class TestMessage {
 
 			final Date d= new Date();
 
-			final Message message1 = new Message(user1Post,user2Post,"Message1","Corps du message",d,false);
+			final Message message1 = new Message(user1Post,user2Post,"Message1","Corps du message",d,0,0);
 			final Message message1Post = (Message) crb.httpRequestXMLBody(message1,"message/create");
 
 			Assert.assertNotSame(message1Post,null);
 
-			final Message message2 = new Message(user1Post,user3Post,"Message2","Corps du message",d,false);
+			final Message message2 = new Message(user1Post,user3Post,"Message2","Corps du message",d,0,0);
 			final Message message2Post = (Message) crb.httpRequestXMLBody(message2,"message/create");
 
 			Assert.assertNotSame(message2Post,null);
 
-			final Message message3 = new Message(user1Post,user4Post,"Message3","Corps du message",d,false);
+			final Message message3 = new Message(user1Post,user4Post,"Message3","Corps du message",d,0,0);
 			final Message message3Post = (Message) crb.httpRequestXMLBody(message3,"message/create");
 
 			Assert.assertNotSame(message3Post,null);
@@ -254,17 +254,17 @@ public class TestMessage {
 
 			final Date d= new Date();
 
-			final Message message1 = new Message(user2Post,user1Post,"Message1","Corps du message",d,false);
+			final Message message1 = new Message(user2Post,user1Post,"Message1","Corps du message",d,0,0);
 			final Message message1Post = (Message) crb.httpRequestXMLBody(message1,"message/create");
 
 			Assert.assertNotSame(message1Post,null);
 
-			final Message message2 = new Message(user3Post,user1Post,"Message2","Corps du message",d,false);
+			final Message message2 = new Message(user3Post,user1Post,"Message2","Corps du message",d,0,0);
 			final Message message2Post = (Message) crb.httpRequestXMLBody(message2,"message/create");
 
 			Assert.assertNotSame(message2Post,null);
 
-			final Message message3 = new Message(user4Post,user1Post,"Message3","Corps du message",d,false);
+			final Message message3 = new Message(user4Post,user1Post,"Message3","Corps du message",d,0,0);
 			final Message message3Post = (Message) crb.httpRequestXMLBody(message3,"message/create");
 
 			Assert.assertNotSame(message3Post,null);

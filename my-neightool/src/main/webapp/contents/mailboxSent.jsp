@@ -91,28 +91,32 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		<tbody id="accordion">		
 		<% if(list)
 			{
-				for (Message m : messagesDto.getListeMessages()) { %>
-				<tr style="vertical-align: middle;" class="toPaginate">
-				<td class="perfectCenter"><%=m.getDestinataire().getConnexion().getLogin()%></td>
-				<td class="perfectCenter"><strong><a
-						data-toggle="collapse" data-parent="#accordion"
-						href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a></strong>
-					<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
-						<hr />
-						<div style="text-align: justify !important"><%=m.getCorps()%></div>
-					</div></td>
-				<td class="perfectCenter">
-				<% String date = df.format(m.getDate());
-				out.print(date);
-				%>				
-				</td>
-				<td class="perfectCenter">
-					<button type="button" class="btn btn-default ttipt" title="Supprimer ce message">
-						<span class="glyphicon glyphicon-remove"></span>
-					</button>
-				</td>
-			</tr>
-	 	<%		}
+				for (Message m : messagesDto.getListeMessages()) { 
+					if(m.getEtatEmetteur() == 0)
+					{%>
+					<tr style="vertical-align: middle;" class="toPaginate">
+					<td class="perfectCenter"><%=m.getDestinataire().getConnexion().getLogin()%></td>
+					<td class="perfectCenter"><strong><a
+							data-toggle="collapse" data-parent="#accordion"
+							href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a></strong>
+						<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
+							<hr />
+							<div style="text-align: justify !important"><%=m.getCorps()%></div>
+						</div></td>
+					<td class="perfectCenter">
+					<% String date = df.format(m.getDate());
+					out.print(date);
+					%>				
+					</td>
+					<td class="perfectCenter">
+						<button type="button" class="btn btn-default ttipt" title="Supprimer ce message">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</td>
+				</tr>
+	 	<%			}
+				}
+		
 			}else{
 			%>
 		 	<tr class="perfectCenter">
