@@ -82,7 +82,7 @@ $(function(){
 		$.ajax({
 		    url: "contents/etatScript.jsp",
 		    type: 'POST',
-		    data: {id: idMsg, etat: 3},
+		    data: {id: idMsg, etat: 3, page: 1},
 		    success: function() {
 		    	$(this).tooltip('hide');
 				$(this).closest('tr').fadeOut(400, function() {
@@ -102,7 +102,6 @@ $(function(){
 	
 	$('.answerBtn').click(function(e) {
 		var strTmp = this.id.split("isanswerName");
-		alert(strTmp[0]);
 		$("#idAnswer").val(strTmp[0]);
 	});
 	
@@ -116,7 +115,7 @@ $(function(){
 		$.ajax({
 		    url: "contents/etatScript.jsp",
 		    type: 'POST',
-		    data: {id: idMsg, etat: 1},
+		    data: {id: idMsg, etat: 1, page: 1},
 		    success: function() {
 		    	$("#unread"+idMsg).removeClass("unread");
 		    }
