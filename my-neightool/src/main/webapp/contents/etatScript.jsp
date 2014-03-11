@@ -52,8 +52,16 @@
 			messageValue = "Le message a bien été récupérée";
 			messageType = "success";
 			
-			messageGET.setEtatDestinataire(Integer.parseInt(request.getParameter("etat")));
-
+			
+			if (Integer.parseInt(request.getParameter("page")) == 1)
+			{	
+				messageGET.setEtatDestinataire(Integer.parseInt(request.getParameter("etat")));
+			}
+			else if (Integer.parseInt(request.getParameter("page")) == 2)
+			{
+				messageGET.setEtatEmetteur(Integer.parseInt(request.getParameter("etat")));
+			}
+			
 			ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/message/update");
 			clientRequest.body("application/xml", messageGET );
 

@@ -37,7 +37,7 @@
 
 
 	//ici on va récuperer la réponse de la requete
-	try {
+	try {	
 		ClientRequest requestMessages;
 		requestMessages = new ClientRequest(
 				"http://localhost:8080/rest/message/list/sendListByOrder/" + session.getAttribute("ID"));
@@ -72,10 +72,39 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 		
 %>
 
+<script>
+$(function(){
+var nbMessages = <%=messagesDto.size()%>;
+
+	$('.delMessage').click(function() {		
+		var idMsg = $(this).attr("id").split("delMsg")[1];
+		
+		$.ajax({
+		    url: "contents/etatScript.jsp",
+		    type: 'POST',
+		    data: {id: idMsg, etat: 1, page: 2},
+		    success: function() {
+		    	$(this).tooltip('hide');
+				$(this).closest('tr').fadeOut(400, function() {
+					nbMessages--;
+					$("#nbMessageInbox").html(nbMessages);
+					$(this).html("<td colspan='4' class='perfectCenter alert-success'>Message supprimé avec succès</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
+						$(this).remove();
+						if($("#paginatorNbElements").length>0) {
+							changePage(previousPage,$("#paginatorNbElements").val());
+							recalculateNbPage();
+						}
+					});
+		    	});
+			}
+		});
+	});
+});
+</script>
 
 <ol class="breadcrumb">
 	<li><a href="dashboard.jsp">Accueil</a></li>
-	<li class="active">Boite d'envoi (les messages ne sont conservés que 30 jours)</li>
+	<li class="active">Boite d'envoi (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/50 messages)</li>
 </ol>
 
 <div class="table-responsive">
@@ -109,9 +138,9 @@ DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 					%>				
 					</td>
 					<td class="perfectCenter">
-						<button type="button" class="btn btn-default ttipt" title="Supprimer ce message">
-							<span class="glyphicon glyphicon-remove"></span>
-						</button>
+						<div class="btn-group">
+							<a class="ttipt btn btn-default delMessage" id="delMsg<%=m.getId()%>" title="Supprimer le message"><span class="glyphicon glyphicon-remove"></span></a>
+						</div>
 					</td>
 				</tr>
 	 	<%			}
