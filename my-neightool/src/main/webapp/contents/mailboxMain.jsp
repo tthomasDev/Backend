@@ -79,16 +79,17 @@ $(function(){
 	
 	$('.delMessage').click(function() {
 		var idMsg = $(this).attr("id").split("delMsg")[1];
+		var msg = $(this);
 		$.ajax({
 		    url: "contents/etatScript.jsp",
 		    type: 'POST',
 		    data: {id: idMsg, etat: 3, page: 1},
 		    success: function() {
-		    	$(this).tooltip('hide');
-				$(this).closest('tr').fadeOut(400, function() {
+		    	msg.tooltip('hide');
+		    	msg.closest('tr').fadeOut(400, function() {
 					nbMessages--;
 					$("#nbMessageInbox").html(nbMessages);
-					$(this).html("<td colspan='4' class='perfectCenter alert-success'>Message supprimé avec succès</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
+					$(this).removeClass("unread").html("<td colspan='5' class='perfectCenter alert-success'>Message supprimé avec succès</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
 						$(this).remove();
 						if($("#paginatorNbElements").length>0) {
 							changePage(previousPage,$("#paginatorNbElements").val());
@@ -117,7 +118,7 @@ $(function(){
 		    type: 'POST',
 		    data: {id: idMsg, etat: 1, page: 1},
 		    success: function() {
-		    	$("#unread"+idMsg).removeClass("unread");
+		    	$(".unread"+idMsg).removeClass("unread");
 		    }
 		});
 	});	
@@ -179,30 +180,33 @@ $(function(){
 				if(list) {
 					for (Message m : messagesDto.getListeMessages()) { %>
 					<% if(m.getEtatDestinataire() == 0){ %>
-					<tr style="vertical-align: middle;" class="toPaginate unread" id="unread<%=m.getId()%>">
+					<tr style="vertical-align: middle;" class="toPaginate unread unread<%=m.getId()%>">
 						<td></td>
 						<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
-						<td class="perfectCenter"><a
-								data-toggle="collapse" data-parent="#accordion"
-								href="#collapse<%=m.getId()%>" class="msg" id="msg<%=m.getId()%>"><%=m.getObjet()%></a>
+						<td class="perfectCenter">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=m.getId()%>" class="msg" id="msg<%=m.getId()%>">
+								<%=m.getObjet()%>
+							</a>
 					<% } else if(m.getEtatDestinataire() == 1){ %>
-					<tr style="vertical-align: middle;" class="toPaginate" id="unread<%=m.getId()%>">
+					<tr style="vertical-align: middle;" class="toPaginate">
 						<td></td>
 						<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
-						<td class="perfectCenter"><a
-								data-toggle="collapse" data-parent="#accordion"
-								href="#collapse<%=m.getId()%>" class="msg" id="msg<%=m.getId()%>"><%=m.getObjet()%></a>
+						<td class="perfectCenter">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=m.getId()%>" class="msg" id="msg<%=m.getId()%>">
+								<%=m.getObjet()%>
+							</a>
 					<% } else if(m.getEtatDestinataire() == 2){ %>
 					<tr style="vertical-align: middle;" class="toPaginate answered">
 						<td></td>
 						<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
-						<td class="perfectCenter"><a
-								data-toggle="collapse" data-parent="#accordion"
-								href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a>
+						<td class="perfectCenter">
+							<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=m.getId()%>">
+								<%=m.getObjet()%>
+							</a>
 					<% } if(m.getEtatDestinataire() != 3) {	%>
-					<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
+							<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
 								<hr />
-								<div style="text-align: justify !important"><%=m.getCorps()%></div>
+								<div class="well" style="text-align: justify !important"><%=m.getCorps()%></div>
 							</div></td>
 						<td class="perfectCenter">
 						<%
