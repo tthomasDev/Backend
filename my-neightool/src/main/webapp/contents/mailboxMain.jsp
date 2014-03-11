@@ -55,9 +55,6 @@
 			{
 				list=false;	
 			}
-			
-			messageValue = "La liste a bien été récupérée";
-			messageType = "success";
 		} else {
 			messageValue = "Une erreur est survenue";
 			messageType = "danger";
@@ -81,17 +78,25 @@ $(function(){
 	});
 	
 	$('.delMessage').click(function() {
-		$(this).tooltip('hide');
-		$(this).closest('tr').fadeOut(400, function() {
-			nbMessages--;
-			$("#nbMessageInbox").html(nbMessages);
-			$(this).html("<td colspan='4' class='perfectCenter alert-success'>Message supprimé avec succès</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
-				$(this).remove();
-				if($("#paginatorNbElements").length>0) {
-					changePage(previousPage,$("#paginatorNbElements").val());
-					recalculateNbPage();
-				}
-			});
+		var idMsg = $(this).attr("id").split("delMsg")[1];
+		$.ajax({
+		    url: "contents/etatScript.jsp",
+		    type: 'POST',
+		    data: {id: idMsg, etat: 3},
+		    success: function() {
+		    	$(this).tooltip('hide');
+				$(this).closest('tr').fadeOut(400, function() {
+					nbMessages--;
+					$("#nbMessageInbox").html(nbMessages);
+					$(this).html("<td colspan='4' class='perfectCenter alert-success'>Message supprimé avec succès</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
+						$(this).remove();
+						if($("#paginatorNbElements").length>0) {
+							changePage(previousPage,$("#paginatorNbElements").val());
+							recalculateNbPage();
+						}
+					});
+		    	});
+			}
 		});
 	});
 	
@@ -171,15 +176,22 @@ $(function(){
 						<td class="perfectCenter"><a
 								data-toggle="collapse" data-parent="#accordion"
 								href="#collapse<%=m.getId()%>" class="msg" id="msg<%=m.getId()%>"><%=m.getObjet()%></a>
-					<% } else { %>
-					<tr style="vertical-align: middle;" class="toPaginate">
+					<% } else if(m.getEtatDestinataire() == 1){ %>
+					<tr style="vertical-align: middle;" class="toPaginate" id="unread<%=m.getId()%>">
+						<td></td>
+						<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
+						<td class="perfectCenter"><a
+								data-toggle="collapse" data-parent="#accordion"
+								href="#collapse<%=m.getId()%>" class="msg" id="msg<%=m.getId()%>"><%=m.getObjet()%></a>
+					<% } else if(m.getEtatDestinataire() == 2){ %>
+					<tr style="vertical-align: middle;" class="toPaginate answered">
 						<td></td>
 						<td class="perfectCenter"><%=m.getEmetteur().getConnexion().getLogin()%></td>
 						<td class="perfectCenter"><a
 								data-toggle="collapse" data-parent="#accordion"
 								href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a>
-					<% } %>			
-							<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
+					<% } if(m.getEtatDestinataire() != 3) {	%>
+					<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
 								<hr />
 								<div style="text-align: justify !important"><%=m.getCorps()%></div>
 							</div></td>
@@ -194,14 +206,14 @@ $(function(){
 								<a id="isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipt btn btn-default" title="Répondre à l'expéditeur">
 									<span class="glyphicon glyphicon-envelope"></span>
 								</a>
-								<a class="ttipt btn btn-default delMessage" title="Supprimer le message">
+								<a class="ttipt btn btn-default delMessage" id="delMsg<%=m.getId()%>" title="Supprimer le message">
 									<span class="glyphicon glyphicon-remove"></span>
 								</a>
 							</div>
 						</td>
 					</tr>
-			 	<%
-			 		}
+			 	<%		}
+					}
 				} else {	
 				%>
 				 	<tr class="perfectCenter">
