@@ -78,12 +78,17 @@
 				<ul class="nav nav-pills nav-stacked">
 				<% System.out.println("AFFICHAGE : ");
 				if(list) {
-					System.out.println("LISTE EXISTANTE");
 					for (Categorie c : categoriesDto.getListeCategories()) { 
-					System.out.println("UNE CAT !!");
-					%>
-					<li><a href="#"><%=c.getNom()%> <span class="badge pull-right">0</span></a></li>
-					<%
+						if (request.getParameter("id")!=null) {
+							if (c.getId() == Integer.parseInt(request.getParameter("id"))) {
+				%>
+								<li class="active"><a href="#"><%=c.getNom()%> <span class="badge pull-right">0</span></a></li>
+						 <% }
+						}
+						else { %>
+							<li><a href="#"><%=c.getNom()%> <span class="badge pull-right">0</span></a></li>
+						<% 
+						}
 					}
 				}
 				%>

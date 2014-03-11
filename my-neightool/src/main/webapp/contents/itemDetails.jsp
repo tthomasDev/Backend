@@ -36,6 +36,9 @@ String messageValue = "";
 final String id = String.valueOf(session.getAttribute("ID"));
 final String userName = String.valueOf(session.getAttribute("userName"));
 
+//La liste des outils correspondant à une catégorie spécifique
+OutilsDTO listeOutilsCat = new OutilsDTO();
+
 if(request.getParameter("id") != null) {
 	itemFound = true;
 	
@@ -70,7 +73,7 @@ if(request.getParameter("id") != null) {
 			e.printStackTrace();
 		}
 
-		//ici on va récuperer la réponse de la requete
+		// On récupère ensuite la liste des outils correspondants à l'utilisateur
 		try {
 			ClientRequest requestTools;
 			requestTools = new ClientRequest(
@@ -86,6 +89,30 @@ if(request.getParameter("id") != null) {
 		
 				// et ici on peut vérifier que c'est bien le bon objet
 				messageValue = "Les détails de l'objet ont bien été récupérés.";
+				messageType = "success";
+			} else {
+				messageValue = "Une erreur est survenue";
+				messageType = "danger";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// On récupère ensuite la liste des outils correspondants à l'utilisateur
+		try {
+			ClientRequest requestTools;
+			requestTools = new ClientRequest(
+			"http://localhost:8080/rest/tool/categorie/" + outil.getCategorie().getId());
+			requestTools.accept("application/xml");
+			ClientResponse<String> responseTools = requestTools.get(String.class);
+
+			if (responseTools.getStatus() == 200) {
+				Unmarshaller un2 = jaxbc2.createUnmarshaller();
+				listeOutilsCat = (OutilsDTO) un2.unmarshal(new StringReader(
+				responseTools.getEntity()));
+				
+				// et ici on peut vérifier que c'est bien le bon objet
+				messageValue = "Les détails de la catégorie ont bien été récupérés.";
 				messageType = "success";
 			} else {
 				messageValue = "Une erreur est survenue";
@@ -277,11 +304,9 @@ out.println("</div></div>");
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
-				<%-- <td class="tableTmp">Catégorie :</td>
-				<td><a href="#"><%=itemCategory%></a></td> --%>
 				<td class="tableTmp" width="30%">Catégorie :</td>
 				<td width="70%"><a href="#" data-toggle="modal"
-					data-target="#catProfile"><%=itemCategory%></a></td>
+					data-target="#categoryProfile"><%=itemCategory%></a></td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
@@ -313,7 +338,7 @@ out.println("</div></div>");
 					diff = 0;
 				else
 					diff = 1;%>
-			<%if (diff == 1) {%> 
+			<%if (diff == 0) {%>
 				href="#" data-toggle="modal" data-target="#confirmBorrow" class="btn btn-success pull-right btn-lg"
 			<%} else { %>
 				href="#" class="btn btn-default pull-right btn-lg ttipr" title="Vous ne pouvez pas emprunter vos propres objets" 
@@ -361,6 +386,70 @@ out.println("</div></div>");
 			</form>
 		</div>
 	</div>
+	<div class="modal fade" id="categoryProfile" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Catégorie : <%=itemCategory %></h4>
+					</div>
+					<div class="modal-body">
+						<style>
+.text-right {
+	text-align: right;
+	font-weight: bold;
+	padding-right: 5px;
+	vertical-align: top;
+}
+</style>
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#cat" data-toggle="tab">Objets
+									correspondants</a></li>
+						</ul>
+						<br />
+						<div class="tab-content">
+							<div class="tab-pane active" id="cat">
+								<% if (listeOutilsCat.getListeOutils().size() == 0) { %>
+									<div class="alert alert-info perfectCenter"><i class="glyphicon glyphicon-warning-sign"></i> Aucun objet n'appartient actuellement à la catégorie <%=itemCategory%></div>
+								<% } else {
+								System.out.println("\n \n \n TAILLE !!! " + listeOutilsCat.getListeOutils().size());
+								%>
+								<div class="table-responsive">
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th style="text-align: center;" width="25%">Nom</th>
+												<th style="text-align: center;" width="15%">Caution</th>
+												<th style="text-align: center;" width="20%">Disponible ?</th>
+											</tr>
+										</thead>
+										<tbody>
+											<% for (Outil t : listeOutilsCat.getListeOutils()) { %>
+											<tr style="vertical-align: middle;" class="toPaginate">
+												<td style="vertical-align: middle; text-align: center;"><strong>
+													<a href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
+												<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " " %><i class="glyphicon glyphicon-euro"></i></td>
+												<% if (t.isDisponible()) { %>
+													<td style="vertical-align: middle; text-align: center;"><i class="glyphicon glyphicon-ok"></i></td>
+												<% } else { %>
+													<td style="vertical-align: middle; text-align: center;"><i class="glyphicon glyphicon-remove"></i></td>
+												<% } %>
+											</tr>
+											<% } %>
+										</tbody>
+									</table>
+								</div>
+								<div id="paginator"></div>
+								<input id="paginatorNbElements" type="hidden" value="5" readonly="readonly"/>
+								<% } %>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 </div>
 
 <%
