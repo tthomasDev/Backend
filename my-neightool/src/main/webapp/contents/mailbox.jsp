@@ -17,11 +17,10 @@
 <%@ page import="model.Message"%>
 <%@ page import="model.Utilisateur"%>
 <%@ page import="dto.MessagesDTO"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
-String subInclude = "mailboxMain.jsp";
+	String subInclude = "mailboxMain.jsp";
 String menuMainActive = "active";
 String menuSentActive = "";
 boolean newMessageHidden = true;
@@ -49,214 +48,210 @@ if(request.getParameter("userId") != null) {
 }
 
 
-//Nouveau message
+	//Nouveau message
+	if ((request.getParameter("posted") != null)
+			&& (request.getParameter("userTo") != null)
+			&& (request.getParameter("subjectTo") != null)
+			&& (request.getParameter("messageTo") != null)
+			&& (request.getParameter("idAnswer") != null)) {
+		System.out.println("ENVOI D'UN MESSAGE");
 
-    boolean actionValid = false;
-if ((request.getParameter("posted") != null)
-&& (request.getParameter("userTo") != null)
-&& (request.getParameter("subjectTo") != null)
-&& (request.getParameter("messageTo") != null)
-&& (request.getParameter("idAnswer") != null))
-{
-	actionValid = true;
-	System.out.println("ENVOI D'UN MESSAGE");
-	
-	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-	final JAXBContext jaxbc=JAXBContext.newInstance(Message.class, Utilisateur.class);
-	
-	// Utilisateurs
-	Utilisateur userSource = new Utilisateur();
-	Utilisateur userTarget = new Utilisateur();
-	
-	
-	String id = String.valueOf(session.getAttribute("ID"));
-	String userPseudoTo = request.getParameter("userTo");	
-	String subject = request.getParameter("subjectTo");
-	String corps = request.getParameter("messageTo");
-	
+		//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
+		final JAXBContext jaxbc = JAXBContext.newInstance(
+				Message.class, Utilisateur.class);
 
-try {
+		// Utilisateurs
+		Utilisateur userSource = new Utilisateur();
+		Utilisateur userTarget = new Utilisateur();
 
-	ClientRequest clientRequest ;
-	clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + id);
-	clientRequest.accept("application/xml");
-	ClientResponse<String> response2 = clientRequest.get(String.class);
-	
-	if (response2.getStatus() == 200)
-	{
-		Unmarshaller un = jaxbc.createUnmarshaller();
-		userSource = (Utilisateur) un.unmarshal(new StringReader(response2.getEntity()));
-	}
-		
-	ClientRequest clientRequest2 ;
-	clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/login/" + userPseudoTo);
-	clientRequest2.accept("application/xml");
-	ClientResponse<String> response3 = clientRequest2.get(String.class);
-		
-	if (response3.getStatus() == 200)
-	{
-		System.out.println("On est dans 200");
-		Unmarshaller un = jaxbc.createUnmarshaller();
-		userTarget = (Utilisateur) un.unmarshal(new StringReader(response3.getEntity()));
-	}
-	else
-	{
-	
-	System.out.println("Pas 200");
-	}
-
-
-} catch (Exception e) {
-	e.printStackTrace();
-}
-
-//création du message
-
-	final Message message = new Message(userSource,userTarget,subject,corps, new Date(),0,0);
-
-	System.out.println("\n \n ON EST AVANT  LE IF \n");
-	//Cas où l'on répond à un autre message
-	if (request.getParameter("idAnswer") != "")
-	{
-		System.out.println("\n \n ON EST DANS LE IF \n");
-		
-		//on récupère le message à mettre à jour
-		final JAXBContext jaxbc2 = JAXBContext.newInstance(MessagesDTO.class,Message.class);
-		
-		Message message2 = new Message();
+		String id = String.valueOf(session.getAttribute("ID"));
+		String userPseudoTo = request.getParameter("userTo");
+		String subject = request.getParameter("subjectTo");
+		String corps = request.getParameter("messageTo");
 
 		try {
-			ClientRequest requestMessages;
-			requestMessages = new ClientRequest(
-					"http://localhost:8080/rest/message/" + request.getParameter("idAnswer"));
-			requestMessages.accept("application/xml");
-			ClientResponse<String> responseMessages = requestMessages
+
+			ClientRequest clientRequest;
+			clientRequest = new ClientRequest(
+					"http://localhost:8080/rest/user/" + id);
+			clientRequest.accept("application/xml");
+			ClientResponse<String> response2 = clientRequest
 					.get(String.class);
-				
+
+			if (response2.getStatus() == 200) {
+				Unmarshaller un = jaxbc.createUnmarshaller();
+				userSource = (Utilisateur) un
+						.unmarshal(new StringReader(response2
+								.getEntity()));
+			}
+
+			ClientRequest clientRequest2;
+			clientRequest2 = new ClientRequest(
+					"http://localhost:8080/rest/user/login/"
+							+ userPseudoTo);
+			clientRequest2.accept("application/xml");
+			ClientResponse<String> response3 = clientRequest2
+					.get(String.class);
+
+			if (response3.getStatus() == 200) {
+				System.out.println("On est dans 200");
+				Unmarshaller un = jaxbc.createUnmarshaller();
+				userTarget = (Utilisateur) un
+						.unmarshal(new StringReader(response3
+								.getEntity()));
+			} else {
+
+				System.out.println("Pas 200");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		//création du message
+
+		final Message message = new Message(userSource, userTarget,
+				subject, corps, new Date(), 0, 0);
+
+		System.out.println("\n \n ON EST AVANT  LE IF \n");
+		//Cas où l'on répond à un autre message
+		if (request.getParameter("idAnswer") != "") {
+			System.out.println("\n \n ON EST DANS LE IF \n");
+
+			//on récupère le message à mettre à jour
+			final JAXBContext jaxbc2 = JAXBContext.newInstance(
+					MessagesDTO.class, Message.class);
+
+			Message message2 = new Message();
+
+			try {
+				ClientRequest requestMessages;
+				requestMessages = new ClientRequest(
+						"http://localhost:8080/rest/message/"
+								+ request.getParameter("idAnswer"));
+				requestMessages.accept("application/xml");
+				ClientResponse<String> responseMessages = requestMessages
+						.get(String.class);
+
 				if (responseMessages.getStatus() == 200) {
 					Unmarshaller un2 = jaxbc2.createUnmarshaller();
-					message2 = (Message) un2.unmarshal(new StringReader(
-							responseMessages.getEntity()));
+					message2 = (Message) un2
+							.unmarshal(new StringReader(
+									responseMessages.getEntity()));
 				} else {
 					messageValue = "Une erreur est survenue";
 					messageType = "danger";
 				}
-		
-				
-				
-			//on le met à jour
-			message2.setEtatDestinataire(2);
-			
-			ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/message/update");
-			clientRequest.body("application/xml", message2 );
-	
-			//ici on va récuperer la réponse de la requete de mise à jour
-			final ClientResponse<String> clientResponse = clientRequest.post(String.class);	
-			
-			
-			//test affichage
-			System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
-			
-			if (clientResponse.getStatus() == 200) { 
-				final Unmarshaller un = jaxbc.createUnmarshaller();
-				final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
-				// et ici on peut vérifier que c'est bien le bon objet
-				messageValue = "Le message a bien été mis à jour";
-				messageType = "success";
-			} else {
-				messageValue = "Une erreur est survenue";
-				messageType = "danger";
-			}		
-			
+
+				//on le met à jour
+				message2.setEtatDestinataire(2);
+
+				ClientRequest clientRequest = new ClientRequest(
+						"http://localhost:8080/rest/message/update");
+				clientRequest.body("application/xml", message2);
+
+				//ici on va récuperer la réponse de la requete de mise à jour
+				final ClientResponse<String> clientResponse = clientRequest
+						.post(String.class);
+
+				//test affichage
+				System.out.println("\n\n" + clientResponse.getEntity()
+						+ "\n\n");
+
+				if (clientResponse.getStatus() == 200) {
+					final Unmarshaller un = jaxbc.createUnmarshaller();
+					final Object object = (Object) un
+							.unmarshal(new StringReader(clientResponse
+									.getEntity()));
+					// et ici on peut vérifier que c'est bien le bon objet
+					messageValue = "Le message a bien été mis à jour";
+					messageType = "success";
+				} else {
+					messageValue = "Une erreur est survenue";
+					messageType = "danger";
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-		
-		
+
+		}
+
+		final Marshaller marshaller = jaxbc.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+		final java.io.StringWriter sw = new StringWriter();
+		marshaller.marshal(message, sw);
+
+		//ici on envois la requete au webservice createUtilisateur
+		final ClientRequest clientRequest = new ClientRequest(
+				"http://localhost:8080/rest/message/create");
+		clientRequest.body("application/xml", message);
+
+		//ici on va récuperer la réponse de la requete
+		final ClientResponse<String> clientResponse = clientRequest
+				.post(String.class);
+
+		//test affichage
+		System.out
+				.println("\n\n" + clientResponse.getEntity() + "\n\n");
+		if (clientResponse.getStatus() == 200) { // si la réponse est valide !
+			// on désérialiser la réponse si on veut vérifier que l'objet retourner
+			// est bien celui qu'on a voulu créer , pas obligatoire
+			final Unmarshaller un = jaxbc.createUnmarshaller();
+			final Object object = (Object) un
+					.unmarshal(new StringReader(clientResponse
+							.getEntity()));
+			// et ici on peut vérifier que c'est bien le bonne objet
+			messageValue = "Le message a bien &eacute;t&eacute; envoy&eacute;";
+			messageType = "success";
+		} else {
+			messageValue = "Une erreur est survenue";
+			messageType = "danger";
+		}
+
 	}
-
-final Marshaller marshaller = jaxbc.createMarshaller();
-marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-final java.io.StringWriter sw = new StringWriter();
-marshaller.marshal(message, sw);
-
-
-//ici on envois la requete au webservice createUtilisateur
-final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/message/create");
-clientRequest.body("application/xml", message );
-
-
-//ici on va récuperer la réponse de la requete
-final ClientResponse<String> clientResponse = clientRequest.post(String.class);	
-
-
-//test affichage
-System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
-if (clientResponse.getStatus() == 200) { // si la réponse est valide !
-	// on désérialiser la réponse si on veut vérifier que l'objet retourner
-	// est bien celui qu'on a voulu créer , pas obligatoire
-	final Unmarshaller un = jaxbc.createUnmarshaller();
-	final Object object = (Object) un.unmarshal(new StringReader(clientResponse.getEntity()));
-	// et ici on peut vérifier que c'est bien le bonne objet
-	messageValue = "Le message a bien été envoyé";
-	messageType = "success";
-} else {
-	messageValue = "Une erreur est survenue";
-	messageType = "danger";
-}	
-
-
-}
-
-actionValid = false;
-messageType = "";
-messageValue = "";
-boolean list=false;
-int nbNewMessage=0;
-actionValid = true;
-
-//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-final JAXBContext jaxbc = JAXBContext.newInstance(MessagesDTO.class,Message.class);
-
-// Le DTO des outils permettant de récupérer la liste d'outils
-MessagesDTO messagesDto = new MessagesDTO();
-
-//ici on va récuperer la réponse de la requete
-try {
-	ClientRequest requestMessages;
-	requestMessages = new ClientRequest("http://localhost:8080/rest/message/list/receiveListByOrder/" + session.getAttribute("ID"));
-	requestMessages.accept("application/xml");
-	ClientResponse<String> responseMessages = requestMessages
-	.get(String.class);
-	if (responseMessages.getStatus() == 200) {
-		Unmarshaller un2 = jaxbc.createUnmarshaller();
-		messagesDto = (MessagesDTO) un2.unmarshal(new StringReader(
-		responseMessages.getEntity()));
-		if(messagesDto.size()>0)
-		{
-	list=true;
 	
-	for(Message m : messagesDto.getListeMessages()) {
-		
-		if(m.getEtatDestinataire() == 0)
-			nbNewMessage++;
-	}
+	boolean list = false;
+	int nbNewMessage = 0;
+
+	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
+	final JAXBContext jaxbc = JAXBContext.newInstance(
+			MessagesDTO.class, Message.class);
+
+	// Le DTO des outils permettant de récupérer la liste d'outils
+	MessagesDTO messagesDto = new MessagesDTO();
+
+	//ici on va récuperer la réponse de la requete
+	try {
+		ClientRequest requestMessages;
+		requestMessages = new ClientRequest(
+				"http://localhost:8080/rest/message/list/receiveListByOrder/"
+						+ session.getAttribute("ID"));
+		requestMessages.accept("application/xml");
+		ClientResponse<String> responseMessages = requestMessages
+				.get(String.class);
+		if (responseMessages.getStatus() == 200) {
+			Unmarshaller un2 = jaxbc.createUnmarshaller();
+			messagesDto = (MessagesDTO) un2.unmarshal(new StringReader(
+					responseMessages.getEntity()));
+			if (messagesDto.size() > 0) {
+				list = true;
+
+				for (Message m : messagesDto.getListeMessages()) {
+
+					if (m.getEtatDestinataire() == 0)
+						nbNewMessage++;
+				}
+			} else {
+				list = false;
+			}
+		} else {
+			messageValue = "Une erreur est survenue";
+			messageType = "danger";
 		}
-		else
-		{
-	list=false;	
-		}
-		
-		messageValue = "La liste a bien été récupérée";
-		messageType = "success";
-	} else {
-		messageValue = "Une erreur est survenue";
-		messageType = "danger";
+	} catch (Exception e) {
+		e.printStackTrace();
 	}
-} catch (Exception e) {
-	e.printStackTrace();
-}
 %>
 <%
 	if(!newMessageHidden) {
@@ -267,15 +262,6 @@ try {
 	});
 </script>
 <%
-	}
-%>
-
-<%
-	if (actionValid) {
-		out.println("<div class='row'><div class='col-md-12' style='margin-top:-20px'>");
-		out.println("<div class='alert alert-" + messageType + "'>"
-				+ messageValue + "</div>");
-		out.println("</div></div>");
 	}
 %>
 
@@ -294,7 +280,10 @@ try {
 	</ul>
 </div>
 <div class="col-md-9">
-	<jsp:include page="<%=subInclude%>" />
+	<jsp:include page="<%=subInclude%>">
+		<jsp:param value="<%=messageType%>" name="mType"/>
+		<jsp:param value="<%=messageValue%>" name="mValue"/>
+	</jsp:include>
 </div>
 
 <div class="modal fade" id="newMessageModal" tabindex="-1" role="dialog"
