@@ -1,3 +1,4 @@
+<%@include file="../constantes.jsp"%>
 <%@ page import="javax.xml.bind.JAXBContext"%>
 <%@ page import="javax.xml.bind.Marshaller"%>
 <%@ page import="javax.xml.bind.Unmarshaller"%>
@@ -61,13 +62,30 @@ age = 			yeardiff;
 address = 		utilisateurGet.getAdresse().getadresseComplete();
 telephone = 	utilisateurGet.getTelephone();
 email = 		utilisateurGet.getMail();
-avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage();
-
+avatar = 		"./dist/img/user_avatar_default.png";
+if(utilisateurGet.getCheminImage()!=null)
+	avatar = 	utilisateurGet.getCheminImage();
 
 %>
 <style>
 .text-right{text-align:right;font-weight:bold;padding-right:5px;vertical-align:top;}
 </style>
+<script type="text/javascript">
+$(function() {
+	$('#linkImg').on("change" , function() {
+		var tmp = $(this).val();
+        $.ajax({
+		    url: "<%=pluginFolder%>imgProfilUpdateScript.jsp",
+		    type: 'POST',
+		    data: {id:<%=utilisateurGet.getId()%>, link:tmp},
+		    success: function() {
+		    	$('#uploadDone').fadeIn().delay(4000).fadeOut();
+		    }
+		)};
+    });
+});
+</script>
+
 <div class="row">
 	<div class="col-md-8">
 		<h4>Paramètres de compte</h4>
@@ -115,9 +133,12 @@ avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage
 		<small style="color:#999;"><em>* Champs masqués au public par défaut</em></small>
 	</div>
 	<div class="col-md-4 perfectCenter">
-		<img width="80%" height="80%" src="<%=avatar%>" id="avatar" />
+		<img width="80%" height="80%" class="img-rounded" src="<%=avatar%>" id="avatar" />
+		<input type="hidden" name="linkImg" value="" id="linkImg" />
 		<br /><br />
 		<a href="#" class="btn-sm btn btn-info" data-toggle="modal" data-target="#uploadImg"><i class="glyphicon glyphicon-camera"></i> Changer la photo de profil</a>
+		<br /><br />
+		<div class="alert alert-success perfectCenter" id="uploadDone" style="display:none">Image de profil modifiée avec succès</div>
 	</div>
 </div>
 <jsp:include page="../contents/upload.jsp">
@@ -125,4 +146,6 @@ avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage
 	<jsp:param value="1000" name="maxHeight"/>
 	<jsp:param value="1024000" name="maxSize"/>
 	<jsp:param value="avatar" name="imgFieldId"/>
+	<jsp:param value="linkImg" name="imgHiddenField"/>
+	<jsp:param value="<%=avatar%>" name="previousImg"/>
 </jsp:include>

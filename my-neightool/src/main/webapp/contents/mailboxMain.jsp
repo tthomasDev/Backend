@@ -19,23 +19,19 @@
 
 <%@ page import="model.Message"%>
 <%@ page import="dto.MessagesDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
 <%
-	boolean actionValid = false;
-	String messageType = "";
-	String messageValue = "";
 	boolean list=false;
 
-	actionValid = true;
-
-	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
+	//on a besoin du contexte si on veut serialiser/dÃ©sÃ©rialiser avec jaxb
 	final JAXBContext jaxbc = JAXBContext.newInstance(MessagesDTO.class,Message.class);
 
-	// Le DTO des outils permettant de récupérer la liste d'outils
+	// Le DTO des outils permettant de rÃ©cupÃ©rer la liste d'outils
 	MessagesDTO messagesDto = new MessagesDTO();
 
-	//ici on va récuperer la réponse de la requete
+	//ici on va rÃ©cuperer la rÃ©ponse de la requete
 	try {
 		ClientRequest requestMessages;
 		requestMessages = new ClientRequest(
@@ -55,9 +51,6 @@
 			{
 				list=false;	
 			}
-		} else {
-			messageValue = "Une erreur est survenue";
-			messageType = "danger";
 		}
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -83,7 +76,7 @@ $(function(){
 		    	msg.closest('tr').fadeOut(400, function() {
 					nbMessages--;
 					$("#nbMessageInbox").html(nbMessages);
-					$(this).removeClass("unread").html("<td colspan='5' class='perfectCenter alert-success'>Message supprimé avec succès</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
+					$(this).removeClass("unread").html("<td colspan='5' class='perfectCenter alert-success'>Message supprimÃ© avec succÃ¨s</td>").fadeIn(400).delay(1000).fadeOut(400, function() {
 						$(this).remove();
 						if($("#paginatorNbElements").length>0) {
 							changePage(previousPage,$("#paginatorNbElements").val());
@@ -131,16 +124,22 @@ $(function(){
 	<div class="col-md-12">
 		<ol class="breadcrumb">
 			<li><a href="dashboard.jsp">Accueil</a></li>
-			<li class="active">Boite de réception (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/<%=nbMaxMessagesAllowed%> messages)</li>
+			<li class="active">Boite de rÃ©ception (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/<%=nbMaxMessagesAllowed%> messages)</li>
 		</ol>
 	</div>
-	
+	<% if(request.getParameter("mValue")!=null && request.getParameter("mValue")!="") { %>
+		<div class='col-md-12'>
+			<div class='perfectCenter alert alert-<%=request.getParameter("mType")%>'>
+				<%=request.getParameter("mValue")%>
+			</div>
+		</div>
+	<% } %>
 	<div class="col-md-offset-8 col-md-4">
 		<table class="table">
 			<thead>
 				<tr>
 					<th width="15px"></th>
-					<th>Légende</th>
+					<th>LÃ©gende</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -150,7 +149,7 @@ $(function(){
 				</tr>
 				<tr class="answered">
 					<td></td>
-					<td>Message répondu</td>
+					<td>Message rÃ©pondu</td>
 				</tr>
 			</tbody>
 		</table>
@@ -162,7 +161,7 @@ $(function(){
 				<thead>
 					<tr>
 						<th style="text-align: center;" width="5px"></th>
-						<th style="text-align: center;" width="20%">Expéditeur</th>
+						<th style="text-align: center;" width="20%">ExpÃ©diteur</th>
 						<th style="text-align: center;" width="50%">Sujet</th>
 						<th style="text-align: center;" width="15%">Date</th>
 						<th style="text-align: center;" width="15%">Actions</th>
@@ -211,7 +210,7 @@ $(function(){
 						</td>
 						<td class="perfectCenter">
 							<div class="btn-group">
-								<a id="<%=m.getId()%>isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipt btn btn-default" title="Répondre à l'expéditeur">
+								<a id="<%=m.getId()%>isanswerName<%=m.getEmetteur().getConnexion().getLogin()%>" class="answerBtn ttipt btn btn-default" title="RÃ©pondre Ã  l'expÃ©diteur">
 									<span class="glyphicon glyphicon-envelope"></span>
 								</a>
 								<a class="ttipt btn btn-default delMessage" id="delMsg<%=m.getId()%>" title="Supprimer le message">
@@ -225,7 +224,7 @@ $(function(){
 				} else {	
 				%>
 				 	<tr class="perfectCenter">
-						<td colspan="4">Aucun message reçu</td>
+						<td colspan="4">Aucun message reÃ§u</td>
 					</tr>
 				<% } %>			
 				</tbody>

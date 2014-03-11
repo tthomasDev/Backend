@@ -82,7 +82,7 @@ $(document).ready(function() {
 						$(<%=imgFieldId%>).attr("src", answer[1]);
 						<% } %>
 						<% if(hiddenField) { %>
-						$(<%=imgHiddenField%>).val(answer[1]);
+						$(<%=imgHiddenField%>).val(answer[1]).trigger('change');
 						<% } %>
 						$('#sendFile').removeAttr("disabled");
 			    	}
@@ -142,12 +142,7 @@ $(document).ready(function() {
 					<div class="alert alert-success perfectCenter">
 						Envoi de l'image réussi.
 					</div>
-					<div class="input-group">
-						<input type="text" name="imgLink" id="imgLink" class="form-control" readonly="readonly"/>
-						<span class="input-group-btn">
-							<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-share"></i></button>
-						</span>
-					</div>
+					<input type="text" name="imgLink" id="imgLink" class="form-control" readonly="readonly"/>
 				</div>
 				<div class="modal-footer">
 					<button type="submit" id="sendFile" class="btn btn-info"><i class="glyphicon glyphicon-cloud-upload"></i> Envoyer</button>

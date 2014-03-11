@@ -127,7 +127,7 @@ if(request.getParameter("userId") != null) {
 								</table>
 							</div>
 							<div class="col-md-4 perfectCenter">
-								<img width="80%" height="80%" src="<%=avatar%>" />
+								<img width="80%" height="80%" class="img-rounded" src="<%=avatar%>" />
 							</div>
 						</div>
 					</div>

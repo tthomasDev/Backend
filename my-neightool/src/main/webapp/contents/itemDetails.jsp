@@ -99,7 +99,7 @@ if(request.getParameter("id") != null) {
 			e.printStackTrace();
 		}
 		
-		// On récupère ensuite la liste des outils correspondants à l'utilisateur
+		// On récupère ensuite la liste des outils correspondants une catégorie spécifique
 		try {
 			ClientRequest requestTools;
 			requestTools = new ClientRequest(
