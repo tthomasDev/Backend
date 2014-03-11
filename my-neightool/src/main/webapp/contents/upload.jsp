@@ -1,3 +1,4 @@
+<%@include file="../constantes.jsp"%>
 <%@ page import="java.lang.Math"%>
 
 <%
@@ -54,7 +55,7 @@ $(document).ready(function() {
 				fd.append('file-'+i, file);
 			});
 			$.ajax({
-			    url: "contents/uploadScript.jsp",
+			    url: "<%=pluginFolder%>uploadScript.jsp",
 			    type: 'POST',
 			    data: fd,
 			    contentType: false,

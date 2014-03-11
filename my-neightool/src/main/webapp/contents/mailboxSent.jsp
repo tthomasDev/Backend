@@ -81,7 +81,7 @@ var nbMessages = <%=messagesDto.size()%>;
 		var idMsg = $(this).attr("id").split("delMsg")[1];
 		var msg = $(this);
 		$.ajax({
-		    url: "contents/etatScript.jsp",
+		    url: "<%=pluginFolder%>etatScript.jsp",
 		    type: 'POST',
 		    data: {id: idMsg, etat: 3, page: 2},
 		    success: function() {
@@ -105,7 +105,7 @@ var nbMessages = <%=messagesDto.size()%>;
 
 <ol class="breadcrumb">
 	<li><a href="dashboard.jsp">Accueil</a></li>
-	<li class="active">Boite d'envoi (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/50 messages)</li>
+	<li class="active">Boite d'envoi (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/<%=nbMaxMessagesAllowed %> messages)</li>
 </ol>
 
 <div class="table-responsive">

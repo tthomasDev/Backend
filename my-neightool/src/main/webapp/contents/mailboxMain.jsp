@@ -75,7 +75,7 @@ $(function(){
 		var idMsg = $(this).attr("id").split("delMsg")[1];
 		var msg = $(this);
 		$.ajax({
-		    url: "contents/etatScript.jsp",
+		    url: "<%=pluginFolder%>etatScript.jsp",
 		    type: 'POST',
 		    data: {id: idMsg, etat: 3, page: 1},
 		    success: function() {
@@ -110,7 +110,7 @@ $(function(){
 		var idMsg = $(this).attr("id").split("msg")[1];
 		e.preventDefault();
 		$.ajax({
-		    url: "contents/etatScript.jsp",
+		    url: "<%=pluginFolder%>etatScript.jsp",
 		    type: 'POST',
 		    data: {id: idMsg, etat: 1, page: 1},
 		    success: function() {
@@ -131,7 +131,7 @@ $(function(){
 	<div class="col-md-12">
 		<ol class="breadcrumb">
 			<li><a href="dashboard.jsp">Accueil</a></li>
-			<li class="active">Boite de réception (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/50 messages)</li>
+			<li class="active">Boite de réception (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/<%=nbMaxMessagesAllowed%> messages)</li>
 		</ol>
 	</div>
 	

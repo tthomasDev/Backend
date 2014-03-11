@@ -1,9 +1,10 @@
+<%@include file="../constantes.jsp"%>
 <script type="text/javascript">
 $(function() {
 	$('#sendMessage').click(function(e) {
 		e.preventDefault();
 		$.ajax({
-		    url: "contents/contactScript.jsp",
+		    url: "<%=pluginFolder%>contactScript.jsp",
 		    type: 'POST',
 		    data: {subjectTo: $("#subjectOfMessage").val(), messageTo: $("#bodyOfMessage").val()},
 		    success: function(data){

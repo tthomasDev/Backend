@@ -276,7 +276,7 @@ if(session.getAttribute("ID") != null)
 						class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="index.jsp">
-					<% out.print(siteName); %>
+					<%=siteName%>
 				</a>
 			</div>
 			<div class="navbar-collapse collapse">
@@ -423,5 +423,15 @@ if(session.getAttribute("ID") != null)
 			</div>
 		</div>
 	</div>
-
-	<%@include file="template/footer.jsp"%>
+	<div class="container">
+			<hr />
+			<footer>
+				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a></span>
+				</p>
+			</footer>
+		</div>
+		<jsp:include page="<%=contentFolder+"terms.jsp"%>" />
+		<jsp:include page="<%=contentFolder+"contact.jsp"%>" />
+		<jsp:include page="<%=contentFolder+"faq.jsp"%>" />
+	</body>
+</html>
