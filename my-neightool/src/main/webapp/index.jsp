@@ -156,20 +156,22 @@ boolean correctLN = (request.getParameter("lastname")).matches("[a-zA-Zéèï-]*");
 boolean correctFN = (request.getParameter("firstname")).matches("[a-zA-Zéèï-]*");
 
 if (correctTel && dateCorrecte && correctLN && correctFN){
+
 final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),numTel,adresse,d);
+
+
 System.out.println("test");
 
 //ici il faut sérialiser l'utilisateur
 final Marshaller marshaller = jaxbc.createMarshaller();
 marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 final java.io.StringWriter sw = new StringWriter();
-marshaller.marshal(user, sw);
 
+marshaller.marshal(user, sw);
 
 //ici on envois la requete au webservice createUtilisateur
 final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/user/create");
 clientRequest.body("application/xml", user );
-
 
 //ici on va récuperer la réponse de la requete
 final ClientResponse<String> clientResponse = clientRequest.post(String.class);
@@ -316,7 +318,7 @@ rd.forward(request, response);
 			while(it.hasNext()){
 			
 			final Utilisateur utilisateur = it.next();
-			final Adresse ad= utilisateur.getAdresse();
+			
 			try{
 				if(utilisateur.getAdresse().getLatitude() > 0 && utilisateur.getAdresse().getLatitude() < 90 
 						&& utilisateur.getAdresse().getLongitude() > 0 && utilisateur.getAdresse().getLongitude() < 90)

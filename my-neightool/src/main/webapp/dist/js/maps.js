@@ -106,8 +106,12 @@ function calculateDistances() {
 	    		 	markerInfowindow = new google.maps.InfoWindow({
 	    		      maxWidth: 200
 	    		 	});
-	    		 	
-	    		 	addMarker(destinations[j], true, usersNames[j]);
+
+	    		    var contentString = 'L\'utilisateur <b>' + usersNames[j]
+	    		 		+ '</b> pr&ecircte un outil &agrave ' + results[j].distance.text + ' de chez vous ! <b>Inscrivez-vous</b> pour pouvoir l\'emprunter';
+	    		      
+	  		 		
+	    		 	addMarker(destinations[j], true, contentString);
 	    		 }
 	      }
 	    }
@@ -239,7 +243,7 @@ function addClickMarker(location) {
 	showMarkers();
 }
 
-function addMarker(location, isDestination, userName) {
+function addMarker(location, isDestination, contentString) {
 	  var icon;
 	  if (isDestination) {
 	    icon = destinationIcon;
@@ -255,10 +259,7 @@ function addMarker(location, isDestination, userName) {
 	        icon: icon
 	      });
 	      
-	      
 	      google.maps.event.addListener(marker, 'click', function() {
-  		 		var contentString = 'L\'utilisateur <b>' + userName
-  		 		+ '</b> pr&ecircte un objet pr&egraves de chez vous ! <b>Inscrivez-vous</b> pour pouvoir l\'emprunter';
   		 		markerInfowindow.setContent(contentString);
 	    	    markerInfowindow.open(map,marker);
 	    	  });
