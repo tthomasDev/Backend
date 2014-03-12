@@ -78,10 +78,13 @@ $(function() {
 		    url: "<%=pluginFolder%>imgProfilUpdateScript.jsp",
 		    type: 'POST',
 		    data: {id:<%=utilisateurGet.getId()%>, link:tmp},
-		    success: function() {
-		    	$('#uploadDone').fadeIn().delay(4000).fadeOut();
+		    success: function(data) {
+		    	var tmp = data.split("@");
+		    	alert(data);
+		    	$('#uploadDone').addClass("alert-"+tmp[0]).html(tmp[1]).fadeIn().delay(4000).fadeOut();
+		    	$('#avatarP').attr('src',tmp);
 		    }
-		)};
+        });
     });
 });
 </script>
@@ -138,7 +141,7 @@ $(function() {
 		<br /><br />
 		<a href="#" class="btn-sm btn btn-info" data-toggle="modal" data-target="#uploadImg"><i class="glyphicon glyphicon-camera"></i> Changer la photo de profil</a>
 		<br /><br />
-		<div class="alert alert-success perfectCenter" id="uploadDone" style="display:none">Image de profil modifiée avec succès</div>
+		<div class="alert perfectCenter" id="uploadDone" style="display:none">Image de profil modifiée avec succès</div>
 	</div>
 </div>
 <jsp:include page="../contents/upload.jsp">
