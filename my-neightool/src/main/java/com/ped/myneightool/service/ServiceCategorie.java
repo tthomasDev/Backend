@@ -1,6 +1,7 @@
 package com.ped.myneightool.service;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,7 +32,7 @@ public class ServiceCategorie {
 
 	}
 
-	@PermitAll
+	@RolesAllowed("ADMIN")
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -46,7 +47,7 @@ public class ServiceCategorie {
 		return Response.ok(c).build();
 	}
 	
-	@PermitAll
+	@RolesAllowed("ADMIN")
 	@GET
 	@Path("/delete/{id}")
 	public void deleteCategorie(@PathParam("id") final int id) {

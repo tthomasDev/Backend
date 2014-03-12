@@ -3,6 +3,7 @@ package com.ped.myneightool;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -24,7 +25,7 @@ public class ClientRequestBuilder {
 	private Utilisateur u;
 	private Outil outil;
 	private Message message;
-	
+		
 	
 	public ClientRequestBuilder( JAXBContext jc){
 		this.jc=jc;
@@ -94,7 +95,8 @@ public class ClientRequestBuilder {
 				String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
 				request.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
 			}
-						
+				
+			
 			
 			final ClientResponse<String> response = request.post(String.class);
 			
@@ -116,7 +118,54 @@ public class ClientRequestBuilder {
 		return null;
 	}
 	
-		
+	
+	/**
+	 * Requete POST XML pour les categories
+	 * @param o
+	 * @param resourceURI
+	 * @return
+	 */
+	
+	public Object httpRequestXMLBodyCategorie(Object o, String resourceURI,
+			Utilisateur utilisateur) {
+		try {
+			// marshalling/serialisation pour l'envoyer avec une requete post
+			final Marshaller marshaller = this.jc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(o, sw);
+
+			final ClientRequest request = new ClientRequest(
+					"http://localhost:8080/rest/" + resourceURI);
+
+			// request.accept("application/xml");
+			request.body("application/xml", o);
+
+			String username = utilisateur.getConnexion().getLogin();
+			String password = utilisateur.getConnexion().getPassword();
+			String base64encodedUsernameAndPassword = base64Encode(username
+					+ ":" + password);
+			request.header("Authorization", "Basic "
+					+ base64encodedUsernameAndPassword);
+
+			final ClientResponse<String> response = request.post(String.class);
+
+			System.out.println("\n\n" + response.getEntity() + "\n\n");
+
+			if (response.getStatus() == 200) { // ok !
+
+				final Unmarshaller un = this.jc.createUnmarshaller();
+				final Object object = (Object) un.unmarshal(new StringReader(
+						response.getEntity()));
+				return object;
+
+			}
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * Requete POST JSON
 	 * @param o

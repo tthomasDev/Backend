@@ -1,5 +1,7 @@
 package com.ped.myneightool;
 
+
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.xml.bind.JAXBContext;
@@ -28,6 +30,7 @@ public class TestCategorie {
 	
 	private static JAXBContext jaxbc;
 	private static ClientRequestBuilder crb;
+	private static Utilisateur utilisateurAdmin;
 	
 
 	@BeforeClass
@@ -37,22 +40,37 @@ public class TestCategorie {
 										Connexion.class,
 										Adresse.class,
 										Categorie.class,
-										CategoriesDTO.class);
+										CategoriesDTO.class,
+										Date.class);
 		crb= new ClientRequestBuilder(jaxbc);
 		
+		try {
+			final Connexion connexion = new Connexion("adminCategorie","admin");
+			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Date birthDate = new Date();
 			
+			final Utilisateur utilisateur= new Utilisateur("admin","admin",connexion,"adminCategorie@myneightool.com","0000000000",adresse,birthDate);
+			utilisateur.setRole("ADMIN");
+			utilisateurAdmin = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
+									
+					
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'utilisateur", re);
+			throw re;
+		}		
+				
 		
 	}
 	
 	/**
-	 * test unitaire création d'un categorie
+	 * test unitaire création d'une categorie
 	 */
 	@Test
 	public void testCreateCategorie() {
 		try {
 			
 			final Categorie categorie = new Categorie("Salle de Bain");
-			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie,"categorie/create");
+			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBodyCategorie(categorie,"categorie/create",utilisateurAdmin);
 			
 			Assert.assertNotSame(categoriePost,null);
 						
@@ -73,7 +91,7 @@ public class TestCategorie {
 		try{
 			
 			final Categorie categorie = new Categorie("Voiture");
-			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie,"categorie/create");
+			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBodyCategorie(categorie,"categorie/create",utilisateurAdmin);
 			
 			Assert.assertNotSame(categoriePost,null);
 			
