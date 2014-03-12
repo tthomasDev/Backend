@@ -18,6 +18,7 @@
 
 <%@ page import="model.Message"%>
 <%@ page import="dto.MessagesDTO"%>
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 
 
 <%
@@ -32,13 +33,48 @@
 
 	// Le DTO des messages
 	Message messageGET = new Message();
+	
+	
 
 	//ici on va récuperer la réponse de la requete
 	try {
+		
+
+		Utilisateur myUser = new Utilisateur();
+		
+		try {
+			ClientRequest clientRequest;
+			clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + request.getParameter("id"));
+			clientRequest.accept("application/xml");
+			ClientResponse<String> response2 = clientRequest.get(String.class);
+
+			if (response2.getStatus() == 200) {
+				Unmarshaller un = jaxbc.createUnmarshaller();
+				myUser = (Utilisateur) un
+						.unmarshal(new StringReader(response2
+								.getEntity()));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
+		
+		
 		ClientRequest requestMessages;
 		requestMessages = new ClientRequest(
-				"http://localhost:8080/rest/message/" + request.getParameter("id"));
+				"http://localhost:8080/rest/message/" + myUser.getId());
 		requestMessages.accept("application/xml");
+		
+		
+		//CREDENTIALS		
+		String username = myUser.getConnexion().getLogin();
+		System.out.println("\n\n"+username+"\n\n");
+		String password = myUser.getConnexion().getPassword();
+		System.out.println("\n\n"+password+"\n\n");
+		String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+		requestMessages.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+		///////////////////
+		
 		ClientResponse<String> responseMessages = requestMessages
 				.get(String.class);
 		
@@ -63,6 +99,14 @@
 			
 			ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/message/update");
 			clientRequest.body("application/xml", messageGET );
+			//CREDENTIALS		
+			String username2 = myUser.getConnexion().getLogin();
+			System.out.println("\n\n"+username+"\n\n");
+			String password2 = myUser.getConnexion().getPassword();
+			System.out.println("\n\n"+password+"\n\n");
+			String base64encodedUsernameAndPassword2 = DatatypeConverter.printBase64Binary((username2 + ":" + password2).getBytes());
+			clientRequest.header("Authorization", "Basic " +base64encodedUsernameAndPassword2 );
+			///////////////////
 
 			//ici on va récuperer la réponse de la requete de mise à jour
 			final ClientResponse<String> clientResponse = clientRequest.post(String.class);	
