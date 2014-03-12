@@ -27,7 +27,7 @@
 <%@ page import="java.sql.Timestamp"%>
 <%
 	//On récupère les données de session de l'utilisateur
-	final String id = String.valueOf(session.getAttribute("ID"));
+	final String idUser = String.valueOf(session.getAttribute("ID"));
 
 	//On récupère tous les emprunts
 	final JAXBContext jaxbc = JAXBContext.newInstance(EmpruntsDTO.class);
@@ -82,7 +82,8 @@
 				<tbody>
 					<%
 						for (Emprunt e : empruntsDto.getListeEmprunts()) {
-							System.out.println("UN EMPRUNT!");
+							if(Integer.parseInt(idUser) == e.getEmprunteur().getId())
+							{
 					%>
 					<tr style="vertical-align: middle;">
 						<td style="vertical-align: middle; text-align: center;"><%=e.getOutil().getNom()%></td>
@@ -97,6 +98,7 @@
 						%></td>
 					</tr>
 					<%
+							}
 						}
 					%>
 				</tbody>
