@@ -1,6 +1,7 @@
 package com.ped.myneightool.service;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,7 +32,7 @@ public class ServiceEmprunt {
 
 	}
 
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -46,7 +47,7 @@ public class ServiceEmprunt {
 		return Response.ok(u).build();
 	}
 
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
@@ -55,7 +56,8 @@ public class ServiceEmprunt {
 		return Response.ok(u).build();
 	}
 	
-	@PermitAll
+	
+	@RolesAllowed({"USER","ADMIN"})
 	@GET
 	@Path("/delete/{id}")
 	public void deleteEmprunt(@PathParam("id") final int id) {

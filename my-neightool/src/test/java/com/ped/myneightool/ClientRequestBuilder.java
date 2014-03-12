@@ -3,7 +3,6 @@ package com.ped.myneightool;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -12,6 +11,7 @@ import javax.xml.bind.Unmarshaller;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
+import com.ped.myneightool.model.Emprunt;
 import com.ped.myneightool.model.Message;
 import com.ped.myneightool.model.Outil;
 import com.ped.myneightool.model.Utilisateur;
@@ -25,6 +25,7 @@ public class ClientRequestBuilder {
 	private Utilisateur u;
 	private Outil outil;
 	private Message message;
+	private Emprunt emprunt;
 		
 	
 	public ClientRequestBuilder( JAXBContext jc){
@@ -92,6 +93,14 @@ public class ClientRequestBuilder {
 				message = (Message) o;
 				String username = message.getEmetteur().getConnexion().getLogin();
 				String password = message.getEmetteur().getConnexion().getPassword();
+				String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+				request.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+			}
+			
+			if(o instanceof Emprunt){
+				emprunt=(Emprunt) o;
+				String username = emprunt.getEmprunteur().getConnexion().getLogin();
+				String password = emprunt.getEmprunteur().getConnexion().getPassword();
 				String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
 				request.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
 			}
