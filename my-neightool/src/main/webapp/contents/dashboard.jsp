@@ -81,7 +81,7 @@
 		try {
 			ClientRequest requestTools;
 			requestTools = new ClientRequest(
-			"http://localhost:8080/rest/tool/categorie/" + request.getParameter("idCat"));
+			"http://localhost:8080/rest/tool/categorie/available/" + request.getParameter("idCat"));
 			requestTools.accept("application/xml");
 			ClientResponse<String> responseTools = requestTools.get(String.class);
 	
@@ -123,7 +123,7 @@
 								<% try {
 									ClientRequest requestTools;
 									requestTools = new ClientRequest(
-									siteUrl + "rest/tool/categorie/" + c.getId());
+									siteUrl + "rest/tool/categorie/available/" + c.getId());
 									requestTools.accept("application/xml");
 									ClientResponse<String> responseTools = requestTools.get(String.class);
 							
