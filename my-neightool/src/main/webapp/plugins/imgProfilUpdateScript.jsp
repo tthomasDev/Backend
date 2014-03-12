@@ -61,10 +61,12 @@ if(request.getParameter("link") != null && request.getParameter("id")!=null) {
 		if (clientResponse2.getStatus() == 200) {
 			final Unmarshaller un = jaxbc.createUnmarshaller();
 			utilisateurGet2 = (Utilisateur) un.unmarshal(new StringReader(clientResponse2.getEntity()));
+			out.clear();
 			out.print("success@Image modifiée avec succès");
 		}
 		
 	} catch (final Exception e) {
+		out.clear();
 		out.print("danger@Erreur lors de la sauvegarde");
 	}
 }

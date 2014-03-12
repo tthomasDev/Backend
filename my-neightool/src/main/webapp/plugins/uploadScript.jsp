@@ -22,7 +22,6 @@
 	                finalName = f.getName();
 	                item.write(f);
 	                i++;
-		        	System.out.println("1@"+finalPath+finalName);
 	            }
 	        }
 	        if(i==0)

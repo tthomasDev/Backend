@@ -79,9 +79,8 @@ $(function() {
 		    type: 'POST',
 		    data: {id:<%=utilisateurGet.getId()%>, link:tmp},
 		    success: function(data) {
-		    	var tmp = data.split("@");
-		    	alert(data);
-		    	$('#uploadDone').addClass("alert-"+tmp[0]).html(tmp[1]).fadeIn().delay(4000).fadeOut();
+		    	var tmpB = data.split("@");
+		    	$('#uploadDone').addClass("alert-"+tmpB[0]).html(tmpB[1]).fadeIn().delay(4000).fadeOut();
 		    	$('#avatarP').attr('src',tmp);
 		    }
         });
