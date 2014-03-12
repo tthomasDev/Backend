@@ -19,6 +19,8 @@
 <%@ page import="model.Message"%>
 <%@ page import="dto.MessagesDTO"%>
 
+<%@include file="../constantes.jsp"%>
+<%@include file="../functions.jsp"%>
 
 <%
 	boolean actionValid = false;
@@ -36,8 +38,7 @@
 	//ici on va récuperer la réponse de la requete
 	try {
 		ClientRequest requestMessages;
-		requestMessages = new ClientRequest(
-				"http://localhost:8080/rest/message/" + request.getParameter("id"));
+		requestMessages = new ClientRequest(siteUrl + "rest/message/" + request.getParameter("id"));
 		requestMessages.accept("application/xml");
 		ClientResponse<String> responseMessages = requestMessages
 				.get(String.class);
@@ -61,7 +62,7 @@
 				messageGET.setEtatEmetteur(Integer.parseInt(request.getParameter("etat")));
 			}
 			
-			ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/message/update");
+			ClientRequest clientRequest = new ClientRequest(siteUrl + "rest/message/update");
 			clientRequest.body("application/xml", messageGET );
 
 			//ici on va récuperer la réponse de la requete de mise à jour

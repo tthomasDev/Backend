@@ -17,6 +17,7 @@
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%@include file="../functions.jsp"%>
+<%@include file="../constantes.jsp"%>
 <%
 
 
@@ -34,7 +35,7 @@ JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adre
 Utilisateur utilisateurGet = new Utilisateur();
 try {
 	ClientRequest clientRequest;
-	clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+	clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
 	clientRequest.accept("application/xml");
 	ClientResponse<String> clientResponse = clientRequest.get(String.class);
 	if (clientResponse.getStatus() == 200)
@@ -90,7 +91,7 @@ if(request.getParameter("firstname") != null) {
 			marshaller.marshal(utilisateurGet, sw);
 						
 			
-			final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
+			final ClientRequest clientRequest2 = new ClientRequest(siteUrl + "rest/user/update/");
 			clientRequest2.body("application/xml", utilisateurGet );
 			
 			//CREDENTIALS		
@@ -126,7 +127,7 @@ if(request.getParameter("firstname") != null) {
 		bYear = c.get(Calendar.YEAR);
 		address = 		utilisateurGet2.getAdresse().getadresseComplete();
 		telephone = 	utilisateurGet2.getTelephone();
-		avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage();
+		avatar = 		imgFolder + "user_avatar_default.png"; //utilisateurGet.getCheminImage();
 		
 		}
 	else {

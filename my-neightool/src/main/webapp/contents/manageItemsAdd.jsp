@@ -101,8 +101,7 @@
 	// On cherche la catégorie en fonction de son ID
 	try {
 		ClientRequest requestCategory;
-		requestCategory = new ClientRequest(
-				"http://localhost:8080/rest/categorie/" + category_id);
+		requestCategory = new ClientRequest(siteUrl + "rest/categorie/" + category_id);
 		requestCategory.accept("application/xml");
 		ClientResponse<String> responseCategory = requestCategory.get(String.class);
 		if(responseCategory.getStatus() == 200) {
@@ -145,7 +144,7 @@
 		//ici on envoit la requete au webservice createTool
 		try {
 			ClientRequest clientRequest ;
-			clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + id);
+			clientRequest = new ClientRequest(siteUrl + "rest/user/" + id);
 			clientRequest.accept("application/xml");
 			ClientResponse<String> response2 = clientRequest.get(String.class);
 			if (response2.getStatus() == 200)
@@ -167,7 +166,7 @@
 		marshaller.marshal(tool, sw);			
 		
 		//ici on envoit la requete au webservice createUtilisateur
-		final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/tool/create");
+		final ClientRequest clientRequest = new ClientRequest(siteUrl + "rest/tool/create");
 		clientRequest.body("application/xml", tool);
 		
 		//CREDENTIALS		

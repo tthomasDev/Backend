@@ -10,6 +10,7 @@
 <%@ page import="model.Adresse"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%@include file="../functions.jsp"%>
+<%@include file="../constantes.jsp"%>
 <%
 String username, email, password, alertMessage, alertType;
 boolean showAlertMessage = false;
@@ -23,7 +24,7 @@ JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adre
 Utilisateur utilisateurGet = new Utilisateur();
 try {
 	ClientRequest clientRequest;
-	clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+	clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
 	clientRequest.accept("application/xml");
 	ClientResponse<String> clientResponse = clientRequest.get(String.class);
 	if (clientResponse.getStatus() == 200)
@@ -60,7 +61,7 @@ if(request.getParameter("username") != null) {
 		marshaller.marshal(utilisateurGet, sw);
 					
 		
-		final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
+		final ClientRequest clientRequest2 = new ClientRequest(siteUrl + "rest/user/update/");
 		clientRequest2.body("application/xml", utilisateurGet );
 		
 		//CREDENTIALS		
@@ -139,7 +140,7 @@ if(request.getParameter("oldPassword") != null) {
 		marshaller.marshal(utilisateurGet, sw);
 					
 		
-		final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
+		final ClientRequest clientRequest2 = new ClientRequest(siteUrl + "rest/user/update/");
 		clientRequest2.body("application/xml", utilisateurGet );
 		
 		//CREDENTIALS		
@@ -217,7 +218,7 @@ if(request.getParameter("deleteAccount") != null) {
 			marshaller.marshal(utilisateurGet, sw);
 						
 			
-			final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/user/update/");
+			final ClientRequest clientRequest = new ClientRequest(siteUrl + "rest/user/update/");
 			clientRequest.body("application/xml", utilisateurGet );
 			//CREDENTIALS		
 			String username2 = currentLog;

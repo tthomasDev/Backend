@@ -1,4 +1,6 @@
 <%@page import="model.SendMailTLS"%>
+<%@include file="../constantes.jsp"%>
+<%@include file="../functions.jsp"%>
 <%
-new SendMailTLS("myneightool@gmail.com", request.getParameter("subjectTo"),request.getParameter("messageTo"));
+new SendMailTLS(contactMail, request.getParameter("subjectTo"),request.getParameter("messageTo"));
 %>

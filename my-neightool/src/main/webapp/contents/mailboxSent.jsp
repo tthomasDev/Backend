@@ -46,7 +46,7 @@
 		
 		try {
 			ClientRequest clientRequest;
-			clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+			clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
 			clientRequest.accept("application/xml");
 			ClientResponse<String> response2 = clientRequest.get(String.class);
 
@@ -63,8 +63,7 @@
 		
 		
 		ClientRequest requestMessages;
-		requestMessages = new ClientRequest(
-				"http://localhost:8080/rest/message/list/sendListByOrder/" + myUser.getId());
+		requestMessages = new ClientRequest(siteUrl + "rest/message/list/sendListByOrder/" + myUser.getId());
 		requestMessages.accept("application/xml");
 		
 		

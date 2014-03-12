@@ -23,6 +23,7 @@
 
 <%@ page import="dto.OutilsDTO"%>
 <%@ page import="dto.EmpruntsDTO"%>
+<%@include file="../functions.jsp"%>
 
 <%
 	System.out.println("On vérifie la dispo de l'objet pour l'emprunt");
@@ -49,8 +50,7 @@
 
 	try {
 			ClientRequest requestMessages;
-			requestMessages = new ClientRequest(
-					"http://localhost:8080/rest/tool/" + id);
+			requestMessages = new ClientRequest(siteUrl + "rest/tool/" + id);
 			requestMessages.accept("application/xml");
 			ClientResponse<String> responseMessages = requestMessages
 					.get(String.class);
@@ -74,8 +74,7 @@
 
 	try {
 			ClientRequest requestMessages;
-			requestMessages = new ClientRequest(
-					"http://localhost:8080/rest/emprunt/list");
+			requestMessages = new ClientRequest(siteUrl + "rest/emprunt/list");
 			requestMessages.accept("application/xml");
 			ClientResponse<String> responseMessages = requestMessages
 					.get(String.class);

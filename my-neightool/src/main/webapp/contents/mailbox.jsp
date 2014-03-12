@@ -76,8 +76,7 @@ if(request.getParameter("userId") != null) {
 		try {
 
 			ClientRequest clientRequest;
-			clientRequest = new ClientRequest(
-					"http://localhost:8080/rest/user/" + id);
+			clientRequest = new ClientRequest(siteUrl + "rest/user/" + id);
 			clientRequest.accept("application/xml");
 			ClientResponse<String> response2 = clientRequest
 					.get(String.class);
@@ -90,9 +89,7 @@ if(request.getParameter("userId") != null) {
 			}
 
 			ClientRequest clientRequest2;
-			clientRequest2 = new ClientRequest(
-					"http://localhost:8080/rest/user/login/"
-							+ userPseudoTo);
+			clientRequest2 = new ClientRequest(siteUrl + "rest/user/login/"	+ userPseudoTo);
 			clientRequest2.accept("application/xml");
 			ClientResponse<String> response3 = clientRequest2
 					.get(String.class);
@@ -159,8 +156,7 @@ if(request.getParameter("userId") != null) {
 				//on le met à jour
 				message2.setEtatDestinataire(2);
 
-				ClientRequest clientRequest = new ClientRequest(
-						"http://localhost:8080/rest/message/update");
+				ClientRequest clientRequest = new ClientRequest(siteUrl + "rest/message/update");
 				clientRequest.body("application/xml", message2);
 				
 				//CREDENTIALS		
@@ -203,8 +199,7 @@ if(request.getParameter("userId") != null) {
 		marshaller.marshal(message, sw);
 
 		//ici on envois la requete au webservice createUtilisateur
-		final ClientRequest clientRequest = new ClientRequest(
-				"http://localhost:8080/rest/message/create");
+		final ClientRequest clientRequest = new ClientRequest(siteUrl + "rest/message/create");
 		clientRequest.body("application/xml", message);
 		
 		//CREDENTIALS		
@@ -256,7 +251,7 @@ if(request.getParameter("userId") != null) {
 		
 		try {
 			ClientRequest clientRequest;
-			clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+			clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
 			clientRequest.accept("application/xml");
 			ClientResponse<String> response2 = clientRequest.get(String.class);
 
@@ -272,9 +267,7 @@ if(request.getParameter("userId") != null) {
 		}	
 		
 		ClientRequest requestMessages;
-		requestMessages = new ClientRequest(
-				"http://localhost:8080/rest/message/list/receiveListByOrder/"
-						+ myUser.getId());
+		requestMessages = new ClientRequest(siteUrl + "rest/message/list/receiveListByOrder/" + myUser.getId());
 		requestMessages.accept("application/xml");
 		
 		//CREDENTIALS		

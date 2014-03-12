@@ -123,7 +123,7 @@
 								<% try {
 									ClientRequest requestTools;
 									requestTools = new ClientRequest(
-									"http://localhost:8080/rest/tool/categorie/" + c.getId());
+									siteUrl + "rest/tool/categorie/" + c.getId());
 									requestTools.accept("application/xml");
 									ClientResponse<String> responseTools = requestTools.get(String.class);
 							

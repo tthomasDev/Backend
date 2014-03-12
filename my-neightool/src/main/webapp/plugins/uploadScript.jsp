@@ -3,8 +3,10 @@
 <%@page import="org.apache.commons.fileupload.disk.DiskFileItemFactory"%>
 <%@page import="org.apache.commons.fileupload.servlet.ServletFileUpload"%>
 
+<%@include file="../constantes.jsp"%>
+<%@include file="../functions.jsp"%>
 <%
-	String finalPath = "http://localhost:8080/uploads/img/";
+	String finalPath = siteUrl + "uploads/img/";
 	String finalName = "";
 	if(ServletFileUpload.isMultipartContent(request)){
 	    try {

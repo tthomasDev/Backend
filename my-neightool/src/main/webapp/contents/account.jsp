@@ -1,10 +1,12 @@
+<%@include file="../constantes.jsp"%>
+<%@include file="../functions.jsp"%>
 <%
 String subInclude = "accountMain.jsp";
 String menuMainActive = "active";
 String menuEditProfileActive = "";
 String menuEditParamsActive = "";
 if(request.getParameter("sub") !=null) {
-	String sub = (String)request.getParameter("sub");
+	String sub = escapeStr((String)request.getParameter("sub"));
 	if(sub.equals("editProfile")) {
 		subInclude = "accountEditProfile.jsp";
 		menuMainActive = "";

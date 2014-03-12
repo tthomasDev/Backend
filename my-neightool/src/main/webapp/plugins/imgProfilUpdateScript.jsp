@@ -17,6 +17,8 @@
 <%@ page import="java.text.DateFormat"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
+<%@include file="../constantes.jsp"%>
+<%@include file="../functions.jsp"%>
 <%
 
 JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
@@ -24,7 +26,7 @@ JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adre
 Utilisateur utilisateurGet = new Utilisateur();
 try {
 	ClientRequest clientRequest;
-	clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+	clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
 	clientRequest.accept("application/xml");
 	ClientResponse<String> clientResponse = clientRequest.get(String.class);
 	if (clientResponse.getStatus() == 200)
@@ -48,7 +50,7 @@ if(request.getParameter("link") != null && request.getParameter("id")!=null) {
 		final java.io.StringWriter sw = new StringWriter();
 		marshaller.marshal(utilisateurGet, sw);			
 			
-		final ClientRequest clientRequest2 = new ClientRequest("http://localhost:8080/rest/user/update/");
+		final ClientRequest clientRequest2 = new ClientRequest(siteUrl + "rest/user/update/");
 		clientRequest2.body("application/xml", utilisateurGet );
 				
 		String username = utilisateurGet.getConnexion().getLogin();

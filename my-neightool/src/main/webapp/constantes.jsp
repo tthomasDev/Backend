@@ -2,6 +2,8 @@
 
 // Constantes du site
 public String siteName = "MyNeighTool";
+public String copyrights = "Copyright &copy; 2014";
+public String contactMail = "myneightool@gmail.com";
 
 // URLs du site
 public String siteUrl = "http://localhost:8080/";

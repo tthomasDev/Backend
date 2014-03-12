@@ -14,6 +14,8 @@
 
 <%@ page import ="java.util.Date" %>
 <%@ page import ="java.util.Calendar" %>
+<%@include file="../constantes.jsp"%>
+<%@include file="../functions.jsp"%>
 <%
 
 // Le DTO des outils permettant de récupérer la liste d'outils
@@ -29,7 +31,7 @@ JAXBContext jaxbc2=JAXBContext.newInstance(OutilsDTO.class);
 Utilisateur utilisateurGet = new Utilisateur();
 try {
 	ClientRequest clientRequest;
-	clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+	clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
 	clientRequest.accept("application/xml");
 	ClientResponse<String> clientResponse = clientRequest.get(String.class);
 	if (clientResponse.getStatus() == 200)
@@ -66,7 +68,7 @@ if(request.getParameter("userId") != null) {
 	}
 	 
 	age = yeardiff;
-	avatar = 		"./dist/img/user_avatar_default.png";
+	avatar = 		imgFolder + "user_avatar_default.png";
 	if(utilisateurGet.getCheminImage()!=null)
 		avatar = 	utilisateurGet.getCheminImage();
 	
@@ -74,8 +76,7 @@ if(request.getParameter("userId") != null) {
 	//ici on va récuperer la réponse de la requete
 	try {
 		ClientRequest requestTools;
-		requestTools = new ClientRequest(
-				"http://localhost:8080/rest/tool/user/" + session.getAttribute("ID"));
+		requestTools = new ClientRequest(siteUrl + "rest/tool/user/" + session.getAttribute("ID"));
 		requestTools.accept("application/xml");
 		ClientResponse<String> responseTools = requestTools
 				.get(String.class);

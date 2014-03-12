@@ -45,8 +45,7 @@
 	// sur l'utilisateur en ligne
 	try {
 		ClientRequest clientRequest;
-		clientRequest = new ClientRequest(
-		"http://localhost:8080/rest/user/" + id);
+		clientRequest = new ClientRequest(siteUrl + "rest/user/" + id);
 		clientRequest.accept("application/xml");
 		ClientResponse<String> response2 = clientRequest.get(String.class);
 		if (response2.getStatus() == 200) {
@@ -61,8 +60,7 @@
 	//ici on va récuperer la réponse de la requete
 	try {
 		ClientRequest requestTools;
-		requestTools = new ClientRequest(
-		"http://localhost:8080/rest/tool/user/" + user.getId());
+		requestTools = new ClientRequest(siteUrl + "rest/tool/user/" + user.getId());
 		requestTools.accept("application/xml");
 		ClientResponse<String> responseTools = requestTools
 		.get(String.class);

@@ -23,6 +23,7 @@
 <%@ page import="model.Utilisateur"%>
 <%@ page import="model.Emprunt"%>
 <%@ page import="dto.OutilsDTO"%>
+<%@include file="../functions.jsp"%>
 <%
 String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
 String itemDateEnd="", itemPrice="", itemDistance="", itemPath="", userID="", itemCategoryID="";
@@ -63,7 +64,7 @@ if(request.getParameter("id") != null) {
 		try {
 			ClientRequest clientRequest;
 			clientRequest = new ClientRequest(
-			"http://localhost:8080/rest/user/" + id);
+			siteUrl + "rest/user/" + id);
 			clientRequest.accept("application/xml");
 			ClientResponse<String> response2 = clientRequest.get(String.class);
 			if (response2.getStatus() == 200) {
@@ -78,8 +79,7 @@ if(request.getParameter("id") != null) {
 		// On récupère ensuite la liste des outils correspondants une catégorie spécifique
 		try {
 			ClientRequest requestTools;
-			requestTools = new ClientRequest(
-			"http://localhost:8080/rest/tool/" + request.getParameter("id"));
+			requestTools = new ClientRequest(siteUrl + "rest/tool/" + escapeStr(request.getParameter("id")));
 			requestTools.accept("application/xml");
 			ClientResponse<String> responseTools = requestTools
 			.get(String.class);
@@ -103,8 +103,7 @@ if(request.getParameter("id") != null) {
 		// On récupère ensuite la liste des outils correspondants une catégorie spécifique
 		try {
 			ClientRequest requestTools;
-			requestTools = new ClientRequest(
-			"http://localhost:8080/rest/tool/categorie/" + outil.getCategorie().getId());
+			requestTools = new ClientRequest(siteUrl + "rest/tool/categorie/" + outil.getCategorie().getId());
 			requestTools.accept("application/xml");
 			ClientResponse<String> responseTools = requestTools.get(String.class);
 
@@ -160,7 +159,7 @@ if(request.getParameter("id") != null) {
 			System.out.println("SD / deb : " + startDate.compareTo(outil.getDateDebut()));
 			System.out.println("SD / fin : " + endDate.compareTo(outil.getDateFin()));
 
-			final ClientRequest clientRequestEmprunt = new ClientRequest("http://localhost:8080/rest/emprunt/create");
+			final ClientRequest clientRequestEmprunt = new ClientRequest(siteUrl + "rest/emprunt/create");
 			
 			if ((startDate.compareTo(outil.getDateDebut())) != -1
 					&& startDate.compareTo(outil.getDateFin()) != 1
@@ -182,7 +181,7 @@ if(request.getParameter("id") != null) {
 /* 				outil.setDisponible(false);
 				
 				try {
-					final ClientRequest requestToolUpdate = new ClientRequest("http://localhost:8080/rest/tool/update");
+					final ClientRequest requestToolUpdate = new ClientRequest(siteUrl + "rest/tool/update");
 
 					//ici il faut sérialiser l'outil
 					final Marshaller marshaller2 = jaxbc.createMarshaller();
