@@ -4,11 +4,13 @@
 public String siteName = "MyNeighTool";
 
 // URLs du site
+public String siteUrl = "http://localhost:8080/";
 public String siteRoot = "";
 public String templateFolder = siteRoot + "templates/";
 public String pluginFolder = siteRoot + "plugins/";
 public String contentFolder = siteRoot + "contents/";
 public String uploadFolder = siteRoot + "uploads/";
+public String imgFolder = siteRoot + "dist/img/";
 
 // Constantes de la messagerie
 public int nbMaxMessagesAllowed = 50;

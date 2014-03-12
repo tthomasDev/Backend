@@ -175,19 +175,19 @@ if(request.getParameter("s") != null && request.getParameter("s") == "" && other
 								</tbody>
 							</table>
 						</div>
-					
-						<div class="row">
-							<div class="col-md-12" style="text-align:center;">
-								<ul class="pagination">
-									<li><a href="#">&laquo;</a></li>
-									<li><a href="#">1</a></li>
-									<li><a href="#">&raquo;</a></li>
-								</ul>
-							</div>
-						</div>
+						<div id="paginator"></div>
+						<input id="paginatorNbElements" type="hidden" value="5" readonly="readonly"/>
 					</div>
+					<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsO96nmOiM5A5mef1oNv4PZoETDWvfJ88&sensor=false"></script>
+	    			<script src="./dist/js/maps.js"></script>
+					<style>
+					#map-canvas{height:600px !important;}
+					#map-canvas img{max-width: none !important;box-shadow: none !important;}
+					#map-canvas label{ width: auto !important; display:inline !important;}
+					.gmap-icons img{max-width: none}
+					</style>
 					<div class="tab-pane" id="map">
-						Google map here
+						<div class="img-rounded" id="map-canvas" style="background-color:#DDD;"></div>
 					</div>
 				</div>
 			</div>
