@@ -20,8 +20,34 @@
 <%@ page import="model.Adresse"%>
 <%@ page import="model.SendMailTLS"%>
 
+<%@ page import="dto.UtilisateursDTO"%>
+<%@ page import="java.util.Iterator;"%>
+
 
 <%
+
+UtilisateursDTO usersDTO = new UtilisateursDTO();
+try {
+	final JAXBContext jaxbc = JAXBContext.newInstance(UtilisateursDTO.class);
+
+	ClientRequest clientRequest;
+	clientRequest = new ClientRequest(
+	"http://localhost:8080/rest/user/list");
+	clientRequest.accept("application/xml");
+	ClientResponse<String> response2 = clientRequest.get(String.class);
+	if (response2.getStatus() == 200) {
+		Unmarshaller un = jaxbc.createUnmarshaller();
+		usersDTO = (UtilisateursDTO) un.unmarshal(new StringReader(
+		response2.getEntity()));
+	}
+	
+} catch (Exception e) {
+	e.printStackTrace();
+}
+
+
+
+
 boolean actionValid = false;
 String messageType = "";
 String messageValue = "";
@@ -266,6 +292,25 @@ if(session.getAttribute("ID") != null)
 </head>
 
 <body onload="initialize()">
+
+	<div class="col-md-4">
+	<select style="visibility:hidden;" class="form-control" id="users" name="users">
+		<%
+			Iterator<Utilisateur> it = usersDTO.getListeUtilisateurs().iterator();
+			int num = 0;
+			while(it.hasNext()){
+			
+			final Utilisateur utilisateur = it.next();
+			out.println("<option value='" + num + "'>" + utilisateur.getNom() + "/" +
+			utilisateur.getAdresse().getLatitude() + "/" + utilisateur.getAdresse().getLongitude() + "</option>");
+			num++;
+			
+		}
+		%>
+	</select>
+	</div>
+
+
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">

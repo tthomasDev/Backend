@@ -120,23 +120,23 @@
 								<li class="active"><a href=""><%=c.getNom()%> <span class="badge pull-right"><%=listeOutilsCat.size() %></span></a></li>
 						 <% }
 							else { %>
-							<% try {
-								ClientRequest requestTools;
-								requestTools = new ClientRequest(
-								"http://localhost:8080/rest/tool/categorie/" + c.getId());
-								requestTools.accept("application/xml");
-								ClientResponse<String> responseTools = requestTools.get(String.class);
-						
-								if (responseTools.getStatus() == 200) {
-									Unmarshaller un2 = jaxbc2.createUnmarshaller();
-									listeOutilsCatOthers = (OutilsDTO) un2.unmarshal(new StringReader(
-									responseTools.getEntity()));
-									%> <li><a href="dashboard.jsp?idCat=<%=c.getId()%>"><%=c.getNom()%> <span class="badge pull-right"><%=listeOutilsCatOthers.size() %></span></a></li> <%
+								<% try {
+									ClientRequest requestTools;
+									requestTools = new ClientRequest(
+									"http://localhost:8080/rest/tool/categorie/" + c.getId());
+									requestTools.accept("application/xml");
+									ClientResponse<String> responseTools = requestTools.get(String.class);
+							
+									if (responseTools.getStatus() == 200) {
+										Unmarshaller un2 = jaxbc2.createUnmarshaller();
+										listeOutilsCatOthers = (OutilsDTO) un2.unmarshal(new StringReader(
+										responseTools.getEntity()));
+										%> <li><a href="dashboard.jsp?idCat=<%=c.getId()%>"><%=c.getNom()%> <span class="badge pull-right"><%=listeOutilsCatOthers.size() %></span></a></li> <%
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
 								}
-							} catch (Exception e) {
-								e.printStackTrace();
 							}
-						}
 						}
 						else { %>
 							<li><a href="#"><%=c.getNom()%> <span class="badge pull-right">0</span></a></li>
