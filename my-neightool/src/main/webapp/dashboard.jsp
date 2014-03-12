@@ -166,7 +166,7 @@ String filePath = contentFolder+fileName+".jsp";
 						<input type="text" id="searchField" name="s" class="form-control popov" data-content='<p style="text-align:justify">Appuyez sur la touche "Entrée" pour lancer la recherche.</p><p class="perfectCenter"><a class="btn btn-info" href="dashboard.jsp?page=search">Recherche avancée</a></p>' placeholder="Rechercher">
 					</form>
 					<ul class="nav navbar-nav navbar-right" style="margin-right:2px;">
-	        			<li><a href="dashboard.jsp">Accueil</a></li>
+	        			<li><a href="dashboard.jsp?idCat=0">Accueil</a></li>
 	        			<li><a href="dashboard.jsp?page=manageItems">Mes objets</a></li>
 	        			<li class="ttipb" title="<%=tooltip%>"><a href="dashboard.jsp?page=mailbox">Mes messages <span class="badge"><%=nbNewMessage%></span></a></li>
         				<li><a href="dashboard.jsp?page=account">Mon compte</a></li>

@@ -311,7 +311,7 @@ $(function(){
 	<div class="col-md-12">
 		<ol class="breadcrumb">
 			<li><a href="javascript:history.go(-1)">&laquo; Retour</a></li>
-			<li><a href="#"><%=itemCategory%></a></li>
+			<li><a href="dashboard.jsp?idCat=<%=itemCategoryID%>"><%=itemCategory%></a></li>
 			<li class="active"><%=itemName%></li>
 		</ol>
 	</div>
