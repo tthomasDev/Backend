@@ -18,6 +18,7 @@
 
 <%@ page import="model.Outil"%>
 <%@ page import="dto.OutilsDTO"%>
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 
 <%
 	boolean actionValid = false;
@@ -94,6 +95,16 @@
 			marshaller2.marshal(toolUpdated, sw2);
 
 			requestToolUpdate.body("application/xml", toolUpdated);
+			
+			
+			//CREDENTIALS		
+			String username = user.getConnexion().getLogin();
+			String password = user.getConnexion().getPassword();
+			String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+			requestToolUpdate.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+			///////////////////
+			
+			
 			final ClientResponse<String> responseToolUpdate = requestToolUpdate.post(String.class);
 		
 			if (responseToolUpdate.getStatus() == 200) { // OK
