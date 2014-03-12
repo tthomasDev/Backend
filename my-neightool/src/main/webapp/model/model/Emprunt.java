@@ -34,7 +34,7 @@ public class Emprunt{
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	private Date dateFin;
 	
-	
+	private boolean valide;
 	
 	public Emprunt(){
 		
@@ -46,12 +46,13 @@ public class Emprunt{
 	}
 	
 	public Emprunt(Outil outil, Utilisateur emprunteur, Date dateDebut,
-			Date dateFin) {
+			Date dateFin, boolean valide) {
 		super();
 		this.outil = outil;
 		this.emprunteur = emprunteur;
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
+		this.valide = valide;
 	}
 	
 	@XmlElement
@@ -98,6 +99,15 @@ public class Emprunt{
 	
 	public void setDateFin(Date dateFin) {
 		this.dateFin = dateFin;
+	}
+	
+	@XmlElement
+	public boolean isValide() {
+		return valide;
+	}
+
+	public void setValide(boolean valide) {
+		this.valide = valide;
 	}
 	
 	

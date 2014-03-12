@@ -66,7 +66,7 @@ public class TestEmprunt {
 			final Date finT = new Date(0);
 			
 			
-			final Emprunt e = new Emprunt(oPost,uPost,debutT,finT);
+			final Emprunt e = new Emprunt(oPost,uPost,debutT,finT,true);
 			final Emprunt ePost = (Emprunt) crb.httpRequestXMLBody(e,"emprunt/create");
 					
 			Assert.assertNotSame(ePost,null);

@@ -21,6 +21,7 @@
 <%@ page import="model.Emprunt"%>
 <%@ page import="model.Outil"%>
 <%@ page import="model.Utilisateur"%>
+<%@ page import="model.Emprunt"%>
 <%@ page import="dto.OutilsDTO"%>
 <%
 String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
@@ -166,7 +167,7 @@ if(request.getParameter("id") != null) {
 					&& endDate.compareTo(outil.getDateDebut()) != -1
 					&& endDate.compareTo(outil.getDateFin()) != 1
 					&& outil.isDisponible()) {
-				final Emprunt emprunt = new Emprunt(outil, user, startDate, endDate);
+				final Emprunt emprunt = new Emprunt(outil, user, startDate, endDate,false);
 				
 				//ici il faut sérialiser l'emprunt
 				final Marshaller marshaller = jaxbc.createMarshaller();
