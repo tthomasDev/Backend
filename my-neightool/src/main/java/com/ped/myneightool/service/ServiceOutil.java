@@ -57,7 +57,7 @@ public class ServiceOutil {
 		return Response.ok(o).build();
 	}
 	
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@GET
 	@Path("/delete/{id}")
 	public void deleteOutil(@PathParam("id") final int id) {

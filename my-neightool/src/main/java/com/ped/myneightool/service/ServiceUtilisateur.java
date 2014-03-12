@@ -83,8 +83,17 @@ public class ServiceUtilisateur {
 	@GET
 	@Path("/login/{login}")
 	@Produces("application/xml")
-	public Utilisateur getUtilisateurIdByLogin(@PathParam("login") final String login) {
+	public Utilisateur getUtilisateurByLogin(@PathParam("login") final String login) {
 		final Utilisateur a = utilisateurDAO.findByLogin(login);
+		return a;
+	}
+	
+	@PermitAll
+	@GET
+	@Path("/email/{email}")
+	@Produces("application/xml")
+	public Utilisateur getUtilisateurByEmail(@PathParam("email") final String email) {
+		final Utilisateur a = utilisateurDAO.findByEmail(email);
 		return a;
 	}
 

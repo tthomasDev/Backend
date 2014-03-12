@@ -95,6 +95,27 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 		return utilisateur;
 	}
 
+	@Override
+	public Utilisateur findByEmail(String email) {
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		Utilisateur utilisateur = null;
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			final Query q = em.createQuery("SELECT u FROM Utilisateur u WHERE u.mail = :par");
+			q.setParameter("par",email);
+			utilisateur = (Utilisateur) q.getResultList().get(0);
+			tx.commit();
+			LOG.debug("utilisateur"+utilisateur.getId()+" trouvé");
+			
+		}
+		catch(final RuntimeException re){
+			LOG.error("findByLogin failed", re);
+			tx.rollback();
+		}
+		return utilisateur;
+	}
 
 	
 	@Override
@@ -140,6 +161,8 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 		odto.setListeUtilisateurs(set);
 		return odto;
 	}
+
+	
 
 	
 	

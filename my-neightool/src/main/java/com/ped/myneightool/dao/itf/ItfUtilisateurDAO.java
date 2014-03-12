@@ -12,6 +12,8 @@ public interface ItfUtilisateurDAO {
 	public abstract Utilisateur findById(int id);
 	
 	public abstract Utilisateur findByLogin(String login);
+	
+	public abstract Utilisateur findByEmail(String email);
 
 	public abstract void deleteUtilisateur(Utilisateur utilisateur);
 
