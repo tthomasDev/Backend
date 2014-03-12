@@ -11,6 +11,7 @@ import javax.xml.bind.Unmarshaller;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
+import com.ped.myneightool.model.Outil;
 import com.ped.myneightool.model.Utilisateur;
 
 
@@ -20,6 +21,7 @@ public class ClientRequestBuilder {
 	
 	private JAXBContext jc;
 	private Utilisateur u;
+	private Outil outil;
 	
 	
 	public ClientRequestBuilder( JAXBContext jc){
@@ -74,6 +76,14 @@ public class ClientRequestBuilder {
 				request.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
 			}
 			
+			
+			if(o instanceof Outil){
+				outil=(Outil) o;
+				String username = outil.getUtilisateur().getConnexion().getLogin();
+				String password = outil.getUtilisateur().getConnexion().getPassword();
+				String base64encodedUsernameAndPassword = base64Encode(username + ":" + password);
+				request.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+			}
 						
 			
 			final ClientResponse<String> response = request.post(String.class);

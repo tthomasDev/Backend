@@ -21,6 +21,7 @@
 <%@ page import="model.Utilisateur"%>
 
 <%@include file="../functions.jsp"%>
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 
 <%
 	boolean actionValid = false;
@@ -168,6 +169,13 @@
 		//ici on envoit la requete au webservice createUtilisateur
 		final ClientRequest clientRequest = new ClientRequest("http://localhost:8080/rest/tool/create");
 		clientRequest.body("application/xml", tool);
+		
+		//CREDENTIALS		
+		String username2 = user.getConnexion().getLogin();
+		String password2 = user.getConnexion().getPassword();
+		String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username2 + ":" + password2).getBytes());
+		clientRequest.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+		///////////////////
 		
 		
 		//ici on va récuperer la réponse de la requete
