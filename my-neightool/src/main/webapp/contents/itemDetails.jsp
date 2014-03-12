@@ -23,7 +23,9 @@
 <%@ page import="model.Utilisateur"%>
 <%@ page import="model.Emprunt"%>
 <%@ page import="dto.OutilsDTO"%>
+<%@ page import="dto.EmpruntsDTO"%>
 <%@include file="../functions.jsp"%>
+
 <%
 String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
 String itemDateEnd="", itemPrice="", itemDistance="", itemPath="", userID="", itemCategoryID="";
@@ -166,7 +168,7 @@ if(request.getParameter("id") != null) {
 					&& endDate.compareTo(outil.getDateDebut()) != -1
 					&& endDate.compareTo(outil.getDateFin()) != 1
 					&& outil.isDisponible()) {
-				final Emprunt emprunt = new Emprunt(outil, user, startDate, endDate,false);
+				final Emprunt emprunt = new Emprunt(outil, user, startDate, endDate,1);
 				
 				//ici il faut sérialiser l'emprunt
 				final Marshaller marshaller = jaxbc.createMarshaller();
@@ -229,6 +231,33 @@ if(request.getParameter("id") != null) {
 			}
 		}
 	}
+	
+	
+	//on récupère tous les emprunts
+	final JAXBContext jaxbc3 = JAXBContext.newInstance(EmpruntsDTO.class, Emprunt.class);
+	EmpruntsDTO empruntdto = new EmpruntsDTO();
+
+	try {
+			ClientRequest requestMessages;
+			requestMessages = new ClientRequest(siteUrl + "rest/emprunt/list");
+			requestMessages.accept("application/xml");
+			ClientResponse<String> responseMessages = requestMessages
+					.get(String.class);
+				
+				if (responseMessages.getStatus() == 200) {
+					Unmarshaller un2 = jaxbc3.createUnmarshaller();
+					empruntdto = (EmpruntsDTO) un2.unmarshal(new StringReader(
+							responseMessages.getEntity()));
+				} else {
+					messageValue = "Une erreur est survenue";
+					messageType = "danger";
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	//Format affichage date
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");	
 %>
 
 <%
@@ -348,17 +377,52 @@ out.println("</div></div>");
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
-				<td class="tableTmp">Disponibilités :</td>
-				<td>du <%=itemDateStart%> au <%=itemDateEnd%></td>
-			</tr>
-			<tr>
-				<td>&nbsp;</td>
-			</tr>
-			<tr>
 				<td class="tableTmp">Caution (<a href="#" class="ttipr" title="Montant que vous devrez verser lors de l'emprunt et qui vous sera restitué à la fin de celui-ci">?</a>) :
 				</td>
 				<td><%=itemPrice%> euros</td>
 			</tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="tableTmp">Disponibilités :</td>
+				<td>du <%=itemDateStart%> au <%=itemDateEnd%></td>
+			</tr>
+			<tr>
+			 <td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<table width="90%">
+					<caption><strong>Réservations programmées de l'objet</strong></caption>
+
+					<tr>
+					<th width="10%">#</th>
+					<th width="35%">Emprunteur</th>
+					<th width="25%">Date début</th>
+					<th width="25%">Date fin</th>
+					</tr>
+					<%
+						int cpt=0;
+						for (Emprunt e : empruntdto.getListeEmprunts()) {
+						
+							// Si un emprunt correspond à notre outil, que il n est pas refusé et que sa date de fin ne soit pas dejà passée
+							if((itemId == e.getOutil().getId()) && ((e.getValide() == 1) || (e.getValide() == 2)) && (e.getDateFin().after(new Date())))
+							{
+								cpt++;
+					%>
+								<tr>
+								<td><%=cpt%></td>
+								<td><%=e.getEmprunteur().getConnexion().getLogin()%></td>
+								<td><%=df.format(e.getDateDebut())%></td>
+								<td><%=df.format(e.getDateFin())%></td>
+								</tr>
+					<%		}
+						}
+					%>					
+					</table>				
+				</td>
+			</tr>
+			<tr>
 		</table>
 		<hr />
 		<a

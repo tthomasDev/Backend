@@ -34,7 +34,12 @@ public class Emprunt{
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	private Date dateFin;
 	
-	private boolean valide;
+	/*  
+	 *  0 = validation refusée
+	 *  1 = en attente
+	 *  2 = validé
+	 */ 
+	private int valide;
 	
 	public Emprunt(){
 		
@@ -46,7 +51,7 @@ public class Emprunt{
 	}
 	
 	public Emprunt(Outil outil, Utilisateur emprunteur, Date dateDebut,
-			Date dateFin, boolean valide) {
+			Date dateFin, int valide) {
 		super();
 		this.outil = outil;
 		this.emprunteur = emprunteur;
@@ -102,11 +107,11 @@ public class Emprunt{
 	}
 	
 	@XmlElement
-	public boolean isValide() {
+	public int getValide() {
 		return valide;
 	}
 
-	public void setValide(boolean valide) {
+	public void setValide(int valide) {
 		this.valide = valide;
 	}
 	

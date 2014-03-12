@@ -132,8 +132,6 @@ String y = request.getParameter("year");
 String target = day + "-" + m + "-" + y;
 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 Date d = df.parse(target);
-System.out.println(target);
-System.out.println(d.toString());
 
 boolean dateCorrecte = false;
 DateFormat sdf = new SimpleDateFormat("d-M-yyyy");
@@ -158,9 +156,6 @@ boolean correctFN = (request.getParameter("firstname")).matches("[a-zA-Zéèï-]*")
 if (correctTel && dateCorrecte && correctLN && correctFN){
 
 final Utilisateur user = new Utilisateur(request.getParameter("lastname"),request.getParameter("firstname"),connexion,request.getParameter("email"),numTel,adresse,d);
-
-
-System.out.println("test");
 
 //ici il faut sérialiser l'utilisateur
 final Marshaller marshaller = jaxbc.createMarshaller();
