@@ -66,7 +66,9 @@ if(request.getParameter("userId") != null) {
 	}
 	 
 	age = yeardiff;
-	avatar = "./dist/img/user_avatar_default.png"; // utilisateurGet.getCheminImage();
+	avatar = 		"./dist/img/user_avatar_default.png";
+	if(utilisateurGet.getCheminImage()!=null)
+		avatar = 	utilisateurGet.getCheminImage();
 	
 	// Récupération de la liste des outils de l'utilisateur
 	//ici on va récuperer la réponse de la requete
@@ -127,7 +129,7 @@ if(request.getParameter("userId") != null) {
 								</table>
 							</div>
 							<div class="col-md-4 perfectCenter">
-								<img width="80%" height="80%" class="img-rounded" src="<%=avatar%>" />
+								<img id="avatarP" width="80%" height="80%" class="img-rounded" src="<%=avatar%>" />
 							</div>
 						</div>
 					</div>
