@@ -141,5 +141,14 @@ public class ServiceOutil {
 		OutilsDTO outils = outilDAO.findToolsOfCategory(CategorieId);
 		return outils;
 	}
+	
+	@PermitAll
+	@GET
+	@Path("/categorie/available/{idCategorie}")
+	@Produces("application/xml")
+	public OutilsDTO findToolsOfCategoryAvailable(@PathParam("idCategorie") final int CategorieId) {
+		OutilsDTO outils = outilDAO.findToolsOfCategoryAvailable(CategorieId);
+		return outils;
+	}
 		
 }
