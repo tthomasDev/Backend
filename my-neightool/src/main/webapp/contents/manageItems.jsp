@@ -23,13 +23,33 @@
 	String subInclude = "manageItemsList.jsp";
 	String menuListActive = "active";
 	String menuAddActive = "";
+	String menuRequestOnMeActive = "";
+	String menuMyRequestActive = "";
 	if (request.getParameter("sub") != null) {
 		String sub = (String) request.getParameter("sub");
 		if (sub.equals("add")) {
 			subInclude = "manageItemsAdd.jsp";
 			menuListActive = "";
 			menuAddActive = "active";
+			menuRequestOnMeActive = "";
+			menuMyRequestActive = "";
 		}
+		else if (sub.equals("requestsonme")) {
+			subInclude = "manageItemRequestsOnMe.jsp";
+			menuListActive = "";
+			menuAddActive = "";
+			menuRequestOnMeActive = "active";
+			menuMyRequestActive = "";
+		
+		}
+		else if (sub.equals("myrequests")) {
+			subInclude = "manageItemMyRequests.jsp";
+			menuListActive = "";
+			menuAddActive = "";
+			menuRequestOnMeActive = "";
+			menuMyRequestActive = "active";
+		}
+		
 	}
 
 	boolean actionValid = false;
@@ -59,7 +79,7 @@
 	try {
 		ClientRequest clientRequest;
 		clientRequest = new ClientRequest(
-				"http://localhost:8080/rest/user/" + id);
+				siteUrl+"rest/user/" + id);
 		clientRequest.accept("application/xml");
 		ClientResponse<String> response2 = clientRequest
 				.get(String.class);
@@ -106,6 +126,10 @@
 		<li class="<%=menuAddActive%>"><a
 			href="dashboard.jsp?page=manageItems&sub=add"><span
 				class="glyphicon glyphicon-plus"></span> Ajouter un objet</a></li>
+		<li class="<%=menuAddActive%>"><a
+			href="dashboard.jsp?page=manageItems&sub=requestsonme"> Les demandes sur mes objets</a></li>
+		<li class="<%=menuAddActive%>"><a
+			href="dashboard.jsp?page=manageItems&sub=myrequests"> Mes demandes aux voisins</a></li>
 	</ul>
 </div>
 
