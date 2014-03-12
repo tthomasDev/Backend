@@ -1,6 +1,7 @@
 package com.ped.myneightool.service;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,7 +32,8 @@ public class ServiceOutil {
 
 	}
 
-	@PermitAll
+	
+	@RolesAllowed({"USER","ADMIN"})
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -46,16 +48,16 @@ public class ServiceOutil {
 		return Response.ok(o).build();
 	}
 
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
-	public Response updateOeuvre(final Outil o) {
+	public Response updateOutil(final Outil o) {
 		outilDAO.updateOutil(o);
 		return Response.ok(o).build();
 	}
 	
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@GET
 	@Path("/delete/{id}")
 	public void deleteOutil(@PathParam("id") final int id) {
@@ -122,7 +124,7 @@ public class ServiceOutil {
 		return outils;
 	}
 	
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@POST
 	@Path("/criteria")
 	@Produces("application/xml")

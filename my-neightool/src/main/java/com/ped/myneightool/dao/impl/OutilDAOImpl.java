@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import com.ped.myneightool.dao.itf.ItfOutilDAO;
 import com.ped.myneightool.dto.OutilsDTO;
-import com.ped.myneightool.model.Categorie;
 import com.ped.myneightool.model.Outil;
 import com.ped.myneightool.model.Utilisateur;
 

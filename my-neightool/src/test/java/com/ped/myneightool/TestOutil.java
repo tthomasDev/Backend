@@ -176,7 +176,7 @@ public class TestOutil {
 			
 			int i = outilPost.getId();
 			
-			crb.httpGetRequest("tool/delete", i);
+			crb.httpGetRequest("tool/delete", i,utilisateurPost);
 			
 			try{
 				final Outil outilGet = (Outil) crb.httpGetRequest("tool", i);
