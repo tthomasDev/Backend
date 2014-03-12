@@ -18,8 +18,6 @@ var destinationIcon = 'http://maps.google.com/mapfiles/marker_green.png';
 function initialize() {
 	geocoder = new google.maps.Geocoder();
 	
-	origin1 = new google.maps.LatLng(55.930, -3.118);
-	destinationB = new google.maps.LatLng(50.087, 14.421);
 	
 	var selectUsers = document.getElementById('users');
 	for(var i=0; i<selectUsers.options.length; i++)
@@ -235,24 +233,6 @@ function addClickMarker(location) {
 	clickMarker = marker;
 	showMarkers();
 }
-
-//Add a marker to the map and push to the array.
-/*
-function addMarker(location) {
-	
-	var marker = new google.maps.Marker({
-		position : location,
-		draggable:true,
-	    animation: google.maps.Animation.DROP,
-		map : map
-	});
-
-	//Add marker
-
-    alert('Ajout marker: ' + location);
-	markers.push(marker);
-	showMarkers();
-}*/
 
 function addMarker(location, isDestination, userName) {
 	  var icon;

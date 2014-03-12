@@ -309,15 +309,22 @@ rd.forward(request, response);
 
 
 	<div class="col-md-4">
-	<select style="visibility:hidden;" class="form-control" id="users" name="users">
-		<%
+	<select style="visibility:visible;" class="form-control" id="users" name="users">
+		<% 
 			Iterator<Utilisateur> it = usersDTO.getListeUtilisateurs().iterator();
 			int num = 0;
 			while(it.hasNext()){
 			
 			final Utilisateur utilisateur = it.next();
-			out.println("<option value='" + num + "'>" + utilisateur.getNom() + "/" +
-			utilisateur.getAdresse().getLatitude() + "/" + utilisateur.getAdresse().getLongitude() + "</option>");
+			final Adresse ad= utilisateur.getAdresse();
+			try{
+				out.println("<option value='" + num + "'>" + utilisateur.getNom() + "/" +
+				utilisateur.getAdresse().getLatitude() + "/" + utilisateur.getAdresse().getLongitude() + "</option>");
+			}
+			catch(Exception e)
+			{
+				System.out.println("Longitude et Latitude invalides");
+			}
 			num++;
 			
 		}
