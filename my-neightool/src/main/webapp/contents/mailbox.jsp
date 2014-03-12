@@ -17,6 +17,9 @@
 <%@ page import="model.Message"%>
 <%@ page import="model.Utilisateur"%>
 <%@ page import="dto.MessagesDTO"%>
+
+<%@include file="../functions.jsp"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
@@ -31,7 +34,7 @@ String messageValue = "";
 
 //acces au messages envoyés
 if(request.getParameter("sub") != null) {
-	String sub = (String)request.getParameter("sub");
+	String sub = escapeStr((String)request.getParameter("sub"));
 	if(sub.equals("sent")) {
 	subInclude = "mailboxSent.jsp";
 	menuMainActive = "";
@@ -65,9 +68,9 @@ if(request.getParameter("userId") != null) {
 		Utilisateur userTarget = new Utilisateur();
 
 		String id = String.valueOf(session.getAttribute("ID"));
-		String userPseudoTo = request.getParameter("userTo");
-		String subject = request.getParameter("subjectTo");
-		String corps = request.getParameter("messageTo");
+		String userPseudoTo = escapeStr(request.getParameter("userTo"));
+		String subject = escapeStr(request.getParameter("subjectTo"));
+		String corps = escapeStr(request.getParameter("messageTo"));
 
 		try {
 

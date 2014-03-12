@@ -20,6 +20,8 @@
 <%@ page import="model.Outil"%>
 <%@ page import="model.Utilisateur"%>
 
+<%@include file="../functions.jsp"%>
+
 <%
 	boolean actionValid = false;
 	boolean cautionCorrecte = true;
@@ -80,9 +82,9 @@
 	System.out.println("CAUTION CORRECTE " + cautionCorrecte);
 	
 	//ici on va créer l'outil avec les données rentrées dans le formulaire
-	final String name = request.getParameter("itemName");
-	final String category = request.getParameter("itemCategory");
-	final String description = request.getParameter("itemDetails");
+	final String name = escapeStr(request.getParameter("itemName"));
+	final String category = escapeStr(request.getParameter("itemCategory"));
+	final String description = escapeStr(request.getParameter("itemDetails"));
 	final int caution;
 	if ( cautionCorrecte ){
 		caution = Integer.parseInt(request.getParameter("itemCaution"));
@@ -119,10 +121,10 @@
 	}
 	
 	// On récupère l'image correspondante à l'objet créé
-	final String cheminImage = request.getParameter("itemImg");
+	final String cheminImage = escapeStr(request.getParameter("itemImg"));
 
-	final String startDate = request.getParameter("start");
-	final String endDate = request.getParameter("end");
+	final String startDate = escapeStr(request.getParameter("start"));
+	final String endDate = escapeStr(request.getParameter("end"));
 	final String terms = request.getParameter("termsofuse");
 	
 	final String id = String.valueOf(session.getAttribute("ID"));

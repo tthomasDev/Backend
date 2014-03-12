@@ -9,6 +9,7 @@
 <%@ page import="model.Connexion"%>
 <%@ page import="model.Adresse"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
+<%@include file="../functions.jsp"%>
 <%
 String username, email, password, alertMessage, alertType;
 boolean showAlertMessage = false;
@@ -45,8 +46,8 @@ if(request.getParameter("username") != null) {
 	
 	String currentLogin= utilisateurGet.getConnexion().getLogin();
 		
-	utilisateurGet.getConnexion().setLogin(request.getParameter("username"));
-	utilisateurGet.setMail(request.getParameter("email"));
+	utilisateurGet.getConnexion().setLogin(escapeStr(request.getParameter("username")));
+	utilisateurGet.setMail(escapeStr(request.getParameter("email")));
 			
 	
 	Utilisateur utilisateurGet2 = new Utilisateur();
@@ -106,13 +107,13 @@ if(request.getParameter("oldPassword") != null) {
 		
 	
 	System.out.println("debut de boucle");
-	String str=request.getParameter("oldPassword");
+	String str=escapeStr(request.getParameter("oldPassword"));
 	System.out.println(str);
 	if(utilisateurGet.getConnexion().getPassword().equals(str)){
 		System.out.println(utilisateurGet.getConnexion().getPassword());
 		
-		String newPass = request.getParameter("newPassword");
-		String confirmNewPass = request.getParameter("confirmNewPassword");
+		String newPass = escapeStr(request.getParameter("newPassword"));
+		String confirmNewPass = escapeStr(request.getParameter("confirmNewPassword"));
 		
 		System.out.println(newPass);
 		System.out.println(confirmNewPass);

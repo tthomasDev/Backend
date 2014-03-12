@@ -10,13 +10,13 @@
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
-
 <%@ page import="model.Utilisateur"%>
 <%@ page import="model.Connexion"%>
 <%@ page import="model.Adresse"%>
 <%@ page import="java.text.DateFormat"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
+<%@include file="../functions.jsp"%>
 <%
 
 
@@ -66,18 +66,18 @@ if(request.getParameter("firstname") != null) {
 		alertType = "success";
 		
 			
-		utilisateurGet.setPrenom(request.getParameter("firstname"));
-		utilisateurGet.setNom(request.getParameter("lastname"));
+		utilisateurGet.setPrenom(escapeStr(request.getParameter("firstname")));
+		utilisateurGet.setNom(escapeStr(request.getParameter("lastname")));
 		//Formatage de la date
-		String m = request.getParameter("month");
-		String day = request.getParameter("day");
-		String y = request.getParameter("year");
+		String m = escapeStr(request.getParameter("month"));
+		String day = escapeStr(request.getParameter("day"));
+		String y = escapeStr(request.getParameter("year"));
 		String target = day + "-" + m + "-" + y;
 		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 		Date date2 = df.parse(target);
 		utilisateurGet.setDateDeNaissance(date2);
 		utilisateurGet.setTelephone(request.getParameter("telephone"));
-		utilisateurGet.getAdresse().setadresseComplete(request.getParameter("location"));
+		utilisateurGet.getAdresse().setadresseComplete(escapeStr(request.getParameter("location")));
 		
 		
 		Utilisateur utilisateurGet2 = new Utilisateur();

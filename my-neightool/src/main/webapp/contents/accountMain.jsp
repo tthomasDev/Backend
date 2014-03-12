@@ -1,4 +1,5 @@
 <%@include file="../constantes.jsp"%>
+<%@include file="../functions.jsp"%>
 <%@ page import="javax.xml.bind.JAXBContext"%>
 <%@ page import="javax.xml.bind.Marshaller"%>
 <%@ page import="javax.xml.bind.Unmarshaller"%>

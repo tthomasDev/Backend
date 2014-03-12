@@ -1,4 +1,7 @@
 <%@page import="java.util.ArrayList"%>
+
+<%@include file="../functions.jsp"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 
@@ -31,15 +34,15 @@ if(request.getParameter("category") != null) {
 		adds += " dans les catégories " + cats;
 }
 if(request.getParameter("cMax") != null && request.getParameter("cMax") != "") {
-	cMax = Integer.parseInt(request.getParameter("cMax"));
+	cMax = Integer.parseInt(escapeStr(request.getParameter("cMax")));
 	adds += " pour <strong>" + cMax + "€</strong> maximum,";
 }
 if(request.getParameter("dMax") != null && request.getParameter("dMax")!="") {
-	dMax = Integer.parseInt(request.getParameter("dMax"));
+	dMax = Integer.parseInt(escapeStr(request.getParameter("dMax")));
 	adds += " dans un rayon de <strong>" + dMax + " km</strong> maximum";
 }
 if(request.getParameter("s") != null && request.getParameter("s") != "") {
-	keywords = request.getParameter("s");
+	keywords = escapeStr(request.getParameter("s"));
 	keywordsDisplay = "Résultats pour <strong>" + keywords + "</strong>" + adds;
 }
 if(request.getParameter("s") != null && request.getParameter("s") == "" && othersSubmitted) {
