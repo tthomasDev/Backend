@@ -97,7 +97,7 @@
 	try {
 		ClientRequest requestTools;
 		requestTools = new ClientRequest(
-				siteUrl+"rest/tool/user/" + user.getId());
+				siteUrl+"rest/tool/user/available/" + user.getId());
 		requestTools.accept("application/xml");
 		ClientResponse<String> responseTools = requestTools
 				.get(String.class);

@@ -367,7 +367,7 @@ out.println("</div></div>");
 					diff = 0;
 				else
 					diff = 1;%>
-			<%if (diff == 0) {%>
+			<%if (diff == 1) {%>
 				href="#" data-toggle="modal" data-target="#confirmBorrow" class="btn btn-success pull-right btn-lg"
 			<%} else { %>
 				href="#" class="btn btn-default pull-right btn-lg ttipr" title="Vous ne pouvez pas emprunter vos propres objets" 
