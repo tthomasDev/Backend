@@ -101,7 +101,7 @@ public class TestMessage {
 			LOG.info(""+messagePost.getId()+""+messagePost.getObjet()+""+messagePost.getCorps()+"");
 			
 			
-			final Message messageGet =(Message) crb.httpGetRequest("message",i);
+			final Message messageGet =(Message) crb.httpGetRequest("message",i,utilisateurPost2);
 			LOG.info(""+messageGet.getId()+""+messageGet.getObjet()+""+messageGet.getCorps()+"");
 			
 			Assert.assertNotSame(messageGet,null);
@@ -140,10 +140,10 @@ public class TestMessage {
 			Assert.assertNotSame(messagePost,null);
 			
 			int i = messagePost.getId();
-			crb.httpGetRequest("message/delete",i);
+			crb.httpGetRequest("message/delete",i,utilisateurPost2);
 			
 			try{
-				final Message messageGet = (Message) crb.httpGetRequest("message", i);
+				final Message messageGet = (Message) crb.httpGetRequest("message", i,utilisateurPost2);
 				Assert.assertSame(messageGet, null);
 			}
 			catch(final RuntimeException r){
@@ -196,7 +196,7 @@ public class TestMessage {
 			Assert.assertNotSame(message3Post,null);
 
 			int i = user1Post.getId();
-			MessagesDTO mdto = (MessagesDTO) crb.httpGetRequest("message/list/send", i);
+			MessagesDTO mdto = (MessagesDTO) crb.httpGetRequest("message/list/send", i,user1Post);
 			LOG.info("ID de l'utilisateur envoyeur");
 
 			LOG.info("\n\n\n");
@@ -260,7 +260,7 @@ public class TestMessage {
 			Assert.assertNotSame(message3Post,null);
 
 			int i = user1Post.getId();
-			MessagesDTO mdto = (MessagesDTO) crb.httpGetRequest("message/list/receive", i);
+			MessagesDTO mdto = (MessagesDTO) crb.httpGetRequest("message/list/receive", i,user1Post);
 			LOG.info("ID de l'utilisateur envoyeur");
 
 			LOG.info("\n\n\n");

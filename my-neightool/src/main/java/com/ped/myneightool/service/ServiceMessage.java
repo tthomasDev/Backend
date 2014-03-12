@@ -1,6 +1,6 @@
 package com.ped.myneightool.service;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,7 +31,7 @@ public class ServiceMessage {
 
 	}
 
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@POST
 	@Path("/create")
 	@Consumes({"application/xml","application/json"})
@@ -46,7 +46,7 @@ public class ServiceMessage {
 		return Response.ok(u).build();
 	}
 
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@POST
 	@Path("/update")
 	@Consumes("application/xml")
@@ -55,7 +55,7 @@ public class ServiceMessage {
 		return Response.ok(u).build();
 	}
 	
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@GET
 	@Path("/delete/{id}")
 	public void deleteMessage(@PathParam("id") final int id) {
@@ -63,7 +63,7 @@ public class ServiceMessage {
 		messageDAO.deleteMessage(Message);
 	}
 
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@GET
 	@Path("/{id}")
 	@Produces("application/xml")
@@ -72,7 +72,7 @@ public class ServiceMessage {
 		return a;
 	}
 	
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@GET
 	@Path("/list/send/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -81,7 +81,7 @@ public class ServiceMessage {
 		return messages;
 	}
 	
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@GET
 	@Path("/list/sendListByOrder/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -90,7 +90,7 @@ public class ServiceMessage {
 		return messages;
 	}
 	
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@GET
 	@Path("/list/receive/{id}")
 	@Produces({ "application/xml", "application/json" })
@@ -99,7 +99,7 @@ public class ServiceMessage {
 		return messages;
 	}
 	
-	@PermitAll
+	@RolesAllowed({"USER","ADMIN"})
 	@GET
 	@Path("/list/receiveListByOrder/{id}")
 	@Produces({ "application/xml", "application/json" })

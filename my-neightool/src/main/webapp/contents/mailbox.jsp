@@ -19,6 +19,7 @@
 <%@ page import="dto.MessagesDTO"%>
 
 <%@include file="../functions.jsp"%>
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
@@ -133,6 +134,15 @@ if(request.getParameter("userId") != null) {
 						"http://localhost:8080/rest/message/"
 								+ request.getParameter("idAnswer"));
 				requestMessages.accept("application/xml");
+				
+				//CREDENTIALS		
+				String username = userTarget.getConnexion().getLogin();
+				String password = userTarget.getConnexion().getPassword();
+				String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+				requestMessages.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+				///////////////////
+				
+				
 				ClientResponse<String> responseMessages = requestMessages
 						.get(String.class);
 
@@ -152,6 +162,13 @@ if(request.getParameter("userId") != null) {
 				ClientRequest clientRequest = new ClientRequest(
 						"http://localhost:8080/rest/message/update");
 				clientRequest.body("application/xml", message2);
+				
+				//CREDENTIALS		
+				String username2 = userSource.getConnexion().getLogin();
+				String password2 = userSource.getConnexion().getPassword();
+				String base64encodedUsernameAndPassword2 = DatatypeConverter.printBase64Binary((username2 + ":" + password2).getBytes());
+				clientRequest.header("Authorization", "Basic " +base64encodedUsernameAndPassword2 );
+				///////////////////
 
 				//ici on va récuperer la réponse de la requete de mise à jour
 				final ClientResponse<String> clientResponse = clientRequest
@@ -189,7 +206,14 @@ if(request.getParameter("userId") != null) {
 		final ClientRequest clientRequest = new ClientRequest(
 				"http://localhost:8080/rest/message/create");
 		clientRequest.body("application/xml", message);
-
+		
+		//CREDENTIALS		
+		String username3 = userSource.getConnexion().getLogin();
+		String password3 = userSource.getConnexion().getPassword();
+		String base64encodedUsernameAndPassword3 = DatatypeConverter.printBase64Binary((username3 + ":" + password3).getBytes());
+		clientRequest.header("Authorization", "Basic " +base64encodedUsernameAndPassword3 );
+		///////////////////
+		
 		//ici on va récuperer la réponse de la requete
 		final ClientResponse<String> clientResponse = clientRequest
 				.post(String.class);
@@ -226,11 +250,42 @@ if(request.getParameter("userId") != null) {
 
 	//ici on va récuperer la réponse de la requete
 	try {
+		
+		
+		Utilisateur myUser = new Utilisateur();
+		
+		try {
+			ClientRequest clientRequest;
+			clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+			clientRequest.accept("application/xml");
+			ClientResponse<String> response2 = clientRequest.get(String.class);
+
+			if (response2.getStatus() == 200) {
+				Unmarshaller un = jaxbc.createUnmarshaller();
+				myUser = (Utilisateur) un
+						.unmarshal(new StringReader(response2
+								.getEntity()));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
 		ClientRequest requestMessages;
 		requestMessages = new ClientRequest(
 				"http://localhost:8080/rest/message/list/receiveListByOrder/"
-						+ session.getAttribute("ID"));
+						+ myUser.getId());
 		requestMessages.accept("application/xml");
+		
+		//CREDENTIALS		
+		String username = myUser.getConnexion().getLogin();
+		System.out.println("\n\n"+username+"\n\n");
+		String password = myUser.getConnexion().getPassword();
+		System.out.println("\n\n"+password+"\n\n");
+		String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+		requestMessages.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+		///////////////////
+		
 		ClientResponse<String> responseMessages = requestMessages
 				.get(String.class);
 		if (responseMessages.getStatus() == 200) {
