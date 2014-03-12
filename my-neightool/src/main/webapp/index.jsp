@@ -25,7 +25,7 @@
 
 
 <%
-
+/*
 UtilisateursDTO usersDTO = new UtilisateursDTO();
 try {
 	final JAXBContext jaxbc = JAXBContext.newInstance(UtilisateursDTO.class);
@@ -43,7 +43,7 @@ try {
 	
 } catch (Exception e) {
 	e.printStackTrace();
-}
+}*/
 
 
 
@@ -293,10 +293,11 @@ if(session.getAttribute("ID") != null)
 
 <body onload="initialize()">
 
+<!--
 	<div class="col-md-4">
 	<select style="visibility:hidden;" class="form-control" id="users" name="users">
 		<%
-			Iterator<Utilisateur> it = usersDTO.getListeUtilisateurs().iterator();
+			/*Iterator<Utilisateur> it = usersDTO.getListeUtilisateurs().iterator();
 			int num = 0;
 			while(it.hasNext()){
 			
@@ -305,12 +306,12 @@ if(session.getAttribute("ID") != null)
 			utilisateur.getAdresse().getLatitude() + "/" + utilisateur.getAdresse().getLongitude() + "</option>");
 			num++;
 			
-		}
+		}*/
 		%>
 	</select>
 	</div>
-
-
+  -->
+  
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
