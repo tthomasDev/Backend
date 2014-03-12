@@ -24,9 +24,6 @@ import com.ped.myneightool.model.Utilisateur;
 
 public class TestOutil {
 	
-	public Utilisateur user1= new Utilisateur("Jean", "Dupont", new Connexion("log", "pwd"), "test@test", "0505050505", new Adresse(), new Date());
-	public Utilisateur user= (Utilisateur) crb.httpRequestXMLBody(user1, "user/create");
-	
 	private static final org.slf4j.Logger LOG = LoggerFactory
 			.getLogger(TestOutil.class);
 
@@ -431,6 +428,9 @@ public class TestOutil {
 		try{
 			final Categorie categorie = new Categorie("Nouvelles Technologies");
 			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie, "categorie/create");
+			
+			Utilisateur user1= new Utilisateur("Jean", "Dupont", new Connexion("loginTestOutil", "pwd"), "test@test", "0505050505", new Adresse(), new Date());
+			Utilisateur user= (Utilisateur) crb.httpRequestXMLBody(user1, "user/create");
 			
 			crb.httpRequestXMLBody(new Outil(user,"Rateau","savoir ratisser",true,categoriePost,50, new Date(0), new Date()), "tool/create");
 			crb.httpRequestXMLBody(new Outil(user,"Pelle","savoir pelleter",true,categoriePost,50, new Date(0), new Date()), "tool/create");
