@@ -38,5 +38,6 @@
 
 <link href="./dist/css/datepicker.css" rel="stylesheet">
 <ol class="breadcrumb">
-	<li><a href="dashboard.jsp">Demande d'emprunts sur mes objets</a></li>
+	<li><a href="dashboard.jsp">Accueil</a></li>
+	<li class="active">Demande d'emprunts sur mes objets</li>
 </ol>

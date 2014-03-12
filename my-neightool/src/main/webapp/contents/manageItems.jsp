@@ -25,6 +25,7 @@
 	String menuAddActive = "";
 	String menuRequestOnMeActive = "";
 	String menuMyRequestActive = "";
+	
 	if (request.getParameter("sub") != null) {
 		String sub = (String) request.getParameter("sub");
 		if (sub.equals("add")) {
@@ -96,7 +97,7 @@
 	try {
 		ClientRequest requestTools;
 		requestTools = new ClientRequest(
-				"http://localhost:8080/rest/tool/user/" + user.getId());
+				siteUrl+"rest/tool/user/" + user.getId());
 		requestTools.accept("application/xml");
 		ClientResponse<String> responseTools = requestTools
 				.get(String.class);
@@ -126,10 +127,12 @@
 		<li class="<%=menuAddActive%>"><a
 			href="dashboard.jsp?page=manageItems&sub=add"><span
 				class="glyphicon glyphicon-plus"></span> Ajouter un objet</a></li>
-		<li class="<%=menuAddActive%>"><a
-			href="dashboard.jsp?page=manageItems&sub=requestsonme"> Les demandes sur mes objets</a></li>
-		<li class="<%=menuAddActive%>"><a
-			href="dashboard.jsp?page=manageItems&sub=myrequests"> Mes demandes aux voisins</a></li>
+		<li class="<%=menuRequestOnMeActive%>"><a
+			href="dashboard.jsp?page=manageItems&sub=requestsonme">Demandes sur mes objets<span
+				class="badge pull-right">
+					TOTO</span></a></li>
+		<li class="<%=menuMyRequestActive%>"><a
+			href="dashboard.jsp?page=manageItems&sub=myrequests">Mes demandes aux voisins</a></li>
 	</ul>
 </div>
 

@@ -65,7 +65,8 @@
 
 <link href="./dist/css/datepicker.css" rel="stylesheet">
 <ol class="breadcrumb">
-	<li><a href="dashboard.jsp">Mes demandes d'emprunt à mes voisins</a></li>
+	<li><a href="dashboard.jsp">Accueil</a></li>
+	<li class="active">Mes demandes d'emprunt à mes voisins</a></li>
 </ol>
 
 <div class="table-responsive">
