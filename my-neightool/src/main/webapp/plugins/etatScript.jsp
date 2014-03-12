@@ -63,12 +63,7 @@
 		
 		
 		ClientRequest requestMessages;
-<<<<<<< HEAD
 		requestMessages = new ClientRequest(siteUrl + "rest/message/" + request.getParameter("id"));
-=======
-		requestMessages = new ClientRequest(
-				"http://localhost:8080/rest/message/" + myUser.getId());
->>>>>>> branch 'master' of https://github.com/MyNeighTool/Backend.git
 		requestMessages.accept("application/xml");
 		
 		
