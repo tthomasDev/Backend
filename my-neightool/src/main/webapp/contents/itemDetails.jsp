@@ -116,7 +116,7 @@ if(request.getParameter("id") != null) {
 				messageValue = "Les détails de la catégorie ont bien été récupérés.";
 				messageType = "success";
 			} else {
-				messageValue = "Une erreur est survenue";
+				messageValue = "Une erreur est survenue 1";
 				messageType = "danger";
 			}
 		} catch (Exception e) {
@@ -125,7 +125,7 @@ if(request.getParameter("id") != null) {
 		
 		itemId = outil.getId();
 		itemName = outil.getNom();
-		itemVendor = user.getConnexion().getLogin();
+		itemVendor = outil.getUtilisateur().getConnexion().getLogin();
 		itemDescription = outil.getDescription();
 		itemCategory = outil.getCategorie().getNom();
 		itemCategoryID = String.valueOf(outil.getCategorie().getId());
@@ -178,7 +178,7 @@ if(request.getParameter("id") != null) {
 				clientRequestEmprunt.body("application/xml", emprunt);
 				
 				// On rend l'outil indisponible désormais
-				outil.setDisponible(false);
+/* 				outil.setDisponible(false);
 				
 				try {
 					final ClientRequest requestToolUpdate = new ClientRequest("http://localhost:8080/rest/tool/update");
@@ -201,7 +201,7 @@ if(request.getParameter("id") != null) {
 				}
 				catch(Exception e) {
 					e.printStackTrace();
-				}
+				} */
 			}
 		
 			//ici on va récuperer la réponse de la requete
@@ -224,7 +224,7 @@ if(request.getParameter("id") != null) {
 				
 				displayMessage = true;
 				
-				messageValue = "Une erreur est survenue";
+				messageValue = "Une erreur est survenue 2";
 				messageType = "danger";
 			}
 		}
@@ -254,13 +254,22 @@ if(request.getParameter("id") != null) {
 
 <script>
 $(function(){
-	$('.checkDispo').click(function() {
+	$('.checkDispo').on('click',function() {
 		$.ajax({
 		    url: "<%=pluginFolder%>empruntScript.jsp",
 		    type: 'POST',
 		    data: {id: <%=itemId%>, dateDebut: $('#dateDebut').val(), dateFin: $('#dateFin').val() },
-		    success: function() {
-		    	//$('#confirm').removeClass("disabled")
+		    success: function(data) {
+		    	if(data == "true")
+		    	{
+		    		alert("Emprunt possible")
+		    		$('#confirm').removeClass("disabled")
+		    	}
+		    	else
+		    	{
+		    	    alert("L'emprunt n'est pas possible durant cette période ou il existe déjà un emprunt pour cet outil durant la période.");	
+		    	    $('#confirm').addClass("disabled")
+	    		}
 		    }
 		});
 	});
@@ -295,7 +304,7 @@ out.println("</div></div>");
 			<div class="col-md-12 perfectCenter">
 				<img width="100%" height="100%" class="img-rounded"
 					src="<%=itemPath%>" />
-			</div>removeClass("unread")
+			</div>
 		</div>
 	</div>
 	<div class="col-md-8">

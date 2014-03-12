@@ -106,7 +106,7 @@
 	
 	//On commence les vérifications
 		// 1) Est ce que la demande d'emprunt est dans les disponinbilités données par le prêteur ?
-		if( ((dateDebut.after(outil.getDateDebut())) || dateDebut.equals(outil.getDateDebut())) || (dateFin.after(outil.getDateFin())))
+		if( ((dateDebut.after(outil.getDateDebut())) || dateDebut.equals(outil.getDateDebut())) && ((dateFin.before(outil.getDateFin())) || dateFin.equals(outil.getDateFin())))
 		{
 			// OUI
 			System.out.println("Date Preteur OK");	
@@ -119,7 +119,7 @@
 				   (((dateDebut.after(e.getDateDebut())) || dateDebut.equals(e.getDateDebut())) && ((dateDebut.before(e.getDateFin())) || dateDebut.equals(e.getDateFin()))))
 				{
 					System.out.println("Deja un emprunt pendant cette periode");	
-					empruntBool=false;	
+					empruntBool=false;
 				}	
 			}
 					
@@ -130,10 +130,12 @@
 			// NON
 			System.out.println("Date Preteur PAS OK");
 			empruntBool=false;
+			
 		}
-	
-	
-	
-	
+		
+		System.out.println(empruntBool);
+		
+		out.clear();
+		out.print(String.valueOf(empruntBool));	
 
 %>
