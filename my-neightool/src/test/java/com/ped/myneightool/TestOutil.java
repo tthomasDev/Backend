@@ -30,6 +30,7 @@ public class TestOutil {
 	
 	private static JAXBContext jaxbc;
 	private static ClientRequestBuilder crb;
+	private static Utilisateur utilisateurAdmin;
 	
 
 	@BeforeClass
@@ -39,6 +40,21 @@ public class TestOutil {
 										Utilisateur.class,
 										Connexion.class);
 		crb= new ClientRequestBuilder(jaxbc);
+		
+		try {
+			final Connexion connexion = new Connexion("adminCategorieOutil","admin");
+			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Date birthDate = new Date();
+			
+			final Utilisateur utilisateur= new Utilisateur("admin","admin",connexion,"adminCategorieOutil@myneightool.com","0000000000",adresse,birthDate);
+			utilisateur.setRole("ADMIN");
+			utilisateurAdmin = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
+									
+					
+		} catch (final RuntimeException re) {
+			LOG.error("echec de creation de l'utilisateur", re);
+			throw re;
+		}		
 	}
 		
 	/**
@@ -51,7 +67,7 @@ public class TestOutil {
 			
 			//Elements nécéssaires à un outil (cat, utilisateur, date)
 			final Categorie cat1= new Categorie("Jardin");
-			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");			
+			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);			
 			
 			Connexion co = new Connexion("login1","pass1");
 			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutil","nomCreateOutil",co);
@@ -87,7 +103,7 @@ public class TestOutil {
 		try {
 			
 			final Categorie cat1= new Categorie("Piscine");
-			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
 			Connexion co = new Connexion("login2","pass2");
 			final Utilisateur utilisateur= new Utilisateur("JeanUpdateTool","DucheminUpdateTool",co);
@@ -121,7 +137,7 @@ public class TestOutil {
 
 		try{
 			final Categorie cat1= new Categorie("Cuisine");
-			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
 			Connexion co = new Connexion("login3","pass3");
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutil","nomGetOutil",co);
@@ -164,7 +180,7 @@ public class TestOutil {
 	public void testDeleteOutil() {
 		try {
 			final Categorie cat1= new Categorie("Salon");
-			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
 			Connexion co = new Connexion("login4","pass4");
 			final Utilisateur utilisateur= new Utilisateur("prenomDeleteOutil","nomDeleteOutil",co);
@@ -236,7 +252,7 @@ public class TestOutil {
 		try{
 			
 			final Categorie cat1= new Categorie("Voiture");
-			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
 			Connexion co = new Connexion("login5","pass5");
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
@@ -280,7 +296,7 @@ public class TestOutil {
 		try{
 			
 			final Categorie cat1= new Categorie("Autre");
-			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
 			Connexion co = new Connexion("login6","pass6");
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
@@ -326,7 +342,7 @@ public class TestOutil {
 		try{
 			
 			final Categorie cat1= new Categorie("Professionnels");
-			final Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
 			Connexion co = new Connexion("login8","pass8");
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
@@ -373,7 +389,7 @@ public class TestOutil {
 		try {
 
 			Categorie cat1= new Categorie("Plomberie");
-			Categorie cat= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
 			Connexion co = new Connexion("login9","pass9");
 			final Utilisateur utilisateur= new Utilisateur("prenomAPICriteria","nomAPICriteria",co);
@@ -386,10 +402,10 @@ public class TestOutil {
 
 
 			cat1= new Categorie("Toiture");
-			Categorie cat3= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			Categorie cat3= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
 			cat1= new Categorie("BTP");
-			Categorie cat2= (Categorie) crb.httpRequestXMLBody(cat1, "categorie/create");
+			Categorie cat2= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
 			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tuile","savoir tuiller",false,cat2,50, new Date(0), new Date()), "tool/create");
 			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Remorque","savoir remorquer",true,cat3,50, new Date(0), new Date()), "tool/create");
@@ -427,7 +443,7 @@ public class TestOutil {
 	public final void testGetAllOutilsFromCategory() {
 		try{
 			final Categorie categorie = new Categorie("Nouvelles Technologies");
-			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBody(categorie, "categorie/create");
+			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBodyCategorie(categorie, "categorie/create",utilisateurAdmin);
 			
 			Utilisateur user1= new Utilisateur("Jean", "Dupont", new Connexion("loginTestOutil", "pwd"), "test@test", "0505050505", new Adresse(), new Date());
 			Utilisateur user= (Utilisateur) crb.httpRequestXMLBody(user1, "user/create");
