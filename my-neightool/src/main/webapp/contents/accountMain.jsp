@@ -28,7 +28,7 @@ JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class);
 Utilisateur utilisateurGet = new Utilisateur();
 try {
 	ClientRequest clientRequest;
-	clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + session.getAttribute("ID"));
+	clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
 	clientRequest.accept("application/xml");
 	ClientResponse<String> clientResponse = clientRequest.get(String.class);
 	if (clientResponse.getStatus() == 200)
@@ -63,7 +63,7 @@ age = 			yeardiff;
 address = 		utilisateurGet.getAdresse().getadresseComplete();
 telephone = 	utilisateurGet.getTelephone();
 email = 		utilisateurGet.getMail();
-avatar = 		"./dist/img/user_avatar_default.png";
+avatar = 		imgFolder + "/user_avatar_default.png";
 if(utilisateurGet.getCheminImage()!=null)
 	avatar = 	utilisateurGet.getCheminImage();
 
