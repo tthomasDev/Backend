@@ -112,7 +112,7 @@ $(function(){
 						$(this).remove();
 						if($("#paginatorNbElements").length>0) {
 							changePage(previousPage,$("#paginatorNbElements").val());
-							recalculateNbPage();
+							//recalculateNbPage();
 						}
 					});
 		    	});
@@ -256,7 +256,7 @@ $(function(){
 				} else {	
 				%>
 				 	<tr class="perfectCenter">
-						<td colspan="4">Aucun message reçu</td>
+						<td colspan="5">Aucun message reçu</td>
 					</tr>
 				<% } %>			
 				</tbody>

@@ -46,7 +46,7 @@
 		
 		try {
 			ClientRequest clientRequest;
-			clientRequest = new ClientRequest("http://localhost:8080/rest/user/" + request.getParameter("id"));
+			clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
 			clientRequest.accept("application/xml");
 			ClientResponse<String> response2 = clientRequest.get(String.class);
 
