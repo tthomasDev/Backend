@@ -10,6 +10,8 @@ var origin;
 var destinations2 = [];
 var usersNames = [];
 
+var markerInfowindow;
+
 var originIcon = 'http://maps.google.com/mapfiles/marker.png';
 var destinationIcon = 'http://maps.google.com/mapfiles/marker_green.png';
 
@@ -48,7 +50,7 @@ function initialize() {
 				map : map,
 				position : pos,
 				zoom : z,
-				content : 'Vous êtes ici actuellement !'
+				content : 'Vous &ecirctes ici actuellement !'
 			});
 			map.setCenter(pos);
 			
@@ -98,13 +100,11 @@ function calculateDistances() {
 	      for (var j = 0; j < results.length; j++) {
 	    	 if(results[j].distance.value < 100000)
 	    		 {
-	    		 	var markerInfowindow = new google.maps.InfoWindow({
-	    		      content: 'L\'utilisateur <b>' + usersNames[j] 
-	    		 	+ '</b> prête un objet près de chez vous ! <b>Inscrivez-vous</b> pour pouvoir l\'emprunter',
+	    		 	markerInfowindow = new google.maps.InfoWindow({
 	    		      maxWidth: 200
 	    		 	});
 	    		 	
-	    		 	addMarker(destinations[j], true, markerInfowindow);
+	    		 	addMarker(destinations[j], true, usersNames[j]);
 	    		 }
 	      }
 	    }
@@ -254,7 +254,7 @@ function addMarker(location) {
 	showMarkers();
 }*/
 
-function addMarker(location, isDestination, infoWindow) {
+function addMarker(location, isDestination, userName) {
 	  var icon;
 	  if (isDestination) {
 	    icon = destinationIcon;
@@ -270,8 +270,12 @@ function addMarker(location, isDestination, infoWindow) {
 	        icon: icon
 	      });
 	      
+	      
 	      google.maps.event.addListener(marker, 'click', function() {
-	    	    infoWindow.open(map,marker);
+  		 		var contentString = 'L\'utilisateur <b>' + userName
+  		 		+ '</b> pr&ecircte un objet pr&egraves de chez vous ! <b>Inscrivez-vous</b> pour pouvoir l\'emprunter';
+  		 		markerInfowindow.setContent(contentString);
+	    	    markerInfowindow.open(map,marker);
 	    	  });
 	      
 	      markers.push(marker);
