@@ -127,7 +127,7 @@
 		<div class="col-md-3 well">
 			<ul class="nav nav-pills nav-stacked">
 				<li class="
-				<% if((request.getParameter("idCat")!=null && request.getParameter("idCat").equals(0)) || request.getParameter("idCat")==null) { %>
+				<% if((request.getParameter("idCat")!=null && request.getParameter("idCat").equals("0")) || request.getParameter("idCat")==null) { %>
 					active
 				<% } %>
 				"><a href="dashboard.jsp?idCat=0">Objets dans ma région <span class="badge pull-right"><%=listeAllTools.size() %></span></a></li>
@@ -199,7 +199,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<% if(request.getParameter("idCat")!=null && request.getParameter("idCat").equals(0)) {
+							<% if(request.getParameter("idCat")!=null && request.getParameter("idCat").equals("0")) {
 								for (Outil t : listeOutilsCat.getListeOutils()) { %>
 									<tr style="vertical-align: middle;" class="toPaginate">
 										<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
