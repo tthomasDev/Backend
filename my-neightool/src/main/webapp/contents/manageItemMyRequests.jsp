@@ -92,10 +92,12 @@
 						<td style="vertical-align: middle; text-align: center;"><%=df.format(e.getDateDebut())%></td>
 						<td style="vertical-align: middle; text-align: center;"><%=df.format(e.getDateFin())%></td>
 						<td style="vertical-align: middle; text-align: center;"><%					
-						if(e.isValide())
-							out.print("OUI");
-						else
-							out.print("NON");
+						if(e.getValide() == 0)
+							out.print("Refusé");
+						else if (e.getValide() == 1)
+							out.print("En attente de validation");
+						else if (e.getValide() == 2)
+							out.print("Validé");
 						%></td>
 					</tr>
 					<%

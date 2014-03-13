@@ -126,7 +126,7 @@
 %>
 		<div class="col-md-3 well">
 				<ul class="nav nav-pills nav-stacked">
-					<% if (Integer.parseInt(request.getParameter("idCat"))==0) { %>
+					<% if(request.getParameter("idCat")!=null && request.getParameter("idCat").equals(0)) { %>
 						<li class="active"><a href="dashboard.jsp?idCat=0">Objets populaires dans ma région</a><span class="badge pull-right"><%=listeAllTools.size() %></span></li>	
 					<% } else { %>
 						<li><a href="dashboard.jsp?idCat=0">Objets populaires dans ma région</a><span class="badge pull-right"><%=listeAllTools.size() %></span></li>
@@ -199,7 +199,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<% if (Integer.parseInt(request.getParameter("idCat"))!=0) {
+							<% if(request.getParameter("idCat")!=null && request.getParameter("idCat").equals(0)) {
 								for (Outil t : listeOutilsCat.getListeOutils()) { %>
 									<tr style="vertical-align: middle;" class="toPaginate">
 										<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
