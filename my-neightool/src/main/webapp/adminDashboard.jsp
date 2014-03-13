@@ -21,8 +21,6 @@ if(request.getParameter("page") != null) {
 String filePath = adminFolder+fileName+".jsp";
 if(!fileExists(filePath))
 	filePath = adminFolder+"404.jsp";
-
-final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
 %>
 <!doctype html>
 <html lang="en">
@@ -63,15 +61,15 @@ final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="adminDashboard.jsp"><% out.print(siteName); %></a>
+					<a class="navbar-brand" href="adminDashboard.jsp"><% out.print(siteName); %> - Administation</a>
 				</div>
 				<div class="navbar-collapse collapse">
 					
 					<ul class="nav navbar-nav navbar-right" style="margin-right:2px;">
-	        			<li><a href="adminDashboard.jsp">Accueil</a></li>
-	        			<li><a href="adminDashboard.jsp">Gérer les utilisateurs</a></li>
-	        			<li><a href="adminDashboard.jsp?page=adminManageCategory">Gérer les catégories</a></li>
-        				<li><a href="adminDashboard.jsp">Mon compte</a></li>
+	        			<li><a href="adminDashboard.jsp">Accueil de l'administration</a></li>
+	        			<li><a href="adminDashboard.jsp?page=adminManageUsers">Gérer les utilisateurs</a></li>
+	        			<li><a href="adminDashboard.jsp?page=adminManageItems">Gérer les objets</a></li>
+	        			<li><a href="adminDashboard.jsp?page=adminManageCategories">Gérer les catégories</a></li>
         				<li><a href="index.jsp?attemp=0">Déconnexion</a></li>
 					</ul>
 				</div>
@@ -84,29 +82,7 @@ final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
 		<div class="container">
 			<hr />
 			<footer>
-				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a> &bull; 
-				<% 
-								
-				Utilisateur utilisateurGet = new Utilisateur();
-				try {
-					ClientRequest clientRequest;
-					clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
-					clientRequest.accept("application/xml");
-					ClientResponse<String> clientResponse = clientRequest.get(String.class);
-					if (clientResponse.getStatus() == 200)
-					{
-						Unmarshaller un = jaxbc.createUnmarshaller();
-						utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
-						
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				if(utilisateurGet.getRole().equals("ADMIN")){ %>
-				<a href="dashboard.jsp">Retour interface utilisateur</a>				
-				<% } %>
-				</span>
+				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a></span>
 				</p>
 			</footer>
 		</div>
