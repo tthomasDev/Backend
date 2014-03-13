@@ -62,7 +62,7 @@ $(function() {
 					<a id="edit1" class="ttipt btn btn-default editBtn" title="Editer la catégorie">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</a>
-					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=2" class="ttipt btn btn-default" title="Supprimer la catégorie">
+					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=1" class="ttipt btn btn-default" title="Supprimer la catégorie">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</div>
@@ -72,13 +72,13 @@ $(function() {
 		<!-- EXEMPLE 2 -->
 		<tr class="toPaginate">
 			<td class="perfectCenter">2</td>
-			<td id="nameCat2" class="perfectCenter">Bricolage</td>
+			<td id="nameCat<%=2 %>" class="perfectCenter">Bricolage</td>
 			<td class="perfectCenter">
 				<div class="btn-group">
 					<a id="edit2" class="ttipt btn btn-default editBtn" title="Editer la catégorie">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</a>
-					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=1" class="ttipt btn btn-default" title="Supprimer la catégorie">
+					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=2" class="ttipt btn btn-default" title="Supprimer la catégorie">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</div>

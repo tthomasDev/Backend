@@ -189,7 +189,7 @@
 				
 				if(utilisateurGet.getRole().equals("ADMIN")){ %>
 				&bull; 
-				<a href="adminDashboard.jsp">Section interface administrateur</a>				
+				<a href="adminDashboard.jsp"><FONT COLOR="#F75D59">Section interface administrateur</FONT></a>				
 				<% } %>
 				</span>
 				</p>

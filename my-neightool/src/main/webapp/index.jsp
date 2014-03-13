@@ -32,7 +32,7 @@
 
 		ClientRequest clientRequest;
 		clientRequest = new ClientRequest(
-		"http://localhost:8080/rest/user/list");
+		siteUrl+"rest/user/list");
 		clientRequest.accept("application/xml");
 		ClientResponse<String> response2 = clientRequest
 		.get(String.class);
