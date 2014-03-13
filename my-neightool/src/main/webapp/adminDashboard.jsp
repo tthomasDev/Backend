@@ -21,6 +21,8 @@ if(request.getParameter("page") != null) {
 String filePath = adminFolder+fileName+".jsp";
 if(!fileExists(filePath))
 	filePath = adminFolder+"404.jsp";
+
+final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
 %>
 <!doctype html>
 <html lang="en">
@@ -82,7 +84,30 @@ if(!fileExists(filePath))
 		<div class="container">
 			<hr />
 			<footer>
-				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a></span>
+				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a>
+				<% 
+								
+				Utilisateur utilisateurGet = new Utilisateur();
+				try {
+					ClientRequest clientRequest;
+					clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
+					clientRequest.accept("application/xml");
+					ClientResponse<String> clientResponse = clientRequest.get(String.class);
+					if (clientResponse.getStatus() == 200)
+					{
+						Unmarshaller un = jaxbc.createUnmarshaller();
+						utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
+						
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				if(utilisateurGet.getRole().equals("ADMIN")){ %>
+				&bull; 
+				<a href="dashboard.jsp"> <FONT COLOR="#F75D59">Retour interface utilisateur</FONT></a>				
+				<% } %>
+				</span>
 				</p>
 			</footer>
 		</div>
