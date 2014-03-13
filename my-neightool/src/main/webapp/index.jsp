@@ -323,7 +323,7 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.jsp"> <%=siteName%>
+					<a class="navbar-brand" href="index.jsp"><img height="20px" src="<%=imgFolder%>favicon.png">&nbsp;&nbsp;&nbsp;<%=siteName%>
 					</a>
 				</div>
 				<div class="navbar-collapse collapse">

@@ -89,6 +89,10 @@ $(function(){
 });	
 	
 </script>	
+<jsp:include page="profile.jsp">
+		<jsp:param value="1" name="userId" />
+	</jsp:include>
+	
 <ol class="breadcrumb">
 	<li><a href="dashboard.jsp">Accueil</a></li>
 	<li class="active">Demande d'emprunts sur mes objets</li>
@@ -112,8 +116,8 @@ $(function(){
 							{
 					%>
 					<tr style="vertical-align: middle;">
-						<td style="vertical-align: middle; text-align: center;"><%=e.getOutil().getNom()%></td>
-						<td style="vertical-align: middle; text-align: center;"><%=e.getOutil().getUtilisateur().getConnexion().getLogin()%></td>
+						<td style="vertical-align: middle; text-align: center;"><a href="dashboard.jsp?page=itemDetails&id=<%=e.getOutil().getId()%>"><%=e.getOutil().getNom()%></a></td>
+						<td style="vertical-align: middle; text-align: center;"><a href="#" data-toggle="modal" data-target="#userProfile"><%=e.getOutil().getUtilisateur().getConnexion().getLogin()%></a></td>
 						<td style="vertical-align: middle; text-align: center;"><%=df.format(e.getDateDebut())%></td>
 						<td style="vertical-align: middle; text-align: center;"><%=df.format(e.getDateFin())%></td>
 						<td style="vertical-align: middle; text-align: center;"><%					

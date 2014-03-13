@@ -47,7 +47,9 @@
 	//Format affichage date
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 %>
-
+<jsp:include page="profile.jsp">
+		<jsp:param value="1" name="userId" />
+	</jsp:include>
 <ol class="breadcrumb">
 	<li><a href="dashboard.jsp">Accueil</a></li>
 	<li class="active">Mes demandes d'emprunt à mes voisins</a></li>
@@ -71,17 +73,27 @@
 							{
 					%>
 					<tr style="vertical-align: middle;">
-						<td style="vertical-align: middle; text-align: center;"><%=e.getOutil().getNom()%></td>
-						<td style="vertical-align: middle; text-align: center;"><%=e.getOutil().getUtilisateur().getConnexion().getLogin()%></td>
+						<td style="vertical-align: middle; text-align: center;"><a href="dashboard.jsp?page=itemDetails&id=<%=e.getOutil().getId()%>"><%=e.getOutil().getNom()%></a></td>
+						<td style="vertical-align: middle; text-align: center;"><a href="#" data-toggle="modal"data-target="#userProfile"><%=e.getOutil().getUtilisateur().getConnexion().getLogin()%></a></td>
 						<td style="vertical-align: middle; text-align: center;"><%=df.format(e.getDateDebut())%></td>
 						<td style="vertical-align: middle; text-align: center;"><%=df.format(e.getDateFin())%></td>
 						<td style="vertical-align: middle; text-align: center;"><%					
 						if(e.getValide() == 0)
-							out.print("Refusé");
+						{
+						%>
+							<span id="pasOk<%=e.getId()%>" title="L'emprunt a été refusé par le propriétaire de l'objet" class="glyphicon glyphicon-remove"></span>
+						<%
+						}
 						else if (e.getValide() == 1)
-							out.print("En attente de validation");
+						{
+							out.print("En attente de validation");	
+						}
 						else if (e.getValide() == 2)
-							out.print("Validé");
+						{
+						%>
+							<span id="ok<%=e.getId()%>" title="L'emprunt a été accepté par le propriétaire de l'objet" class="glyphicon glyphicon-ok"></span>
+						<%
+						}
 						%></td>
 					</tr>
 					<%
