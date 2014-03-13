@@ -11,6 +11,7 @@ public String siteRoot = "";
 public String templateFolder = siteRoot + "templates/";
 public String pluginFolder = siteRoot + "plugins/";
 public String contentFolder = siteRoot + "contents/";
+public String adminFolder = siteRoot + "admin/";
 public String uploadFolder = siteRoot + "uploads/";
 public String imgFolder = siteRoot + "dist/img/";
 public String jsFolder = siteRoot + "dist/js/";

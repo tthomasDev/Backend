@@ -26,7 +26,7 @@
 	boolean list=false;
 	actionValid = true;
 	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-	final JAXBContext jaxbc = JAXBContext.newInstance(MessagesDTO.class,Message.class);
+	final JAXBContext jaxbc = JAXBContext.newInstance(MessagesDTO.class,Message.class,Utilisateur.class);
 	// Le DTO des outils permettant de récupérer la liste d'outils
 	MessagesDTO messagesDto = new MessagesDTO();
 	//ici on va récuperer la réponse de la requete
@@ -168,7 +168,29 @@
 		<div class="container">
 			<hr />
 			<footer>
-				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a></span>
+				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a> &bull; 
+				<% 
+								
+				Utilisateur utilisateurGet = new Utilisateur();
+				try {
+					ClientRequest clientRequest;
+					clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
+					clientRequest.accept("application/xml");
+					ClientResponse<String> clientResponse = clientRequest.get(String.class);
+					if (clientResponse.getStatus() == 200)
+					{
+						Unmarshaller un = jaxbc.createUnmarshaller();
+						utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
+						
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				if(utilisateurGet.getRole().equals("ADMIN")){ %>
+				<a href="adminDashboard.jsp">Section administrateur</a>				
+				<% } %>
+				</span>
 				</p>
 			</footer>
 		</div>
