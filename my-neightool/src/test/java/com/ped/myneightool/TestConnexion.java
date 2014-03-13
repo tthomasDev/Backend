@@ -54,7 +54,7 @@ public class TestConnexion {
 
 		try {
 
-			final Connexion connexion = new Connexion("loginTestValidConnexion","password");
+			final Connexion connexion = new Connexion("loginTestValidConnexion",CryptHandler.encodedPw("password"));
 			final Utilisateur utilisateur= new Utilisateur("JeanConnexion","DucheminConnexion",connexion);
 			final Utilisateur utilisateurPost=(Utilisateur)crb.httpRequestXMLBody(utilisateur, "user/create");
 						
@@ -99,7 +99,7 @@ public class TestConnexion {
 
 		try {
 
-			final Connexion connexion = new Connexion("badlogin","badpassword33");
+			final Connexion connexion = new Connexion("badlogin",CryptHandler.encodedPw("badpassword33"));
 			
 			
 			

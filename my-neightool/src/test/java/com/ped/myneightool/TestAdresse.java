@@ -41,7 +41,7 @@ public class TestAdresse {
 	@Test
 	public void testCreateUserWithAddress() {
 		try {
-			final Connexion connexion = new Connexion("loginCreateAdress","passwordCreate");
+			final Connexion connexion = new Connexion("loginCreateAdress",CryptHandler.encodedPw("passwordCreate"));
 			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
 			
 			//final Utilisateur utilisateur = new Utilisateur("test", "xml");
@@ -64,7 +64,7 @@ public class TestAdresse {
 	@Test
 	public void testUpdateAddressFromUtilisateur() {
 		try {
-			final Connexion connexion = new Connexion("loginCreatesqdsqd","passwordCreate");
+			final Connexion connexion = new Connexion("loginCreatesqdsqd",CryptHandler.encodedPw("passwordCreate"));
 			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
 			
 			

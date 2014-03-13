@@ -42,7 +42,7 @@ public class TestOutil {
 		crb= new ClientRequestBuilder(jaxbc);
 		
 		try {
-			final Connexion connexion = new Connexion("adminCategorieOutil","admin");
+			final Connexion connexion = new Connexion("adminCategorieOutil",CryptHandler.encodedPw("admin"));
 			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
 			final Date birthDate = new Date();
 			
@@ -69,7 +69,7 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Jardin");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);			
 			
-			Connexion co = new Connexion("login1","pass1");
+			Connexion co = new Connexion("login1",CryptHandler.encodedPw("pass1"));
 			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutil","nomCreateOutil",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
@@ -105,7 +105,7 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Piscine");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
-			Connexion co = new Connexion("login2","pass2");
+			Connexion co = new Connexion("login2",CryptHandler.encodedPw("pass2"));
 			final Utilisateur utilisateur= new Utilisateur("JeanUpdateTool","DucheminUpdateTool",co);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
@@ -139,7 +139,7 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Cuisine");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
-			Connexion co = new Connexion("login3","pass3");
+			Connexion co = new Connexion("login3",CryptHandler.encodedPw("pass3"));
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutil","nomGetOutil",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
@@ -182,7 +182,7 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Salon");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
-			Connexion co = new Connexion("login4","pass4");
+			Connexion co = new Connexion("login4",CryptHandler.encodedPw("pass4"));
 			final Utilisateur utilisateur= new Utilisateur("prenomDeleteOutil","nomDeleteOutil",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
@@ -254,7 +254,7 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Voiture");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
-			Connexion co = new Connexion("login5","pass5");
+			Connexion co = new Connexion("login5",CryptHandler.encodedPw("pass5"));
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
@@ -298,7 +298,7 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Autre");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
-			Connexion co = new Connexion("login6","pass6");
+			Connexion co = new Connexion("login6",CryptHandler.encodedPw("pass6"));
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
@@ -344,7 +344,7 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Professionnels");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
-			Connexion co = new Connexion("login8","pass8");
+			Connexion co = new Connexion("login8",CryptHandler.encodedPw("pass8"));
 			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
@@ -391,7 +391,7 @@ public class TestOutil {
 			Categorie cat1= new Categorie("Plomberie");
 			Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
-			Connexion co = new Connexion("login9","pass9");
+			Connexion co = new Connexion("login9",CryptHandler.encodedPw("pass9"));
 			final Utilisateur utilisateur= new Utilisateur("prenomAPICriteria","nomAPICriteria",co);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			Assert.assertNotSame(utilisateurPost, null);
@@ -445,7 +445,7 @@ public class TestOutil {
 			final Categorie categorie = new Categorie("Nouvelles Technologies");
 			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBodyCategorie(categorie, "categorie/create",utilisateurAdmin);
 			
-			Utilisateur user1= new Utilisateur("Jean", "Dupont", new Connexion("loginTestOutil", "pwd"), "test@test", "0505050505", new Adresse(), new Date());
+			Utilisateur user1= new Utilisateur("Jean", "Dupont", new Connexion("loginTestOutil",CryptHandler.encodedPw( "pwd")), "test@test", "0505050505", new Adresse(), new Date());
 			Utilisateur user= (Utilisateur) crb.httpRequestXMLBody(user1, "user/create");
 			
 			crb.httpRequestXMLBody(new Outil(user,"Rateau","savoir ratisser",true,categoriePost,50, new Date(0), new Date()), "tool/create");

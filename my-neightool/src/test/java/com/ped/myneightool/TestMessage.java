@@ -47,12 +47,12 @@ public class TestMessage {
 	@Test
 	public void testCreateMessage() {
 		try {
-			final Connexion connexion = new Connexion("loginCreateMessage","passwordCreateMessage");
+			final Connexion connexion = new Connexion("loginCreateMessage",CryptHandler.encodedPw("passwordCreateMessage"));
 			final Utilisateur utilisateur= new Utilisateur("JeanEmetteur","DucheminEmetteur",connexion);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			
-			final Connexion connexion2 = new Connexion("loginCreateMessage2","passwordCreateMessage2");
+			final Connexion connexion2 = new Connexion("loginCreateMessage2",CryptHandler.encodedPw("passwordCreateMessage2"));
 			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire",connexion2);
 			final Utilisateur utilisateurPost2 = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
 						
@@ -80,8 +80,8 @@ public class TestMessage {
 
 		try{
 			
-			Connexion co = new Connexion("totdsqdo","titi");
-			Connexion co3 = new Connexion("totgfddsqdo","titi");
+			Connexion co = new Connexion("totdsqdo",CryptHandler.encodedPw("titi"));
+			Connexion co3 = new Connexion("totgfddsqdo",CryptHandler.encodedPw("titi"));
 			final Utilisateur utilisateur= new Utilisateur("JeanEmetteurGet","DucheminEmetteurGet",co);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
@@ -122,8 +122,8 @@ public class TestMessage {
 	@Test
 	public void testDeleteMessage() {
 		try {
-			Connexion co = new Connexion("totdsaaaaqdo","titi");
-			Connexion co3 = new Connexion("totgaaaaaafddsqdo","titi");
+			Connexion co = new Connexion("totdsaaaaqdo",CryptHandler.encodedPw("titi"));
+			Connexion co3 = new Connexion("totgaaaaaafddsqdo",CryptHandler.encodedPw("titi"));
 			final Utilisateur utilisateur= new Utilisateur("JeanEmetteur","DucheminEmetteur",co);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
@@ -165,10 +165,10 @@ public class TestMessage {
 	@Test
 	public void testFindSendMessagesByUser(){
 		try{
-			Connexion c1=new Connexion("1","25");
-			Connexion c2=new Connexion("2","25");
-			Connexion c3=new Connexion("3","25");
-			Connexion c4=new Connexion("4","25");
+			Connexion c1=new Connexion("1",CryptHandler.encodedPw("25"));
+			Connexion c2=new Connexion("2",CryptHandler.encodedPw("25"));
+			Connexion c3=new Connexion("3",CryptHandler.encodedPw("25"));
+			Connexion c4=new Connexion("4",CryptHandler.encodedPw("25"));
 			final Utilisateur user1 = new Utilisateur("Toto","Titi",c1);
 			final Utilisateur user1Post= (Utilisateur) crb.httpRequestXMLBody(user1,"user/create");
 			final Utilisateur user2 = new Utilisateur("Momo","Mimi",c2);
@@ -229,10 +229,10 @@ public class TestMessage {
 	@Test
 	public void testFindReceiveMessagesByUser(){
 		try{
-			Connexion c1=new Connexion("10","25");
-			Connexion c2=new Connexion("20","25");
-			Connexion c3=new Connexion("30","25");
-			Connexion c4=new Connexion("40","25");
+			Connexion c1=new Connexion("10",CryptHandler.encodedPw("25"));
+			Connexion c2=new Connexion("20",CryptHandler.encodedPw("25"));
+			Connexion c3=new Connexion("30",CryptHandler.encodedPw("25"));
+			Connexion c4=new Connexion("40",CryptHandler.encodedPw("25"));
 			final Utilisateur user1 = new Utilisateur("Toto","Titi",c1);
 			final Utilisateur user1Post= (Utilisateur) crb.httpRequestXMLBody(user1,"user/create");
 			final Utilisateur user2 = new Utilisateur("Momo","Mimi",c2);

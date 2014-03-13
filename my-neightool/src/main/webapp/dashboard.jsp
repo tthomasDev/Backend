@@ -188,7 +188,7 @@
 				}
 				
 				if(utilisateurGet.getRole().equals("ADMIN")){ %>
-				<a href="adminDashboard.jsp">Section administrateur</a>				
+				<a href="adminDashboard.jsp">Section interface administrateur</a>				
 				<% } %>
 				</span>
 				</p>
