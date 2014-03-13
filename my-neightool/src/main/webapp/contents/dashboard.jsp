@@ -125,15 +125,15 @@
 	}
 %>
 		<div class="col-md-3 well">
-				<ul class="nav nav-pills nav-stacked">
-					<% if(request.getParameter("idCat")!=null && request.getParameter("idCat").equals(0)) { %>
-						<li class="active"><a href="dashboard.jsp?idCat=0">Objets populaires dans ma région</a><span class="badge pull-right"><%=listeAllTools.size() %></span></li>	
-					<% } else { %>
-						<li><a href="dashboard.jsp?idCat=0">Objets populaires dans ma région</a><span class="badge pull-right"><%=listeAllTools.size() %></span></li>
-					<% } %>
-				</ul>
-				<hr />
-				<ul class="nav nav-pills nav-stacked">
+			<ul class="nav nav-pills nav-stacked">
+				<li class="
+				<% if((request.getParameter("idCat")!=null && request.getParameter("idCat").equals(0)) || request.getParameter("idCat")==null) { %>
+					active
+				<% } %>
+				"><a href="dashboard.jsp?idCat=0">Objets dans ma région <span class="badge pull-right"><%=listeAllTools.size() %></span></a></li>
+			</ul>
+			<hr />
+			<ul class="nav nav-pills nav-stacked">
 				<% System.out.println("AFFICHAGE : ");
 				if(list) {
 					for (Categorie c : categoriesDto.getListeCategories()) { 
@@ -181,7 +181,7 @@
 							}
 						}
 						else { %>
-							<li class="active"><a href="dashboard.jsp?idCat=0">Objets populaires</a></li>
+							<li class="active">Les plus regardés dans votre région (< 50km)</li>
 						<% }
 					}
 					else { %>
