@@ -17,11 +17,11 @@
 <%@ page import="com.ped.myneightool.model.Categorie"%>
 <%@ page import="com.ped.myneightool.dto.CategoriesDTO"%>
 
-<%@ page import="model.Outil"%>
-<%@ page import="dto.OutilsDTO"%>
+<%@ page import="com.ped.myneightool.model.Outil"%>
+<%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
 
-<%@ page import="model.Utilisateur"%>
-<%@ page import="dto.UtilisateursDTO"%>
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.dto.UtilisateursDTO"%>
 <%@ page import="java.util.Iterator;"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"

@@ -5,9 +5,9 @@
 <%@ page import="java.io.StringWriter"%>
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
-<%@ page import="model.Utilisateur"%>
-<%@ page import="model.Connexion"%>
-<%@ page import="model.Adresse"%>
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.model.Connexion"%>
+<%@ page import="com.ped.myneightool.model.Adresse"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%@include file="../functions.jsp"%>
 <%@include file="../constantes.jsp"%>

@@ -1,4 +1,4 @@
-package model;
+package com.ped.myneightool.model;
 
 import java.util.Properties;
 

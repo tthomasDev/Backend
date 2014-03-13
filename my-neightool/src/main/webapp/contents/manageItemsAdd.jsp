@@ -14,11 +14,11 @@
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
-<%@ page import="model.Categorie"%>
-<%@ page import="dto.CategoriesDTO"%>
+<%@ page import="com.ped.myneightool.model.Categorie"%>
+<%@ page import="com.ped.myneightool.dto.CategoriesDTO"%>
 
-<%@ page import="model.Outil"%>
-<%@ page import="model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.model.Outil"%>
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
 
 <%@include file="../functions.jsp"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>

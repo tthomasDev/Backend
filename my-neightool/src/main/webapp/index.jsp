@@ -16,12 +16,12 @@
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
 
-<%@ page import="model.Utilisateur"%>
-<%@ page import="model.Connexion"%>
-<%@ page import="model.Adresse"%>
-<%@ page import="model.SendMailTLS"%>
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.model.Connexion"%>
+<%@ page import="com.ped.myneightool.model.Adresse"%>
+<%@ page import="com.ped.myneightool.model.SendMailTLS"%>
 
-<%@ page import="dto.UtilisateursDTO"%>
+<%@ page import="com.ped.myneightool.dto.UtilisateursDTO"%>
 <%@ page import="java.util.Iterator;"%>
 
 <%
@@ -32,7 +32,7 @@
 
 		ClientRequest clientRequest;
 		clientRequest = new ClientRequest(
-		siteUrl+"rest/user/list");
+		siteUrl+"/rest/user/list");
 		clientRequest.accept("application/xml");
 		ClientResponse<String> response2 = clientRequest
 		.get(String.class);
@@ -241,7 +241,7 @@
 		<script src="<%=jsFolder%>reorder.js"></script>
 		<script src="<%=jsFolder%>jquery.cookie.js"></script>
 		<script src="<%=jsFolder%>init.js"></script>
-		<script src="./dist/js/maps.js"></script>
+		<script src="<%=jsFolder%>maps.js"></script>
 		
 		<!-- Just for debugging purposes. Don't actually copy this line! -->
 		<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->

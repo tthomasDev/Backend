@@ -14,7 +14,7 @@
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
-<%@ page import="model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
 
 <%@ page import="com.ped.myneightool.model.Outil"%>
 <%@ page import="com.ped.myneightool.dto.OutilsDTO"%>

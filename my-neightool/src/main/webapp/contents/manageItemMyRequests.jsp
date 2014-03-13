@@ -15,8 +15,8 @@
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
-<%@ page import="model.Emprunt"%>
-<%@ page import="dto.EmpruntsDTO"%>
+<%@ page import="com.ped.myneightool.model.Emprunt"%>
+<%@ page import="com.ped.myneightool.dto.EmpruntsDTO"%>
 
 <%@include file="../functions.jsp"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>

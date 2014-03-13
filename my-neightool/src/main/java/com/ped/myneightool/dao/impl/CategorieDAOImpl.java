@@ -80,7 +80,7 @@ public class CategorieDAOImpl extends GenericDAOImpl implements ItfCategorieDAO 
 		try{
 			tx=em.getTransaction();
 			tx.begin();
-			res = TypeSafetyChecking.castList(Categorie.class, em.createQuery("SELECT p FROM Categorie p ORDER BY p.id DESC").getResultList());
+			res = TypeSafetyChecking.castList(Categorie.class, em.createQuery("SELECT p FROM Categorie p ORDER BY p.id ASC").getResultList());
 			tx.commit();
 			LOG.debug("\n \n AFFICHAGE 2 !!!");
 			LOG.debug("recherche de toutes les categories réussis, taille du résultat :"+res.size());
