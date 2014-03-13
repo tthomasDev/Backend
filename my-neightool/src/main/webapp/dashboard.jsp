@@ -168,7 +168,7 @@
 		<div class="container">
 			<hr />
 			<footer>
-				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a> &bull; 
+				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a> 
 				<% 
 								
 				Utilisateur utilisateurGet = new Utilisateur();
@@ -188,6 +188,7 @@
 				}
 				
 				if(utilisateurGet.getRole().equals("ADMIN")){ %>
+				&bull; 
 				<a href="adminDashboard.jsp">Section interface administrateur</a>				
 				<% } %>
 				</span>
