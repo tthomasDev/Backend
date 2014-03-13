@@ -199,7 +199,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<% if(request.getParameter("idCat")!=null && request.getParameter("idCat").equals("0")) {
+							<% if(request.getParameter("idCat")!=null && !(request.getParameter("idCat").equals("0"))) {
 								for (Outil t : listeOutilsCat.getListeOutils()) { %>
 									<tr style="vertical-align: middle;" class="toPaginate">
 										<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
@@ -209,7 +209,7 @@
 										<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
 									</tr>
 								<% } 
-								} else {
+								} else if (request.getParameter("idCat")!=null && request.getParameter("idCat").equals("0")) {
 									for (Outil t : listeAllTools.getListeOutils()) { %>
 									<tr style="vertical-align: middle;" class="toPaginate">
 										<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
