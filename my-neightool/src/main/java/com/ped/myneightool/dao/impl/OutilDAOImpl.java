@@ -288,4 +288,29 @@ public class OutilDAOImpl extends GenericDAOImpl implements ItfOutilDAO {
 		odto.setListeOutils(set);
 		return odto;
 	}
+
+	@Override
+	public OutilsDTO findAllAscOrder() {
+		LOG.info("find all outils Asc order");
+		List<Outil> res = new ArrayList<Outil>();
+				
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx=null;
+		
+		try{
+			tx=em.getTransaction();
+			tx.begin();
+			res = TypeSafetyChecking.castList(Outil.class, em.createQuery("SELECT p FROM Outil p ORDER BY p.id ASC").getResultList());
+			tx.commit();
+			LOG.debug("recherche de tous les outils réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		List<Outil> set = new ArrayList<Outil>(res);
+		OutilsDTO odto= new OutilsDTO();
+		odto.setListeOutils(set);
+		return odto;
+	}
 }

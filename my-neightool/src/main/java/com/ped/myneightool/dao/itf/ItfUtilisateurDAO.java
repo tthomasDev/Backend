@@ -19,4 +19,6 @@ public interface ItfUtilisateurDAO {
 
 	public abstract UtilisateursDTO findAll();
 
+	public abstract UtilisateursDTO findAllAsc();
+
 }

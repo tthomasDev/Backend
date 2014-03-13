@@ -70,7 +70,7 @@ final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
 					<ul class="nav navbar-nav navbar-right" style="margin-right:2px;">
 	        			<li><a href="adminDashboard.jsp">Accueil de l'administration</a></li>
 	        			<li><a href="adminDashboard.jsp?page=adminManageUsers">Gérer les utilisateurs</a></li>
-	        			<li><a href="adminDashboard.jsp?page=adminManageItems">Gérer les objets</a></li>
+	        			<li><a href="adminDashboard.jsp?page=adminManageItems">Gérer les outils</a></li>
 	        			<li><a href="adminDashboard.jsp?page=adminManageCategories">Gérer les catégories</a></li>
         				<li><a href="index.jsp?attemp=0">Déconnexion</a></li>
 					</ul>

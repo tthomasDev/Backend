@@ -92,6 +92,22 @@ public class ServiceOutil {
 	
 	@PermitAll
 	@GET
+	@Path("/listAsc")
+	@Produces("application/xml")
+	public OutilsDTO getAllToolsAscOrder() {
+		OutilsDTO outils = new OutilsDTO();
+		try {
+			outils = outilDAO.findAllAscOrder();
+		} catch (Exception e) {
+			LOG.error("erreur service /list");
+			e.printStackTrace();
+		}
+		return outils;
+
+	}
+	
+	@PermitAll
+	@GET
 	@Path("/list/available")
 	@Produces("application/xml")
 	public OutilsDTO getAllToolsAvailable() {

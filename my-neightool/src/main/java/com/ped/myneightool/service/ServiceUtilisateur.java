@@ -101,10 +101,26 @@ public class ServiceUtilisateur {
 	@GET
 	@Path("/list")
 	@Produces("application/xml")
-	public UtilisateursDTO getAllUtilisateurs() {
+	public UtilisateursDTO getAllUtilisateursDesc() {
 		UtilisateursDTO utilisateurs = new UtilisateursDTO();
 		try {
 			utilisateurs = utilisateurDAO.findAll();
+		} catch (Exception e) {
+			LOG.error("erreur service /list");
+			e.printStackTrace();
+		}
+		return utilisateurs;
+
+	}
+	
+	@PermitAll
+	@GET
+	@Path("/listAsc")
+	@Produces("application/xml")
+	public UtilisateursDTO getAllUtilisateursAsc() {
+		UtilisateursDTO utilisateurs = new UtilisateursDTO();
+		try {
+			utilisateurs = utilisateurDAO.findAllAsc();
 		} catch (Exception e) {
 			LOG.error("erreur service /list");
 			e.printStackTrace();

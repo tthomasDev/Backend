@@ -27,5 +27,7 @@ public interface ItfOutilDAO {
 	public abstract OutilsDTO findToolsOfCategory(int categoryId);
 	
 	public abstract OutilsDTO findToolsOfCategoryAvailable(int categoryId);
+
+	public abstract OutilsDTO findAllAscOrder();
 	
 }

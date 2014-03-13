@@ -15,12 +15,8 @@
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
 <%@ page import="com.ped.myneightool.model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.dto.UtilisateursDTO" %>
 
-<%@ page import="com.ped.myneightool.model.Outil"%>
-<%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
-
-<%@ page import="com.ped.myneightool.model.Categorie"%>
-<%@ page import="com.ped.myneightool.dto.CategoriesDTO"%>
 <%@ page import="java.util.Iterator" %>
 
 <%@ page import="java.lang.StringBuilder" %>
@@ -32,22 +28,20 @@
 	
 	actionValid = true;
 
-	//Le DTO des catégories permettant de récupérer la liste des categories
-	CategoriesDTO categoriesDto = new CategoriesDTO();
-
-	final JAXBContext jaxbc = JAXBContext
-			.newInstance(CategoriesDTO.class);
-
-	//On récupère la liste de toutes les catégories
+	UtilisateursDTO usersDto = new UtilisateursDTO();
+	final JAXBContext jaxbc = JAXBContext.newInstance(UtilisateursDTO.class,Utilisateur.class);
+	// On récupère la liste de tous les utilisateurs disponibles
 	try {
-		ClientRequest requestCategories;
-		requestCategories = new ClientRequest(siteUrl+"rest/categorie/list/");
-		requestCategories.accept("application/xml");
-		ClientResponse<String> responseCategories = requestCategories.get(String.class);
-		if (responseCategories.getStatus() == 200) {
+		ClientRequest requestUsers;
+		requestUsers = new ClientRequest(siteUrl + "rest/user/listAsc");
+		requestUsers.accept("application/xml");
+		ClientResponse<String> responseUsers = requestUsers
+				.get(String.class);
+		if (responseUsers.getStatus() == 200) {
 			Unmarshaller un2 = jaxbc.createUnmarshaller();
-			categoriesDto = (CategoriesDTO) un2.unmarshal(new StringReader(responseCategories.getEntity()));
-			
+			usersDto = (UtilisateursDTO) un2.unmarshal(new StringReader(
+					responseUsers.getEntity()));
+
 			messageValue = "La liste a bien été récupérée";
 			messageType = "success";
 		} else {
@@ -62,55 +56,54 @@
 <script>
 $(function() {
 	$(".editBtn").click(function(){
-		$("#myModalLabel").html("Modifier une catégorie")
+		$("#myModalLabel").html("Modifier un utilisateur")
 		var tmp = $(this).attr('id').split("edit")[1];
 		$("#catName").val($("#nameCat"+tmp).html());
 		$("#idCat").val(tmp);
 		$("#categoryModal").modal('show');
 	});
-	$("#btnNewCat").click(function(){
-		$("#myModalLabel").html("Ajouter une nouvelle catégorie")
-		$("#catName").val("");
-		$("#idCat").val("");
-		$("#categoryModal").modal('show');
-	});
+	
 	
 });
 </script>
 
-<h3>Liste des catégories <span class="pull-right"><a class="btn btn-info" id="btnNewCat"><i class="glyphicon glyphicon-plus"></i> Ajouter une nouvelle catégorie</a></span></h3>
+<h3>Liste des utilisateurs <span class="pull-right"></span></h3>
 <hr />
 <table class="table table-hover">
 	<thead>
 		<tr>
 			<th width="10%" class="perfectCenter">Id</th>
-			<th width="75%" class="perfectCenter">Nom de la catégorie</th>
+			<th width="20%" class="perfectCenter">Prénom</th>
+			<th width="20%" class="perfectCenter">Nom</th>
+			<th width="35%" class="perfectCenter">e-mail</th>
 			<th width="15%" class="perfectCenter">Action</th>
 		</tr>
 	</thead>
 	<tbody>
 		<%
 		
-		Iterator<Categorie> ito=categoriesDto.getListeCategories().iterator();
+		Iterator<Utilisateur> ito=usersDto.getListeUtilisateurs().iterator();
 		while(ito.hasNext()){
 				
-			final Categorie categorie = ito.next();
+			final Utilisateur u = ito.next();
 			
 				
 			
 		%>
 			<tr class="toPaginate">
-			<td class="perfectCenter"><%=categorie.getId()%></td>
+			<td class="perfectCenter"><%=u.getId()%></td>
 			<% 
 			
 			%>
-			<td id="nameCat<%=categorie.getId()%>" class="perfectCenter"><%=categorie.getNom() %></td>
+			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getPrenom() %></td>
+			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getNom() %></td>
+			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getMail() %></td>
 			<td class="perfectCenter">
 				<div class="btn-group">
-					<a id="edit<%=categorie.getId()%>" class="ttipt btn btn-default editBtn" title="Editer la catégorie">
+					<a id="edit<%=u.getId()%>" class="ttipt btn btn-default editBtn" title="Editer la catégorie">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</a>
-					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=<%=categorie.getId()%>" class="ttipt btn btn-default" title="Supprimer la catégorie">
+					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=<%=u.getId()%>" class="ttipt btn btn-default" title="Supprimer la catégorie">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</div>

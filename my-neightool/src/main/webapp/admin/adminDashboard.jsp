@@ -13,7 +13,7 @@
 	<div class="well">
 		<a href="adminDashboard.jsp?page=adminManageItems"><span class="glyphicon glyphicon-cutlery glyphi-lg"></span>
 		<br /><br />
-		Gérer les objets</a>
+		Gérer les outils</a>
 	</div>
 </div>
 <div class="col-md-3 perfectCenter">

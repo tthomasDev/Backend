@@ -162,6 +162,31 @@ public class UtilisateurDAOImpl extends GenericDAOImpl implements ItfUtilisateur
 		return odto;
 	}
 
+	@Override
+	public UtilisateursDTO findAllAsc() {
+		LOG.info("find all utilisateurs asc");
+		List<Utilisateur> res = new ArrayList<Utilisateur>();
+				
+		final EntityManager em = createEntityManager();
+		//EntityTransaction tx=null;
+		
+		try{
+			//tx=em.getTransaction();
+			//tx.begin();
+			res = TypeSafetyChecking.castList(Utilisateur.class, em.createQuery("SELECT p FROM Utilisateur p ORDER BY p.id ASC").getResultList());
+			//tx.commit();
+			LOG.debug("recherche de tous les utilisateurs réussis, taille du résultat :"+res.size());
+		}
+		catch(final RuntimeException re){
+			
+		}
+		
+		List<Utilisateur> set = new ArrayList<Utilisateur>(res);
+		UtilisateursDTO odto= new UtilisateursDTO();
+		odto.setListeUtilisateurs(set);
+		return odto;
+	}
+
 	
 
 	
