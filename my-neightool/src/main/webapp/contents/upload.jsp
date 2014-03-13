@@ -7,8 +7,8 @@ if(request.getParameter("maxSize") != null && request.getParameter("maxHeight") 
 	int maxHeight = Integer.parseInt(request.getParameter("maxHeight"));
 	int maxWidth = Integer.parseInt(request.getParameter("maxWidth"));
 	double sizeInMo = Math.round(maxSize / 1024000);
-	String imgFieldId = "", imgHiddenField = "";
-	boolean hiddenField = false, fieldId = false;
+	String imgFieldId = "", imgHiddenField = "", previousLink = "";
+	boolean hiddenField = false, fieldId = false, prevLink = false;
 	if(request.getParameter("imgFieldId") != null) {
 		imgFieldId = "'#"+request.getParameter("imgFieldId")+"'";
 		fieldId = true;
@@ -16,6 +16,11 @@ if(request.getParameter("maxSize") != null && request.getParameter("maxHeight") 
 	if(request.getParameter("imgHiddenField") != null) {
 		imgHiddenField = "'#"+request.getParameter("imgHiddenField")+"'";
 		hiddenField = true;	
+	}
+	if(request.getParameter("previousImg") != null) {
+		String[] tmp = request.getParameter("previousImg").split("/");
+		previousLink = tmp[tmp.length-1];
+		prevLink = true;
 	}
 	
 %>
@@ -85,6 +90,16 @@ $(document).ready(function() {
 						$(<%=imgHiddenField%>).val(answer[1]).trigger('change');
 						<% } %>
 						$('#sendFile').removeAttr("disabled");
+						<% if(prevLink) { %>
+						$.ajax({
+							url: "<%=pluginFolder%>deleteScript.jsp",
+							type: 'POST',
+							data: {link: "<%=previousLink%>"},
+							success: function() {
+								alert("Supprimé !");
+							}
+						});
+						<% } %>
 			    	}
 			    },
 			    fail: function() {
