@@ -205,7 +205,7 @@ if(request.getParameter("category") != null) {
 		adds += " pour <strong>" + cMax + "€</strong> maximum,";
 		
 		
-		//On enlève de la liste les outils qui n'ont pas le même nom que le nom demandé
+		//On enlève de la liste les outils qui ont une caution trop elevee par rapport à la demande
 		for(int i=0; i<arrayListeOutilsCat.size();i++)
 		{
 			for (Iterator<Outil> it = arrayListeOutilsCat.get(i).getListeOutils().iterator(); it.hasNext(); ) {
@@ -228,7 +228,15 @@ if(request.getParameter("category") != null) {
 				.parseInt(escapeStr(request.getParameter("dMax")));
 		adds += " dans un rayon de <strong>" + dMax
 				+ " km</strong> maximum";
+				
+				
+				
+		//TODO
+		//Filtrer en fonction de la distance demandée par l'utilisateur
 	}
+	
+	
+	
 	if (request.getParameter("s") != null
 			&& request.getParameter("s") != "") {
 		keywords = escapeStr(request.getParameter("s"));
@@ -464,7 +472,7 @@ if(request.getParameter("category") != null) {
 		</div>
 		<script type="text/javascript"
 			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsO96nmOiM5A5mef1oNv4PZoETDWvfJ88&sensor=false"></script>
-		<script src="./dist/js/maps.js"></script>
+		<script src="./dist/js/mapsSearch.js"></script>
 		<style>
 #map-canvas {
 	height: 600px !important;
