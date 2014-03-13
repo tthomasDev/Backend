@@ -29,8 +29,17 @@
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
-
-
+	<security-constraint>
+		<display-name>Forbidden JSPs</display-name>
+		<web-resource-collection>
+			<web-resource-name>Forbidden JSPs</web-resource-name>
+			<url-pattern>/admin/*</url-pattern>
+			<url-pattern>/contents/*</url-pattern>
+        	<url-pattern>/plugins/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint />
+	</security-constraint>
+	
 	<!-- secure the RESTEasy JAX-RS Web Service with role-based -->
 	<!--  
 	<context-param>
