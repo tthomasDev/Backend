@@ -3,6 +3,7 @@
 <%@ page import="java.util.Calendar"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="java.sql.Timestamp"%>
+<%@ page import="java.text.DateFormat"%>
 
 <%@ page import="javax.xml.bind.JAXBContext"%>
 <%@ page import="javax.xml.bind.Marshaller"%>
@@ -20,11 +21,6 @@
 <%@include file="../functions.jsp"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
 
-<%@ page import="java.util.Date"%>
-<%@ page import="java.util.Calendar"%>
-<%@ page import="java.text.SimpleDateFormat"%>
-<%@ page import="java.text.DateFormat"%>
-<%@ page import="java.sql.Timestamp"%>
 <%
 	//On récupère les données de session de l'utilisateur
 	final String idUser = String.valueOf(session.getAttribute("ID"));
@@ -51,19 +47,7 @@
 	//Format affichage date
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 %>
-<script src="./dist/js/bootstrap-datepicker.js" charset="UTF-8"></script>
-<script src="./dist/js/bootstrap-datepicker.fr.js" charset="UTF-8"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('.input-daterange').datepicker({
-			format : "dd/mm/yyyy",
-			language : "fr",
-			todayBtn : "linked"
-		});
-	});
-</script>
 
-<link href="./dist/css/datepicker.css" rel="stylesheet">
 <ol class="breadcrumb">
 	<li><a href="dashboard.jsp">Accueil</a></li>
 	<li class="active">Mes demandes d'emprunt à mes voisins</a></li>
