@@ -49,7 +49,7 @@ public class TestEmprunt {
 	@Test
 	public void testCreateEmpruntWithDate() {
 		try {
-			final Connexion connexion = new Connexion("loginCreateEmpruntDate","passwordCreateEmpruntDate");
+			final Connexion connexion = new Connexion("loginCreateEmpruntDate",CryptHandler.encodedPw("passwordCreateEmpruntDate"));
 			
 			final Utilisateur u = new Utilisateur("userPrenomEmpruntDate","userNomEmpruntDate",connexion);
 			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");

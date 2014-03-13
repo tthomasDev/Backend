@@ -18,11 +18,11 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.List"%>
 
-<%@ page import="model.Outil"%>
-<%@ page import="model.Emprunt"%>
+<%@ page import="com.ped.myneightool.model.Outil"%>
+<%@ page import="com.ped.myneightool.model.Emprunt"%>
 
-<%@ page import="dto.OutilsDTO"%>
-<%@ page import="dto.EmpruntsDTO"%>
+<%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
+<%@ page import="com.ped.myneightool.dto.EmpruntsDTO"%>
 <%@include file="../functions.jsp"%>
 
 <%

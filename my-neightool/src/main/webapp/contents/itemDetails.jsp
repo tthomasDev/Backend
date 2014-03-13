@@ -18,12 +18,12 @@
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
-<%@ page import="model.Emprunt"%>
-<%@ page import="model.Outil"%>
-<%@ page import="model.Utilisateur"%>
-<%@ page import="model.Emprunt"%>
-<%@ page import="dto.OutilsDTO"%>
-<%@ page import="dto.EmpruntsDTO"%>
+<%@ page import="com.ped.myneightool.model.Emprunt"%>
+<%@ page import="com.ped.myneightool.model.Outil"%>
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.model.Emprunt"%>
+<%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
+<%@ page import="com.ped.myneightool.dto.EmpruntsDTO"%>
 <%@include file="../functions.jsp"%>
 
 <%

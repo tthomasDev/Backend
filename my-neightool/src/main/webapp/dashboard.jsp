@@ -1,73 +1,54 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="constantes.jsp"%>
+<%@include file="functions.jsp"%>
 <%@ page import="java.net.URI"%>
 <%@ page import="java.net.URLEncoder"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <%@ page import="javax.xml.bind.JAXBContext"%>
 <%@ page import="javax.xml.bind.Marshaller"%>
 <%@ page import="javax.xml.bind.Unmarshaller"%>
-
 <%@ page import="java.io.StringReader"%>
 <%@ page import="java.io.StringWriter"%>
-
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
-
-<%@ page import="model.Utilisateur"%>
-
-<%@ page import="model.Message"%>
-<%@ page import="dto.MessagesDTO"%>
-
-
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.model.Message"%>
+<%@ page import="com.ped.myneightool.dto.MessagesDTO"%>
 <%
 	if(session.getAttribute("ID") == null) {
 		RequestDispatcher rd =
 		request.getRequestDispatcher("index.jsp");
 		rd.forward(request, response);
 	}
-
 	int nbNewMessage = 0;
 	boolean actionValid = false;
 	String messageType = "";
 	String messageValue = "";
 	boolean list=false;
-
 	actionValid = true;
-
 	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-	final JAXBContext jaxbc = JAXBContext.newInstance(MessagesDTO.class,Message.class);
-
+	final JAXBContext jaxbc = JAXBContext.newInstance(MessagesDTO.class,Message.class,Utilisateur.class);
 	// Le DTO des outils permettant de récupérer la liste d'outils
 	MessagesDTO messagesDto = new MessagesDTO();
-
 	//ici on va récuperer la réponse de la requete
 	try {
 		ClientRequest requestMessages;
 		requestMessages = new ClientRequest(
-				"http://localhost:8080/rest/message/list/receiveListByOrder/" + session.getAttribute("ID"));
+				siteUrl + "rest/message/list/receiveListByOrder/" + session.getAttribute("ID"));
 		requestMessages.accept("application/xml");
 		ClientResponse<String> responseMessages = requestMessages
 				.get(String.class);
 		if (responseMessages.getStatus() == 200) {
 			Unmarshaller un2 = jaxbc.createUnmarshaller();
-			messagesDto = (MessagesDTO) un2.unmarshal(new StringReader(
-					responseMessages.getEntity()));
-			if(messagesDto.size()>0)
-			{
+			messagesDto = (MessagesDTO) un2.unmarshal(new StringReader(responseMessages.getEntity()));
+			if(messagesDto.size()>0) {
 				list=true;
-				
 				for(Message m : messagesDto.getListeMessages()) {
-					
 					if(m.getEtatDestinataire() == 0)
 						nbNewMessage++;
-					
 				}
-			}
-			else
-			{
+			} else {
 				list=false;	
 			}
-			
 			messageValue = "La liste a bien été récupérée";
 			messageType = "success";
 		} else {
@@ -77,26 +58,22 @@
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-		
-
-/* Service de gestion des nouveaux messages privés */
-String tooltip = "";
-
-if(nbNewMessage == 0)
-	tooltip = "Aucun nouveau message";
-else if(nbNewMessage == 1)
-	tooltip = "1 nouveau message dans votre boite de réception. Cliquez pour le consulter.";
-else if(nbNewMessage > 1)
-	tooltip = nbNewMessage + " nouveaux messages dans votre boite de réception. Cliquez pour les consulter.";
-
-String fileName = "dashboard";
-if(request.getParameter("page") != null) {
-	fileName = request.getParameter("page");
-}
-String filePath = contentFolder+fileName+".jsp";
-
+	/* Service de gestion des nouveaux messages privés */
+	String tooltip = "";
+	if(nbNewMessage == 0)
+		tooltip = "Aucun nouveau message";
+	else if(nbNewMessage == 1)
+		tooltip = "1 nouveau message dans votre boite de réception. Cliquez pour le consulter.";
+	else if(nbNewMessage > 1)
+		tooltip = nbNewMessage + " nouveaux messages dans votre boite de réception. Cliquez pour les consulter.";
+	String fileName = "dashboard";
+	if(request.getParameter("page") != null) {
+		fileName = request.getParameter("page");
+	}
+	String filePath = contentFolder+fileName+".jsp";
+	if(!fileExists(filePath))
+		filePath = contentFolder+"404.jsp";
 %>
-
 <!doctype html>
 <html lang="en">
 	<head>
@@ -110,33 +87,24 @@ String filePath = contentFolder+fileName+".jsp";
 	    <title><% out.print(siteName); %></title>
 	
 	    <!-- Bootstrap core CSS -->
-	    <link href="./dist/css/bootstrap.min.css" rel="stylesheet">
-	    <link href="./dist/css/jumbotron.css" rel="stylesheet">
- 		<link href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+	    <link href="<%=cssFolder%>bootstrap.min.css" rel="stylesheet">
+	    <link href="<%=cssFolder%>jumbotron.css" rel="stylesheet">
+ 		<link href="<%=cssFolder%>jquery-ui.css" rel="stylesheet">
 	
-	    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
- 		<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-	    <script src="./dist/js/bootstrap.min.js"></script>
-	    <script src="./dist/js/paginate.js"></script>
-	    <script src="./dist/js/reorder.js"></script>
-	    <script src="./dist/js/jquery.cookie.js"></script>
+	    <script src="<%=jsFolder%>jquery.js"></script>
+ 		<script src="<%=jsFolder%>jquery-ui.js"></script>
+	    <script src="<%=jsFolder%>bootstrap.min.js"></script>
+	    <script src="<%=jsFolder%>paginate.js"></script>
+	    <script src="<%=jsFolder%>reorder.js"></script>
+	    <script src="<%=jsFolder%>jquery.cookie.js"></script>
+	    <script src="<%=jsFolder%>init.js"></script>
+	    <% if(nbNewMessage > 0) { %>
 	    <script type="text/javascript">
-			$(document).ready(function() {
-		    	$(".ttipl").tooltip({placement: "left",container: 'body'});
-		    	$(".ttipr").tooltip({placement: "right",container: 'body'});
-		    	$(".ttipt").tooltip({placement: "top",container: 'body'});
-		    	$(".ttipb").tooltip({placement: "bottom",container: 'body'});
-		    	$(".popov").popover({html: true, placement: "bottom", trigger: "focus"});
-		    	$(".createHide").click(function() {
-		    		$.cookie('hideNewMessageModal','true');
-		    	});
-		    	<% if(nbNewMessage > 0) { %>
-		    		var hide = $.cookie('hideNewMessageModal');
-		    		if(!hide || hide!="true")
-		    			$('#messageReceivedModal').modal('show');
-		    	<% } %>
-		    });
+			var hide = $.cookie('hideNewMessageModal');
+			if(!hide || hide!="true")
+				$('#messageReceivedModal').modal('show');
 	    </script>
+	    <% } %>
 	
 	    <!-- Just for debugging purposes. Don't actually copy this line! -->
 	    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -158,7 +126,7 @@ String filePath = contentFolder+fileName+".jsp";
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="dashboard.jsp"><% out.print(siteName); %></a>
+					<a class="navbar-brand" href="dashboard.jsp"><img height="20px" src="<%=imgFolder%>favicon.png">&nbsp;&nbsp;&nbsp;<% out.print(siteName); %></a>
 				</div>
 				<div class="navbar-collapse collapse">
 					<form class="navbar-form navbar-left" method="GET" action="dashboard.jsp">
@@ -200,7 +168,30 @@ String filePath = contentFolder+fileName+".jsp";
 		<div class="container">
 			<hr />
 			<footer>
-				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a></span>
+				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a> 
+				<% 
+								
+				Utilisateur utilisateurGet = new Utilisateur();
+				try {
+					ClientRequest clientRequest;
+					clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
+					clientRequest.accept("application/xml");
+					ClientResponse<String> clientResponse = clientRequest.get(String.class);
+					if (clientResponse.getStatus() == 200)
+					{
+						Unmarshaller un = jaxbc.createUnmarshaller();
+						utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
+						
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				if(utilisateurGet.getRole().equals("ADMIN")){ %>
+				&bull; 
+				<a href="adminDashboard.jsp"><FONT COLOR="#F75D59">Section interface administrateur</FONT></a>				
+				<% } %>
+				</span>
 				</p>
 			</footer>
 		</div>

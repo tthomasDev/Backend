@@ -14,10 +14,10 @@
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
-<%@ page import="model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
 
-<%@ page import="model.Message"%>
-<%@ page import="dto.MessagesDTO"%>
+<%@ page import="com.ped.myneightool.model.Message"%>
+<%@ page import="com.ped.myneightool.dto.MessagesDTO"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
 
 <%@include file="../constantes.jsp"%>

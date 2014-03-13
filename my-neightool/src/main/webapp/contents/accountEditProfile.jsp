@@ -10,9 +10,9 @@
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
 
-<%@ page import="model.Utilisateur"%>
-<%@ page import="model.Connexion"%>
-<%@ page import="model.Adresse"%>
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.model.Connexion"%>
+<%@ page import="com.ped.myneightool.model.Adresse"%>
 <%@ page import="java.text.DateFormat"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>

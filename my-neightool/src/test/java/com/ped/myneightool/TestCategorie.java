@@ -45,7 +45,7 @@ public class TestCategorie {
 		crb= new ClientRequestBuilder(jaxbc);
 		
 		try {
-			final Connexion connexion = new Connexion("adminCategorie","admin");
+			final Connexion connexion = new Connexion("adminCategorie",CryptHandler.encodedPw("admin"));
 			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
 			final Date birthDate = new Date();
 			

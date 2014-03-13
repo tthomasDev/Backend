@@ -122,23 +122,16 @@ public class SecurityInterceptor implements PreProcessInterceptor
 	{
 		boolean isAllowed = false;
 		String userRole="";
-		System.out.println("PRINTLN DU DEBUT DE BOUCLE de userRole :"+userRole);
-		
-		//Step 1. Fetch password from database and match with password in argument
-		//If both match then get the defined role for user from database and continue; else return isAllowed [false]
-		//Access the database and do this part yourself
-		//String userRole = userMgr.getUserRole(username);
+				
+		//on vérifie si la connexion est valide et on attribue le role correspondant
 		Connexion c = new Connexion(username,password);
 		if(connexionDAOImpl.isValidConnection(c) !=null){
 			Utilisateur u = utilisateurDAO.findByLogin(username);
 			System.out.println(u);
 			userRole = u.getRole();
-			System.out.println("PRINTLN DANS LA BOUCLE de userRole :"+userRole);
+			
 		}
-		System.out.println("PRINTLN APRES LA BOUCLE de userRole :"+userRole);
-		
-		
-		//Step 2. Verify user role
+			
 		if(rolesSet.contains(userRole))
 		{
 			isAllowed = true;

@@ -1,6 +1,6 @@
 package com.ped.myneightool;
 
-import java.util.Date;
+import java.util.Date; 
 import java.util.Iterator;
 
 import javax.xml.bind.JAXBContext;
@@ -16,10 +16,9 @@ import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Utilisateur;
 
 
-
-
-
 public class TestUtilisateur {
+	
+	
 
 	private static final org.slf4j.Logger LOG = LoggerFactory
 			.getLogger(TestUtilisateur.class);
@@ -68,14 +67,12 @@ public class TestUtilisateur {
 	@Test
 	public void testCreateUser() {
 		try {
-			final Connexion connexion = new Connexion("loginCreate1","passwordCreate");
+			final Connexion connexion = new Connexion("loginCreate1",CryptHandler.encodedPw("passwordCreate"));
 						
 			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"1jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
-			
-						
+					
 			Assert.assertNotSame(utilisateurPost,null);
-			
 			
 		} catch (final RuntimeException re) {
 			LOG.error("echec de creation de l'utilisateur", re);
@@ -89,7 +86,7 @@ public class TestUtilisateur {
 	@Test
 	public void testCreateUserForFrontEnd() {
 		try {
-			final Connexion connexion = new Connexion("user","user");
+			final Connexion connexion = new Connexion("user",CryptHandler.encodedPw("user"));
 			final Adresse adresse = new Adresse("666 rue des allées","33000","Bordeaux","France",-666,666);
 			final Date birthDate = new Date();
 			
@@ -113,7 +110,7 @@ public class TestUtilisateur {
 	@Test
 	public void testCreateAdminForFrontEnd() {
 		try {
-			final Connexion connexion = new Connexion("admin","admin");
+			final Connexion connexion = new Connexion("admin",CryptHandler.encodedPw("admin"));
 			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
 			final Date birthDate = new Date();
 			
@@ -138,7 +135,7 @@ public class TestUtilisateur {
 	@Test
 	public void testCreateUserWithBirthDate() {
 		try {
-			final Connexion connexion = new Connexion("2loginCreate","passwordCreate");
+			final Connexion connexion = new Connexion("2loginCreate",CryptHandler.encodedPw("passwordCreate"));
 			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
 			final Date birthDate = new Date();
 			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"2jean-duchemin@gmail.com","0606060606",adresse,birthDate);
@@ -161,7 +158,7 @@ public class TestUtilisateur {
 	@Test
 	public final void testUpdateUser() {
 		try {
-			final Connexion connexion = new Connexion("3loginUpdate","passwordUpdate");
+			final Connexion connexion = new Connexion("3loginUpdate",CryptHandler.encodedPw("passwordUpdate"));
 			final Utilisateur utilisateur= new Utilisateur("JeanUpdate","DucheminUpdate",connexion,"3jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
@@ -187,7 +184,7 @@ public class TestUtilisateur {
 	public final void testGetUserById() {
 
 		try{
-			final Connexion connexion = new Connexion("4loginGet","passwordGet");
+			final Connexion connexion = new Connexion("4loginGet",CryptHandler.encodedPw("passwordGet"));
 			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"4jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
@@ -225,7 +222,7 @@ public class TestUtilisateur {
 	public final void testGetUserByLogin() {
 
 		try{
-			final Connexion connexion = new Connexion("loginGetUserByLogin","fdkjfds");
+			final Connexion connexion = new Connexion("loginGetUserByLogin",CryptHandler.encodedPw("fdkjfds"));
 			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"pommeDeTerre@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
@@ -264,7 +261,7 @@ public class TestUtilisateur {
 	public final void testDeleteUser() {
 
 		try{
-			final Connexion connexion = new Connexion("admin1","admin1");
+			final Connexion connexion = new Connexion("admin1",CryptHandler.encodedPw("admin1"));
 			final Utilisateur utilisateur= new Utilisateur("JeanDelete","DucheminDelete",connexion,"5jean-duchemin@gmail.com","0606060606");
 			utilisateur.setRole("ADMIN");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");

@@ -1,4 +1,4 @@
-<%@page import="model.SendMailTLS"%>
+<%@page import="com.ped.myneightool.model.SendMailTLS"%>
 <%@include file="../constantes.jsp"%>
 <%@include file="../functions.jsp"%>
 <%

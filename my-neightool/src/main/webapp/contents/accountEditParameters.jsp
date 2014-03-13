@@ -5,9 +5,9 @@
 <%@ page import="java.io.StringWriter"%>
 <%@ page import="org.jboss.resteasy.client.ClientRequest"%>
 <%@ page import="org.jboss.resteasy.client.ClientResponse"%>
-<%@ page import="model.Utilisateur"%>
-<%@ page import="model.Connexion"%>
-<%@ page import="model.Adresse"%>
+<%@ page import="com.ped.myneightool.model.Utilisateur"%>
+<%@ page import="com.ped.myneightool.model.Connexion"%>
+<%@ page import="com.ped.myneightool.model.Adresse"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%@include file="../functions.jsp"%>
 <%@include file="../constantes.jsp"%>
@@ -120,7 +120,7 @@ if(request.getParameter("oldPassword") != null) {
 		System.out.println(confirmNewPass);
 			
 		if(newPass.equals(confirmNewPass)){
-			utilisateurGet.getConnexion().setPassword(confirmNewPass);
+			utilisateurGet.getConnexion().setPassword(encodedPw(confirmNewPass));
 		}
 		else
 		{
@@ -312,7 +312,7 @@ if(request.getParameter("deleteAccount") != null) {
 	<div class="row">
 		<div class="col-md-6">
 			Ancien mot de passe :<br />
-			<input type="password" placeholder="Ancien mot de passe" value="<%=password%>" id="oldPassword" name="oldPassword" class="form-control" required="required" /><br />
+			<input type="password" placeholder="Ancien mot de passe" id="oldPassword" name="oldPassword" class="form-control" required="required" /><br />
 		</div>
 	</div>
 	<div class="row">

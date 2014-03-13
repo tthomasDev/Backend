@@ -108,7 +108,7 @@ function calculateDistances() {
 	    		 	});
 
 	    		    var contentString = 'L\'utilisateur <b>' + usersNames[j]
-	    		 		+ '</b> pr&ecircte un outil &agrave ' + results[j].distance.text + ' de chez vous ! <b>Inscrivez-vous</b> pour pouvoir l\'emprunter';
+	    		 		+ '</b> pr&ecircte un outil &agrave <b>' + results[j].distance.text + '</b> (' + results[j].duration.text +' de route) de chez vous ! <b>Inscrivez-vous</b> pour pouvoir l\'emprunter';
 	    		      
 	  		 		
 	    		 	addMarker(destinations[j], true, contentString);
