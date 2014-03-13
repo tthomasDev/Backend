@@ -165,9 +165,6 @@ if(request.getParameter("category") != null) {
 
 	//if(request.getParameter("cMax") == null && request.getParameter("dMax") == null)
 	//{
-	
-	System.out.println("NOMBRE DE CATEGORIES " + nbC);
-	System.out.println("CATEGORIE NUMERO " + (request.getParameterValues("category"))[0]);
 
 		for (int i = 0; i < nbC; i++) {
 			// On récupère la liste des outils correspondants une catégorie spécifique
@@ -197,14 +194,6 @@ if(request.getParameter("category") != null) {
 				e.printStackTrace();
 			}
 		}
-
-		for(int i=0; i<arrayListeOutilsCat.size();i++)
-		{
-			for (Outil o : arrayListeOutilsCat.get(i).getListeOutils()) {
-				System.out.println("Outils de la categore " + o.getNom()
-						+ "\n");
-			}
-		}
 	}
 		
 
@@ -214,6 +203,24 @@ if(request.getParameter("category") != null) {
 		cMax = Integer
 				.parseInt(escapeStr(request.getParameter("cMax")));
 		adds += " pour <strong>" + cMax + "€</strong> maximum,";
+		
+		
+		//On enlève de la liste les outils qui n'ont pas le même nom que le nom demandé
+		for(int i=0; i<arrayListeOutilsCat.size();i++)
+		{
+			for (Iterator<Outil> it = arrayListeOutilsCat.get(i).getListeOutils().iterator(); it.hasNext(); ) {
+				Outil o = it.next();
+				if (o.getCaution() > cMax)
+				{
+					System.out.println("CAUTION TROP CHER ! ");
+					it.remove();
+				}
+				
+				else
+					System.out.println("CAUTION ACCEPTABLE ! " + request.getParameter("cMax") + " " + o.getCaution());
+			}
+		}
+		
 	}
 	if (request.getParameter("dMax") != null
 			&& request.getParameter("dMax") != "") {
@@ -229,10 +236,19 @@ if(request.getParameter("category") != null) {
 				+ "</strong>" + adds;
 				
 				
-		
+		//On enlève de la liste les outils qui n'ont pas le même nom que le nom demandé
 		for(int i=0; i<arrayListeOutilsCat.size();i++)
 		{
-			for (Outil o : arrayListeOutilsCat.get(i).getListeOutils()) {
+			for (Iterator<Outil> it = arrayListeOutilsCat.get(i).getListeOutils().iterator(); it.hasNext(); ) {
+				Outil o = it.next();
+				if (!o.getNom().equals(request.getParameter("s")) )
+				{
+					System.out.println("CEST PAS LE MEME NOM ! ");
+					it.remove();
+				}
+				
+				else
+					System.out.println("CEST LE MEME NOM ! " + request.getParameter("s") + " " + o.getNom());
 			}
 		}
 				
@@ -409,8 +425,10 @@ if(request.getParameter("category") != null) {
 					</thead>
 					<tbody>
 							<% if(request.getParameter("category")!=null && arrayListeOutilsCat.size()>0) {
+							int nbOutils = 0;
 							for (int i=0; i<arrayListeOutilsCat.size(); i++){
-								for (Outil t : arrayListeOutilsCat.get(i).getListeOutils()) { %>
+								for (Outil t : arrayListeOutilsCat.get(i).getListeOutils()) {
+									nbOutils++;%>
 									<tr style="vertical-align: middle;" class="toPaginate">
 										<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
 										<td style="vertical-align: middle;"><strong><a
@@ -419,11 +437,22 @@ if(request.getParameter("category") != null) {
 										<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
 										<td style="vertical-align: middle; text-align: center;">0km</td>
 									</tr>
-								<% } 
+								<% 
+									}
+							
 								}
+
+							if (nbOutils == 0){
+								%>
+								<tr class="perfectCenter">
+								<td colspan="4">Aucuns résultats</td>
+								</tr>
+								<%
+							}
+							
 							}else {%>
 								<tr class="perfectCenter">
-									<td colspan="3">Aucune recherche actuellement effectuée</td>
+									<td colspan="4">Aucune recherche actuellement effectuée</td>
 								</tr>
 							<%} %>
 					</tbody>
