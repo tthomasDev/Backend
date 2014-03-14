@@ -81,41 +81,44 @@
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// On rend désormais l'objet indisponible
-		toolUpdated.setDisponible(false);
 		
-		try {
-			final ClientRequest requestToolUpdate = new ClientRequest(siteUrl + "rest/tool/update");
+		if (request.getParameter("act").equals("rm")) {
 
-			//ici il faut sérialiser l'outil
-			final Marshaller marshaller2 = jaxbc2.createMarshaller();
-			marshaller2.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-			final java.io.StringWriter sw2 = new StringWriter();
-			marshaller2.marshal(toolUpdated, sw2);
-
-			requestToolUpdate.body("application/xml", toolUpdated);
+			// On rend désormais l'objet indisponible
+			toolUpdated.setDisponible(false);
 			
+			try {
+				final ClientRequest requestToolUpdate = new ClientRequest(siteUrl + "rest/tool/update");
+	
+				//ici il faut sérialiser l'outil
+				final Marshaller marshaller2 = jaxbc2.createMarshaller();
+				marshaller2.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+				final java.io.StringWriter sw2 = new StringWriter();
+				marshaller2.marshal(toolUpdated, sw2);
+	
+				requestToolUpdate.body("application/xml", toolUpdated);
+				
+				
+				//CREDENTIALS		
+				String username = user.getConnexion().getLogin();
+				String password = user.getConnexion().getPassword();
+				String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+				requestToolUpdate.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+				///////////////////
+				
+				
+				final ClientResponse<String> responseToolUpdate = requestToolUpdate.post(String.class);
 			
-			//CREDENTIALS		
-			String username = user.getConnexion().getLogin();
-			String password = user.getConnexion().getPassword();
-			String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
-			requestToolUpdate.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
-			///////////////////
-			
-			
-			final ClientResponse<String> responseToolUpdate = requestToolUpdate.post(String.class);
-		
-			if (responseToolUpdate.getStatus() == 200) { // OK
-				final Unmarshaller un = jaxbc.createUnmarshaller();
-				final StringReader sr = new StringReader(responseToolUpdate.getEntity());
-				final Object object = (Object) un.unmarshal(sr);
-				toolUpdated = (Outil) object;
+				if (responseToolUpdate.getStatus() == 200) { // OK
+					final Unmarshaller un = jaxbc.createUnmarshaller();
+					final StringReader sr = new StringReader(responseToolUpdate.getEntity());
+					final Object object = (Object) un.unmarshal(sr);
+					toolUpdated = (Outil) object;
+				}
 			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -146,7 +149,7 @@
 $(function(){
 	$(".deleteTool").click(function(){
 		var tmp = ($(this).attr("id")).split("delete")[1];
-		$("#confirm").attr("href","dashboard.jsp?page=manageItems&idTool="+tmp);
+		$("#confirm").attr("href","dashboard.jsp?page=manageItems&act=rm&idTool="+tmp);
 		$("#idToolConcern").html(tmp);
 	});
 });
@@ -179,7 +182,13 @@ $(function(){
 								href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 							<p><%=t.getDescription() %></p></td>
 						<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
-						<td style="vertical-align: middle;">
+						<td style="vertical-align: middle; padding-right: 0px">
+ 							<a href="dashboard.jsp?page=manageItemsEdit&id=<%=t.getId() %>" id="update<%=t.getId()%>"
+							class="ttipt btn btn-default updateTool" title="Modifier l'objet">
+							<span class="glyphicon glyphicon-pencil"></span>
+							</a>							
+						</td>
+						<td style="vertical-align: middle; padding-left: 0px">
  							<a id="delete<%=t.getId()%>" data-toggle="modal" data-target="#confirmModal" 
 							class="ttipt btn btn-default deleteTool" title="Retirer l'objet">
 							<span class="glyphicon glyphicon-remove"></span>

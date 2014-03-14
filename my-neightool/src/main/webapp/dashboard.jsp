@@ -158,7 +158,7 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="dashboard.jsp"><img height="20px" src="<%=imgFolder%>favicon.png">&nbsp;&nbsp;&nbsp;<% out.print(siteName); %></a>
+					<a class="navbar-brand" href="dashboard.jsp?idCat=0"><img height="20px" src="<%=imgFolder%>favicon.png">&nbsp;&nbsp;&nbsp;<% out.print(siteName); %></a>
 				</div>
 				<div class="navbar-collapse collapse">
 					<form class="navbar-form navbar-left" method="GET" action="dashboard.jsp">
