@@ -19,18 +19,20 @@ function initialize() {
 	geocoder = new google.maps.Geocoder();
 	
 	
+
 	var selectUsers = document.getElementById('users');
-	for(var i=0; i<selectUsers.options.length; i++)
-		{
+	if (window.destination2 != undefined && destination2.length < 25) {
+		for (var i = 0; i < selectUsers.options.length; i++) {
 			var splittedText = selectUsers.options[i].text.split('/');
 			var lat = splittedText[1];
 			var lng = splittedText[2];
 			var name = splittedText[0];
-			
+
 			var latlng = new google.maps.LatLng(lat, lng);
 			destinations2.push(latlng);
 			usersNames.push(name);
 		}
+	}
 	
 	var mapOptions = {
 		zoom : z
