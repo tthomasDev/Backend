@@ -1,6 +1,7 @@
 package com.ped.myneightool;
 
 import java.io.StringWriter;
+import java.util.Date;
 
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBContext;
@@ -13,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import com.ped.myneightool.model.Adresse;
 import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Utilisateur;
 
@@ -55,7 +57,9 @@ public class TestConnexion {
 		try {
 
 			final Connexion connexion = new Connexion("loginTestValidConnexion",CryptHandler.encodedPw("password"));
-			final Utilisateur utilisateur= new Utilisateur("JeanConnexion","DucheminConnexion",connexion);
+			final Adresse adresse = new Adresse("45 allée des rues","33000","Bordeaux","France",-6,6);
+			final Date birthDate = new Date();
+			final Utilisateur utilisateur= new Utilisateur("JeanConnexion","DucheminConnexion",connexion,"connexion@connexion.com","0909090989",adresse,birthDate);
 			final Utilisateur utilisateurPost=(Utilisateur)crb.httpRequestXMLBody(utilisateur, "user/create");
 						
 			

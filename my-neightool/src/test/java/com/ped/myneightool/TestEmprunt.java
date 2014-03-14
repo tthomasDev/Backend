@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
+import com.ped.myneightool.model.Adresse;
 import com.ped.myneightool.model.Categorie;
 import com.ped.myneightool.model.Connexion;
 import com.ped.myneightool.model.Emprunt;
@@ -51,10 +52,13 @@ public class TestEmprunt {
 		try {
 			final Connexion connexion = new Connexion("loginCreateEmpruntDate",CryptHandler.encodedPw("passwordCreateEmpruntDate"));
 			
-			final Utilisateur u = new Utilisateur("userPrenomEmpruntDate","userNomEmpruntDate",connexion);
+			final Adresse adresse = new Adresse("18 allée des rues","33000","Bordeaux","France",-45,45);
+			final Date birthDate = new Date(0);
+			
+			final Utilisateur u = new Utilisateur("userPrenomEmpruntDate","userNomEmpruntDate",connexion,"mailemprunt@mail.com","0102030405",adresse,birthDate);
 			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
 		
-			final Outil o= new Outil(uPost,"RateauTestEmpruntDate","savoir ratisser",true,cat,50,new Date(0),new Date());
+			final Outil o= new Outil(uPost,"RateauTestEmpruntDate","savoir ratisser",true,cat,50,new Date(0),new Date(),"http://localhost:8080/uploads/img/rateau.jpg");
 			final Outil oPost=(Outil) crb.httpRequestXMLBody(o, "tool/create");
 			
 						

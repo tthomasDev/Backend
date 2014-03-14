@@ -64,11 +64,11 @@ public class TestUtilisateur {
 	/**
 	 * test unitaire création d'utilisateur sans adresse
 	 */
+	/*
 	@Test
 	public void testCreateUser() {
 		try {
-			final Connexion connexion = new Connexion("loginCreate1",CryptHandler.encodedPw("passwordCreate"));
-						
+			final Connexion connexion = new Connexion("loginCreate1",CryptHandler.encodedPw("passwordCreate"));		
 			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"1jean-duchemin@gmail.com","0606060606");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 					
@@ -78,7 +78,7 @@ public class TestUtilisateur {
 			LOG.error("echec de creation de l'utilisateur", re);
 			throw re;
 		}
-	}
+	}*/
 	
 	/**
 	 * test unitaire création d'utilisateur fonctionnel pour le frontend
@@ -87,7 +87,7 @@ public class TestUtilisateur {
 	public void testCreateUserForFrontEnd() {
 		try {
 			final Connexion connexion = new Connexion("user",CryptHandler.encodedPw("user"));
-			final Adresse adresse = new Adresse("666 rue des allées","33000","Bordeaux","France",-666,666);
+			final Adresse adresse = new Adresse("666 rue des allées","33000","Bordeaux","France",-20,20);
 			final Date birthDate = new Date();
 			
 			final Utilisateur utilisateur= new Utilisateur("user","user",connexion,"user@myneightool.com","0000000000",adresse,birthDate);
@@ -111,7 +111,7 @@ public class TestUtilisateur {
 	public void testCreateAdminForFrontEnd() {
 		try {
 			final Connexion connexion = new Connexion("admin",CryptHandler.encodedPw("admin"));
-			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Adresse adresse = new Adresse("666 rue de France","33000","Bordeaux","France",-10,10);
 			final Date birthDate = new Date();
 			
 			final Utilisateur utilisateur= new Utilisateur("admin","admin",connexion,"admin@myneightool.com","0000000000",adresse,birthDate);
@@ -136,7 +136,7 @@ public class TestUtilisateur {
 	public void testCreateUserWithBirthDate() {
 		try {
 			final Connexion connexion = new Connexion("2loginCreate",CryptHandler.encodedPw("passwordCreate"));
-			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Adresse adresse = new Adresse("666 rue de France","33000","Bordeaux","France",-30,30);
 			final Date birthDate = new Date();
 			final Utilisateur utilisateur= new Utilisateur("JeanCreate","DucheminCreate",connexion,"2jean-duchemin@gmail.com","0606060606",adresse,birthDate);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
@@ -159,7 +159,9 @@ public class TestUtilisateur {
 	public final void testUpdateUser() {
 		try {
 			final Connexion connexion = new Connexion("3loginUpdate",CryptHandler.encodedPw("passwordUpdate"));
-			final Utilisateur utilisateur= new Utilisateur("JeanUpdate","DucheminUpdate",connexion,"3jean-duchemin@gmail.com","0606060606");
+			final Date birthDate = new Date(0);
+			final Adresse adresse = new Adresse("666 rue de France","33000","Bordeaux","France",10,10);
+			final Utilisateur utilisateur= new Utilisateur("JeanUpdate","DucheminUpdate",connexion,"3jean-duchemin@gmail.com","0606060606",adresse,birthDate);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			String str="1234567890";
@@ -185,7 +187,9 @@ public class TestUtilisateur {
 
 		try{
 			final Connexion connexion = new Connexion("4loginGet",CryptHandler.encodedPw("passwordGet"));
-			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"4jean-duchemin@gmail.com","0606060606");
+			final Date birthDate = new Date(0);
+			final Adresse adresse = new Adresse("666 rue de France","33000","Bordeaux","France",20,20);
+			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"4jean-duchemin@gmail.com","0606060606",adresse,birthDate);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			LOG.info("");
@@ -223,7 +227,9 @@ public class TestUtilisateur {
 
 		try{
 			final Connexion connexion = new Connexion("loginGetUserByLogin",CryptHandler.encodedPw("fdkjfds"));
-			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"pommeDeTerre@gmail.com","0606060606");
+			final Date birthDate = new Date(0);
+			final Adresse adresse = new Adresse("30 avenue des champs Elysées","75000","Paris","France",30,30);
+			final Utilisateur utilisateur= new Utilisateur("JeanGet","DucheminGet",connexion,"pommeDeTerre@gmail.com","0606060606",adresse,birthDate);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			LOG.info("");

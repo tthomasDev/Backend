@@ -46,7 +46,7 @@ public class TestCategorie {
 		
 		try {
 			final Connexion connexion = new Connexion("adminCategorie",CryptHandler.encodedPw("admin"));
-			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Adresse adresse = new Adresse("658 quai du tram","33000","Bordeaux","France",-33,33);
 			final Date birthDate = new Date();
 			
 			final Utilisateur utilisateur= new Utilisateur("admin","admin",connexion,"adminCategorie@myneightool.com","0000000000",adresse,birthDate);
@@ -90,7 +90,7 @@ public class TestCategorie {
 
 		try{
 			
-			final Categorie categorie = new Categorie("Voiture");
+			final Categorie categorie = new Categorie("Camion");
 			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBodyCategorie(categorie,"categorie/create",utilisateurAdmin);
 			
 			Assert.assertNotSame(categoriePost,null);

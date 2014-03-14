@@ -1,7 +1,7 @@
 package com.ped.myneightool;
 
 import javax.xml.bind.JAXBContext;
-
+import java.util.Date;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,10 +42,10 @@ public class TestAdresse {
 	public void testCreateUserWithAddress() {
 		try {
 			final Connexion connexion = new Connexion("loginCreateAdress",CryptHandler.encodedPw("passwordCreate"));
-			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Adresse adresse = new Adresse("20 rue principale","33000","Bordeaux","France",-30,-9);
 			
 			//final Utilisateur utilisateur = new Utilisateur("test", "xml");
-			final Utilisateur utilisateur2= new Utilisateur("JeanAdresseCreate","DucheminAdresseCreate",connexion,"dsqdqsjean-duchemin@gmail.com","0606060606",adresse);
+			final Utilisateur utilisateur2= new Utilisateur("JeanAdresseCreate","DucheminAdresseCreate",connexion,"dsqdqsjean-duchemin@gmail.com","0606060606",adresse,new Date(0));
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
 			
 						
@@ -65,10 +65,10 @@ public class TestAdresse {
 	public void testUpdateAddressFromUtilisateur() {
 		try {
 			final Connexion connexion = new Connexion("loginCreatesqdsqd",CryptHandler.encodedPw("passwordCreate"));
-			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Adresse adresse = new Adresse("20 rue principale","33000","Bordeaux","France",-20,-21);
 			
 			
-			final Utilisateur utilisateur= new Utilisateur("JeanAdresseCreate","DucheminAdresseCreate",connexion,"dsqdjean-duchemin@gmail.com","0606060606",adresse);
+			final Utilisateur utilisateur= new Utilisateur("JeanAdresseCreate","DucheminAdresseCreate",connexion,"dsqdjean-duchemin@gmail.com","0606060606",adresse,new Date(0));
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			

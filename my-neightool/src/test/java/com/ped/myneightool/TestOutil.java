@@ -31,6 +31,7 @@ public class TestOutil {
 	private static JAXBContext jaxbc;
 	private static ClientRequestBuilder crb;
 	private static Utilisateur utilisateurAdmin;
+	private static String chemin;
 	
 
 	@BeforeClass
@@ -40,10 +41,11 @@ public class TestOutil {
 										Utilisateur.class,
 										Connexion.class);
 		crb= new ClientRequestBuilder(jaxbc);
+		chemin = "http://localhost:8080/uploads/img/";
 		
 		try {
 			final Connexion connexion = new Connexion("adminCategorieOutil",CryptHandler.encodedPw("admin"));
-			final Adresse adresse = new Adresse("666 rue des pigeons meurtriers","33000","Bordeaux","France",-666,666);
+			final Adresse adresse = new Adresse("45 allée des rues","33000","Bordeaux","France",-6,6);
 			final Date birthDate = new Date();
 			
 			final Utilisateur utilisateur= new Utilisateur("admin","admin",connexion,"adminCategorieOutil@myneightool.com","0000000000",adresse,birthDate);
@@ -69,8 +71,10 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Jardin");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);			
 			
+			final Adresse adresse = new Adresse("1 allée des rues","33000","Bordeaux","France",-1,1);
+			final Date birthDate = new Date();
 			Connexion co = new Connexion("login1",CryptHandler.encodedPw("pass1"));
-			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutil","nomCreateOutil",co);
+			final Utilisateur utilisateur= new Utilisateur("prenomCreateOutil","nomCreateOutil",co,"mail@mail.com","0101010101",adresse,birthDate);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			final Date debutT = new Date(0);
@@ -78,12 +82,12 @@ public class TestOutil {
 			
 		
 			//test unitaire création d'Outil
-			Outil outil= new Outil(utilisateurPost,"Rateau1","savoir ratisser",true,cat,50, new Date(0), new Date());
+			Outil outil= new Outil(utilisateurPost,"Rateau1","savoir ratisser",true,cat,50, new Date(0), new Date(),chemin+"rateau.jpg");
 			Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			Assert.assertNotSame(outilPost,null);
 			
 			//test unitaire création d'Outil avec dates de dispo
-			outil= new Outil(utilisateurPost,"Rateau2","savoir ratisser",true,cat,50,debutT,finT);
+			outil= new Outil(utilisateurPost,"Rateau2","savoir ratisser",true,cat,50,debutT,finT,chemin+"rateau.jpg");
 			outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			Assert.assertNotSame(outilPost,null);
 			
@@ -105,12 +109,15 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Piscine");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
+			
+			final Adresse adresse = new Adresse("2 allée des rues","33000","Bordeaux","France",-2,2);
+			final Date birthDate = new Date();
 			Connexion co = new Connexion("login2",CryptHandler.encodedPw("pass2"));
-			final Utilisateur utilisateur= new Utilisateur("JeanUpdateTool","DucheminUpdateTool",co);
+			final Utilisateur utilisateur= new Utilisateur("JeanUpdateTool","DucheminUpdateTool",co,"mail2@mail.com","0101010101",adresse,birthDate);
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			
-			final Outil outil= new Outil(utilisateurPost,"AspirateurPiscineUPDATE","savoir aspirer",true,cat,50, new Date(0), new Date());
+			final Outil outil= new Outil(utilisateurPost,"AspirateurPiscineUPDATE","savoir aspirer",true,cat,50, new Date(0), new Date(),chemin+"piscine.jpg");
 			final Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			
 			String str ="MEGA AspirateurPiscine UPDATE";
@@ -139,11 +146,13 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Cuisine");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
+			final Adresse adresse = new Adresse("3 allée des rues","33000","Bordeaux","France",-3,3);
+			final Date birthDate = new Date();
 			Connexion co = new Connexion("login3",CryptHandler.encodedPw("pass3"));
-			final Utilisateur utilisateur= new Utilisateur("prenomGetOutil","nomGetOutil",co);
+			final Utilisateur utilisateur= new Utilisateur("prenomGetOutil","nomGetOutil",co,"mail3@mail.com","0101010101",adresse,birthDate);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
-			final Outil outil= new Outil(utilisateurPost,"CasserolleGet","savoir cuisiner",true,cat,50, new Date(0), new Date());
+			final Outil outil= new Outil(utilisateurPost,"CasserolleGet","savoir cuisiner",true,cat,50, new Date(0), new Date(),chemin+"casserolle.jpg");
 			final Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			
 			
@@ -182,8 +191,10 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Salon");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
+			final Adresse adresse = new Adresse("4 allée des rues","33000","Bordeaux","France",-4,4);
+			final Date birthDate = new Date();
 			Connexion co = new Connexion("login4",CryptHandler.encodedPw("pass4"));
-			final Utilisateur utilisateur= new Utilisateur("prenomDeleteOutil","nomDeleteOutil",co);
+			final Utilisateur utilisateur= new Utilisateur("prenomDeleteOutil","nomDeleteOutil",co,"mail4@mail.com","0404040404",adresse,birthDate);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
 			
@@ -254,12 +265,14 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Voiture");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
+			final Adresse adresse = new Adresse("5 allée des rues","33000","Bordeaux","France",-5,5);
+			final Date birthDate = new Date();
 			Connexion co = new Connexion("login5",CryptHandler.encodedPw("pass5"));
-			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
+			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co,"mail5@mail.com","0505050555",adresse,birthDate);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Cric","savoir cric mais cric pas disponible",false,cat,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Pneu","savoir mettre un pneu mais pneu disponible",true,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Cric","savoir cric mais cric pas disponible",false,cat,50, new Date(0), new Date(),chemin+"cric.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Pneu","savoir mettre un pneu mais pneu disponible",true,cat,50, new Date(0), new Date(),chemin+"pneu.jpg"), "tool/create");
 			
 			OutilsDTO dto =(OutilsDTO) crb.httpGetRequestWithoutArgument("tool/list/available");
 			
@@ -298,13 +311,15 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Autre");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
+			final Adresse adresse = new Adresse("6 allée des rues","33000","Bordeaux","France",-6,6);
+			final Date birthDate = new Date();
 			Connexion co = new Connexion("login6",CryptHandler.encodedPw("pass6"));
-			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
+			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co,"mail6@mail.com","6666666666",adresse,birthDate);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Autre1","savoir autre1",true,cat,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Autre2","savoir autre2",true,cat,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Autre3","savoir autre3",false,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Autre1","savoir autre1",true,cat,50, new Date(0), new Date(),chemin+"outils.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Autre2","savoir autre2",true,cat,50, new Date(0), new Date(),chemin+"outils.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Autre3","savoir autre3",false,cat,50, new Date(0), new Date(),chemin+"outils.jpg"), "tool/create");
 			
 			
 			int i = utilisateurPost.getId();
@@ -344,13 +359,15 @@ public class TestOutil {
 			final Categorie cat1= new Categorie("Professionnels");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
+			final Adresse adresse = new Adresse("8 allée des rues","33000","Bordeaux","France",-8,8);
+			final Date birthDate = new Date(0);
 			Connexion co = new Connexion("login8",CryptHandler.encodedPw("pass8"));
-			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co);
+			final Utilisateur utilisateur= new Utilisateur("prenomGetOutils","nomGetOutils",co,"mail8@mail.com","8888888888",adresse,birthDate);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"OutilPro1","savoir être pro",true,cat,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"OutilPro2","savoir être pro",true,cat,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"OutilPro3","savoir être pro",false,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"OutilPro1","savoir être pro",true,cat,50, new Date(0), new Date(),chemin+"outils.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"OutilPro2","savoir être pro",true,cat,50, new Date(0), new Date(),chemin+"outils.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"OutilPro3","savoir être pro",false,cat,50, new Date(0), new Date(),chemin+"outils.jpg"), "tool/create");
 			
 			
 			int i = utilisateurPost.getId();
@@ -391,14 +408,16 @@ public class TestOutil {
 			Categorie cat1= new Categorie("Plomberie");
 			Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
+			final Adresse adresse = new Adresse("9 allée des rues","33000","Bordeaux","France",-9,9);
+			final Date birthDate = new Date(0);
 			Connexion co = new Connexion("login9",CryptHandler.encodedPw("pass9"));
-			final Utilisateur utilisateur= new Utilisateur("prenomAPICriteria","nomAPICriteria",co);
+			final Utilisateur utilisateur= new Utilisateur("prenomAPICriteria","nomAPICriteria",co,"mail9@mail.com","9999999999",adresse,birthDate);
 			final Utilisateur utilisateurPost= (Utilisateur) crb.httpRequestXMLBody(utilisateur, "user/create");
 			Assert.assertNotSame(utilisateurPost, null);
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Plummeau","savoir plummer",true,cat,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tournevis","savoir tournevisser",false,cat,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Clé molette","savoir clé molette",true,cat,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Plummeau","savoir plummer",true,cat,50, new Date(0), new Date(),chemin+"plumeau.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tournevis","savoir tournevisser",false,cat,50, new Date(0), new Date(),chemin+"tournevis.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Clé molette","savoir clé molette",true,cat,50, new Date(0), new Date(),chemin+"clémolette.jpg"), "tool/create");
 
 
 			cat1= new Categorie("Toiture");
@@ -407,8 +426,8 @@ public class TestOutil {
 			cat1= new Categorie("BTP");
 			Categorie cat2= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tuile","savoir tuiller",false,cat2,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Remorque","savoir remorquer",true,cat3,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tuile","savoir tuiller",false,cat2,50, new Date(0), new Date(),chemin+"tuile.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Remorque","savoir remorquer",true,cat3,50, new Date(0), new Date(),chemin+"remorque.jpg"), "tool/create");
 			
 			final Outil o = new Outil();
 			o.setCategorie(cat);
@@ -448,9 +467,9 @@ public class TestOutil {
 			Utilisateur user1= new Utilisateur("Jean", "Dupont", new Connexion("loginTestOutil",CryptHandler.encodedPw( "pwd")), "test@test", "0505050505", new Adresse(), new Date());
 			Utilisateur user= (Utilisateur) crb.httpRequestXMLBody(user1, "user/create");
 			
-			crb.httpRequestXMLBody(new Outil(user,"Rateau","savoir ratisser",true,categoriePost,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(user,"Pelle","savoir pelleter",true,categoriePost,50, new Date(0), new Date()), "tool/create");
-			crb.httpRequestXMLBody(new Outil(user,"Tronçonneuse","savoir tronçonner",false,categoriePost,50, new Date(0), new Date()), "tool/create");
+			crb.httpRequestXMLBody(new Outil(user,"Rateau","savoir ratisser",true,categoriePost,50, new Date(0), new Date(),chemin+"rateau.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(user,"Pelle","savoir pelleter",true,categoriePost,50, new Date(0), new Date(),chemin+"pelle.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(user,"Tronçonneuse","savoir tronçonner",false,categoriePost,50, new Date(0), new Date(),chemin+"tronconneuse.jpg"), "tool/create");
 
 			int i = categoriePost.getId();
 			OutilsDTO dto =(OutilsDTO) crb.httpGetRequest("tool/categorie",i );
