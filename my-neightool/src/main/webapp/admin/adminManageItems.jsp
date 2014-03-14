@@ -39,7 +39,7 @@
 	//On récupère la liste de toutes les catégories
 	try {
 		ClientRequest requestCategories;
-		requestCategories = new ClientRequest(siteUrl+"rest/tool/listAsc");
+		requestCategories = new ClientRequest(siteUrl+"rest/tool/list");
 		requestCategories.accept("application/xml");
 		ClientResponse<String> responseCategories = requestCategories.get(String.class);
 		if (responseCategories.getStatus() == 200) {
@@ -77,7 +77,8 @@ $(function() {
 	<thead>
 		<tr>
 			<th width="10%" class="perfectCenter">Id</th>
-			<th width="55%" class="perfectCenter">Nom de l'outil</th>
+			<th width="35%" class="perfectCenter">Nom de l'outil</th>
+			<th width="20%" class="perfectCenter">Catégorie</th>
 			<th width="20%" class="perfectCenter">Caution</th>
 			<th width="15%" class="perfectCenter">Action</th>
 		</tr>
@@ -99,6 +100,13 @@ $(function() {
 			
 			%>
 			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=outil.getNom() %></td>
+			<% 
+				String str= outil.getCategorie().getNom();
+				if(str.equals(null)){
+					str="Pas de catégorie";
+				}
+			%>
+			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=str%></td>
 			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=outil.getCaution() %></td>
 			<td class="perfectCenter">
 				<div class="btn-group">

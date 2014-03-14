@@ -66,6 +66,15 @@ public class ServiceCategorie {
 	
 	@PermitAll
 	@GET
+	@Path("/name/{name}")
+	@Produces("application/xml")
+	public Categorie getCategorieByName(@PathParam("name") final String name) {
+		final Categorie c = categorieDAO.findByName(name);
+		return c;
+	}
+	
+	@PermitAll
+	@GET
 	@Path("/list")
 	@Produces("application/xml")
 	public CategoriesDTO getAllCategories() {
@@ -80,4 +89,22 @@ public class ServiceCategorie {
 		return categories;
 
 	}
+	
+	@PermitAll
+	@GET
+	@Path("/listAsc")
+	@Produces("application/xml")
+	public CategoriesDTO getAllCategoriesByOrderAsc() {
+		CategoriesDTO categories = new CategoriesDTO();
+		
+		try {
+			categories = categorieDAO.findAllByOrderAsc();
+		} catch (Exception e) {
+			LOG.error("erreur service /list");
+			e.printStackTrace();
+		}
+		return categories;
+
+	}
+	
 }

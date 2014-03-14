@@ -13,4 +13,8 @@ public interface ItfCategorieDAO {
 
 	public abstract CategoriesDTO findAll();
 
+	public abstract CategoriesDTO findAllByOrderAsc();
+
+	public abstract Categorie findByName(String name);
+
 }

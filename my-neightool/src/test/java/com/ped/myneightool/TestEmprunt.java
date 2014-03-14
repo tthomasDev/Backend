@@ -31,7 +31,7 @@ public class TestEmprunt {
 	
 	private static JAXBContext jaxbc;
 	private static ClientRequestBuilder crb;
-	
+	private static Utilisateur utilisateurAdmin;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -41,6 +41,13 @@ public class TestEmprunt {
 										Connexion.class,
 										Date.class);
 		crb= new ClientRequestBuilder(jaxbc);
+		
+		final Connexion connexion = new Connexion("adminCategorieOutilEmprunt",CryptHandler.encodedPw("admin"));
+		final Adresse adresse = new Adresse("45 allée des rues","33000","Bordeaux","France",-6,6);
+		final Date birthDate = new Date();
+		final Utilisateur utilisateur= new Utilisateur("admin","admin",connexion,"adminCategorieOutilEmprunt@myneightool.com","0000000000",adresse,birthDate);
+		utilisateur.setRole("ADMIN");
+		utilisateurAdmin = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 	}
 	
 	
@@ -50,6 +57,10 @@ public class TestEmprunt {
 	@Test
 	public void testCreateEmpruntWithDate() {
 		try {
+			
+			final Categorie cat1= new Categorie("Sport");
+			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
+			
 			final Connexion connexion = new Connexion("loginCreateEmpruntDate",CryptHandler.encodedPw("passwordCreateEmpruntDate"));
 			
 			final Adresse adresse = new Adresse("18 allée des rues","33000","Bordeaux","France",-45,45);

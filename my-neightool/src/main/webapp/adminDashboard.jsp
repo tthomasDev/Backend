@@ -105,7 +105,7 @@ final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
 				
 				if(utilisateurGet.getRole().equals("ADMIN")){ %>
 				&bull; 
-				<a href="dashboard.jsp"> <FONT COLOR="#F75D59">Retour interface utilisateur</FONT></a>				
+				<a href="dashboard.jsp?idCat=0"> <FONT COLOR="#F75D59">Retour interface utilisateur</FONT></a>				
 				<% } %>
 				</span>
 				</p>

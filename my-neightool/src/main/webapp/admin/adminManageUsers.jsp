@@ -33,7 +33,7 @@
 	// On récupère la liste de tous les utilisateurs disponibles
 	try {
 		ClientRequest requestUsers;
-		requestUsers = new ClientRequest(siteUrl + "rest/user/listAsc");
+		requestUsers = new ClientRequest(siteUrl + "rest/user/list");
 		requestUsers.accept("application/xml");
 		ClientResponse<String> responseUsers = requestUsers
 				.get(String.class);
