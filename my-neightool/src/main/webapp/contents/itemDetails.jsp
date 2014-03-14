@@ -30,6 +30,7 @@
 String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
 String itemDateEnd="", itemPrice="", itemDistance="", itemPath="", userID="", itemCategoryID="";
 int itemId = -1;
+int itemVendorId = -1;
 
 boolean itemFound = false;
 
@@ -128,6 +129,7 @@ if(request.getParameter("id") != null) {
 		itemId = outil.getId();
 		itemName = outil.getNom();
 		itemVendor = outil.getUtilisateur().getConnexion().getLogin();
+		itemVendorId = outil.getUtilisateur().getId();
 		itemDescription = outil.getDescription();
 		itemCategory = outil.getCategorie().getNom();
 		itemCategoryID = String.valueOf(outil.getCategorie().getId());
@@ -427,7 +429,7 @@ out.println("</div></div>");
 		<hr />
 		<a
 			<%int diff = 100;
-				if (Integer.parseInt(id) == Integer.parseInt(userID))
+				if (itemVendorId == Integer.parseInt(userID))
 					diff = 0;
 				else
 					diff = 1;%>
@@ -441,7 +443,7 @@ out.println("</div></div>");
 			l'objet</a>
 	</div>
 	<jsp:include page="profile.jsp">
-		<jsp:param value="1" name="userId" />
+		<jsp:param value="<%=itemVendorId%>" name="userId" />
 	</jsp:include>
 	<div class="modal fade" id="confirmBorrow" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
