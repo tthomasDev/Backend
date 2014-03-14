@@ -13,6 +13,7 @@
 <%@ page import="com.ped.myneightool.model.Utilisateur"%>
 <%@ page import="com.ped.myneightool.model.Message"%>
 <%@ page import="com.ped.myneightool.dto.MessagesDTO"%>
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%
 	if(session.getAttribute("ID") == null) {
 		RequestDispatcher rd =
@@ -27,14 +28,45 @@
 	actionValid = true;
 	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
 	final JAXBContext jaxbc = JAXBContext.newInstance(MessagesDTO.class,Message.class,Utilisateur.class);
-	// Le DTO des outils permettant de récupérer la liste d'outils
+	
+	// Le DTO des outils permettant de récupérer la liste des messages
 	MessagesDTO messagesDto = new MessagesDTO();
+	
 	//ici on va récuperer la réponse de la requete
 	try {
+			Utilisateur myUser = new Utilisateur();
+			
+			try {
+				ClientRequest clientRequest;
+				clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
+				clientRequest.accept("application/xml");
+				ClientResponse<String> response2 = clientRequest.get(String.class);
+
+				if (response2.getStatus() == 200) {
+					Unmarshaller un = jaxbc.createUnmarshaller();
+					myUser = (Utilisateur) un
+							.unmarshal(new StringReader(response2
+									.getEntity()));
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}	
+		
 		ClientRequest requestMessages;
-		requestMessages = new ClientRequest(
-				siteUrl + "rest/message/list/receiveListByOrder/" + session.getAttribute("ID"));
+		
+		requestMessages = new ClientRequest(siteUrl + "rest/message/list/receiveListByOrder/" + session.getAttribute("ID"));
 		requestMessages.accept("application/xml");
+		
+		//CREDENTIALS		
+		String username = myUser.getConnexion().getLogin();
+		System.out.println("\n\n"+username+"\n\n");
+		String password = myUser.getConnexion().getPassword();
+		System.out.println("\n\n"+password+"\n\n");
+		String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
+		requestMessages.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+		///////////////////
+		
 		ClientResponse<String> responseMessages = requestMessages
 				.get(String.class);
 		if (responseMessages.getStatus() == 200) {
