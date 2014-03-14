@@ -153,7 +153,7 @@ function codeAddress() {
 			addClickMarker(results[0].geometry.location);
 
 			$('#lat').val(results[0].geometry.location.lat());
-			$('#long').val(results[0].geometry.location.lat());
+			$('#long').val(results[0].geometry.location.lng());
 
 		} else {
 			alert('Geocode was not successful for the following reason: '

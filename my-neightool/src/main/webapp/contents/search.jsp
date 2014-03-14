@@ -153,7 +153,9 @@ if(request.getParameter("category") != null) {
 	int nbC = 0;
 	String cats = "";
 	for(String c:request.getParameterValues("category")) {
+		
 		categoriesIdSelected.add(Integer.parseInt(c));
+		
 		nbC++;
 		cats+= " <strong>" + categories.get(Integer.parseInt(c)) + "</strong>, "; 
 	}
@@ -370,12 +372,12 @@ if(request.getParameter("category") != null) {
 				title="Gardez la touche Ctrl appuyée pour sélectionner plusieurs catégories">?</a>)
 			</label> <select name="category" class="form-control" multiple>
 				<% 
-							for(String cat:categories) { 
-								if(categoriesIdSelected.contains(categories.indexOf(cat))) {
+				for(Categorie cat : categoriesDto.getListeCategories()) { 
+					if(categoriesIdSelected.contains(cat.getId())) {
 							%>
-				<option value="<%=categories.indexOf(cat)%>" selected><%=cat%></option>
+				<option value="<%=cat.getId()%>" selected><%=cat.getNom()%></option>
 				<%  } else { %>
-				<option value="<%=categories.indexOf(cat)%>"><%=cat%></option>
+				<option value="<%=cat.getId()%>"><%=cat.getNom()%></option>
 				<% }} %>
 			</select>
 		</div>

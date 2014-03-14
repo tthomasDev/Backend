@@ -4,6 +4,36 @@ $(document).ready(function() {
 	$(".ttipt").tooltip({placement : "top",container : 'body'});
 	$(".ttipb").tooltip({placement : "bottom",container : 'body'});
 
+	$("#username").focusout(function() {
+		if($("#checkUsername").html()!="")
+			$("#checkUsernameDiv").hide();
+			$("#checkUsername").html("");
+			$("#checkUsername").removeClass("text-success").removeClass("text-danger").removeClass("text-warning");
+		if($(this).val()!="") {
+			var uname = $(this).val();
+			$.ajax({
+				url: "plugins/checkUsernameScript.jsp",
+			    type: 'POST',
+			    data: {name: uname},
+			    success: function(data) {
+			    	if(data=="1") {
+			    		$("#checkUsername").html('<i class="glyphicon glyphicon-ok"></i> Nom d\'utilisateur disponible');
+			    		$("#checkUsername").addClass("text-success");
+			    		$("#checkUsernameDiv").fadeIn('slow');
+			    	} else {
+			    		$("#checkUsername").html('<i class="glyphicon glyphicon-remove"></i> Nom d\'utilisateur indisponible');
+			    		$("#checkUsername").addClass("text-danger");
+			    		$("#checkUsernameDiv").fadeIn('slow');
+			    	}
+			    }
+			});
+		} else {
+			$("#checkUsername").html('<i class="glyphicon glyphicon-warning-sign"></i> Nom d\'utilisateur vide');
+			$("#checkUsername").addClass("text-warning");
+			$("#checkUsernameDiv").fadeIn('slow');
+		}
+	});
+	
 	$("#signUpBtn").click(function(){
 		var name, lastname, username, mail, password, phone, day, month, year, city, tou;
 		var now = new Date();
@@ -27,7 +57,7 @@ $(document).ready(function() {
 		}
 		if(lastname.val()=="") {
 			lastname.parent().addClass("has-error");
-			lastname.data('bs.tooltip').options.title = 'Veuillez renseigner votre prÃ©nom';
+			lastname.data('bs.tooltip').options.title = 'Veuillez renseigner votre prénom';
 			lastname.tooltip('show');
 			submitable = false;
 		}
@@ -45,13 +75,13 @@ $(document).ready(function() {
 		}
 		if(password.val()=="") {
 			password.parent().addClass("has-error");
-			password.data('bs.tooltip').options.title = 'Le mot de passe doit faire 6 chiffres/lettres/caractÃ¨res spÃ©ciaux';
+			password.data('bs.tooltip').options.title = 'Le mot de passe doit faire 6 chiffres/lettres/caractères spéciaux';
 			password.tooltip('show');
 			submitable = false;
 		}
 		if(phone.val()=="") {
 			phone.parent().addClass("has-error");
-			phone.data('bs.tooltip').options.title = 'Votre numÃ©ro de tÃ©lÃ©phone doit Ãªtre composÃ© de 10 chiffres';
+			phone.data('bs.tooltip').options.title = 'Votre numéro de téléphone doit être composé de 10 chiffres';
 			phone.tooltip('show');
 			submitable = false;
 		}
@@ -70,7 +100,7 @@ $(document).ready(function() {
 		}
 		if(!tou.is(':checked')) {
 			tou.parent().addClass("has-error");
-			tou.data('bs.tooltip').options.title = 'Vous devez accepter les conditions gÃ©nÃ©rales d\'utilisation';
+			tou.data('bs.tooltip').options.title = 'Vous devez accepter les conditions générales d\'utilisation';
 			tou.tooltip('show');
 			submitable = false;
 		}

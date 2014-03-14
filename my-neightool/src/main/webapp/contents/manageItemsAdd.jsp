@@ -278,7 +278,7 @@
 			<label for="itemCaution" class="col-sm-3 control-label">Montant
 				de la caution</label>
 			<div class="col-sm-2">
-				<input type="text" class="form-control" maxlength="7"
+				<input type="text" class="form-control" maxlength="3"
 					id="itemCaution" name="itemCaution" placeholder="Prix" required />
 			</div>
 			<label for="itemCaution" class="col-sm-1 control-label">euros</label>
