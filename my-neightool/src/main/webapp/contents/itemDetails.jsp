@@ -24,6 +24,8 @@
 <%@ page import="com.ped.myneightool.model.Emprunt"%>
 <%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
 <%@ page import="com.ped.myneightool.dto.EmpruntsDTO"%>
+
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%@include file="../functions.jsp"%>
 
 <%
@@ -180,6 +182,14 @@ if(request.getParameter("id") != null) {
 				
 				//ici on envoit la requete au webservice createEmprunt
 				clientRequestEmprunt.body("application/xml", emprunt);
+				
+				//CREDENTIALS		
+				String username2 = user.getConnexion().getLogin();
+				String password2 = user.getConnexion().getPassword();
+				String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username2 + ":" + password2).getBytes());
+				clientRequestEmprunt.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+				///////////////////
+				
 				
 				// On rend l'outil indisponible désormais
 /* 				outil.setDisponible(false);
@@ -408,7 +418,7 @@ out.println("</div></div>");
 						for (Emprunt e : empruntdto.getListeEmprunts()) {
 						
 							// Si un emprunt correspond à notre outil, que il n est pas refusé et que sa date de fin ne soit pas dejà passée
-							if((itemId == e.getOutil().getId()) && ((e.getValide() == 1) || (e.getValide() == 2)) && (e.getDateFin().after(new Date())))
+							if((itemId == e.getOutil().getId()) && ((e.getValide() == 1) || (e.getValide() == 2)) && ((e.getDateFin().equals(new Date())) || (e.getDateFin().after(new Date()))))
 							{
 								cpt++;
 					%>
