@@ -214,7 +214,7 @@
 	//Si l'utilisateur est déjà connecté on redirige vers dashboard
 	if (session.getAttribute("ID") != null) {
 		RequestDispatcher rd = request
-		.getRequestDispatcher("dashboard.jsp");
+		.getRequestDispatcher("dashboard.jsp?idCat=0");
 		rd.forward(request, response);
 	}
 %>
