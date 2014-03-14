@@ -352,8 +352,11 @@
 								<div class="col-md-6 form-group">
 									<input type="text" placeholder="Prénom" id="lastname" name="lastname" class="form-control ttipt" required/>
 								</div>
-								<div class="col-md-12 form-group">
+								<div class="col-md-6 form-group">
 									<input type="text" placeholder="Nom d'utilisateur" id="username" name="username" class="form-control ttipr" required/>
+								</div>
+								<div id="checkUsernameDiv" class="col-md-6 form-group" style="position:relative;margin-top:6px;display:none;">
+									<span id="checkUsername"></span>
 								</div>
 								<div class="col-md-12 form-group">
 									<input type="email"	placeholder="Adresse email" id="email" name="email" class="form-control ttipr" required/>
