@@ -214,7 +214,7 @@
 	//Si l'utilisateur est déjà connecté on redirige vers dashboard
 	if (session.getAttribute("ID") != null) {
 		RequestDispatcher rd = request
-		.getRequestDispatcher("dashboard.jsp?idCat=0");
+		.getRequestDispatcher("dashboard.jsp");
 		rd.forward(request, response);
 	}
 %>
@@ -242,6 +242,7 @@
 		<script src="<%=jsFolder%>jquery.cookie.js"></script>
 		<script src="<%=jsFolder%>init.js"></script>
 		<script src="<%=jsFolder%>maps.js"></script>
+		<script src="<%=jsFolder%>sign.js"></script>
 		
 		<!-- Just for debugging purposes. Don't actually copy this line! -->
 		<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -258,27 +259,6 @@
 			height: 600px !important;
 		}
 		</style>
-		
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$(".ttipl").tooltip({
-					placement : "left",
-					container : 'body'
-				});
-				$(".ttipr").tooltip({
-					placement : "right",
-					container : 'body'
-				});
-				$(".ttipt").tooltip({
-					placement : "top",
-					container : 'body'
-				});
-				$(".ttipb").tooltip({
-					placement : "bottom",
-					container : 'body'
-				});
-			});
-		</script>
 	</head>
 
 	<body onload="initialize()">
@@ -319,9 +299,7 @@
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse"
 						data-target=".navbar-collapse">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
+						<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="index.jsp"><img height="20px" src="<%=imgFolder%>favicon.png">&nbsp;&nbsp;&nbsp;<%=siteName%>
 					</a>
@@ -366,38 +344,33 @@
 						<h3>Créez un compte gratuitement</h3>
 						<h4>Echangez dès maintenant près de chez vous !</h4>
 						<hr />
-						<form action="index.jsp?attemp=1" method="POST">
+						<form id="formSignUp" action="index.jsp?attemp=1" method="POST">
 							<div class="row">
-								<div class="col-md-6">
-									<input type="text" placeholder="Nom" id="firstname"
-										name="firstname" class="form-control" required="required" />
+								<div class="col-md-6 form-group">
+									<input type="text" placeholder="Nom" id="firstname" name="firstname" class="form-control ttipt" required/>
 								</div>
-								<div class="col-md-6">
-									<input type="text" placeholder="Prénom" id="lastname"
-										name="lastname" class="form-control" required="required" />
+								<div class="col-md-6 form-group">
+									<input type="text" placeholder="Prénom" id="lastname" name="lastname" class="form-control ttipt" required/>
 								</div>
-								<div class="col-md-12">
-									<br /> <input type="text" placeholder="Nom d'utilisateur"
-										id="username" name="username" class="form-control"
-										required="required" /> <br /> <input type="email"
-										placeholder="Adresse email" id="email" name="email"
-										class="form-control" required="required" /> <br /> <input
-										type="password" placeholder="Mot de passe" id="password"
-										name="password" class="form-control" required="required" />
+								<div class="col-md-12 form-group">
+									<input type="text" placeholder="Nom d'utilisateur" id="username" name="username" class="form-control ttipr" required/>
 								</div>
-								<br />
-								<div class="col-md-6">
-									<br /> <input type="text" placeholder="Numéro de téléphone"
-										id="telephone" name="telephone" maxlength="10"
-										class="form-control" required="required" />
+								<div class="col-md-12 form-group">
+									<input type="email"	placeholder="Adresse email" id="email" name="email" class="form-control ttipr" required/>
+								</div>
+								<div class="col-md-12 form-group">
+									<input type="password" placeholder="Mot de passe" id="password"	name="password" class="form-control ttipr" required/>
+								</div>
+								<div class="col-md-6 form-group">
+									<input type="text" placeholder="Numéro de téléphone" id="telephone" name="telephone" maxlength="10" class="form-control ttipr" required/>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12">
-									<br /> Date de naissance :
+									Date de naissance :
 								</div>
-								<div class="col-md-4">
-									<select class="form-control" id="day" name="day">
+								<div class="col-md-4 form-group">
+									<select class="form-control" id="day" name="day" required>
 										<%
 											for (int i = 1; i <= 31; i++) {
 												out.println("<option value='" + i + "'>" + i + "</option>");
@@ -405,8 +378,8 @@
 										%>
 									</select>
 								</div>
-								<div class="col-md-4">
-									<select class="form-control" id="month" name="month">
+								<div class="col-md-4 form-group">
+									<select class="form-control" id="month" name="month" required>
 										<%
 											String[] arrMois = { "Janvier", "Fevrier", "Mars", "Avril", "Mai",
 													"Juin", "Juillet", "Aout", "Septembre", "Octobre",
@@ -419,49 +392,39 @@
 										%>
 									</select>
 								</div>
-								<div class="col-md-4">
-									<select class="form-control" id="year" name="year">
+								<div class="col-md-4 form-group">
+									<select class="form-control ttipr" id="year" name="year" required>
 										<%
 											int yyyy = Calendar.getInstance().get(Calendar.YEAR);
 											for (int i = yyyy; i >= 1900; i--) {
 												out.println("<option value='" + i + "'>" + i + "</option>");
 											}
 										%>
-									</select> <br />
+									</select>
 								</div>
 								<div class="col-lg-12">
 									<div class="input-group">
-										<input type="text"
-											placeholder="Adresse complète (Rue, Ville, Pays, Code Postal)"
-											id="location" name="location" class="form-control"
-											required="required"> <span class="input-group-btn">
-											<button class="btn btn-default ttipb" type="button"
-												data-toggle="tooltip" title="Vérifier la carte"
-												onclick="codeAddress()">
+										<input type="text" placeholder="Votre ville" id="location" name="location" class="form-control ttipb" required/>
+										<span class="input-group-btn">
+											<button class="btn btn-default ttipb" type="button"	data-toggle="tooltip" title="Vérifier la carte"	onclick="codeAddress()">
 												<span class="glyphicon glyphicon-search"></span>
 											</button>
-											<button class="btn btn-default ttipb" type="button"
-												data-toggle="tooltip" title="Me trouver sur la carte"
-												onclick="codeLatLng(null)">
+											<button class="btn btn-default ttipb" type="button"	data-toggle="tooltip" title="Me trouver sur la carte" onclick="codeLatLng(null)">
 												<span class="glyphicon glyphicon-screenshot"></span>
 											</button>
-											<button class="btn btn-default ttipb" type="button"
-												data-toggle="tooltip"
-												title="Récupérer la position sur la carte"
-												onclick="getMyMarker()">
+											<button class="btn btn-default ttipb" type="button"	data-toggle="tooltip" title="Récupérer la position sur la carte" onclick="getMyMarker()">
 												<span class="glyphicon glyphicon-pushpin"></span>
 											</button>
 										</span>
 									</div>
 									<hr />
-									<label class="checkbox"><input type="checkbox"
-										name="checkbox" required> J'ai lu et j'accepte les <a
-										href="#" data-toggle="modal" data-target="#terms">Conditions
-											générales d'utilisation</a> </label> <br /> <input type="hidden"
-										name="signUp" id="signUp"> <input type="hidden"
-										value="" name="lat" id="lat"> <input type="hidden"
-										value="" name="long" id="long"> <input type="submit"
-										value="Inscription" class="pull-right btn btn-info btn-lg">
+									<label class="checkbox">
+										<input type="checkbox" id="tou" name="checkbox" class="ttipb" required> J'ai lu et j'accepte les <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a>
+									</label>
+									<br />
+									<input type="hidden" name="signUp" id="signUp"> <input type="hidden" value="" name="lat" id="lat">
+									<input type="hidden" value="" name="long" id="long">
+									<a id="signUpBtn" class="pull-right btn btn-info btn-lg">Inscription</a>
 									<br /> <br /> <br />
 								</div>
 							</div>

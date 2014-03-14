@@ -19,19 +19,6 @@ function initialize() {
 	geocoder = new google.maps.Geocoder();
 	
 	
-	var selectUsers = document.getElementById('users');
-	for(var i=0; i<selectUsers.options.length; i++)
-		{
-			var splittedText = selectUsers.options[i].text.split('/');
-			var lat = splittedText[2];
-			var lng = splittedText[1];
-			var name = splittedText[0];
-			
-			var latlng = new google.maps.LatLng(lat, lng);
-			destinations2.push(latlng);
-			usersNames.push(name);
-		}
-	
 	var mapOptions = {
 		zoom : z
 	};
@@ -51,6 +38,26 @@ function initialize() {
 				content : 'Vous &ecirctes ici actuellement !'
 			});
 			map.setCenter(pos);
+			
+			var nbDest=0;
+			
+			var selectUsers = document.getElementById('users');
+			for (var i = 0; i < selectUsers.options.length; i++) {
+				var splittedText = selectUsers.options[i].text.split('/');
+				var lat = splittedText[1];
+				var lng = splittedText[2];
+				var name = splittedText[0];
+
+				//L'API étant limité à 25 destinations maximum, nous devons faire le tri
+				if (Math.abs(position.coords.latitude)-Math.abs(lat)<3 && Math.abs(position.coords.longitude)-Math.abs(lng)<3 && nbDest<25)
+				{
+					var latlng = new google.maps.LatLng(lat, lng);
+					destinations2.push(latlng);
+					nbDest++;
+					usersNames.push(name);
+				}
+			}
+			
 			
 			// Ajoute marker si clique de souris
 			google.maps.event.addListener(map, 'click', function(event) {

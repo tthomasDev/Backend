@@ -46,9 +46,33 @@ if(request.getParameter("sub") != null) {
 // réponse à un utilisateur
 if(request.getParameter("userId") != null) {
 	newMessageHidden = false;
-	/** TODO **/
-	/* Récupérer le nom d'utilisateur */
-	newMessageTo = "Utilisateur 1";
+	
+	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
+	final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
+
+	// Utilisateur
+	Utilisateur userTo = new Utilisateur();
+	
+	try {
+
+		ClientRequest clientRequest;
+		clientRequest = new ClientRequest(siteUrl + "rest/user/" + request.getParameter("userId"));
+		clientRequest.accept("application/xml");
+		ClientResponse<String> response2 = clientRequest.get(String.class);
+
+		if (response2.getStatus() == 200) {
+			Unmarshaller un = jaxbc.createUnmarshaller();
+			userTo = (Utilisateur) un.unmarshal(new StringReader(response2.getEntity()));
+		} else {
+
+			System.out.println("Pas 200");
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	newMessageTo = userTo.getConnexion().getLogin();
 }
 
 
@@ -58,7 +82,6 @@ if(request.getParameter("userId") != null) {
 			&& (request.getParameter("subjectTo") != null)
 			&& (request.getParameter("messageTo") != null)
 			&& (request.getParameter("idAnswer") != null)) {
-		System.out.println("ENVOI D'UN MESSAGE");
 
 		//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
 		final JAXBContext jaxbc = JAXBContext.newInstance(
@@ -114,10 +137,8 @@ if(request.getParameter("userId") != null) {
 		final Message message = new Message(userSource, userTarget,
 				subject, corps, new Date(), 0, 0);
 
-		System.out.println("\n \n ON EST AVANT  LE IF \n");
 		//Cas où l'on répond à un autre message
 		if (request.getParameter("idAnswer") != "") {
-			System.out.println("\n \n ON EST DANS LE IF \n");
 
 			//on récupère le message à mettre à jour
 			final JAXBContext jaxbc2 = JAXBContext.newInstance(

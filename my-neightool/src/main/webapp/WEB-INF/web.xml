@@ -35,7 +35,6 @@
 			<web-resource-name>Forbidden JSPs</web-resource-name>
 			<url-pattern>/admin/*</url-pattern>
 			<url-pattern>/contents/*</url-pattern>
-        	<url-pattern>/plugins/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint />
 	</security-constraint>

@@ -24,12 +24,15 @@
 <%@ page import="com.ped.myneightool.model.Emprunt"%>
 <%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
 <%@ page import="com.ped.myneightool.dto.EmpruntsDTO"%>
+
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%@include file="../functions.jsp"%>
 
 <%
 String itemName="", itemVendor="", itemDescription="", itemCategory="", itemDateStart="";
 String itemDateEnd="", itemPrice="", itemDistance="", itemPath="", userID="", itemCategoryID="";
 int itemId = -1;
+int itemVendorId = -1;
 
 boolean itemFound = false;
 
@@ -128,6 +131,7 @@ if(request.getParameter("id") != null) {
 		itemId = outil.getId();
 		itemName = outil.getNom();
 		itemVendor = outil.getUtilisateur().getConnexion().getLogin();
+		itemVendorId = outil.getUtilisateur().getId();
 		itemDescription = outil.getDescription();
 		itemCategory = outil.getCategorie().getNom();
 		itemCategoryID = String.valueOf(outil.getCategorie().getId());
@@ -178,6 +182,14 @@ if(request.getParameter("id") != null) {
 				
 				//ici on envoit la requete au webservice createEmprunt
 				clientRequestEmprunt.body("application/xml", emprunt);
+				
+				//CREDENTIALS		
+				String username2 = user.getConnexion().getLogin();
+				String password2 = user.getConnexion().getPassword();
+				String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username2 + ":" + password2).getBytes());
+				clientRequestEmprunt.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+				///////////////////
+				
 				
 				// On rend l'outil indisponible désormais
 /* 				outil.setDisponible(false);
@@ -406,7 +418,7 @@ out.println("</div></div>");
 						for (Emprunt e : empruntdto.getListeEmprunts()) {
 						
 							// Si un emprunt correspond à notre outil, que il n est pas refusé et que sa date de fin ne soit pas dejà passée
-							if((itemId == e.getOutil().getId()) && ((e.getValide() == 1) || (e.getValide() == 2)) && (e.getDateFin().after(new Date())))
+							if((itemId == e.getOutil().getId()) && ((e.getValide() == 1) || (e.getValide() == 2)) && ((e.getDateFin().equals(new Date())) || (e.getDateFin().after(new Date()))))
 							{
 								cpt++;
 					%>
@@ -427,7 +439,7 @@ out.println("</div></div>");
 		<hr />
 		<a
 			<%int diff = 100;
-				if (Integer.parseInt(id) == Integer.parseInt(userID))
+				if (itemVendorId == Integer.parseInt(userID))
 					diff = 0;
 				else
 					diff = 1;%>
@@ -441,7 +453,7 @@ out.println("</div></div>");
 			l'objet</a>
 	</div>
 	<jsp:include page="profile.jsp">
-		<jsp:param value="1" name="userId" />
+		<jsp:param value="<%=itemVendorId%>" name="userId" />
 	</jsp:include>
 	<div class="modal fade" id="confirmBorrow" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">

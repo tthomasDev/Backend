@@ -18,13 +18,15 @@
 <%@include file="../functions.jsp"%>
 <%
 
+
 // Le DTO des outils permettant de récupérer la liste d'outils
-OutilsDTO outilsDto = new OutilsDTO();
+/*OutilsDTO outilsDto = new OutilsDTO();
 
 String messageType = "";
 String messageValue = "";
-	
+	*/
 /* Les vraies infos de l'utilisateur récupérés */
+/*
 JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
 JAXBContext jaxbc2=JAXBContext.newInstance(OutilsDTO.class);
 
@@ -43,17 +45,46 @@ try {
 } catch (Exception e) {
 	e.printStackTrace();
 }
+*/
 
 
 
 if(request.getParameter("userId") != null) {
+	
 	String login, avatar;
 	int age, userId;
 	
-	userId = utilisateurGet.getId();
+	userId = Integer.parseInt(request.getParameter("userId"));
+
+	// Le DTO des outils permettant de récupérer la liste d'outils
+	OutilsDTO outilsDto = new OutilsDTO();
+
+	String messageType = "";
+	String messageValue = "";
+		
+	/* Les vraies infos de l'utilisateur récupérés */
+	JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
+	JAXBContext jaxbc2=JAXBContext.newInstance(OutilsDTO.class);
+
+	Utilisateur utilisateurGet = new Utilisateur();
+	try {
+		ClientRequest clientRequest;
+		clientRequest = new ClientRequest(siteUrl + "rest/user/" + userId);
+		clientRequest.accept("application/xml");
+		ClientResponse<String> clientResponse = clientRequest.get(String.class);
+		if (clientResponse.getStatus() == 200)
+		{
+			Unmarshaller un = jaxbc.createUnmarshaller();
+			utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
+			
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
 	login = utilisateurGet.getConnexion().getLogin();
 	Date date = utilisateurGet.getDateDeNaissance();
-
+	
 	int yeardiff;
 	{
 	  Calendar curr = Calendar.getInstance();
