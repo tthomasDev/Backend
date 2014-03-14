@@ -23,8 +23,8 @@ function initialize() {
 	for(var i=0; i<selectUsers.options.length; i++)
 		{
 			var splittedText = selectUsers.options[i].text.split('/');
-			var lat = splittedText[2];
-			var lng = splittedText[1];
+			var lat = splittedText[1];
+			var lng = splittedText[2];
 			var name = splittedText[0];
 			
 			var latlng = new google.maps.LatLng(lat, lng);
