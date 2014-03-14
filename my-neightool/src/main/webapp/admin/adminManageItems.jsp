@@ -76,10 +76,11 @@ $(function() {
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th width="10%" class="perfectCenter">Id</th>
-			<th width="35%" class="perfectCenter">Nom de l'outil</th>
+			<th width="5%" class="perfectCenter">Id</th>
+			<th width="25%" class="perfectCenter">Nom de l'outil</th>
+			<th width="20%" class="perfectCenter">Propriétaire</th>
 			<th width="20%" class="perfectCenter">Catégorie</th>
-			<th width="20%" class="perfectCenter">Caution</th>
+			<th width="10%" class="perfectCenter">Caution</th>
 			<th width="15%" class="perfectCenter">Action</th>
 		</tr>
 	</thead>
@@ -100,6 +101,10 @@ $(function() {
 			
 			%>
 			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=outil.getNom() %></td>
+			<%
+				String str2= outil.getUtilisateur().getConnexion().getLogin();
+			%>
+			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=str2%></td>
 			<% 
 				String str= outil.getCategorie().getNom();
 				if(str.equals(null)){

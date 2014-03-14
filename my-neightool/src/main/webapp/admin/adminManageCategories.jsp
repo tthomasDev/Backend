@@ -30,6 +30,8 @@
 	boolean actionValid = false;
 	String messageType = "";
 	String messageValue = "";
+	String errorMsg = "";
+	boolean errorMsgB = false;
 	
 	actionValid = true;
 
@@ -64,49 +66,57 @@
 
 <%
 	// AJOUT D'UNE CATEGORIE
-	if (request.getParameter("idCat") != null) {
+	if (request.getParameter("idCat") != null
+			&& request.getParameter("idCat") == "") {
 
-		final Categorie categorie = new Categorie(
-				request.getParameter("catName"));
+		if (!request.getParameter("catName").equals("Autre")) {
+			
+			
+			final Categorie categorie = new Categorie(
+					request.getParameter("catName"));
 
-		//on serialise la catégorie
-		final Marshaller marshaller = jaxbc.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-		final java.io.StringWriter sw = new StringWriter();
-		marshaller.marshal(categorie, sw);
+			//on serialise la catégorie
+			final Marshaller marshaller = jaxbc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(categorie, sw);
 
-		//ici on envois la requete au webservice createCategorie
-		final ClientRequest clientRequest = new ClientRequest(siteUrl
-				+ "rest/categorie/create");
-		clientRequest.body("application/xml", categorie);
+			//ici on envois la requete au webservice createCategorie
+			final ClientRequest clientRequest = new ClientRequest(
+					siteUrl + "rest/categorie/create");
+			clientRequest.body("application/xml", categorie);
 
-		//CREDENTIALS		
-		String username3 = admin.getConnexion().getLogin();
-		String password3 = admin.getConnexion().getPassword();
-		String base64encodedUsernameAndPassword3 = DatatypeConverter
-				.printBase64Binary((username3 + ":" + password3)
-						.getBytes());
-		clientRequest.header("Authorization", "Basic "
-				+ base64encodedUsernameAndPassword3);
-		///////////////////
+			//CREDENTIALS		
+			String username3 = admin.getConnexion().getLogin();
+			String password3 = admin.getConnexion().getPassword();
+			String base64encodedUsernameAndPassword3 = DatatypeConverter
+					.printBase64Binary((username3 + ":" + password3)
+							.getBytes());
+			clientRequest.header("Authorization", "Basic "
+					+ base64encodedUsernameAndPassword3);
+			///////////////////
 
-		//ici on va récuperer la réponse de la requete
-		final ClientResponse<String> clientResponse = clientRequest
-				.post(String.class);
+			//ici on va récuperer la réponse de la requete
+			final ClientResponse<String> clientResponse = clientRequest
+					.post(String.class);
 
-		if (clientResponse.getStatus() == 200) { // si la réponse est valide !
-			// on désérialiser la réponse si on veut vérifier que l'objet retourner
-			// est bien celui qu'on a voulu créer , pas obligatoire
-			final Unmarshaller un = jaxbc.createUnmarshaller();
-			final Object object = (Object) un
-					.unmarshal(new StringReader(clientResponse
-							.getEntity()));
-			// et ici on peut vérifier que c'est bien le bonne objet
-			messageValue = "Categorie create OK";
-			messageType = "success";
+			if (clientResponse.getStatus() == 200) { // si la réponse est valide !
+				// on désérialiser la réponse si on veut vérifier que l'objet retourner
+				// est bien celui qu'on a voulu créer , pas obligatoire
+				final Unmarshaller un = jaxbc.createUnmarshaller();
+				final Object object = (Object) un
+						.unmarshal(new StringReader(clientResponse
+								.getEntity()));
+				// et ici on peut vérifier que c'est bien le bonne objet
+				messageValue = "Categorie create OK";
+				messageType = "success";
+			} else {
+				messageValue = "Une erreur est survenue";
+				messageType = "danger";
+			}
 		} else {
-			messageValue = "Une erreur est survenue";
-			messageType = "danger";
+			errorMsg = "Impossible de créer la catégorie \"Autre\" (catégorie unique non supprimable et non modifiable)";
+			errorMsgB = true;
 		}
 	}
 %>
@@ -156,139 +166,227 @@
 		System.out.println("\n");
 		System.out.println("\n");
 		
-		//on récupère la categorie "Autre" dans laquelle on "deplacera" 
-		//les objets de la catégorie que l'on va supprimer
-		Categorie categorieAutre = new Categorie();
-		try {
-
-			ClientRequest clientRequest;
-			clientRequest = new ClientRequest(siteUrl + "rest/categorie/name/"+"autre");
-			clientRequest.accept("application/xml");
-			ClientResponse<String> response2 = clientRequest
-					.get(String.class);
-
-			if (response2.getStatus() == 200) {
-				Unmarshaller un = jaxbc.createUnmarshaller();
-				categorieAutre = (Categorie) un.unmarshal(new StringReader(
-						response2.getEntity()));
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		System.out.println("\n");
-		System.out.println("\n");
-		System.out.println("\n");
-		System.out.println(categorieAutre.getNom());
-		System.out.println("\n");
-		System.out.println("\n");
-		System.out.println("\n");
-		
-		
-		//on récupère la liste des objets de la catégorie que l'on va supprimer
-		OutilsDTO outilsDto= new OutilsDTO();
-		try {
-			ClientRequest requestTools;
-			requestTools = new ClientRequest(
-			siteUrl + "rest/tool/categorie/" + categorieGet.getId());
-			requestTools.accept("application/xml");
-			ClientResponse<String> responseTools = requestTools.get(String.class);
-	
-			if (responseTools.getStatus() == 200) {
-				Unmarshaller un2 = jaxbc.createUnmarshaller();
-				outilsDto = (OutilsDTO) un2.unmarshal(new StringReader(
-				responseTools.getEntity()));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		//parcours de la liste des objets de la catégorie que l'on va supprimer
-		Iterator<Outil> io= outilsDto.getListeOutils().iterator();
-		while(io.hasNext()){
+		if(!categorieGet.getNom().equals("Autre")){
 			
-			final Outil outil = io.next();
-			outil.setCategorie(categorieAutre);
+			
+			
+			//on récupère la categorie "Autre" dans laquelle on "deplacera" 
+			//les objets de la catégorie que l'on va supprimer
+			Categorie categorieAutre = new Categorie();
 			try {
-				//>> ON MET A JOUR LA CATEGORIE AVEC UN UPDATE
-				//on serialise la catégorie
-				final Marshaller marshaller = jaxbc.createMarshaller();
-				marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-				final java.io.StringWriter sw = new StringWriter();
-				marshaller.marshal(outil, sw);
 	
-				//ici on envois la requete au webservice createCategorie
-				final ClientRequest clientRequest = new ClientRequest(siteUrl
-						+ "rest/tool/update");
-				clientRequest.body("application/xml", outil);
+				ClientRequest clientRequest;
+				clientRequest = new ClientRequest(siteUrl + "rest/categorie/name/"+"autre");
+				clientRequest.accept("application/xml");
+				ClientResponse<String> response2 = clientRequest
+						.get(String.class);
 	
-				//CREDENTIALS		
-				String username3 = admin.getConnexion().getLogin();
-				String password3 = admin.getConnexion().getPassword();
-				String base64encodedUsernameAndPassword3 = DatatypeConverter
-						.printBase64Binary((username3 + ":" + password3)
-								.getBytes());
-				clientRequest.header("Authorization", "Basic "
-						+ base64encodedUsernameAndPassword3);
-				///////////////////
+				if (response2.getStatus() == 200) {
+					Unmarshaller un = jaxbc.createUnmarshaller();
+					categorieAutre = (Categorie) un.unmarshal(new StringReader(
+							response2.getEntity()));
+				}
 	
-				//ici on va récuperer la réponse de la requete
-				final ClientResponse<String> clientResponse = clientRequest
-						.post(String.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("\n");
+			System.out.println("\n");
+			System.out.println("\n");
+			System.out.println(categorieAutre.getNom());
+			System.out.println("\n");
+			System.out.println("\n");
+			System.out.println("\n");
+			
+			
+			//on récupère la liste des objets de la catégorie que l'on va supprimer
+			OutilsDTO outilsDto= new OutilsDTO();
+			try {
+				ClientRequest requestTools;
+				requestTools = new ClientRequest(
+				siteUrl + "rest/tool/categorie/" + categorieGet.getId());
+				requestTools.accept("application/xml");
+				ClientResponse<String> responseTools = requestTools.get(String.class);
+		
+				if (responseTools.getStatus() == 200) {
+					Unmarshaller un2 = jaxbc.createUnmarshaller();
+					outilsDto = (OutilsDTO) un2.unmarshal(new StringReader(
+					responseTools.getEntity()));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			//parcours de la liste des objets de la catégorie que l'on va supprimer
+			Iterator<Outil> io= outilsDto.getListeOutils().iterator();
+			while(io.hasNext()){
+				
+				final Outil outil = io.next();
+				outil.setCategorie(categorieAutre);
+				try {
+					//>> ON MET A JOUR LA CATEGORIE AVEC UN UPDATE
+					//on serialise la catégorie
+					final Marshaller marshaller = jaxbc.createMarshaller();
+					marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+					final java.io.StringWriter sw = new StringWriter();
+					marshaller.marshal(outil, sw);
+		
+					//ici on envois la requete au webservice createCategorie
+					final ClientRequest clientRequest = new ClientRequest(siteUrl
+							+ "rest/tool/update");
+					clientRequest.body("application/xml", outil);
+		
+					//CREDENTIALS		
+					String username3 = admin.getConnexion().getLogin();
+					String password3 = admin.getConnexion().getPassword();
+					String base64encodedUsernameAndPassword3 = DatatypeConverter
+							.printBase64Binary((username3 + ":" + password3)
+									.getBytes());
+					clientRequest.header("Authorization", "Basic "
+							+ base64encodedUsernameAndPassword3);
+					///////////////////
+		
+					//ici on va récuperer la réponse de la requete
+					final ClientResponse<String> clientResponse = clientRequest
+							.post(String.class);
+		
+					if (clientResponse.getStatus() == 200) { 
+						messageValue = "Categorie create OK";
+						messageType = "success";
+					} else {
+						messageValue = "Une erreur est survenue";
+						messageType = "danger";
+					}
+				
+					} catch (Exception e) {
+						e.printStackTrace();
+				}
+			}
+			
 	
-				if (clientResponse.getStatus() == 200) { 
-					messageValue = "Categorie create OK";
+			//SUPPRESSION DE LA CATEGORIE
+			//>>
+			
+			try{
+				ClientRequest requestDelete;
+				requestDelete = new ClientRequest(siteUrl+"rest/categorie/delete/"+categorieGet.getId());
+				requestDelete.accept("application/xml");
+				
+				//CREDENTIALS
+				String username = admin.getConnexion().getLogin();
+				String password = admin.getConnexion().getPassword();
+				String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password)
+						.getBytes());
+				requestDelete.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
+				///////////////////////////
+				
+				ClientResponse<String> responseDelete = requestDelete.get(String.class);
+				if (responseDelete.getStatus() == 200)
+				{
+					messageValue = "Categorie delete OK";
 					messageType = "success";
-				} else {
+					
+				}else {
 					messageValue = "Une erreur est survenue";
 					messageType = "danger";
 				}
-			
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-		}
-		
-
-		//SUPPRESSION DE LA CATEGORIE
-		//>>
-		
-		try{
-			ClientRequest requestDelete;
-			requestDelete = new ClientRequest(siteUrl+"rest/categorie/delete/"+categorieGet.getId());
-			requestDelete.accept("application/xml");
-			
-			//CREDENTIALS
-			String username = admin.getConnexion().getLogin();
-			String password = admin.getConnexion().getPassword();
-			String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password)
-					.getBytes());
-			requestDelete.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
-			///////////////////////////
-			
-			ClientResponse<String> responseDelete = requestDelete.get(String.class);
-			if (responseDelete.getStatus() == 200)
-			{
-				messageValue = "Categorie delete OK";
-				messageType = "success";
 				
-			}else {
-				messageValue = "Une erreur est survenue";
-				messageType = "danger";
 			}
-			
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
+			catch(Exception e){
+				e.printStackTrace();
+			}
 		
-		
+		} else {
+			errorMsg = "Impossible de supprimer la catégorie \"Autre\" (non supprimable et non modifiable)";
+			errorMsgB = true;
+		}
 	}
 	
 
 %>
+
+<%
+	//UPDATE D'UNE CATEGORIE
+	if (request.getParameter("idCat") != null && request.getParameter("idCat")!="") {
+
+		if (!request.getParameter("catName").equals("Autre")) {
+			
+		
+		int idEdit = Integer.parseInt(request.getParameter("idCat"));
+
+		//on récupère la categorie que l'on veut updater/editer
+		Categorie categorieGet = new Categorie();
+		try {
+
+			ClientRequest clientRequestGet;
+			clientRequestGet = new ClientRequest(siteUrl
+					+ "rest/categorie/" + idEdit);
+			clientRequestGet.accept("application/xml");
+			ClientResponse<String> response2 = clientRequestGet
+					.get(String.class);
+
+			if (response2.getStatus() == 200) {
+				Unmarshaller un = jaxbc.createUnmarshaller();
+				categorieGet = (Categorie) un
+						.unmarshal(new StringReader(response2
+								.getEntity()));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		categorieGet.setNom(request.getParameter("catName"));
+
+		try {
+			//>> ON MET A JOUR LA CATEGORIE AVEC UN UPDATE
+			//on serialise la catégorie
+			final Marshaller marshaller = jaxbc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(categorieGet, sw);
+
+			//ici on envois la requete au webservice createCategorie
+			final ClientRequest clientRequestUpdate = new ClientRequest(
+					siteUrl + "rest/categorie/update");
+			clientRequestUpdate.body("application/xml", categorieGet);
+
+			//CREDENTIALS		
+			String username3 = admin.getConnexion().getLogin();
+			String password3 = admin.getConnexion().getPassword();
+			String base64encodedUsernameAndPassword3 = DatatypeConverter
+					.printBase64Binary((username3 + ":" + password3)
+							.getBytes());
+			clientRequestUpdate.header("Authorization", "Basic "
+					+ base64encodedUsernameAndPassword3);
+			///////////////////
+
+			//ici on va récuperer la réponse de la requete
+			final ClientResponse<String> clientResponse = clientRequestUpdate
+					.post(String.class);
+
+			if (clientResponse.getStatus() == 200) {
+				messageValue = "Categorie update OK";
+				messageType = "success";
+			} else {
+				messageValue = "Une erreur est survenue";
+				messageType = "danger";
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		}
+		else {
+			errorMsg = "Impossible de donner le nom \"Autre\" à une catégorie (catégorie unique non supprimable et non modifiable)";
+			errorMsgB = true;
+		}
+
+	}
+%>
+
 
 <%
 
@@ -340,6 +438,12 @@ $(function() {
 
 <h3>Liste des catégories <span class="pull-right"><a class="btn btn-info" id="btnNewCat"><i class="glyphicon glyphicon-plus"></i> Ajouter une nouvelle catégorie</a></span></h3>
 <hr />
+<% if(errorMsgB) { %>
+<div class="alert alert-danger perfectCenter">
+	<%=errorMsg%>
+</div>
+<br /><br />
+<% } %>
 <table class="table table-hover">
 	<thead>
 		<tr>
@@ -367,12 +471,13 @@ $(function() {
 			<td id="nameCat<%=categorie.getId()%>" class="perfectCenter"><%=categorie.getNom() %></td>
 			<td class="perfectCenter">
 				<div class="btn-group">
+					<%if(!categorie.getNom().equals("Autre")){%>
+						
+					
 					<a id="edit<%=categorie.getId()%>" class="ttipt btn btn-default editBtn" title="Editer la catégorie">
 						<span class="glyphicon glyphicon-pencil"></span>
 					</a>
-					<%if(categorie.getNom().equals("Autre")){
-						
-					}else{%>
+					
 					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=<%=categorie.getId()%>" class="ttipt btn btn-default" title="Supprimer la catégorie">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>

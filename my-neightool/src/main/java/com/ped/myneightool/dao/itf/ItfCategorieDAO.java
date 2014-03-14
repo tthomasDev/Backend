@@ -17,4 +17,6 @@ public interface ItfCategorieDAO {
 
 	public abstract Categorie findByName(String name);
 
+	public abstract void updateCategorie(Categorie c);
+
 }

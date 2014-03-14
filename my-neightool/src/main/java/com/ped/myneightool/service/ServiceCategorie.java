@@ -54,6 +54,15 @@ public class ServiceCategorie {
 		final Categorie categorie = categorieDAO.findById(id);
 		categorieDAO.deleteCategorie(categorie);
 	}
+	
+	@RolesAllowed("ADMIN")
+	@POST
+	@Path("/update")
+	@Consumes("application/xml")
+	public Response updateCategorie(final Categorie c) {
+		categorieDAO.updateCategorie(c);
+		return Response.ok(c).build();
+	}
 
 	@PermitAll
 	@GET

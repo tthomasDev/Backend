@@ -145,6 +145,26 @@ public class CategorieDAOImpl extends GenericDAOImpl implements ItfCategorieDAO 
 			tx.rollback();
 		}
 		return categorie;
+	}
+
+
+	@Override
+	public void updateCategorie(Categorie c) {
+		
+		final EntityManager em = createEntityManager();
+		EntityTransaction tx = null;
+		try {
+			tx = em.getTransaction();
+			tx.begin();
+			em.merge(c);
+			tx.commit();
+
+		} catch (final Exception re) {
+			if (tx != null) {
+				LOG.error("update categorie failed", re);
+			}
+			tx.rollback();
+		}
 	}		
 	
 }

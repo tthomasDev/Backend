@@ -63,7 +63,7 @@ final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="adminDashboard.jsp"><% out.print(siteName); %> - Administation</a>
+					<a class="navbar-brand" href="adminDashboard.jsp"><% out.print(siteName); %> - Administration</a>
 				</div>
 				<div class="navbar-collapse collapse">
 					

@@ -73,9 +73,10 @@ $(function() {
 	<thead>
 		<tr>
 			<th width="10%" class="perfectCenter">Id</th>
-			<th width="20%" class="perfectCenter">Prénom</th>
-			<th width="20%" class="perfectCenter">Nom</th>
-			<th width="35%" class="perfectCenter">e-mail</th>
+			<th width="15%" class="perfectCenter">Login</th>
+			<th width="15%" class="perfectCenter">Prénom</th>
+			<th width="15%" class="perfectCenter">Nom</th>
+			<th width="30%" class="perfectCenter">e-mail</th>
 			<th width="15%" class="perfectCenter">Action</th>
 		</tr>
 	</thead>
@@ -92,6 +93,7 @@ $(function() {
 		%>
 			<tr class="toPaginate">
 			<td class="perfectCenter"><%=u.getId()%></td>
+			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getConnexion().getLogin() %></td>
 			<% 
 			
 			%>
@@ -100,9 +102,7 @@ $(function() {
 			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getMail() %></td>
 			<td class="perfectCenter">
 				<div class="btn-group">
-					<a id="edit<%=u.getId()%>" class="ttipt btn btn-default editBtn" title="Editer la catégorie">
-						<span class="glyphicon glyphicon-pencil"></span>
-					</a>
+					
 					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=<%=u.getId()%>" class="ttipt btn btn-default" title="Supprimer la catégorie">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
