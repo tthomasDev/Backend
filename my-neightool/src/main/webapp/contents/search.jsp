@@ -77,11 +77,6 @@ OutilsDTO listeAllTools = new OutilsDTO();
 		e.printStackTrace();
 	}
 
-
-for (Outil o : listeAllTools.getListeOutils()) {
-	System.out.println(o.getNom() + "\n");
-}
-
 ////////////////////////////////
 //Récupération des Categories
 ////////////////////////////////
@@ -154,9 +149,9 @@ if(request.getParameter("category") != null) {
 	String cats = "";
 	for(String c:request.getParameterValues("category")) {
 		categoriesIdSelected.add(Integer.parseInt(c));
-		
+		cats+= " <strong>" + categories.get(categories.size()-categoriesIdSelected.get(nbC)) + "</strong>, ";
+
 		nbC++;
-		cats+= " <strong>" + categories.get(Integer.parseInt(c)-1) + "</strong>, "; 
 	}
 	
 	othersSubmitted = true;
