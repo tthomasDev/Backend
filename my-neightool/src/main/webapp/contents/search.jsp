@@ -153,12 +153,12 @@ if(request.getParameter("category") != null) {
 	int nbC = 0;
 	String cats = "";
 	for(String c:request.getParameterValues("category")) {
-		
 		categoriesIdSelected.add(Integer.parseInt(c));
 		
 		nbC++;
-		cats+= " <strong>" + categories.get(Integer.parseInt(c)) + "</strong>, "; 
+		cats+= " <strong>" + categories.get(Integer.parseInt(c)-1) + "</strong>, "; 
 	}
+	
 	othersSubmitted = true;
 	if(nbC==1)
 		adds += " dans la catégorie " + cats;
@@ -205,8 +205,7 @@ if(request.getParameter("category") != null) {
 		cMax = Integer
 				.parseInt(escapeStr(request.getParameter("cMax")));
 		adds += " pour <strong>" + cMax + "€</strong> maximum,";
-		
-		
+
 		//On enlève de la liste les outils qui ont une caution trop elevee par rapport à la demande
 		for(int i=0; i<arrayListeOutilsCat.size();i++)
 		{
@@ -244,24 +243,47 @@ if(request.getParameter("category") != null) {
 		keywords = escapeStr(request.getParameter("s"));
 		keywordsDisplay = "Résultats pour <strong>" + keywords
 				+ "</strong>" + adds;
-				
-				
-		//On enlève de la liste les outils qui n'ont pas le même nom que le nom demandé
-		for(int i=0; i<arrayListeOutilsCat.size();i++)
+		
+		//Si aucune categorie n'est selectionnée, on tri parmis la liste de tous les outils
+		if (request.getParameter("category") == null)
 		{
-			for (Iterator<Outil> it = arrayListeOutilsCat.get(i).getListeOutils().iterator(); it.hasNext(); ) {
-				Outil o = it.next();
-				if (!o.getNom().equals(request.getParameter("s")) )
-				{
-					System.out.println("CEST PAS LE MEME NOM ! ");
-					it.remove();
+			//On enlève de la liste les outils qui n'ont pas le même nom que le nom demandé
+			for(int i=0; i<listeAllTools.size();i++)
+			{
+
+				for (Iterator<Outil> it = listeAllTools.getListeOutils().iterator(); it.hasNext(); ) {
+					Outil o = it.next();
+					if (!like(o.getNom(),keywords))
+					{
+						System.out.println("CEST PAS LE MEME NOM ! ");
+						it.remove();
+					}
+					
+					else
+						System.out.println("CEST LE MEME NOM ! " + request.getParameter("s") + " " + o.getNom());
 				}
-				
-				else
-					System.out.println("CEST LE MEME NOM ! " + request.getParameter("s") + " " + o.getNom());
+			}
+			arrayListeOutilsCat.add(listeAllTools);
+		}
+		//Sinon on tri parmis la liste des outils des catégories selectionnée
+		else
+		{
+			//On enlève de la liste les outils qui n'ont pas le même nom que le nom demandé
+			for(int i=0; i<arrayListeOutilsCat.size();i++)
+			{
+				for (Iterator<Outil> it = arrayListeOutilsCat.get(i).getListeOutils().iterator(); it.hasNext(); ) {
+					Outil o = it.next();
+					if (!like(o.getNom(),keywords))
+					{
+						System.out.println("CEST PAS LE MEME NOM ! ");
+						it.remove();
+					}
+					
+					else
+						System.out.println("CEST LE MEME NOM ! " + request.getParameter("s") + " " + o.getNom());
+				}
 			}
 		}
-				
 	}
 	if (request.getParameter("s") != null
 			&& request.getParameter("s") == "" && othersSubmitted) {
@@ -434,11 +456,13 @@ if(request.getParameter("category") != null) {
 						</tr>
 					</thead>
 					<tbody>
-							<% if(request.getParameter("category")!=null && arrayListeOutilsCat.size()>0) {
+							<% 
+							if(request.getParameter("category")!=null || arrayListeOutilsCat.size()>0) {
 							int nbOutils = 0;
 							for (int i=0; i<arrayListeOutilsCat.size(); i++){
 								for (Outil t : arrayListeOutilsCat.get(i).getListeOutils()) {
-									nbOutils++;%>
+									nbOutils++;
+									%>
 									<tr style="vertical-align: middle;" class="toPaginate">
 										<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
 										<td style="vertical-align: middle;"><strong><a

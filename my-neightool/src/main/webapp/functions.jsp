@@ -36,4 +36,18 @@ public static String byteArrayToHexString(byte[] b) {
 	return result;
 }
 
+public static boolean like(final String str, final String expr)
+{
+	String a="",b="";
+	a = str.toLowerCase();
+	a = a.replace(" ", "");
+	System.out.println(a);
+	
+	b = expr.toLowerCase();
+	b = b.replace(" ", "");
+	System.out.println(b);
+	
+ 	return a.equals(b);
+}
+
 %>

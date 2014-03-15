@@ -58,13 +58,13 @@ function initialize() {
 			}
 			
 			// Ajoute marker si clique de souris
-			google.maps.event.addListener(map, 'click', function(event) {
+/*			google.maps.event.addListener(map, 'click', function(event) {
 				addClickMarker(event.latLng);
 				origin = event.latLng;
 				calculateDistances();
-			});
+			});*/
 			
-			calculateDistances();
+			//calculateDistances();
 			
 		}, function() {
 			handleNoGeolocation(true);
