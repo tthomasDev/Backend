@@ -47,13 +47,24 @@
 	//Format affichage date
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 %>
-<jsp:include page="profile.jsp">
-		<jsp:param value="1" name="userId" />
-	</jsp:include>
+	
 <ol class="breadcrumb">
 	<li><a href="dashboard.jsp">Accueil</a></li>
-	<li class="active">Mes demandes d'emprunt à mes voisins</a></li>
+	<li class="active">Mes demandes d'emprunt à mes voisins</li>
 </ol>
+
+<%
+	for (Emprunt e : empruntsDto.getListeEmprunts()) {
+		if(Integer.parseInt(idUser) == e.getEmprunteur().getId()) {
+%>
+			<jsp:include page="profile.jsp">
+				<jsp:param value="<%=e.getOutil().getUtilisateur().getId()%>" name="userId" />
+				<jsp:param value="<%=e.getOutil().getUtilisateur().getId()%>" name="multipleId" />
+			</jsp:include>
+<%
+		}
+	}
+%>
 
 <div class="table-responsive">
 			<table class="table table-hover" id="toReorder">
@@ -74,7 +85,7 @@
 					%>
 					<tr style="vertical-align: middle;">
 						<td style="vertical-align: middle; text-align: center;"><a href="dashboard.jsp?page=itemDetails&id=<%=e.getOutil().getId()%>"><%=e.getOutil().getNom()%></a></td>
-						<td style="vertical-align: middle; text-align: center;"><a href="#" data-toggle="modal"data-target="#userProfile"><%=e.getOutil().getUtilisateur().getConnexion().getLogin()%></a></td>
+						<td style="vertical-align: middle; text-align: center;"><a href="#" data-toggle="modal"data-target="#userProfile<%=e.getOutil().getUtilisateur().getId()%>"><%=e.getOutil().getUtilisateur().getConnexion().getLogin()%></a></td>
 						<td style="vertical-align: middle; text-align: center;"><%=df.format(e.getDateDebut())%></td>
 						<td style="vertical-align: middle; text-align: center;"><%=df.format(e.getDateFin())%></td>
 						<td style="vertical-align: middle; text-align: center;"><%					

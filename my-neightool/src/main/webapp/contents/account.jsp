@@ -34,5 +34,5 @@ if(request.getParameter("sub") !=null) {
 				<jsp:include page="<%=subInclude%>" />
 			</div>
 			<jsp:include page="profile.jsp">
-				<jsp:param value="1" name="userId"/>
+				<jsp:param value="<%=session.getAttribute("ID")%>" name="userId"/>
 			</jsp:include>
