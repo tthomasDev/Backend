@@ -143,7 +143,7 @@
 				boolean correctFN = escapeStr(request.getParameter("firstname")).matches("[a-zA-Zιθο-]*");
 		
 				if (correctTel && dateCorrecte && correctLN	&& correctFN && correctPW) {
-					final Adresse adresse = new Adresse(escapeStr(request.getParameter("location")),Float.valueOf(escapeStr(request.getParameter("lat"))),Float.valueOf(escapeStr(request.getParameter("long"))));
+					final Adresse adresse = new Adresse(escapeStr(request.getParameter("location")),Float.valueOf(escapeStr(request.getParameter("long"))),Float.valueOf(escapeStr(request.getParameter("lat"))));
 					final Connexion connexion = new Connexion(escapeStr(request.getParameter("username")),encodedPw(escapeStr(request.getParameter("password"))));
 					final Utilisateur user = new Utilisateur(escapeStr(request.getParameter("lastname")), escapeStr(request.getParameter("firstname")),	connexion, escapeStr(request.getParameter("email")),numTel, adresse, d);
 

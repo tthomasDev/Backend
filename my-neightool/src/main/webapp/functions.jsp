@@ -41,13 +41,25 @@ public static boolean like(final String str, final String expr)
 	String a="",b="";
 	a = str.toLowerCase();
 	a = a.replace(" ", "");
-	System.out.println(a);
+	a = a.replaceAll("[\\d]", "");
+	a = a.replaceAll("[ιθ]", "e");
 	
 	b = expr.toLowerCase();
 	b = b.replace(" ", "");
-	System.out.println(b);
+	b = b.replaceAll("[\\d]", "");
+	b = b.replaceAll("[ιθ]", "e");
 	
- 	return a.equals(b);
+	System.out.println("AETB " + a + " " + b);
+/* 	
+	String debutA = str.substring(3, str.length()-1);
+	String finA = str.substring(str.length()-3, str.length()-1);
+	String debutB = expr.substring(3, expr.length()-1);
+	String finB = expr.substring(expr.length()-3, expr.length()-1);
+	
+	System.out.println("DEBUT" + debutA + " " + debutB);
+	System.out.println("FIN" + finA + " " + finB); */
+	
+ 	return a.equals(b) || (a.contains(b)&&(a.length()-b.length()<3));
 }
 
 public static double distFrom(double lat1, double lng1, double lat2, double lng2) {
