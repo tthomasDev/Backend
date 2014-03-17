@@ -47,7 +47,7 @@ function initialize() {
 				var lat = splittedText[1];
 				var lng = splittedText[2];
 				var name = splittedText[0];
-
+				
 				//L'API étant limité à 25 destinations maximum, nous devons faire le tri
 				if (Math.abs(position.coords.latitude)-Math.abs(lat)<3 && Math.abs(position.coords.longitude)-Math.abs(lng)<3 && nbDest<25)
 				{

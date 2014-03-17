@@ -18,35 +18,13 @@
 <%@include file="../functions.jsp"%>
 <%
 
-
-// Le DTO des outils permettant de récupérer la liste d'outils
-/*OutilsDTO outilsDto = new OutilsDTO();
-
-String messageType = "";
-String messageValue = "";
-	*/
-/* Les vraies infos de l'utilisateur récupérés */
-/*
-JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
-JAXBContext jaxbc2=JAXBContext.newInstance(OutilsDTO.class);
-
+String multipleId = "";
 Utilisateur utilisateurGet = new Utilisateur();
-try {
-	ClientRequest clientRequest;
-	clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
-	clientRequest.accept("application/xml");
-	ClientResponse<String> clientResponse = clientRequest.get(String.class);
-	if (clientResponse.getStatus() == 200)
-	{
-		Unmarshaller un = jaxbc.createUnmarshaller();
-		utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
-		
-	}
-} catch (Exception e) {
-	e.printStackTrace();
-}
-*/
 
+
+if(request.getParameter("multipleId") != null) {
+	multipleId = request.getParameter("multipleId");
+}
 
 
 if(request.getParameter("userId") != null) {
@@ -66,7 +44,6 @@ if(request.getParameter("userId") != null) {
 	JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
 	JAXBContext jaxbc2=JAXBContext.newInstance(OutilsDTO.class);
 
-	Utilisateur utilisateurGet = new Utilisateur();
 	try {
 		ClientRequest clientRequest;
 		clientRequest = new ClientRequest(siteUrl + "rest/user/" + userId);
@@ -128,7 +105,7 @@ if(request.getParameter("userId") != null) {
 	}
 %>
 
-<div class="modal fade" id="userProfile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="userProfile<%=multipleId%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -151,7 +128,28 @@ if(request.getParameter("userId") != null) {
 										<td width="30%" class="text-right"><strong>Utilisateur :</strong></td>
 										<td width="70%"><%=login%></td>
 									</tr>
+									<% 
+									if(utilisateurGet.getAdresse().getadresseComplete() != null)
+									{
+									%>
 									<tr>
+										<td width="30%" class="text-right"><strong>Adresse :</strong></td>
+										<td width="70%"><%=utilisateurGet.getAdresse().getadresseComplete()%></td>
+									</tr>
+									<% } %>
+									<tr>
+									
+									<% 
+									if(utilisateurGet.getTelephone() != null)
+									{
+									%>
+									<tr>
+										<td width="30%" class="text-right"><strong>Téléphone :</strong></td>
+										<td width="70%"><%=utilisateurGet.getTelephone()%></td>
+									</tr>
+									<% } %>
+									<tr>
+									
 										<td class="text-right"><strong>Age :</strong></td>
 										<td>
 											<% out.print(String.valueOf(age)); %> ans
