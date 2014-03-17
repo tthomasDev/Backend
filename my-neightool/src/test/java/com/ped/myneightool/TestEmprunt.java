@@ -69,7 +69,7 @@ public class TestEmprunt {
 			final Utilisateur u = new Utilisateur("userPrenomEmpruntDate","userNomEmpruntDate",connexion,"mailemprunt@mail.com","0102030405",adresse,birthDate);
 			final Utilisateur uPost= (Utilisateur) crb.httpRequestXMLBody(u,"user/create");
 		
-			final Outil o= new Outil(uPost,"RateauTestEmpruntDate","savoir ratisser",true,cat,50,new Date(0),new Date(),"http://localhost:8080/uploads/img/rateau.jpg");
+			final Outil o= new Outil(uPost,"Haltères","savoir soulever",true,cat,50,new Date(0),new Date(),"http://localhost:8080/uploads/img/haltere.jpg");
 			final Outil oPost=(Outil) crb.httpRequestXMLBody(o, "tool/create");
 			
 						

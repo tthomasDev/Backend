@@ -68,7 +68,7 @@ public class TestOutil {
 			
 			
 			//Elements nécéssaires à un outil (cat, utilisateur, date)
-			final Categorie cat1= new Categorie("Jardin");
+			final Categorie cat1= new Categorie("Nouvelles Technologies");
 			final Categorie cat= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);			
 			
 			final Adresse adresse = new Adresse("1 allée des rues","33000","Bordeaux","France",-1,1);
@@ -82,12 +82,12 @@ public class TestOutil {
 			
 		
 			//test unitaire création d'Outil
-			Outil outil= new Outil(utilisateurPost,"Rateau1","savoir ratisser",true,cat,50, new Date(0), new Date(),chemin+"rateau.jpg");
+			Outil outil= new Outil(utilisateurPost,"Télévision","regarder la télé",true,cat,50, new Date(0), new Date(),chemin+"télé.jpeg");
 			Outil outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			Assert.assertNotSame(outilPost,null);
 			
 			//test unitaire création d'Outil avec dates de dispo
-			outil= new Outil(utilisateurPost,"Rateau2","savoir ratisser",true,cat,50,debutT,finT,chemin+"rateau.jpg");
+			outil= new Outil(utilisateurPost,"Ordinateur","savoir clicker",true,cat,50,debutT,finT,chemin+"portable.jpg");
 			outilPost=(Outil) crb.httpRequestXMLBody(outil, "tool/create");
 			Assert.assertNotSame(outilPost,null);
 			
@@ -426,8 +426,8 @@ public class TestOutil {
 			cat1= new Categorie("BTP");
 			Categorie cat2= (Categorie) crb.httpRequestXMLBodyCategorie(cat1, "categorie/create",utilisateurAdmin);
 			
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tuile","savoir tuiller",false,cat2,50, new Date(0), new Date(),chemin+"tuile.jpg"), "tool/create");
-			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Remorque","savoir remorquer",true,cat3,50, new Date(0), new Date(),chemin+"remorque.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Tuile","savoir tuiller",false,cat3,55, new Date(0), new Date(),chemin+"tuile.jpg"), "tool/create");
+			crb.httpRequestXMLBody(new Outil(utilisateurPost,"Remorque","savoir remorquer",true,cat2,50, new Date(0), new Date(),chemin+"remorque.jpg"), "tool/create");
 			
 			final Outil o = new Outil();
 			o.setCategorie(cat);
@@ -461,7 +461,7 @@ public class TestOutil {
 	@Test
 	public final void testGetAllOutilsFromCategory() {
 		try{
-			final Categorie categorie = new Categorie("Nouvelles Technologies");
+			final Categorie categorie = new Categorie("Jardin");
 			final Categorie categoriePost = (Categorie) crb.httpRequestXMLBodyCategorie(categorie, "categorie/create",utilisateurAdmin);
 			
 			Utilisateur user1= new Utilisateur("Jean", "Dupont", new Connexion("loginTestOutil",CryptHandler.encodedPw( "pwd")), "test@test", "0505050505", new Adresse(), new Date());
