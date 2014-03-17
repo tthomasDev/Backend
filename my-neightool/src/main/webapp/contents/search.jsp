@@ -22,7 +22,10 @@
 
 <%@ page import="com.ped.myneightool.model.Utilisateur"%>
 <%@ page import="com.ped.myneightool.dto.UtilisateursDTO"%>
-<%@ page import="java.util.Iterator;"%>
+<%@ page import="java.util.Iterator"%>
+
+<%@ page import="java.text.DecimalFormat"%>
+
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -139,6 +142,29 @@ e.printStackTrace();
 }
 
 
+////////////////////////////////
+//UTILISATEUR COURANT
+////////////////////////////////
+
+JAXBContext jaxbc4=JAXBContext.newInstance(Utilisateur.class);
+Utilisateur currentUser = new Utilisateur();
+
+try {
+	ClientRequest clientRequest;
+	clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
+	clientRequest.accept("application/xml");
+	ClientResponse<String> clientResponse = clientRequest.get(String.class);
+	if (clientResponse.getStatus() == 200)
+	{
+		Unmarshaller un = jaxbc4.createUnmarshaller();
+		currentUser = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
+		
+	}
+} catch (Exception e) {
+	e.printStackTrace();
+}
+
+
 for (Categorie c : categoriesDto.getListeCategories()) {
 	categories.add(c.getNom());
 }
@@ -201,19 +227,44 @@ if(request.getParameter("category") != null) {
 				.parseInt(escapeStr(request.getParameter("cMax")));
 		adds += " pour <strong>" + cMax + "€</strong> maximum,";
 
-		//On enlève de la liste les outils qui ont une caution trop elevee par rapport à la demande
-		for(int i=0; i<arrayListeOutilsCat.size();i++)
+		
+		//Si aucune categorie n'est selectionnée, on tri parmis la liste de tous les outils
+		if (request.getParameter("category") == null)
 		{
-			for (Iterator<Outil> it = arrayListeOutilsCat.get(i).getListeOutils().iterator(); it.hasNext(); ) {
-				Outil o = it.next();
-				if (o.getCaution() > cMax)
-				{
-					System.out.println("CAUTION TROP CHER ! ");
-					it.remove();
+			//On enlève de la liste les outils qui n'ont pas le même nom que le nom demandé
+			for(int i=0; i<listeAllTools.size();i++)
+			{
+
+				for (Iterator<Outil> it = listeAllTools.getListeOutils().iterator(); it.hasNext(); ) {
+					Outil o = it.next();
+					if (o.getCaution() > cMax)
+					{
+						System.out.println("CAUTION TROP CHER ! ");
+						it.remove();
+					}
+					
+					else
+						System.out.println("CAUTION ACCEPTABLE ! " + request.getParameter("cMax") + " " + o.getCaution());
 				}
-				
-				else
-					System.out.println("CAUTION ACCEPTABLE ! " + request.getParameter("cMax") + " " + o.getCaution());
+			}
+			
+		}
+		else
+		{
+			//On enlève de la liste les outils qui ont une caution trop elevee par rapport à la demande
+			for(int i=0; i<arrayListeOutilsCat.size();i++)
+			{
+				for (Iterator<Outil> it = arrayListeOutilsCat.get(i).getListeOutils().iterator(); it.hasNext(); ) {
+					Outil o = it.next();
+					if (o.getCaution() > cMax)
+					{
+						System.out.println("CAUTION TROP CHER ! ");
+						it.remove();
+					}
+					
+					else
+						System.out.println("CAUTION ACCEPTABLE ! " + request.getParameter("cMax") + " " + o.getCaution());
+				}
 			}
 		}
 		
@@ -224,11 +275,58 @@ if(request.getParameter("category") != null) {
 				.parseInt(escapeStr(request.getParameter("dMax")));
 		adds += " dans un rayon de <strong>" + dMax
 				+ " km</strong> maximum";
-				
-				
-				
-		//TODO
+		
+		
 		//Filtrer en fonction de la distance demandée par l'utilisateur
+		
+		
+		float currentUserLat = currentUser.getAdresse().getLatitude();
+		float currentUserLng = currentUser.getAdresse().getLongitude();
+		
+		if (request.getParameter("category") != null)
+		{
+			for(int i=0; i<arrayListeOutilsCat.size();i++)
+			{
+				for (Iterator<Outil> it = arrayListeOutilsCat.get(i).getListeOutils().iterator(); it.hasNext(); ) {
+					Outil o = it.next();
+					
+					float userLat = o.getUtilisateur().getAdresse().getLatitude();
+					float userLng = o.getUtilisateur().getAdresse().getLongitude();
+					double distance = distFrom(currentUserLat, currentUserLng, userLat, userLng);
+					if(distance>dMax)
+					{
+						System.out.println("TROP LOIN !");
+						it.remove();
+					}
+					else
+					{
+						System.out.println("PAS TROP LOIN !");
+					}
+				}
+			}
+		}
+		else
+		{
+			for (Iterator<Outil> it = listeAllTools.getListeOutils().iterator(); it.hasNext(); ) {
+				Outil o = it.next();
+				
+				float userLat = o.getUtilisateur().getAdresse().getLatitude();
+				float userLng = o.getUtilisateur().getAdresse().getLongitude();
+				double distance = distFrom(currentUserLat, currentUserLng, userLat, userLng);
+				if(distance>dMax)
+				{
+					System.out.println("TROP LOIN !");
+					it.remove();
+				}
+				else
+				{
+					System.out.println("PAS TROP LOIN !");
+				}
+			}
+		}
+		
+		
+		
 	}
 	
 	
@@ -243,20 +341,17 @@ if(request.getParameter("category") != null) {
 		if (request.getParameter("category") == null)
 		{
 			//On enlève de la liste les outils qui n'ont pas le même nom que le nom demandé
-			for(int i=0; i<listeAllTools.size();i++)
-			{
 
-				for (Iterator<Outil> it = listeAllTools.getListeOutils().iterator(); it.hasNext(); ) {
-					Outil o = it.next();
-					if (!like(o.getNom(),keywords))
-					{
-						System.out.println("CEST PAS LE MEME NOM ! ");
-						it.remove();
-					}
-					
-					else
-						System.out.println("CEST LE MEME NOM ! " + request.getParameter("s") + " " + o.getNom());
+			for (Iterator<Outil> it = listeAllTools.getListeOutils().iterator(); it.hasNext(); ) {
+				Outil o = it.next();
+				if (!like(o.getNom(),keywords))
+				{
+					System.out.println("CEST PAS LE MEME NOM ! ");
+					it.remove();
 				}
+				
+				else
+					System.out.println("CEST LE MEME NOM ! " + request.getParameter("s") + " " + o.getNom());
 			}
 			arrayListeOutilsCat.add(listeAllTools);
 		}
@@ -316,7 +411,7 @@ if(request.getParameter("category") != null) {
 						range : "min",
 						value: <%=dMax%>,
 						min : 0,
-						max : 100,
+						max : 200,
 						step: 5,
 						values : <%=dMax%>,
 						slide : function(event, ui) {
@@ -464,7 +559,19 @@ if(request.getParameter("category") != null) {
 												href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 											<p><%=t.getDescription() %></p></td>
 										<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
-										<td style="vertical-align: middle; text-align: center;">0km</td>
+										<td style="vertical-align: middle; text-align: center;">
+										<%							
+										float currentUserLat = currentUser.getAdresse().getLatitude();
+										float currentUserLng = currentUser.getAdresse().getLongitude();
+										
+										float userLat = t.getUtilisateur().getAdresse().getLatitude();
+										float userLng = t.getUtilisateur().getAdresse().getLongitude();
+										
+										double distance = distFrom(currentUserLat, currentUserLng, userLat, userLng);
+										String distanceStr = new DecimalFormat("#").format(distance);
+										 %>
+										<%= distanceStr + "km"%>
+										</td>
 									</tr>
 								<% 
 									}

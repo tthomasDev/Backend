@@ -48,8 +48,6 @@ public static boolean like(final String str, final String expr)
 	b = b.replace(" ", "");
 	b = b.replaceAll("[\\d]", "");
 	b = b.replaceAll("[ιθ]", "e");
-	
-	System.out.println("AETB " + a + " " + b);
 /* 	
 	String debutA = str.substring(3, str.length()-1);
 	String finA = str.substring(str.length()-3, str.length()-1);
@@ -72,7 +70,7 @@ public static double distFrom(double lat1, double lng1, double lat2, double lng2
             * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     double dist = earthRadius * c;
-
+    
     return dist;
     }
 
