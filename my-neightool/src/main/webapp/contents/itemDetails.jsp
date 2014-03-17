@@ -275,48 +275,64 @@ if(request.getParameter("id") != null) {
 <%
 	if(itemFound) {
 %>
-<script src="./dist/js/bootstrap-datepicker.js" charset="UTF-8"></script>
-<script src="./dist/js/bootstrap-datepicker.fr.js" charset="UTF-8"></script>
+
+<script src="<%=jsFolder%>bootstrap-datepicker.js" charset="UTF-8"></script>
+<script src="<%=jsFolder%>bootstrap-datepicker.fr.js" charset="UTF-8"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+
 		$('.input-daterange').datepicker({
 			format : "dd/mm/yyyy",
 			language : "fr",
 			todayBtn : "linked"
 		});
-		$('#btnSignal').click(function(){
-			$('#subjectOfMessage').val("Signalement de l'objet <%=itemName%>") 
-		})
-		$('#contactLink').click(function(){
-			$('#subjectOfMessage').val("") 
-		})
-	});
-</script>
+		
+		$('#dateDebut').on('change',function() {
+			reInit();
+		});
 
-<script>
-$(function(){
-	$('.checkDispo').on('click',function() {
-		$.ajax({
-		    url: "<%=pluginFolder%>empruntScript.jsp",
-		    type: 'POST',
-		    data: {id: <%=itemId%>, dateDebut: $('#dateDebut').val(), dateFin: $('#dateFin').val() },
-		    success: function(data) {
-		    	if(data == "true")
-		    	{
-		    		alert("Emprunt possible")
-		    		$('#confirm').removeClass("disabled")
-		    	}
-		    	else
-		    	{
-		    	    alert("L'emprunt n'est pas possible durant cette période ou il existe déjà un emprunt pour cet outil durant la période.");	
-		    	    $('#confirm').addClass("disabled")
-	    		}
-		    }
+		$('#dateFin').on('change',function() {
+			reInit();
+		});
+		
+		$('.checkDispo').on('click',function() {
+			var now = new Date();
+			var go = true;
+			if($('#dateDebut').val()=="") {
+				$('#dateDebut').data('bs.tooltip').options.title = 'Vous devez sélectionner une date de début d\'emprunt';
+				$('#dateDebut').tooltip('show');
+				go = false
+			}
+			if($('#dateFin').val()=="") {
+				$('#dateFin').data('bs.tooltip').options.title = 'Vous devez sélectionner une date de fin d\'emprunt';
+				$('#dateFin').tooltip('show');
+				go = false
+			}
+			if(go) {
+				if(formatDate($('#dateDebut').val()) < now) {
+					$('#dateDebut').data('bs.tooltip').options.title = 'Vous ne pouvez pas emprunter un objet à une date antérieur à aujourd\'hui';
+					$('#dateDebut').tooltip('show');
+				} else {
+					$.ajax({
+					    url: "<%=pluginFolder%>empruntScript.jsp",
+					    type: 'POST',
+					    data: {id: <%=itemId%>, dateDebut: $('#dateDebut').val(), dateFin: $('#dateFin').val() },
+					    success: function(data) {
+					    	if(data == "true") {
+					    		$('#confirm').removeClass("disabled");
+					    		$('#resultAvailable').removeClass("alert-danger").addClass("alert-success").html("Emprunt possible du " + $('#dateDebut').val() + " au " + $('#dateFin').val()).fadeIn();
+					    		$('#dateChecked').fadeOut();
+					    	} else {
+					    		$('#resultAvailable').removeClass("alert-success").addClass("alert-danger").html("L'emprunt n'est pas possible durant cette période ou il existe déjà un emprunt pour cet outil durant la période.").fadeIn();	
+				    		}
+					    }
+					});
+				}
+			}
 		});
 	});
-});	
-	
 </script>
+<script src="<%=jsFolder%>borrow.js" charset="UTF-8"></script>
 	
 <link href="./dist/css/datepicker.css" rel="stylesheet">
 <div class="row">
@@ -331,10 +347,9 @@ $(function(){
 
 <%
 if (displayMessage) {
-out.println("<div class='row'><div class='col-md-12' style='margin-top:-20px'>");
-out.println("<div class='alert alert-" + messageType + "'>"
-		+ messageValue + "</div>");
-out.println("</div></div>");
+	out.println("<div class='row'><div class='col-md-12' style='margin-top:-20px'>");
+	out.println("<div class='alert alert-" + messageType + "'>" + messageValue + "</div>");
+	out.println("</div></div>");
 }
 %>
 
@@ -362,7 +377,7 @@ out.println("</div></div>");
 				font-weight: bold;
 				vertical-align: top
 			}
-			</style>
+		</style>
 		<table width="100%">
 			<tr>
 				<td class="tableTmp" width="30%">Vendeur :</td>
@@ -371,14 +386,15 @@ out.println("</div></div>");
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td class="tableTmp" width="30%">Catégorie :</td>					
-				<td width="70%"><a href="dashboard.jsp?idCat=<%=itemCategoryID%>" data-toggle="modal">
-				<!-- data-target="#categoryProfile" --><%=itemCategory%></a></td>
+				<td width="70%"><a href="dashboard.jsp?idCat=<%=itemCategoryID%>"><%=itemCategory%></a></td>
 					
 			</tr>
 			<tr>
+				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 			</tr>
 			<tr>
@@ -387,6 +403,7 @@ out.println("</div></div>");
 			</tr>
 			<tr>
 				<td>&nbsp;</td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td class="tableTmp">Caution (<a href="#" class="ttipr" title="Montant que vous devrez verser lors de l'emprunt et qui vous sera restitué à la fin de celui-ci">?</a>) :
@@ -394,48 +411,59 @@ out.println("</div></div>");
 				<td><%=itemPrice%> euros</td>
 			</tr>
 				<td>&nbsp;</td>
+				<td>&nbsp;</td>
 			</tr>
 			<tr>
 				<td class="tableTmp">Disponibilités :</td>
 				<td>du <%=itemDateStart%> au <%=itemDateEnd%></td>
 			</tr>
-			<tr>
-			 <td>&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<table width="90%">
-					<caption><strong>Réservations programmées de l'objet</strong></caption>
-
-					<tr>
-					<th width="10%">#</th>
-					<th width="35%">Emprunteur</th>
-					<th width="25%">Date début</th>
-					<th width="25%">Date fin</th>
-					</tr>
-					<%
-						int cpt=0;
-						for (Emprunt e : empruntdto.getListeEmprunts()) {
-						
-							// Si un emprunt correspond à notre outil, que il n est pas refusé et que sa date de fin ne soit pas dejà passée
-							if((itemId == e.getOutil().getId()) && ((e.getValide() == 1) || (e.getValide() == 2)) && ((e.getDateFin().equals(new Date())) || (e.getDateFin().after(new Date()))))
-							{
-								cpt++;
-					%>
-								<tr>
-								<td><%=cpt%></td>
-								<td><%=e.getEmprunteur().getConnexion().getLogin()%></td>
-								<td><%=df.format(e.getDateDebut())%></td>
-								<td><%=df.format(e.getDateFin())%></td>
-								</tr>
-					<%		}
-						}
-					%>					
-					</table>				
-				</td>
-			</tr>
-			<tr>
 		</table>
+		<br />
+		<div class="panel-group" id="accordion">
+			<table width="100%">
+				<tr>
+					<td class="tableTmp" width="30%">Réservations de l'objet :</td>
+					<td><a data-toggle="collapse" id="showEmprunt" data-parent="#accordion" href="#collapseTable">Afficher</a></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<div id="collapseTable" class="collapse">
+							<table width="100%" class="table">
+								<thead>
+									<tr>
+										<th width="50%" class="perfectCenter">Emprunteur</th>
+										<th width="25%" class="perfectCenter">Date début</th>
+										<th width="25%" class="perfectCenter">Date fin</th>
+									</tr>
+								</thead>
+								<tbody>
+								<%
+									int cpt=0;
+									for (Emprunt e : empruntdto.getListeEmprunts()) {
+									
+										// Si un emprunt correspond à notre outil, que il n est pas refusé et que sa date de fin ne soit pas dejà passée
+										if((itemId == e.getOutil().getId()) && ((e.getValide() == 1) || (e.getValide() == 2)) && ((e.getDateFin().equals(new Date())) || (e.getDateFin().after(new Date()))))
+										{
+								%>
+											<tr>
+												<td class="perfectCenter"><%=e.getEmprunteur().getConnexion().getLogin()%></td>
+												<td class="perfectCenter"><%=df.format(e.getDateDebut())%></td>
+												<td class="perfectCenter"><%=df.format(e.getDateFin())%></td>
+											</tr>
+								<%		}
+									}
+								%>
+								</tbody>	
+							</table>
+						</div>		
+					</td>
+				</tr>
+			</table>
+		</div>
 		<hr />
 		<a
 			<%int diff = 100;
@@ -472,15 +500,20 @@ out.println("</div></div>");
 							<div class="input-daterange input-group" id="datepicker">
 								<span class="input-group-addon">du </span> <input id="dateDebut" type="text"
 									data-provide="datepicker"
-									class="datepicker input-sm form-control" name="start2" required />
+									class="datepicker input-sm form-control ttipt" name="start2" required />
 								<span class="input-group-addon"> au </span> <input id="dateFin" type="text"
 									data-provide="datepicker"
-									class="datepicker input-sm form-control" name="end2" required />
+									class="datepicker input-sm form-control ttipr" name="end2" required />
 							</div>
 						</div><br />
 						<a class="btn btn-primary checkDispo" id="checkAvailable">Vérifier la disponibilité sur ces dates</a>
+						<br /><br />
+						<div class="perfectCenter alert" style="display:none;" id="resultAvailable">
+						
+						</div>
 					</div>
 					<div class="modal-footer">
+						<span class="text-danger" id="dateChecked">Vous devez vérifier les dates avant de confirmer<br /></span>
 						<button type="button" class="btn btn-default" data-dismiss="modal">
 							<i class="glyphicon glyphicon-remove"></i> Annuler
 						</button>
@@ -492,72 +525,7 @@ out.println("</div></div>");
 			</form>
 		</div>
 	</div>
-	<div class="modal fade" id="categoryProfile" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">Catégorie : <%=itemCategory %></h4>
-					</div>
-					<div class="modal-body">
-						<style>
-.text-right {
-	text-align: right;
-	font-weight: bold;
-	padding-right: 5px;
-	vertical-align: top;
-}
-</style>
-						<ul class="nav nav-tabs">
-							<li class="active"><a href="#cat" data-toggle="tab">Objets
-									correspondants</a></li>
-						</ul>
-						<br />
-						<div class="tab-content">
-							<div class="tab-pane active" id="cat">
-								<% if (listeOutilsCat.getListeOutils().size() == 0) { %>
-									<div class="alert alert-info perfectCenter"><i class="glyphicon glyphicon-warning-sign"></i> Aucun objet n'appartient actuellement à la catégorie <%=itemCategory%></div>
-								<% } else {
-								System.out.println("\n \n \n TAILLE !!! " + listeOutilsCat.getListeOutils().size());
-								%>
-								<div class="table-responsive">
-									<table class="table table-hover">
-										<thead>
-											<tr>
-												<th style="text-align: center;" width="25%">Nom</th>
-												<th style="text-align: center;" width="15%">Caution</th>
-												<th style="text-align: center;" width="20%">Disponible ?</th>
-											</tr>
-										</thead>
-										<tbody>
-											<% for (Outil t : listeOutilsCat.getListeOutils()) { %>
-											<tr style="vertical-align: middle;" class="toPaginate">
-												<td style="vertical-align: middle; text-align: center;"><strong>
-													<a href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
-												<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " " %><i class="glyphicon glyphicon-euro"></i></td>
-												<% if (t.isDisponible()) { %>
-													<td style="vertical-align: middle; text-align: center;"><i class="glyphicon glyphicon-ok"></i></td>
-												<% } else { %>
-													<td style="vertical-align: middle; text-align: center;"><i class="glyphicon glyphicon-remove"></i></td>
-												<% } %>
-											</tr>
-											<% } %>
-										</tbody>
-									</table>
-								</div>
-								<div id="paginator"></div>
-								<input id="paginatorNbElements" type="hidden" value="5" readonly="readonly"/>
-								<% } %>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 </div>
-
 <%
 	} else {
 %>

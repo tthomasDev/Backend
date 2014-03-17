@@ -119,7 +119,7 @@
 	    <title><% out.print(siteName); %></title>
 	
 	    <!-- Bootstrap core CSS -->
-	    <link href="<%=cssFolder%>bootstrap.min.css" rel="stylesheet">
+	    <link href="<%=cssFolder%>bootstrap.css" rel="stylesheet">
 	    <link href="<%=cssFolder%>jumbotron.css" rel="stylesheet">
  		<link href="<%=cssFolder%>jquery-ui.css" rel="stylesheet">
 	
