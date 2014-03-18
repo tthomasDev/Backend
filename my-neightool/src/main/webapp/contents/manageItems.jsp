@@ -39,7 +39,7 @@
 			menuMyRequestActive = "";
 		}
 		else if (sub.equals("requestsonme")) {
-			subInclude = "manageItemRequestsOnMe.jsp";
+			subInclude = "manageItemsRequestsOnMe.jsp";
 			menuListActive = "";
 			menuAddActive = "";
 			menuRequestOnMeActive = "active";
@@ -47,11 +47,18 @@
 		
 		}
 		else if (sub.equals("myrequests")) {
-			subInclude = "manageItemMyRequests.jsp";
+			subInclude = "manageItemsMyRequests.jsp";
 			menuListActive = "";
 			menuAddActive = "";
 			menuRequestOnMeActive = "";
 			menuMyRequestActive = "active";
+		}
+		else if (sub.equals("edit")) {
+			subInclude = "manageItemsEdit.jsp";
+			menuListActive = "";
+			menuAddActive = "";
+			menuRequestOnMeActive = "";
+			menuMyRequestActive = "";
 		}
 		
 	}

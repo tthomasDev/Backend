@@ -195,7 +195,7 @@
 							<tr>
 								<th style="text-align:center;" width="140px">Photo</th>
 								<th style="text-align:center;" width="80%">Description</th>
-								<th style="text-align:center;" width="20%">Caution<span class="reorderer" name="distance"></span></th>
+								<th style="text-align:center;" width="20%">Caution<span class="reorderer" name="caution"></span></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -206,7 +206,7 @@
 										<td style="vertical-align: middle;"><strong><a
 												href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 											<p><%=t.getDescription() %></p></td>
-										<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
+										<td class="perfectCenter reorderable"><%=t.getCaution()%> euros</td>
 									</tr>
 								<% } 
 								} else if (request.getParameter("idCat")!=null && request.getParameter("idCat").equals("0")) {
@@ -216,7 +216,7 @@
 										<td style="vertical-align: middle;"><strong><a
 												href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 											<p><%=t.getDescription() %></p></td>
-										<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
+										<td class="perfectCenter reorderable"><%=t.getCaution()%> euros</td>
 									</tr>
 								<% }
 								} %>

@@ -24,19 +24,3 @@ $('#showEmprunt').click(function(){
 	}
 	showed = !showed;
 });
-
-$('#btnSignal').click(function(){
-	$('#subjectOfMessage').val("Signalement de l'objet <%=itemName%>");
-	$('#subjectOfMessage').prop('readonly', true);
-	$('#reasonDiv').show();
-	$('#contactModalLabel').html("Signaler un objet");
-	$('#pMsg').html("Merci de remplir correctement les champs afin que nous prenions en compte le signalement.");
-})
-
-$('#contactLink').click(function(){
-	$('#subjectOfMessage').val("");
-	$('#subjectOfMessage').prop('readonly', false);
-	$('#reasonDiv').hide();
-	$('#contactModalLabel').html("Nous contacter");
-	$('#pMsg').html("Un problème sur le site ? Une remarque ? N'hésitez pas à nous contacter !");
-})

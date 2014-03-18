@@ -169,30 +169,28 @@ $(function(){
 				<thead>
 					<tr>
 						<th style="text-align: center;" width="140px">Photo</th>
-						<th style="text-align: center;" width="80%">Description</th>
+						<th style="text-align: center;" width="70%">Description</th>
 						<th style="text-align: center;" width="15%">Caution  <span class="reorderer" name="caution"></span></th>
-						<th style="text-align: center;" width="25%">Actions</th>
+						<th style="text-align: center;" width="15%">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					<% for (Outil t : outilsDto.getListeOutils()) { %>
-					<tr style="vertical-align: middle;" class="toPaginate">
+					<tr class="toPaginate">
 						<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
 						<td style="vertical-align: middle;"><strong><a
 								href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 							<p><%=t.getDescription() %></p></td>
-						<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
-						<td style="vertical-align: middle; padding-right: 0px">
- 							<a href="dashboard.jsp?page=manageItemsEdit&id=<%=t.getId() %>" id="update<%=t.getId()%>"
-							class="ttipt btn btn-default updateTool" title="Modifier l'objet">
-							<span class="glyphicon glyphicon-pencil"></span>
-							</a>							
-						</td>
-						<td style="vertical-align: middle; padding-left: 0px">
- 							<a id="delete<%=t.getId()%>" data-toggle="modal" data-target="#confirmModal" 
-							class="ttipt btn btn-default deleteTool" title="Retirer l'objet">
-							<span class="glyphicon glyphicon-remove"></span>
-							</a>							
+						<td class="perfectCenter reorderable"><%=t.getCaution()%> euros</td>
+						<td class="perfectCenter">
+							<div class="btn-group">
+ 								<a href="dashboard.jsp?page=manageItems&sub=edit&id=<%=t.getId() %>" id="update<%=t.getId()%>" class="ttipt btn btn-default updateTool" title="Modifier l'objet">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</a>
+								<a id="delete<%=t.getId()%>" data-toggle="modal" data-target="#confirmModal" class="ttipt btn btn-default deleteTool" title="Retirer l'objet">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							</div>							
 						</td>
 					</tr>
 					<% } %>
