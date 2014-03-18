@@ -22,6 +22,7 @@
 <%@ page import="java.util.Iterator" %>
 
 <%@ page import="java.lang.StringBuilder" %>
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 
 <%
 	boolean actionValid = false;
@@ -34,18 +35,113 @@
 	OutilsDTO outilsDto = new OutilsDTO();
 
 	final JAXBContext jaxbc = JAXBContext
-			.newInstance(OutilsDTO.class,Outil.class);
+	.newInstance(OutilsDTO.class,Outil.class);
+	
+	// get des données administrateur
+	String id = String.valueOf(session.getAttribute("ID"));
+	Utilisateur admin = new Utilisateur();
 
-	//On récupère la liste de toutes les catégories
+	try {
+
+		ClientRequest clientRequest;
+		clientRequest = new ClientRequest(siteUrl + "rest/user/" + id);
+		clientRequest.accept("application/xml");
+		ClientResponse<String> response2 = clientRequest
+				.get(String.class);
+
+		if (response2.getStatus() == 200) {
+			Unmarshaller un = jaxbc.createUnmarshaller();
+			admin = (Utilisateur) un.unmarshal(new StringReader(
+					response2.getEntity()));
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+	String currentLog = admin.getConnexion().getLogin();
+	String currentPass = admin.getConnexion().getPassword();
+
+	//supprimer un outil = passer son boolean à inactif
+	if (request.getParameter("deleteId") != null) {
+
+		int idDelete = Integer.parseInt(request
+				.getParameter("deleteId"));
+
+		// recuperation de l'outil
+		Outil outilGet = new Outil();
+		try {
+			ClientRequest clientRequest;
+			clientRequest = new ClientRequest(siteUrl + "rest/tool/"
+					+ idDelete);
+			clientRequest.accept("application/xml");
+			ClientResponse<String> clientResponse = clientRequest
+					.get(String.class);
+			if (clientResponse.getStatus() == 200) {
+				Unmarshaller un = jaxbc.createUnmarshaller();
+				outilGet = (Outil) un.unmarshal(new StringReader(
+						clientResponse.getEntity()));
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		outilGet.setDisponible(false);
+
+		try {
+			//>> ON MET A JOUR LA DISPONIBILITE DANS L'OUTIL AVEC UN UPDATE
+			final Marshaller marshaller = jaxbc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(outilGet, sw);
+
+			//ici on envois la requete au webservice createCategorie
+			final ClientRequest clientRequest = new ClientRequest(
+					siteUrl + "rest/tool/update");
+			clientRequest.body("application/xml", outilGet);
+
+			//CREDENTIALS		
+			String username3 = currentLog;
+			String password3 = currentPass;
+			String base64encodedUsernameAndPassword3 = DatatypeConverter
+					.printBase64Binary((username3 + ":" + password3)
+							.getBytes());
+			clientRequest.header("Authorization", "Basic "
+					+ base64encodedUsernameAndPassword3);
+			///////////////////
+
+			//ici on va récuperer la réponse de la requete
+			final ClientResponse<String> clientResponse = clientRequest
+					.post(String.class);
+
+			if (clientResponse.getStatus() == 200) {
+				messageValue = "Outil UPDATE OK";
+				messageType = "success";
+			} else {
+				messageValue = "Une erreur est survenue";
+				messageType = "danger";
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	//On récupère la liste de tous les outils
 	try {
 		ClientRequest requestCategories;
-		requestCategories = new ClientRequest(siteUrl+"rest/tool/list");
+		requestCategories = new ClientRequest(siteUrl
+				+ "rest/tool/list");
 		requestCategories.accept("application/xml");
-		ClientResponse<String> responseCategories = requestCategories.get(String.class);
+		ClientResponse<String> responseCategories = requestCategories
+				.get(String.class);
 		if (responseCategories.getStatus() == 200) {
 			Unmarshaller un2 = jaxbc.createUnmarshaller();
-			outilsDto = (OutilsDTO) un2.unmarshal(new StringReader(responseCategories.getEntity()));
-			
+			outilsDto = (OutilsDTO) un2.unmarshal(new StringReader(
+					responseCategories.getEntity()));
+
 			messageValue = "La liste a bien été récupérée";
 			messageType = "success";
 		} else {
@@ -93,7 +189,7 @@ $(function() {
 				
 			final Outil outil = ito.next();
 			
-				
+			if(outil.isDisponible()){
 			
 		%>
 			<tr class="toPaginate">
@@ -127,10 +223,7 @@ $(function() {
 			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=outil.getCaution() %></td>
 			<td class="perfectCenter">
 				<div class="btn-group">
-					<a id="edit<%=outil.getId()%>" class="ttipt btn btn-default editBtn" title="Editer la catégorie">
-						<span class="glyphicon glyphicon-pencil"></span>
-					</a>
-					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=<%=outil.getId()%>" class="ttipt btn btn-default" title="Supprimer la catégorie">
+					<a href="adminDashboard.jsp?page=adminManageItems&deleteId=<%=outil.getId()%>" class="ttipt btn btn-default" title="Supprimer l'outil">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</div>
@@ -139,6 +232,7 @@ $(function() {
 	
 	
 		<%
+			}
 		}
 		%>
 		
