@@ -47,7 +47,7 @@ function sorter(arrayToSort, sens, colName) {
 		else
 			return arrayToSort.sort(function(a, b) { alert (new Date( a[1].text() ) > new Date( b[1].text() )) });
 	}
-	if(colName=="distance" || colName=="caution") {
+	if(colName=="distance" || colName=="caution" || colName=="idOrder") {
 		if(sens=="asc")
 			return arrayToSort.sort(function(a, b) { return a[1]-b[1] });
 		else

@@ -165,7 +165,7 @@
 </div>
 <br /><br />
 <% } %>
-<table class="table table-hover">
+<table class="table table-hover" id="toReorder">
 	<thead>
 		<tr>
 			<th width="10%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
@@ -188,22 +188,21 @@
 			if((!u.getNom().equals("Compte inactif") && !u.getPrenom().equals("Compte inactif"))){
 		%>
 			<tr class="toPaginate">
-			<td class="perfectCenter"><%=u.getId()%></td>
-			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getConnexion().getLogin()%></td>
-			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getPrenom() %></td>
-			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getNom() %></td>
-			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getMail() %></td>
-			<% if(u.getRole().equals("USER")){ %>
-			<td class="perfectCenter">
-				<div class="btn-group">
-					
-					<a href="adminDashboard.jsp?page=adminManageUsers&deleteId=<%=u.getId()%>" class="ttipt btn btn-default" title="Supprimer l'utilisateur">
-						<span class="glyphicon glyphicon-remove"></span>
-					</a>
-				</div>
-			</td>
-			<%} %>
-		</tr>
+				<td class="perfectCenter reorderable"><%=u.getId()%></td>
+				<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getConnexion().getLogin()%></td>
+				<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getPrenom() %></td>
+				<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getNom() %></td>
+				<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getMail() %></td>
+				<td class="perfectCenter">
+					<div class="btn-group">
+						<% if(u.getRole().equals("USER")){ %>
+						<a href="adminDashboard.jsp?page=adminManageUsers&deleteId=<%=u.getId()%>" class="ttipt btn btn-default" title="Supprimer l'utilisateur">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+						<%} %>
+					</div>
+				</td>
+			</tr>
 	
 	
 		<%

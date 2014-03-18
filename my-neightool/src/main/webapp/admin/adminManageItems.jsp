@@ -73,7 +73,7 @@ $(function() {
 
 <h3>Liste des outils <span class="pull-right"></span></h3>
 <hr />
-<table class="table table-hover">
+<table class="table table-hover" id="toReorder">
 	<thead>
 		<tr>
 			<th width="5%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
@@ -96,7 +96,7 @@ $(function() {
 			
 		%>
 			<tr class="toPaginate">
-			<td class="perfectCenter"><%=outil.getId()%></td>
+			<td class="perfectCenter reorderable"><%=outil.getId()%></td>
 			<% 
 			
 			%>

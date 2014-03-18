@@ -444,7 +444,7 @@ $(function() {
 </div>
 <br /><br />
 <% } %>
-<table class="table table-hover">
+<table class="table table-hover" id="toReorder">
 	<thead>
 		<tr>
 			<th width="10%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
@@ -464,7 +464,7 @@ $(function() {
 			
 		%>
 			<tr class="toPaginate">
-			<td class="perfectCenter"><%=categorie.getId()%></td>
+			<td class="perfectCenter reorderable"><%=categorie.getId()%></td>
 			<% 
 			
 			%>
