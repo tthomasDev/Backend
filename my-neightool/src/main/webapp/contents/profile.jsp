@@ -36,6 +36,9 @@ if(request.getParameter("userId") != null) {
 
 	// Le DTO des outils permettant de récupérer la liste d'outils
 	OutilsDTO outilsDto = new OutilsDTO();
+	
+	// L'utilisateur à qui les objets appartiennent
+	Utilisateur userProfile = new Utilisateur();
 
 	String messageType = "";
 	String messageValue = "";
@@ -80,11 +83,34 @@ if(request.getParameter("userId") != null) {
 	if(utilisateurGet.getCheminImage()!=null)
 		avatar = 	utilisateurGet.getCheminImage();
 	
+	// On récupère les données sur l'utilisateur en fonction de son login
+	try {
+		ClientRequest requestTools;
+		requestTools = new ClientRequest(siteUrl + "rest/user/login/" + login);
+		requestTools.accept("application/xml");
+		ClientResponse<String> responseTools = requestTools
+				.get(String.class);
+		if (responseTools.getStatus() == 200) {
+			Unmarshaller un2 = jaxbc.createUnmarshaller();
+			userProfile = (Utilisateur) un2.unmarshal(new StringReader(
+					responseTools.getEntity()));
+
+			// et ici on peut vérifier que c'est bien le bon objet
+			messageValue = "L'utilisateur a bien été récupéré";
+			messageType = "success";
+		} else {
+			messageValue = "Une erreur est survenue";
+			messageType = "danger";
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	
 	// Récupération de la liste des outils de l'utilisateur
 	//ici on va récuperer la réponse de la requete
 	try {
 		ClientRequest requestTools;
-		requestTools = new ClientRequest(siteUrl + "rest/tool/user/" + session.getAttribute("ID"));
+		requestTools = new ClientRequest(siteUrl + "rest/tool/user/" + userProfile.getId());
 		requestTools.accept("application/xml");
 		ClientResponse<String> responseTools = requestTools
 				.get(String.class);
