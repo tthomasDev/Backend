@@ -31,7 +31,7 @@
 
 <%
 	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-	final JAXBContext jaxbc=JAXBContext.newInstance(Outil.class, Utilisateur.class, OutilsDTO.class, CategoriesDTO.class, Categorie.class);
+	final JAXBContext jaxbc=JAXBContext.newInstance(Outil.class, Utilisateur.class, OutilsDTO.class, CategoriesDTO.class, Categorie.class, EmpruntsDTO.class);
 	
 	// Le DTO des catégories permettant de récupérer la liste de catégories
 	CategoriesDTO categoriesDto = new CategoriesDTO();
@@ -149,9 +149,7 @@
 
 		if (responseEmprunts.getStatus() == 200) {
 			Unmarshaller un2 = jaxbc.createUnmarshaller();
-			listeEmprunt = (EmpruntsDTO) un2
-					.unmarshal(new StringReader(responseEmprunts
-							.getEntity()));
+			listeEmprunt = (EmpruntsDTO) un2.unmarshal(new StringReader(responseEmprunts.getEntity()));
 
 			// et ici on peut vérifier que c'est bien le bon objet
 			messageValue = "La liste des emprunts a été récupérée.";
@@ -351,7 +349,7 @@
 	<ul class="nav nav-pills nav-stacked">
 		<li class="<%=menuListActive%>"><a
 			href="dashboard.jsp?page=manageItems"><span
-				class="glyphicon glyphicon-list"></span> Mes objets disponibles <span
+				class="glyphicon glyphicon-list"></span> Mes objets <span
 				class="badge pull-right">
 					<%=outilsDto.getListeOutils().size() %></span></a></li>
 		<li class="<%=menuAddActive%>"><a
@@ -361,11 +359,10 @@
 			href="dashboard.jsp?page=manageItems&sub=requestsonme">Demandes sur mes objets<span
 				class="badge pull-right"><%
 				int cpt=0;
-					for(Emprunt e : listeEmprunt.getListeEmprunts())
-					{
-						if(e.getOutil().getUtilisateur().getId() == Integer.parseInt(session.getAttribute("ID").toString()))
-						{
-							cpt++;
+					for(Emprunt e : listeEmprunt.getListeEmprunts()) {
+						if(e.getOutil().getUtilisateur().getId() == Integer.parseInt(String.valueOf(session.getAttribute("ID")))) {
+							if(e.getValide() == 1)
+								cpt++;
 						}
 					}
 					out.print(cpt);

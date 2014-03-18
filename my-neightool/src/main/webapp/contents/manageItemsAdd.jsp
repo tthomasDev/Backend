@@ -223,7 +223,7 @@
 </script>
 <link href="./dist/css/datepicker.css" rel="stylesheet">
 <ol class="breadcrumb">
-	<li><a href="dashboard.jsp">Accueil</a></li>
+	<li><a href="dashboard.jsp?idCat=0">Accueil</a></li>
 	<li class="active">Ajout d'un nouvel objet à prêter</li>
 </ol>
 

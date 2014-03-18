@@ -161,7 +161,7 @@
 					<a class="navbar-brand" href="dashboard.jsp?idCat=0"><img height="20px" src="<%=imgFolder%>favicon.png">&nbsp;&nbsp;&nbsp;<% out.print(siteName); %></a>
 				</div>
 				<div class="navbar-collapse collapse">
-					<form class="navbar-form navbar-left" method="GET" action="dashboard.jsp">
+					<form class="navbar-form navbar-left" method="GET" action="dashboard.jsp?idCat=0">
 						<input type="hidden" name="page" value="search" />
 						<input type="text" id="searchField" name="s" class="form-control popov" data-content='<p style="text-align:justify">Appuyez sur la touche "Entrée" pour lancer la recherche.</p><p class="perfectCenter"><a class="btn btn-info" href="dashboard.jsp?page=search">Recherche avancée</a></p>' placeholder="Rechercher">
 					</form>

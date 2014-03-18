@@ -155,7 +155,7 @@ $(function(){
 
 	<div class="col-md-12">
 		<ol class="breadcrumb">
-			<li><a href="dashboard.jsp">Accueil</a></li>
+			<li><a href="dashboard.jsp?idCat=0">Accueil</a></li>
 			<li class="active">Boite de réception (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/<%=nbMaxMessagesAllowed%> messages)</li>
 		</ol>
 	</div>

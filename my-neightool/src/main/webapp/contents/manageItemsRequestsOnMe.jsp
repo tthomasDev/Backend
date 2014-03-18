@@ -91,8 +91,8 @@ $(function(){
 </script>
 	
 <ol class="breadcrumb">
-	<li><a href="dashboard.jsp">Accueil</a></li>
-	<li class="active">Demande d'emprunts sur mes objets</li>
+	<li><a href="dashboard.jsp?idCat=0">Accueil</a></li>
+	<li class="active">Demandes d'emprunt sur mes objets</li>
 </ol>
 
 <%

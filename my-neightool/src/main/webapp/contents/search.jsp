@@ -471,7 +471,7 @@ if(request.getParameter("category") != null) {
 <div class="col-md-3 well">
 	<h4 class="perfectCenter">Critères de recherche</h4>
 	<hr />
-	<form action="dashboard.jsp" method="GET">
+	<form action="dashboard.jsp?idCat=0" method="GET">
 		<input type="hidden" name="page" value="search" />
 		<div class="form-group">
 			<label for="s">Nom</label> <input type="text"
