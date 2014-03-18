@@ -26,6 +26,8 @@
 	boolean actionValid = false;
 	String messageType = "";
 	String messageValue = "";
+	String errorMsg = "";
+	boolean errorMsgB = false;
 	
 	actionValid = true;
 	final JAXBContext jaxbc = JAXBContext.newInstance(UtilisateursDTO.class,Utilisateur.class);
@@ -57,57 +59,71 @@
 			e.printStackTrace();
 		}
 
-		String currentLog = utilisateurGet.getConnexion().getLogin();
-		String currentPass = utilisateurGet.getConnexion().getPassword();
+		if (!utilisateurGet.getRole().equals("ADMIN")) {
 
-		utilisateurGet.getAdresse().setadresseComplete("Compte inactif");
-		utilisateurGet.getAdresse().setcodePostale("Compte inactif");
-		utilisateurGet.getAdresse().setLatitude(0);
-		utilisateurGet.getAdresse().setLongitude(0);
-		utilisateurGet.getAdresse().setPays("Compte inactif");
-		utilisateurGet.getAdresse().setRue("Compte inactif");
-		utilisateurGet.getAdresse().setVille("Compte inactif");
-		utilisateurGet.setCheminImage("Compte inactif");
-		
-		//bug suppression de login > java nul exception
-		//utilisateurGet.getConnexion().setLogin(null);
-		
-		utilisateurGet.getConnexion().setPassword(null);
-		utilisateurGet.setDateDeNaissance(null);
-		utilisateurGet.setMail(null);
-		utilisateurGet.setNom("Compte inactif");
-		utilisateurGet.setPrenom("Compte inactif");
-		utilisateurGet.setTelephone("Compte inactif");
+			String currentLog = utilisateurGet.getConnexion()
+					.getLogin();
+			String currentPass = utilisateurGet.getConnexion()
+					.getPassword();
 
-		try {
+			utilisateurGet.getAdresse().setadresseComplete(
+					"Compte inactif");
+			utilisateurGet.getAdresse()
+					.setcodePostale("Compte inactif");
+			utilisateurGet.getAdresse().setLatitude(0);
+			utilisateurGet.getAdresse().setLongitude(0);
+			utilisateurGet.getAdresse().setPays("Compte inactif");
+			utilisateurGet.getAdresse().setRue("Compte inactif");
+			utilisateurGet.getAdresse().setVille("Compte inactif");
+			utilisateurGet.setCheminImage("Compte inactif");
 
-			// marshalling/serialisation pour l'envoyer avec une requete post
-			final Marshaller marshaller = jaxbc.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-			final java.io.StringWriter sw = new StringWriter();
-			marshaller.marshal(utilisateurGet, sw);
+			//bug suppression de login > java nul exception
+			//utilisateurGet.getConnexion().setLogin(null);
 
-			final ClientRequest clientRequest = new ClientRequest(siteUrl + "rest/user/update/");
-			clientRequest.body("application/xml", utilisateurGet);
-			//CREDENTIALS		
-			String username2 = currentLog;
-			String password2 = currentPass;
-			String base64encodedUsernameAndPassword = DatatypeConverter
-					.printBase64Binary((username2 + ":" + password2).getBytes());
-			clientRequest.header("Authorization", "Basic "+ base64encodedUsernameAndPassword);
-			///////////////////
+			utilisateurGet.getConnexion().setPassword(null);
+			utilisateurGet.setDateDeNaissance(null);
+			utilisateurGet.setMail(null);
+			utilisateurGet.setNom("Compte inactif");
+			utilisateurGet.setPrenom("Compte inactif");
+			utilisateurGet.setTelephone("Compte inactif");
 
-			final ClientResponse<String> clientResponse = clientRequest
-					.post(String.class);
+			try {
 
-			System.out.println("\n\n" + clientResponse.getEntity()
-					+ "\n\n");
+				// marshalling/serialisation pour l'envoyer avec une requete post
+				final Marshaller marshaller = jaxbc.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_ENCODING,
+						"UTF-8");
+				final java.io.StringWriter sw = new StringWriter();
+				marshaller.marshal(utilisateurGet, sw);
 
-			if (clientResponse.getStatus() == 200) { // ok !
+				final ClientRequest clientRequest = new ClientRequest(
+						siteUrl + "rest/user/update/");
+				clientRequest.body("application/xml", utilisateurGet);
+				//CREDENTIALS		
+				String username2 = currentLog;
+				String password2 = currentPass;
+				String base64encodedUsernameAndPassword = DatatypeConverter
+						.printBase64Binary((username2 + ":" + password2)
+								.getBytes());
+				clientRequest.header("Authorization", "Basic "
+						+ base64encodedUsernameAndPassword);
+				///////////////////
 
+				final ClientResponse<String> clientResponse = clientRequest
+						.post(String.class);
+
+				System.out.println("\n\n" + clientResponse.getEntity()
+						+ "\n\n");
+
+				if (clientResponse.getStatus() == 200) { // ok !
+
+				}
+			} catch (final Exception e) {
+				e.printStackTrace();
 			}
-		} catch (final Exception e) {
-			e.printStackTrace();
+		} else {
+			errorMsg = "Impossible de supprimer un compte administrateur";
+			errorMsgB = true;
 		}
 
 	}
@@ -143,6 +159,12 @@
 
 <h3>Liste des utilisateurs <span class="pull-right"></span></h3>
 <hr />
+<% if(errorMsgB) { %>
+<div class="alert alert-danger perfectCenter">
+	<%=errorMsg%>
+</div>
+<br /><br />
+<% } %>
 <table class="table table-hover">
 	<thead>
 		<tr>
@@ -161,6 +183,7 @@
 		while(ito.hasNext()){
 				
 			Utilisateur u = ito.next();
+			
 							
 			if((!u.getNom().equals("Compte inactif") && !u.getPrenom().equals("Compte inactif"))){
 		%>
@@ -170,6 +193,7 @@
 			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getPrenom() %></td>
 			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getNom() %></td>
 			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getMail() %></td>
+			<% if(u.getRole().equals("USER")){ %>
 			<td class="perfectCenter">
 				<div class="btn-group">
 					
@@ -178,6 +202,7 @@
 					</a>
 				</div>
 			</td>
+			<%} %>
 		</tr>
 	
 	
