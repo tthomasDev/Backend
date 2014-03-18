@@ -89,7 +89,7 @@
 	}
 
 //Conversion des dates
-DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
 %>
 <script>
@@ -232,7 +232,7 @@ $(function(){
 					<% } if(m.getEtatDestinataire() != 3) {	%>
 							<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
 								<hr />
-								<div class="well" style="text-align: justify !important"><%=m.getCorps()%></div>
+								<div style="white-space:pre-wrap; word-wrap: break-word; width:440px;"><%=m.getCorps()%></div>
 							</div></td>
 						<td class="perfectCenter">
 						<%
