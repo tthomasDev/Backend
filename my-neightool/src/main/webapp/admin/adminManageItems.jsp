@@ -76,7 +76,7 @@ $(function() {
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th width="5%" class="perfectCenter">Id</th>
+			<th width="5%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
 			<th width="25%" class="perfectCenter">Nom de l'outil</th>
 			<th width="20%" class="perfectCenter">Propriétaire</th>
 			<th width="20%" class="perfectCenter">Catégorie</th>

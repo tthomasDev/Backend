@@ -57,7 +57,7 @@ public class TestMessage {
 			
 			
 			final Connexion connexion2 = new Connexion("loginCreateMessage2",CryptHandler.encodedPw("passwordCreateMessage2"));
-			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire",connexion2);
+			final Utilisateur utilisateur2= new Utilisateur("JacquesDestinataire","DucheminDestinataire",connexion2,"messagsqdq@mail.com","0102030405",adresse,birthDate);
 			final Utilisateur utilisateurPost2 = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
 						
 			final Date d = new Date();

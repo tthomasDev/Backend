@@ -20,6 +20,7 @@
 <%@ page import="java.util.Iterator" %>
 
 <%@ page import="java.lang.StringBuilder" %>
+<%@ page import="javax.xml.bind.DatatypeConverter"%>
 
 <%
 	boolean actionValid = false;
@@ -27,9 +28,93 @@
 	String messageValue = "";
 	
 	actionValid = true;
+	final JAXBContext jaxbc = JAXBContext.newInstance(UtilisateursDTO.class,Utilisateur.class);
+	
+	
+	//SUPPRESSION D'UN UTILISATEUR
+	
+	if (request.getParameter("deleteId") != null) {
+
+		int idDelete = Integer.parseInt(request
+				.getParameter("deleteId"));
+
+		Utilisateur utilisateurGet = new Utilisateur();
+		try {
+			ClientRequest clientRequest;
+			clientRequest = new ClientRequest(siteUrl + "rest/user/"
+					+ idDelete);
+			clientRequest.accept("application/xml");
+			ClientResponse<String> clientResponse = clientRequest
+					.get(String.class);
+			if (clientResponse.getStatus() == 200) {
+				Unmarshaller un = jaxbc.createUnmarshaller();
+				utilisateurGet = (Utilisateur) un
+						.unmarshal(new StringReader(clientResponse
+								.getEntity()));
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String currentLog = utilisateurGet.getConnexion().getLogin();
+		String currentPass = utilisateurGet.getConnexion().getPassword();
+
+		utilisateurGet.getAdresse().setadresseComplete("Compte inactif");
+		utilisateurGet.getAdresse().setcodePostale("Compte inactif");
+		utilisateurGet.getAdresse().setLatitude(0);
+		utilisateurGet.getAdresse().setLongitude(0);
+		utilisateurGet.getAdresse().setPays("Compte inactif");
+		utilisateurGet.getAdresse().setRue("Compte inactif");
+		utilisateurGet.getAdresse().setVille("Compte inactif");
+		utilisateurGet.setCheminImage("Compte inactif");
+		
+		//bug suppression de login > java nul exception
+		//utilisateurGet.getConnexion().setLogin(null);
+		
+		utilisateurGet.getConnexion().setPassword(null);
+		utilisateurGet.setDateDeNaissance(null);
+		utilisateurGet.setMail(null);
+		utilisateurGet.setNom("Compte inactif");
+		utilisateurGet.setPrenom("Compte inactif");
+		utilisateurGet.setTelephone("Compte inactif");
+
+		try {
+
+			// marshalling/serialisation pour l'envoyer avec une requete post
+			final Marshaller marshaller = jaxbc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			final java.io.StringWriter sw = new StringWriter();
+			marshaller.marshal(utilisateurGet, sw);
+
+			final ClientRequest clientRequest = new ClientRequest(siteUrl + "rest/user/update/");
+			clientRequest.body("application/xml", utilisateurGet);
+			//CREDENTIALS		
+			String username2 = currentLog;
+			String password2 = currentPass;
+			String base64encodedUsernameAndPassword = DatatypeConverter
+					.printBase64Binary((username2 + ":" + password2).getBytes());
+			clientRequest.header("Authorization", "Basic "+ base64encodedUsernameAndPassword);
+			///////////////////
+
+			final ClientResponse<String> clientResponse = clientRequest
+					.post(String.class);
+
+			System.out.println("\n\n" + clientResponse.getEntity()
+					+ "\n\n");
+
+			if (clientResponse.getStatus() == 200) { // ok !
+
+			}
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// AFFICHAGE DES UTILISATEURS
 
 	UtilisateursDTO usersDto = new UtilisateursDTO();
-	final JAXBContext jaxbc = JAXBContext.newInstance(UtilisateursDTO.class,Utilisateur.class);
 	// On récupère la liste de tous les utilisateurs disponibles
 	try {
 		ClientRequest requestUsers;
@@ -39,8 +124,9 @@
 				.get(String.class);
 		if (responseUsers.getStatus() == 200) {
 			Unmarshaller un2 = jaxbc.createUnmarshaller();
-			usersDto = (UtilisateursDTO) un2.unmarshal(new StringReader(
-					responseUsers.getEntity()));
+			usersDto = (UtilisateursDTO) un2
+					.unmarshal(new StringReader(responseUsers
+							.getEntity()));
 
 			messageValue = "La liste a bien été récupérée";
 			messageType = "success";
@@ -53,26 +139,14 @@
 	}
 %>
 
-<script>
-$(function() {
-	$(".editBtn").click(function(){
-		$("#myModalLabel").html("Modifier un utilisateur")
-		var tmp = $(this).attr('id').split("edit")[1];
-		$("#catName").val($("#nameCat"+tmp).html());
-		$("#idCat").val(tmp);
-		$("#categoryModal").modal('show');
-	});
-	
-	
-});
-</script>
+
 
 <h3>Liste des utilisateurs <span class="pull-right"></span></h3>
 <hr />
 <table class="table table-hover">
 	<thead>
 		<tr>
-			<th width="10%" class="perfectCenter">Id</th>
+			<th width="10%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
 			<th width="15%" class="perfectCenter">Login</th>
 			<th width="15%" class="perfectCenter">Prénom</th>
 			<th width="15%" class="perfectCenter">Nom</th>
@@ -86,24 +160,20 @@ $(function() {
 		Iterator<Utilisateur> ito=usersDto.getListeUtilisateurs().iterator();
 		while(ito.hasNext()){
 				
-			final Utilisateur u = ito.next();
-			
-				
-			
+			Utilisateur u = ito.next();
+							
+			if((!u.getNom().equals("Compte inactif") && !u.getPrenom().equals("Compte inactif"))){
 		%>
 			<tr class="toPaginate">
 			<td class="perfectCenter"><%=u.getId()%></td>
-			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getConnexion().getLogin() %></td>
-			<% 
-			
-			%>
+			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getConnexion().getLogin()%></td>
 			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getPrenom() %></td>
 			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getNom() %></td>
 			<td id="nameCat<%=u.getId()%>" class="perfectCenter"><%=u.getMail() %></td>
 			<td class="perfectCenter">
 				<div class="btn-group">
 					
-					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=<%=u.getId()%>" class="ttipt btn btn-default" title="Supprimer la catégorie">
+					<a href="adminDashboard.jsp?page=adminManageUsers&deleteId=<%=u.getId()%>" class="ttipt btn btn-default" title="Supprimer l'utilisateur">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</div>
@@ -112,6 +182,16 @@ $(function() {
 	
 	
 		<%
+			}
+			else{
+				System.out.println("\n");
+				System.out.println("\n");
+				System.out.println("\n");
+				System.out.println(u.getConnexion().getLogin());
+				System.out.println("\n");
+				System.out.println("\n");
+				System.out.println("\n");
+			}
 		}
 		%>
 		
@@ -121,24 +201,3 @@ $(function() {
 <div id="paginator"></div>
 <input id="paginatorNbElements" type="hidden" value="10" readonly="readonly" />
 
-<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel"></h4>
-			</div>
-			<form method="post" action="adminDashboard.jsp?page=adminManageCategories">
-				<div class="modal-body">
-					<label for="catName">Nom de la catégorie</label><br />
-					<input type="text" class="form-control" name="catName" id="catName" placeholder="Nom de la catégorie" value="" required />
-				</div>
-				<div class="modal-footer">
-					<input type="hidden" name="idCat" id="idCat" value="" />
-					<button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-					<button type="submit" class="btn btn-info">Enregistrer</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>

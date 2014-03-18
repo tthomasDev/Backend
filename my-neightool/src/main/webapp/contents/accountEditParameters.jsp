@@ -177,7 +177,7 @@ if(request.getParameter("oldPassword") != null) {
 }
 
 
-// gérer la suppression du compte , il manque la redirection vers la premiere page sign up
+// gérer la suppression du compte 
 
 if(request.getParameter("deleteAccount") != null) {
 	
