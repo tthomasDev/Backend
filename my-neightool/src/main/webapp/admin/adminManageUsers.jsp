@@ -384,7 +384,7 @@ $(function(){
 				<td class="perfectCenter"><%=u.getMail() %></td>
 				<td class="perfectCenter">
 					<% if(u.getRole().equals("USER")){ %>
-					<a href="adminDashboard.jsp?page=adminManageUsers&deleteId=<%=u.getId()%>" class="ttipt btn btn-default" title="Supprimer l'utilisateur">
+					<a href="adminDashboard.jsp?page=adminManageUsers&deleteId=<%=u.getId()%>" class="ttipt btn btn-danger" title="Supprimer l'utilisateur">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 					<%} else { %>

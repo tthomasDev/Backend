@@ -477,11 +477,18 @@ $(function() {
 						<span class="glyphicon glyphicon-pencil"></span>
 					</a>
 					
-					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=<%=categorie.getId()%>" class="ttipt btn btn-default" title="Supprimer la catégorie">
+					<a href="adminDashboard.jsp?page=adminManageCategories&deleteId=<%=categorie.getId()%>" class="ttipt btn btn-danger" title="Supprimer la catégorie">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 					<%
-					}%>
+					} else { %>
+					<a href="javascript:void(0)" class="ttipt btn btn-default editBtn disabled" title="Impossible d'éditer la catégorie Autre">
+						<span class="glyphicon glyphicon-pencil"></span>
+					</a>
+					<a href="javascript:void(0)" class="ttipt btn btn-default disabled" title="Impossible de supprimer la catégorie Autre">
+						<span class="glyphicon glyphicon-remove"></span>
+					</a>
+					<% } %>
 				</div>
 			</td>
 		</tr>

@@ -223,7 +223,7 @@ $(function() {
 			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=outil.getCaution() %></td>
 			<td class="perfectCenter">
 				<div class="btn-group">
-					<a href="adminDashboard.jsp?page=adminManageItems&deleteId=<%=outil.getId()%>" class="ttipt btn btn-default" title="Supprimer l'outil">
+					<a href="adminDashboard.jsp?page=adminManageItems&deleteId=<%=outil.getId()%>" class="ttipt btn btn-danger" title="Supprimer l'outil">
 						<span class="glyphicon glyphicon-remove"></span>
 					</a>
 				</div>
