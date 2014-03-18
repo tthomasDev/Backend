@@ -104,32 +104,48 @@
 	
 	
 	//On commence les vérifications
-		// 1) Est ce que la demande d'emprunt est dans les disponinbilités données par le prêteur ?
-		if( ((dateDebut.after(outil.getDateDebut())) || dateDebut.equals(outil.getDateDebut())) && ((dateFin.before(outil.getDateFin())) || dateFin.equals(outil.getDateFin())))
+		// 0) Est ce que la date est aujourd'hui ou dans le futur ?
+		System.out.println(new Date());
+		System.out.println(dateDebut);
+		
+		if(!dateDebut.before(new Date()))
 		{
-			// OUI
-			System.out.println("Date Preteur OK");	
 			
-			
-			
-			// 2) Est ce que quelqu'un l'a déjà demandé pour cette date et a été validé par le prêteur ?
-			for (Emprunt e : empruntsOutil) {
-				if(((dateDebut.before(e.getDateDebut())) && ((dateFin.after(e.getDateDebut()))) || dateFin.equals(e.getDateDebut()))||
-				   (((dateDebut.after(e.getDateDebut())) || dateDebut.equals(e.getDateDebut())) && ((dateDebut.before(e.getDateFin())) || dateDebut.equals(e.getDateFin()))))
-				{
-					System.out.println("Deja un emprunt pendant cette periode");	
-					empruntBool=false;
-				}	
+			// 1) Est ce que la demande d'emprunt est dans les disponinbilités données par le prêteur ?
+			if( ((dateDebut.after(outil.getDateDebut())) || dateDebut.equals(outil.getDateDebut())) && ((dateFin.before(outil.getDateFin())) || dateFin.equals(outil.getDateFin())))
+			{
+				// OUI
+				System.out.println("Date Preteur OK");	
+				
+				
+				
+				// 2) Est ce que quelqu'un l'a déjà demandé pour cette date et a été validé par le prêteur ?
+				for (Emprunt e : empruntsOutil) {
+					if(((dateDebut.before(e.getDateDebut())) && ((dateFin.after(e.getDateDebut()))) || dateFin.equals(e.getDateDebut()))||
+					   (((dateDebut.after(e.getDateDebut())) || dateDebut.equals(e.getDateDebut())) && ((dateDebut.before(e.getDateFin())) || dateDebut.equals(e.getDateFin()))))
+					{
+						//NON
+						System.out.println("Deja un emprunt pendant cette periode");	
+						empruntBool=false;
+					}	
+				}
+						
+	
+				}
+			else
+			{
+				// NON
+				System.out.println("Date Preteur PAS OK");
+				empruntBool=false;
+				
 			}
-					
-
+			
 		}
 		else
 		{
 			// NON
-			System.out.println("Date Preteur PAS OK");
+			System.out.println("Date de début antérieure à aujourd'hui");
 			empruntBool=false;
-			
 		}
 		
 		System.out.println(empruntBool);
