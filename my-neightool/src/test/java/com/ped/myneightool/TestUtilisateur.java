@@ -91,6 +91,7 @@ public class TestUtilisateur {
 			final Date birthDate = new Date();
 			
 			final Utilisateur utilisateur= new Utilisateur("user","user",connexion,"user@myneightool.com","0000000000",adresse,birthDate);
+			utilisateur.setCheminImage("http://localhost:8080/uploads/img/user.jpg");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 						
