@@ -201,7 +201,7 @@
 			<div class="col-sm-6" style="margin-top: 4px">
 				<div class="row">
 					<div class="col-md-8">
-						<center><img width="80%" height="80%" src="<%=toolToUpdate.getCheminImage()%>" id="itemImg" /><input type="hidden" id="itemImgField" name="itemImg" value="" />
+						<center><img width="80%" height="80%" src="<%=toolToUpdate.getCheminImage()%>" id="itemImg" /><input type="hidden" id="itemImgField" name="itemImg" value="<%=toolToUpdate.getCheminImage()%>" />
 						<br /><br />
 						<a href="#" class="btn-sm btn btn-info" data-toggle="modal" data-target="#uploadImg"><i class="glyphicon glyphicon-camera"></i> Mettre une image</a></center>
 					</div>
