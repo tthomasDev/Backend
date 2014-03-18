@@ -57,7 +57,7 @@ $(document).ready(function() {
 		}
 		if(lastname.val()=="") {
 			lastname.parent().addClass("has-error");
-			lastname.data('bs.tooltip').options.title = 'Veuillez renseigner votre prénom';
+			lastname.data('bs.tooltip').options.title = 'Veuillez renseigner votre prÃ©nom';
 			lastname.tooltip('show');
 			submitable = false;
 		}
@@ -75,13 +75,13 @@ $(document).ready(function() {
 		}
 		if(password.val()=="") {
 			password.parent().addClass("has-error");
-			password.data('bs.tooltip').options.title = 'Le mot de passe doit faire 6 chiffres/lettres/caractères spéciaux';
+			password.data('bs.tooltip').options.title = 'Le mot de passe doit faire 6 chiffres/lettres/caractÃ¨res spÃ©ciaux';
 			password.tooltip('show');
 			submitable = false;
 		}
 		if(phone.val()=="") {
 			phone.parent().addClass("has-error");
-			phone.data('bs.tooltip').options.title = 'Votre numéro de téléphone doit être composé de 10 chiffres';
+			phone.data('bs.tooltip').options.title = 'Votre numÃ©ro de tÃ©lÃ©phone doit Ãªtre composÃ© de 10 chiffres';
 			phone.tooltip('show');
 			submitable = false;
 		}
@@ -100,7 +100,7 @@ $(document).ready(function() {
 		}
 		if(!tou.is(':checked')) {
 			tou.parent().addClass("has-error");
-			tou.data('bs.tooltip').options.title = 'Vous devez accepter les conditions générales d\'utilisation';
+			tou.data('bs.tooltip').options.title = 'Vous devez accepter les conditions gÃ©nÃ©rales d\'utilisation';
 			tou.tooltip('show');
 			submitable = false;
 		}

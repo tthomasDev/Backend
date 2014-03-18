@@ -112,7 +112,7 @@ $(function(){
 						$(this).remove();
 						if($("#paginatorNbElements").length>0) {
 							changePage(previousPage,$("#paginatorNbElements").val());
-							//recalculateNbPage();
+							recalculateNbPage();
 						}
 					});
 		    	});

@@ -27,6 +27,9 @@ function changePage(index, nbElements) {
 }
 
 function recalculateNbPage() {
+	var nbElements = $("#paginatorNbElements").val();
+	$(".toPaginate").hide();
+	
 	$("#paginator").html(function() {
 		var count = 0;
 		$(".toPaginate").each(function() {count++});
@@ -45,6 +48,8 @@ function recalculateNbPage() {
 		}
 		return paginator;
 	});
+	
+	changePage(0, nbElements);
 }
 
 $(function() {
