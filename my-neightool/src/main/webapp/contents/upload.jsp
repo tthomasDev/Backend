@@ -60,7 +60,7 @@ $(document).ready(function() {
 				fd.append('file-'+i, file);
 			});
 			$.ajax({
-			    url: "<%=pluginFolder%>uploadScript.jsp",
+			    url: "<%=pluginFolder%>uploadScript.jsp?size=<%=maxSize%>",
 			    type: 'POST',
 			    data: fd,
 			    contentType: false,
@@ -95,9 +95,7 @@ $(document).ready(function() {
 							url: "<%=pluginFolder%>deleteScript.jsp",
 							type: 'POST',
 							data: {link: "<%=previousLink%>"},
-							success: function() {
-								alert("Supprimé !");
-							}
+							success: function() {}
 						});
 						<% } %>
 			    	}
