@@ -443,27 +443,28 @@ if(request.getParameter("category") != null) {
 			</script>
 			
 			
-	<select style="display:none;" class="form-control" id="users" name="users">
-		<% 
-			Iterator<Utilisateur> it = usersDTO.getListeUtilisateurs().iterator();
+	<select style="display:block;" class="form-control" id="users" name="users">
+		<% 	
 			int num = 0;
-			while(it.hasNext()){
-			
-			final Utilisateur utilisateur = it.next();
-			
-			try{
-				if(utilisateur.getAdresse().getLatitude() > 0 && utilisateur.getAdresse().getLatitude() < 90 
-						&& utilisateur.getAdresse().getLongitude() > 0 && utilisateur.getAdresse().getLongitude() < 90)
+			for(OutilsDTO outilDTO : arrayListeOutilsCat)
+			{
+				for(Outil o : outilDTO.getListeOutils())
 				{
-					out.println("<option value='" + num + "'>" + utilisateur.getNom() + "/" +
-					utilisateur.getAdresse().getLatitude() + "/" + utilisateur.getAdresse().getLongitude() + "</option>");
+					
+					out.println("<option value='" + num + "'>"
+							+ o.getId() + "\\"
+							+ o.getNom() + "\\"
+							+ o.getDescription() + "\\"
+							+ o.getCheminImage() + "\\"
+							+ o.getUtilisateur().getNom() + "\\"
+							+ o.getUtilisateur().getAdresse().getLatitude() + "\\"
+							+ o.getUtilisateur().getAdresse().getLongitude()
+							+ "</option>");
+					num++;
 				}
 			}
-			catch(Exception e)
-			{
-			}
-			num++;
-		}
+		
+		
 		%>
 	</select>
 	
@@ -471,7 +472,7 @@ if(request.getParameter("category") != null) {
 <div class="col-md-3 well">
 	<h4 class="perfectCenter">Critères de recherche</h4>
 	<hr />
-	<form action="dashboard.jsp?idCat=0" method="GET">
+	<form action="dashboard.jsp" method="GET">
 		<input type="hidden" name="page" value="search" />
 		<div class="form-group">
 			<label for="s">Nom</label> <input type="text"
@@ -522,7 +523,7 @@ if(request.getParameter("category") != null) {
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="#list" data-toggle="tab"><i
 				class="glyphicon glyphicon-th-list"></i> Liste des objets</a></li>
-		<li><a href="#map" data-toggle="tab"><i
+		<li><a href="#map" data-toggle="tab" onclick="google.maps.event.trigger(map,'resize')"><i
 				class="glyphicon glyphicon-map-marker"></i> Carte</a></li>
 	</ul>
 	<br />

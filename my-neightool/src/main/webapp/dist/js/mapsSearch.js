@@ -29,7 +29,7 @@ function initialize() {
 			mycoordinates = position;
 			var pos = new google.maps.LatLng(position.coords.latitude,
 					position.coords.longitude);
-			origin = pos;
+			
 			var infowindow = new google.maps.InfoWindow({
 				map : map,
 				position : pos,
@@ -38,33 +38,32 @@ function initialize() {
 			});
 			map.setCenter(pos);
 			
-			var nbDest=0;
-			
 			var selectUsers = document.getElementById('users');
-			for (var i = 0; i < selectUsers.options.length; i++) {
-				var splittedText = selectUsers.options[i].text.split('/');
-				var lat = splittedText[1];
-				var lng = splittedText[2];
-				var name = splittedText[0];
 
-				//L'API étant limité à 25 destinations maximum, nous devons faire le tri
-				if (Math.abs(position.coords.latitude)-Math.abs(lat)<3 && Math.abs(position.coords.longitude)-Math.abs(lng)<3 && nbDest<25)
-				{
-					var latlng = new google.maps.LatLng(lat, lng);
-					destinations2.push(latlng);
-					nbDest++;
-					usersNames.push(name);
-				}
+			
+			for (var i = 0; i < selectUsers.options.length; i++) {
+				var splittedText = selectUsers.options[i].text.split('\\');
+				var idTool = splittedText[0];
+				var nameTool = splittedText[1];
+				var descTool = splittedText[2];
+				var imTool = splittedText[3];
+				var userName = splittedText[4];
+				var userLat = splittedText[5];
+				var userLng = splittedText[6];
+				
+				alert('im ' + imTool);
+
+    		    var contentString = 'L\'utilisateur <b>' + userName
+    		 		+ '</b> pr&ecircte un outil &agrave <b>' + descTool + '</b> (' + nameTool +' de route) de chez vous ! <b>Inscrivez-vous</b> pour pouvoir l\'emprunter';
+    		      
+  		 		var loc = new google.maps.LatLng(userLat,userLng);
+    		 	addMarker(loc, true, contentString);
 			}
 			
-			// Ajoute marker si clique de souris
-/*			google.maps.event.addListener(map, 'click', function(event) {
-				addClickMarker(event.latLng);
-				origin = event.latLng;
-				calculateDistances();
-			});*/
-			
-			//calculateDistances();
+			//Ajoute marker si clique de souris
+			google.maps.event.addListener(map, 'click', function(event) {
+				google.maps.event.trigger(map, 'resize');
+			});
 			
 		}, function() {
 			handleNoGeolocation(true);
@@ -76,52 +75,6 @@ function initialize() {
 
 
 }
-
-function calculateDistances() {
-	//Si il y a des destinations alors on procède sinon non
-	if (destinations2.length > 0 )
-		{
-		  var service = new google.maps.DistanceMatrixService();
-		  service.getDistanceMatrix(
-		    {
-		      origins: [origin],
-		      destinations: destinations2,
-		      travelMode: google.maps.TravelMode.DRIVING,
-		      unitSystem: google.maps.UnitSystem.METRIC,
-		      avoidHighways: false,
-		      avoidTolls: false
-		    }, callback);
-	  
-		}
-	}
-
-	function callback(response, status) {
-	  if (status != google.maps.DistanceMatrixStatus.OK) {
-	    alert('Error was: ' + status);
-	  } else {
-	    var origins = response.originAddresses;
-	    var destinations = response.destinationAddresses;
-	    //deleteOverlays();
-	    for (var i = 0; i < origins.length; i++) {
-	      var results = response.rows[i].elements;
-	      //addMarker(origins[i], false);
-	      for (var j = 0; j < results.length; j++) {
-	    	 if(results[j].distance.value < 100000)
-	    		 {
-	    		 	markerInfowindow = new google.maps.InfoWindow({
-	    		      maxWidth: 200
-	    		 	});
-
-	    		    var contentString = 'L\'utilisateur <b>' + usersNames[j]
-	    		 		+ '</b> pr&ecircte un outil &agrave <b>' + results[j].distance.text + '</b> (' + results[j].duration.text +' de route) de chez vous !';
-	    		      
-	  		 		
-	    		 	addMarker(destinations[j], true, contentString);
-	    		 }
-	      }
-	    }
-	  }
-	}
 
 function handleNoGeolocation(errorFlag) {
 	if (errorFlag) {
@@ -160,51 +113,6 @@ function codeAddress() {
 	});
 }
 
-function codeLatLng(marker) {
-	var long;
-	var lat;
-
-	if (marker != null) {
-		lat = marker.getPosition().lat();
-		lng = marker.getPosition().lng();
-		// alert("coord"+lat+" "+lng);
-
-		$('#lat').val(lat);
-		$('#long').val(lng);
-
-	} else {
-		lat = parseFloat(mycoordinates.coords.latitude);
-		lng = parseFloat(mycoordinates.coords.longitude);
-
-		$('#lat').val(lat);
-		$('#long').val(lng);
-		// alert("coord"+lat+" "+lng);
-
-	}
-
-	var latlng = new google.maps.LatLng(lat, lng);
-	geocoder
-			.geocode(
-					{
-						'latLng' : latlng
-					},
-					function(results, status) {
-						if (status == google.maps.GeocoderStatus.OK) {
-							if (results[1]) {
-								if (!marker) {
-									addClickMarker(latlng);
-								}
-								document.getElementById('location').value = results[1].formatted_address;
-								// infowindow.setContent(results[1].formatted_address);
-								// infowindow.open(map, marker);
-							} else {
-								alert('No results found');
-							}
-						} else {
-							alert('Geocoder failed due to: ' + status);
-						}
-					});
-}
 
 // Sets the map on all markers in the array.
 function setAllMap(map) {
