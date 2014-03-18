@@ -349,7 +349,7 @@
 	<ul class="nav nav-pills nav-stacked">
 		<li class="<%=menuListActive%>"><a
 			href="dashboard.jsp?page=manageItems"><span
-				class="glyphicon glyphicon-list"></span> Mes objets disponibles <span
+				class="glyphicon glyphicon-list"></span> Mes objets <span
 				class="badge pull-right">
 					<%=outilsDto.getListeOutils().size() %></span></a></li>
 		<li class="<%=menuAddActive%>"><a
