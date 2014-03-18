@@ -8,17 +8,19 @@
 <%@ page import="com.ped.myneightool.model.Utilisateur"%>
 <%@ page import="com.ped.myneightool.model.Connexion"%>
 <%@ page import="com.ped.myneightool.model.Adresse"%>
+<%@ page import="com.ped.myneightool.model.Outil"%>
+<%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
 <%@include file="../functions.jsp"%>
 <%@include file="../constantes.jsp"%>
 <%
-String username, email, password, alertMessage, alertType;
+	String username, email, password, alertMessage, alertType;
 boolean showAlertMessage = false;
 alertMessage = "";
 alertType = "";
 
 /* Les vraies infos de l'utilisateur récupérés */
-JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class);
+JAXBContext jaxbc=JAXBContext.newInstance(Utilisateur.class,Connexion.class,Adresse.class,Outil.class,OutilsDTO.class);
 
 
 Utilisateur utilisateurGet = new Utilisateur();
@@ -49,7 +51,7 @@ if(request.getParameter("username") != null) {
 		
 	utilisateurGet.getConnexion().setLogin(escapeStr(request.getParameter("username")));
 	utilisateurGet.setMail(escapeStr(request.getParameter("email")));
-			
+	
 	
 	Utilisateur utilisateurGet2 = new Utilisateur();
 	try {
@@ -59,7 +61,7 @@ if(request.getParameter("username") != null) {
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 		final java.io.StringWriter sw = new StringWriter();
 		marshaller.marshal(utilisateurGet, sw);
-					
+			
 		
 		final ClientRequest clientRequest2 = new ClientRequest(siteUrl + "rest/user/update/");
 		clientRequest2.body("application/xml", utilisateurGet );
@@ -77,10 +79,10 @@ if(request.getParameter("username") != null) {
 		System.out.println("\n\n"+clientResponse2.getEntity()+"\n\n");
 		
 		if (clientResponse2.getStatus() == 200) { // ok !
-						
-			final Unmarshaller un = jaxbc.createUnmarshaller();
-			utilisateurGet2 = (Utilisateur) un.unmarshal(new StringReader(clientResponse2.getEntity()));
-						
+				
+	final Unmarshaller un = jaxbc.createUnmarshaller();
+	utilisateurGet2 = (Utilisateur) un.unmarshal(new StringReader(clientResponse2.getEntity()));
+				
 		}
 	} catch (final Exception e) {
 		e.printStackTrace();
@@ -118,14 +120,14 @@ if(request.getParameter("oldPassword") != null) {
 		
 		System.out.println(newPass);
 		System.out.println(confirmNewPass);
-			
+	
 		if(newPass.equals(confirmNewPass)){
-			utilisateurGet.getConnexion().setPassword(encodedPw(confirmNewPass));
+	utilisateurGet.getConnexion().setPassword(encodedPw(confirmNewPass));
 		}
 		else
 		{
-			alertMessage = "<i class='glyphicon glyphicon-ok'></i> Vous n'avez pas confirmé votre nouveau mot de passe correctement.";
-			alertType = "danger";
+	alertMessage = "<i class='glyphicon glyphicon-ok'></i> Vous n'avez pas confirmé votre nouveau mot de passe correctement.";
+	alertType = "danger";
 		}
 	}
 	
@@ -138,7 +140,7 @@ if(request.getParameter("oldPassword") != null) {
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 		final java.io.StringWriter sw = new StringWriter();
 		marshaller.marshal(utilisateurGet, sw);
-					
+			
 		
 		final ClientRequest clientRequest2 = new ClientRequest(siteUrl + "rest/user/update/");
 		clientRequest2.body("application/xml", utilisateurGet );
@@ -156,10 +158,10 @@ if(request.getParameter("oldPassword") != null) {
 		System.out.println("\n\n"+clientResponse2.getEntity()+"\n\n");
 		
 		if (clientResponse2.getStatus() == 200) { // ok !
-						
-			final Unmarshaller un = jaxbc.createUnmarshaller();
-			utilisateurGet2 = (Utilisateur) un.unmarshal(new StringReader(clientResponse2.getEntity()));
-						
+				
+	final Unmarshaller un = jaxbc.createUnmarshaller();
+	utilisateurGet2 = (Utilisateur) un.unmarshal(new StringReader(clientResponse2.getEntity()));
+				
 		}
 	} catch (final Exception e) {
 		e.printStackTrace();
@@ -191,88 +193,159 @@ if(request.getParameter("deleteAccount") != null) {
 		String currentLog= utilisateurGet.getConnexion().getLogin();
 		String currentPass= utilisateurGet.getConnexion().getPassword();
 		
-		utilisateurGet.getAdresse().setadresseComplete("Compte inactif");
-		utilisateurGet.getAdresse().setcodePostale("Compte inactif");
-		utilisateurGet.getAdresse().setLatitude(0);
-		utilisateurGet.getAdresse().setLongitude(0);
-		utilisateurGet.getAdresse().setPays("Compte inactif");
-		utilisateurGet.getAdresse().setRue("Compte inactif");
-		utilisateurGet.getAdresse().setVille("Compte inactif");
-		utilisateurGet.setCheminImage("Compte inactif");
-		utilisateurGet.getConnexion().setLogin(null);
-		utilisateurGet.getConnexion().setPassword(null);
-		utilisateurGet.setDateDeNaissance(null);
-		utilisateurGet.setMail(null);
-		utilisateurGet.setNom("Compte inactif");
-		utilisateurGet.setPrenom("Compte inactif");
-		utilisateurGet.setTelephone("Compte inactif");
 		
+		OutilsDTO outilsDto=new OutilsDTO();
 		
-		
-		try {
-			
-			// marshalling/serialisation pour l'envoyer avec une requete post
-			final Marshaller marshaller = jaxbc.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-			final java.io.StringWriter sw = new StringWriter();
-			marshaller.marshal(utilisateurGet, sw);
-						
-			
-			final ClientRequest clientRequest = new ClientRequest(siteUrl + "rest/user/update/");
-			clientRequest.body("application/xml", utilisateurGet );
-			//CREDENTIALS		
-			String username2 = currentLog;
-			String password2 = currentPass;
-			String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username2 + ":" + password2).getBytes());
-			clientRequest.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
-			///////////////////
-			
-			final ClientResponse<String> clientResponse = clientRequest.post(String.class);
-			
-			System.out.println("\n\n"+clientResponse.getEntity()+"\n\n");
-			
-			if (clientResponse.getStatus() == 200) { // ok !
-				session.removeAttribute("ID");	
-				session.removeAttribute("userName");
-				RequestDispatcher rd =request.getRequestDispatcher("index.jsp");
-				rd.forward(request, response);
-				//response.sendRedirect("index.jsp");
+			//Recuperation de tous les outils de l'utilisateur
+			try {
+				ClientRequest requestTools;
+				requestTools = new ClientRequest(siteUrl
+						+ "rest/tool/user/" + utilisateurGet.getId());
+				requestTools.accept("application/xml");
+				ClientResponse<String> responseTools = requestTools
+						.get(String.class);
+				if (responseTools.getStatus() == 200) {
+					Unmarshaller un2 = jaxbc.createUnmarshaller();
+					outilsDto = (OutilsDTO) un2
+							.unmarshal(new StringReader(responseTools
+									.getEntity()));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
-		
-		/*
-		ClientRequest clientRequest;
-		clientRequest = new ClientRequest("http://localhost:8080/rest/user/update/" + utilisateurGet.getId());
-		*/
-		//clientRequest = new ClientRequest("http://localhost:8080/rest/user/delete/" + utilisateurGet.getId());
-		/*
-		clientRequest.accept("application/xml");
-		ClientResponse<String> clientResponse = clientRequest.get(String.class);
-		if (clientResponse.getStatus() == 200)
-		{
-			*/
+
+			//Update des outils à indisponible
+			Iterator<Outil> io = outilsDto.getListeOutils().iterator();
+			while (io.hasNext()) {
+
+				Outil o = io.next();
+				o.setDisponible(false);
+				try {
+					//>> ON MET A JOUR LA DISPONIBILITE DANS L'OUTIL AVEC UN UPDATE
+					final Marshaller marshaller = jaxbc
+							.createMarshaller();
+					marshaller.setProperty(Marshaller.JAXB_ENCODING,
+							"UTF-8");
+					final java.io.StringWriter sw = new StringWriter();
+					marshaller.marshal(o, sw);
+
+					//ici on envois la requete au webservice createCategorie
+					final ClientRequest clientRequest = new ClientRequest(
+							siteUrl + "rest/tool/update");
+					clientRequest.body("application/xml", o);
+
+					//CREDENTIALS		
+					String username3 = currentLog;
+					String password3 = currentPass;
+					String base64encodedUsernameAndPassword3 = DatatypeConverter
+							.printBase64Binary((username3 + ":" + password3)
+									.getBytes());
+					clientRequest.header("Authorization", "Basic "
+							+ base64encodedUsernameAndPassword3);
+					///////////////////
+
+					//ici on va récuperer la réponse de la requete
+					final ClientResponse<String> clientResponse = clientRequest
+							.post(String.class);
+
+					if (clientResponse.getStatus() == 200) {
+
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			utilisateurGet.getAdresse().setadresseComplete(
+					"Compte inactif");
+			utilisateurGet.getAdresse()
+					.setcodePostale("Compte inactif");
+			utilisateurGet.getAdresse().setLatitude(0);
+			utilisateurGet.getAdresse().setLongitude(0);
+			utilisateurGet.getAdresse().setPays("Compte inactif");
+			utilisateurGet.getAdresse().setRue("Compte inactif");
+			utilisateurGet.getAdresse().setVille("Compte inactif");
+			utilisateurGet.setCheminImage("Compte inactif");
+			
+			String lo = utilisateurGet.getConnexion().getLogin();
+			utilisateurGet.getConnexion().setLogin("Inactif:"+lo);
+			utilisateurGet.getConnexion().setPassword(null);
+			utilisateurGet.setDateDeNaissance(null);
+			utilisateurGet.setMail(null);
+			utilisateurGet.setNom("Compte inactif");
+			utilisateurGet.setPrenom("Compte inactif");
+			utilisateurGet.setTelephone("Compte inactif");
+
+			try {
+
+				// marshalling/serialisation pour l'envoyer avec une requete post
+				final Marshaller marshaller = jaxbc.createMarshaller();
+				marshaller.setProperty(Marshaller.JAXB_ENCODING,
+						"UTF-8");
+				final java.io.StringWriter sw = new StringWriter();
+				marshaller.marshal(utilisateurGet, sw);
+
+				final ClientRequest clientRequest = new ClientRequest(
+						siteUrl + "rest/user/update/");
+				clientRequest.body("application/xml", utilisateurGet);
+				//CREDENTIALS		
+				String username2 = currentLog;
+				String password2 = currentPass;
+				String base64encodedUsernameAndPassword = DatatypeConverter
+						.printBase64Binary((username2 + ":" + password2)
+								.getBytes());
+				clientRequest.header("Authorization", "Basic "
+						+ base64encodedUsernameAndPassword);
+				///////////////////
+
+				final ClientResponse<String> clientResponse = clientRequest
+						.post(String.class);
+
+				System.out.println("\n\n" + clientResponse.getEntity()
+						+ "\n\n");
+
+				if (clientResponse.getStatus() == 200) { // ok !
+					session.removeAttribute("ID");
+					session.removeAttribute("userName");
+					RequestDispatcher rd = request
+							.getRequestDispatcher("index.jsp");
+					rd.forward(request, response);
+					//response.sendRedirect("index.jsp");
+				}
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
+
+			/*
+			ClientRequest clientRequest;
+			clientRequest = new ClientRequest("http://localhost:8080/rest/user/update/" + utilisateurGet.getId());
+			 */
+			//clientRequest = new ClientRequest("http://localhost:8080/rest/user/delete/" + utilisateurGet.getId());
+			/*
+			clientRequest.accept("application/xml");
+			ClientResponse<String> clientResponse = clientRequest.get(String.class);
+			if (clientResponse.getStatus() == 200)
+			{
+			 */
 			//session.removeAttribute("ID");
 			//session.removeAttribute("userName");
 			/*
 			RequestDispatcher rd =request.getRequestDispatcher("index.jsp?attemp=0");
 			rd.forward(request, response);
-			*/
-			
+			 */
+
 			//response.sendRedirect("index.jsp?attemp=0");
-			
-		//}
-	} catch (Exception e) {
-		e.printStackTrace();
+
+			//}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	} else {
+
 	}
-		
-	
-} else {
-	
-}
-
-
 %>
 
 <% if(showAlertMessage) { %>

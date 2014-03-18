@@ -310,20 +310,6 @@
 			</div>
 		</div>
 		<hr />
-		<div id="accordion" class="form-group">
-			<label for="itemImage" class="col-sm-3 control-label">Lieu
-				enregistré</label>
-			<div class="col-sm-6" style="margin-top: 5px">
-				Talence (<a data-toggle="collapse" data-parent="#accordion"
-					href="#collapseMap">modifier</a>)
-				<div id="collapseMap" class="panel-collapse collapse">
-					<br />
-					<div class="col-md-12 img-rounded" id="map-canvas"
-						style="background-color: #DDD;"></div>
-				</div>
-			</div>
-		</div>
-		<hr />
 		<div class="form-group">
 			<div class="col-sm-12">
 				<input type="checkbox" id="termsofuse" name="termsofuse" required />
