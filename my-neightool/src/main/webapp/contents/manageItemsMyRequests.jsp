@@ -49,7 +49,7 @@
 %>
 	
 <ol class="breadcrumb">
-	<li><a href="dashboard.jsp">Accueil</a></li>
+	<li><a href="dashboard.jsp?idCat=0">Accueil</a></li>
 	<li class="active">Mes demandes d'emprunt à mes voisins</li>
 </ol>
 

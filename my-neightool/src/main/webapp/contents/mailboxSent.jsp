@@ -138,7 +138,7 @@ var nbMessages = <%=messagesDto.size()%>;
 </script>
 
 <ol class="breadcrumb">
-	<li><a href="dashboard.jsp">Accueil</a></li>
+	<li><a href="dashboard.jsp?idCat=0">Accueil</a></li>
 	<li class="active">Boite d'envoi (<span id="nbMessageInbox"><%=messagesDto.size()%></span>/<%=nbMaxMessagesAllowed %> messages)</li>
 </ol>
 
