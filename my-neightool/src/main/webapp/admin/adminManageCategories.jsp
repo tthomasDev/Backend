@@ -226,8 +226,7 @@
 				final Outil outil = io.next();
 				outil.setCategorie(categorieAutre);
 				try {
-					//>> ON MET A JOUR LA CATEGORIE AVEC UN UPDATE
-					//on serialise la catégorie
+					//>> ON MET A JOUR LA CATEGORIE DANS L'OUTIL AVEC UN UPDATE
 					final Marshaller marshaller = jaxbc.createMarshaller();
 					marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 					final java.io.StringWriter sw = new StringWriter();
@@ -253,7 +252,7 @@
 							.post(String.class);
 		
 					if (clientResponse.getStatus() == 200) { 
-						messageValue = "Categorie create OK";
+						messageValue = "OUTIL UPDATE OK";
 						messageType = "success";
 					} else {
 						messageValue = "Une erreur est survenue";
