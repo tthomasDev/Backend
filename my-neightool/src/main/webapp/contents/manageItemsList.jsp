@@ -18,6 +18,10 @@
 
 <%@ page import="com.ped.myneightool.model.Outil"%>
 <%@ page import="com.ped.myneightool.dto.OutilsDTO"%>
+
+<%@ page import="com.ped.myneightool.model.Emprunt"%>
+<%@ page import="com.ped.myneightool.dto.EmpruntsDTO"%>
+
 <%@ page import="javax.xml.bind.DatatypeConverter"%>
 
 <%
@@ -28,8 +32,7 @@
 	actionValid = true;
 
 	//on a besoin du contexte si on veut serialiser/désérialiser avec jaxb
-	final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
-	final JAXBContext jaxbc2 = JAXBContext.newInstance(OutilsDTO.class, Outil.class);
+	final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class, OutilsDTO.class, Outil.class,EmpruntsDTO.class, Emprunt.class);
 
 	// Utilisateur
 	Utilisateur user = new Utilisateur();
@@ -69,7 +72,7 @@
 			requestSpecTool.accept("application/xml");
 			ClientResponse<String> responseSpecTool = requestSpecTool.get(String.class);
 			if (responseSpecTool.getStatus() == 200) {	
-				Unmarshaller un2 = jaxbc2.createUnmarshaller();
+				Unmarshaller un2 = jaxbc.createUnmarshaller();
 				toolUpdated = (Outil) un2.unmarshal(new StringReader(responseSpecTool.getEntity()));
 				// et ici on peut vérifier que c'est bien le bon objet
 				messageValue = "L'outil a bien été récupéré.";
@@ -91,7 +94,7 @@
 				final ClientRequest requestToolUpdate = new ClientRequest(siteUrl + "rest/tool/update");
 	
 				//ici il faut sérialiser l'outil
-				final Marshaller marshaller2 = jaxbc2.createMarshaller();
+				final Marshaller marshaller2 = jaxbc.createMarshaller();
 				marshaller2.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 				final java.io.StringWriter sw2 = new StringWriter();
 				marshaller2.marshal(toolUpdated, sw2);
@@ -110,11 +113,84 @@
 				final ClientResponse<String> responseToolUpdate = requestToolUpdate.post(String.class);
 			
 				if (responseToolUpdate.getStatus() == 200) { // OK
-					final Unmarshaller un = jaxbc.createUnmarshaller();
+					final Unmarshaller un3 = jaxbc.createUnmarshaller();
 					final StringReader sr = new StringReader(responseToolUpdate.getEntity());
-					final Object object = (Object) un.unmarshal(sr);
-					toolUpdated = (Outil) object;
+					final Object object = (Object) un3.unmarshal(sr);
+					toolUpdated = (Outil) object;				
+				
+					//On met à indisponnible tous les emprunts qui lui sont liés
+						//on récupère tous les emprunts
+						
+						System.out.println("ON RECUPERE LA LISTE");
+						EmpruntsDTO empruntdto = new EmpruntsDTO();
+					
+						try {
+								ClientRequest requestMessages;
+								requestMessages = new ClientRequest(siteUrl + "rest/emprunt/list");
+								requestMessages.accept("application/xml");
+								ClientResponse<String> responseMessages = requestMessages
+										.get(String.class);
+									
+									if (responseMessages.getStatus() == 200) {
+										Unmarshaller un4 = jaxbc.createUnmarshaller();
+										empruntdto = (EmpruntsDTO) un4.unmarshal(new StringReader(
+												responseMessages.getEntity()));
+									} else {
+										messageValue = "Une erreur est survenue";
+										messageType = "danger";
+									}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						
+						//on récupère ceux de l'objet supprimé
+						for(Emprunt emprunt : empruntdto.getListeEmprunts())
+						{
+							if(emprunt.getOutil().getId() == Integer.parseInt(request.getParameter("idTool")))
+							{
+								System.out.println("MAJ EMPRUNT TOOL SUPP");
+								{
+									emprunt.setValide(0);
+									
+									Utilisateur myUser = new Utilisateur();
+									
+									try {
+										ClientRequest clientRequest2;
+										clientRequest2 = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
+										clientRequest2.accept("application/xml");
+										ClientResponse<String> response2 = clientRequest2.get(String.class);
+	
+										if (response2.getStatus() == 200) {
+											Unmarshaller un5 = jaxbc.createUnmarshaller();
+											myUser = (Utilisateur) un5.unmarshal(new StringReader(response2.getEntity()));
+										}
+									}
+									catch (Exception e) {
+										e.printStackTrace();
+									}	
+									
+									// marshalling/serialisation pour l'envoyer avec une requete post
+									final Marshaller marshaller = jaxbc.createMarshaller();
+									marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+									final java.io.StringWriter sw = new StringWriter();
+									marshaller.marshal(emprunt, sw);
+									
+									//on envoie la maj
+									ClientRequest clientEmprunt = new ClientRequest(siteUrl + "rest/emprunt/update");
+									clientEmprunt.body("application/xml", emprunt);
+									clientEmprunt.header("Authorization", "Basic " +base64encodedUsernameAndPassword);
+									
+									final ClientResponse<String> clientResponse3 = clientEmprunt.post(String.class);
+									
+									System.out.println("\n\n"+clientResponse3.getEntity()+"\n\n");
+									
+								}
+							}
+						}
+						
 				}
+					
+				
 			}
 			catch(Exception e) {
 				e.printStackTrace();
@@ -130,9 +206,8 @@
 		ClientResponse<String> responseTools = requestTools
 		.get(String.class);
 		if (responseTools.getStatus() == 200) {
-			Unmarshaller un2 = jaxbc2.createUnmarshaller();
-			outilsDto = (OutilsDTO) un2.unmarshal(new StringReader(
-					responseTools.getEntity()));
+			Unmarshaller un2 = jaxbc.createUnmarshaller();
+			outilsDto = (OutilsDTO) un2.unmarshal(new StringReader(responseTools.getEntity()));
 		
 			// et ici on peut vérifier que c'est bien le bon objet
 			messageValue = "La liste a bien été récupérée";
@@ -176,8 +251,8 @@ $(function(){
 				</thead>
 				<tbody>
 					<% for (Outil t : outilsDto.getListeOutils()) { %>
-					<tr class="toPaginate">
-						<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
+					<tr class="toPaginate resize140">
+						<td class="perfectCenter"><img class="img-rounded" src="<%=t.getCheminImage() %>"/></td>
 						<td style="vertical-align: middle;"><strong><a
 								href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 							<p><%=t.getDescription() %></p></td>
