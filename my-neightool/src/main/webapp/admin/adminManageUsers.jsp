@@ -17,6 +17,9 @@
 <%@ page import="com.ped.myneightool.model.Utilisateur"%>
 <%@ page import="com.ped.myneightool.dto.UtilisateursDTO" %>
 
+<%@ page import="com.ped.myneightool.model.Outil"%>
+<%@ page import="com.ped.myneightool.dto.OutilsDTO" %>
+
 <%@ page import="java.util.Iterator" %>
 
 <%@ page import="java.lang.StringBuilder" %>
@@ -30,41 +33,142 @@
 	boolean errorMsgB = false;
 	
 	actionValid = true;
-	final JAXBContext jaxbc = JAXBContext.newInstance(UtilisateursDTO.class,Utilisateur.class);
+	final JAXBContext jaxbc = JAXBContext.newInstance(UtilisateursDTO.class,Utilisateur.class,OutilsDTO.class,Outil.class);
+	
+	// get des données administrateur
+	String id = String.valueOf(session.getAttribute("ID"));
+	Utilisateur admin = new Utilisateur();
+
+	try {
+
+		ClientRequest clientRequest;
+		clientRequest = new ClientRequest(siteUrl + "rest/user/"
+				+ id);
+		clientRequest.accept("application/xml");
+		ClientResponse<String> response2 = clientRequest
+				.get(String.class);
+
+		if (response2.getStatus() == 200) {
+			Unmarshaller un = jaxbc.createUnmarshaller();
+			admin = (Utilisateur) un.unmarshal(new StringReader(
+					response2.getEntity()));
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
 	
 	
-	//SUPPRESSION D'UN UTILISATEUR
+	
+	//SUPPRESSION D'UN UTILISATEUR == UPDATE DE L'UTILISATEUR EN COMPTE INACTIF + PASSAGE DE SES OUTILS A INDISPONIBLE
 	
 	if (request.getParameter("deleteId") != null) {
 
 		int idDelete = Integer.parseInt(request
-				.getParameter("deleteId"));
+		.getParameter("deleteId"));
 
+		// recuperation de l'utilisateur
 		Utilisateur utilisateurGet = new Utilisateur();
 		try {
-			ClientRequest clientRequest;
-			clientRequest = new ClientRequest(siteUrl + "rest/user/"
-					+ idDelete);
-			clientRequest.accept("application/xml");
-			ClientResponse<String> clientResponse = clientRequest
-					.get(String.class);
-			if (clientResponse.getStatus() == 200) {
-				Unmarshaller un = jaxbc.createUnmarshaller();
-				utilisateurGet = (Utilisateur) un
-						.unmarshal(new StringReader(clientResponse
-								.getEntity()));
+	ClientRequest clientRequest;
+	clientRequest = new ClientRequest(siteUrl + "rest/user/"
+			+ idDelete);
+	clientRequest.accept("application/xml");
+	ClientResponse<String> clientResponse = clientRequest
+			.get(String.class);
+	if (clientResponse.getStatus() == 200) {
+		Unmarshaller un = jaxbc.createUnmarshaller();
+		utilisateurGet = (Utilisateur) un
+				.unmarshal(new StringReader(clientResponse
+						.getEntity()));
 
-			}
+	}
 		} catch (Exception e) {
-			e.printStackTrace();
+	e.printStackTrace();
 		}
 
 		if (!utilisateurGet.getRole().equals("ADMIN")) {
+	
+	
+	String currentLog = admin.getConnexion()
+			.getLogin();
+	String currentPass = admin.getConnexion()
+			.getPassword();
 
-			String currentLog = utilisateurGet.getConnexion()
-					.getLogin();
-			String currentPass = utilisateurGet.getConnexion()
-					.getPassword();
+	
+	
+	OutilsDTO outilsDto=new OutilsDTO();
+	
+	//Recuperation de tous les outils de l'utilisateur
+	try {
+		ClientRequest requestTools;
+		requestTools = new ClientRequest(siteUrl + "rest/tool/user/"+ utilisateurGet.getId());
+		requestTools.accept("application/xml");
+		ClientResponse<String> responseTools = requestTools
+		.get(String.class);
+		if (responseTools.getStatus() == 200) {
+			Unmarshaller un2 = jaxbc.createUnmarshaller();
+			outilsDto = (OutilsDTO) un2.unmarshal(new StringReader(responseTools.getEntity()));
+		
+			// et ici on peut vérifier que c'est bien le bon objet
+			messageValue = "La liste a bien été récupérée";
+			messageType = "success";
+		} else {
+			messageValue = "Une erreur est survenue";
+			messageType = "danger";
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	
+	
+		//Update des outils à indisponible
+		Iterator<Outil> io=outilsDto.getListeOutils().iterator();
+			while (io.hasNext()) {
+
+				Outil o = io.next();
+				o.setDisponible(false);
+				try {
+					//>> ON MET A JOUR LA DISPONIBILITE DANS L'OUTIL AVEC UN UPDATE
+					final Marshaller marshaller = jaxbc
+							.createMarshaller();
+					marshaller.setProperty(Marshaller.JAXB_ENCODING,
+							"UTF-8");
+					final java.io.StringWriter sw = new StringWriter();
+					marshaller.marshal(o, sw);
+
+					//ici on envois la requete au webservice createCategorie
+					final ClientRequest clientRequest = new ClientRequest(
+							siteUrl + "rest/tool/update");
+					clientRequest.body("application/xml", o);
+
+					//CREDENTIALS		
+					String username3 = currentLog;
+					String password3 = currentPass;
+					String base64encodedUsernameAndPassword3 = DatatypeConverter
+							.printBase64Binary((username3 + ":" + password3)
+									.getBytes());
+					clientRequest.header("Authorization", "Basic "
+							+ base64encodedUsernameAndPassword3);
+					///////////////////
+
+					//ici on va récuperer la réponse de la requete
+					final ClientResponse<String> clientResponse = clientRequest
+							.post(String.class);
+
+					if (clientResponse.getStatus() == 200) {
+						messageValue = "Outil UPDATE OK";
+						messageType = "success";
+					} else {
+						messageValue = "Une erreur est survenue";
+						messageType = "danger";
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
 
 			utilisateurGet.getAdresse().setadresseComplete(
 					"Compte inactif");
@@ -78,7 +182,9 @@
 			utilisateurGet.setCheminImage("Compte inactif");
 
 			//bug suppression de login > java nul exception
-			//utilisateurGet.getConnexion().setLogin(null);
+			//on garde donc le login avec une entete "Inactif:"
+			String lo=utilisateurGet.getConnexion().getLogin();
+			utilisateurGet.getConnexion().setLogin("Inactif:"+lo);
 
 			utilisateurGet.getConnexion().setPassword(null);
 			utilisateurGet.setDateDeNaissance(null);
@@ -87,6 +193,7 @@
 			utilisateurGet.setPrenom("Compte inactif");
 			utilisateurGet.setTelephone("Compte inactif");
 
+			// UPDATE de l'utilisateur en compte inactif
 			try {
 
 				// marshalling/serialisation pour l'envoyer avec une requete post
