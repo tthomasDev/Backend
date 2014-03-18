@@ -227,14 +227,15 @@
 	<li class="active">Ajout d'un nouvel objet à prêter</li>
 </ol>
 
-<%
-	if (actionValid) {
-		out.println("<div class='row'><div class='col-md-12' style='margin-top:-20px'>");
-		out.println("<div class='alert alert-" + messageType + "'>"
-				+ messageValue + "</div>");
-		out.println("</div></div>");
-	}
-%>
+<% if (actionValid) { %>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="alert alert-<%=messageType%>">
+				<%=messageValue%>
+			</div>
+		</div>
+	</div>
+<% } %>
 
 <form action="dashboard.jsp?page=manageItems&sub=add"
 	class="form-horizontal" role="form" method="POST">
@@ -252,12 +253,7 @@
 		<div class="form-group">
 			<label for="itemCategory" class="col-sm-3 control-label">Catégorie</label>
 			<div class="col-sm-6">
-				<select class="form-control" id="itemCategory" name="itemCategory"
-					required>
-					<!-- <option value="option1">Categorie 1</option>
-					<option value="option2">Categorie 2</option>
-					<option value="optioncol-md-6 3">Categorie 3</option>
-					<option value="option4">Categorie 4</option> -->
+				<select class="form-control" id="itemCategory" name="itemCategory" required>
 					<% for (Categorie c : categoriesDto.getListeCategories()) {
 						System.out.println("NOM de la CAT : "+c.getNom());
 						cpt++;
@@ -305,10 +301,10 @@
 			</label>
 			<div class="col-sm-6" style="margin-top: 4px">
 				<div class="row">
-					<div class="col-md-8">
-						<center><img width="80%" height="80%" src="<%=itemImg%>" id="itemImg" /><input type="hidden" id="itemImgField" name="itemImg" value="" />
+					<div class="col-md-8 perfectCenter">
+						<img width="80%" height="80%" src="<%=itemImg%>" id="itemImg" /><input type="hidden" id="itemImgField" name="itemImg" value="" />
 						<br /><br />
-						<a href="#" class="btn-sm btn btn-info" data-toggle="modal" data-target="#uploadImg"><i class="glyphicon glyphicon-camera"></i> Mettre une image</a></center>
+						<a href="#" class="btn-sm btn btn-info" data-toggle="modal" data-target="#uploadImg"><i class="glyphicon glyphicon-camera"></i> Mettre une image</a>
 					</div>
 				</div>
 			</div>
@@ -330,11 +326,6 @@
 		<hr />
 		<div class="form-group">
 			<div class="col-sm-12">
-				<!-- <input type="checkbox" id="termsofuse" name="termsofuse" /> <label
-					for="terms">En mettant cet objet, je m'engage à respecter
-					les <a href="#" data-toggle="modal" data-target="#terms">conditions
-						générales d'utilisation</a>.
-				</label> -->
 				<input type="checkbox" id="termsofuse" name="termsofuse" required />
 				<label for="termsofuse">En mettant cet objet, je m'engage à
 					respecter les <a href="#" data-toggle="modal" data-target="#terms">conditions

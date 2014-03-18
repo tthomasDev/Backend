@@ -193,16 +193,16 @@
 					<table class="table table-hover" id="toReorder">
 						<thead>
 							<tr>
-								<th style="text-align:center;" width="140px">Photo</th>
-								<th style="text-align:center;" width="80%">Description</th>
-								<th style="text-align:center;" width="20%">Caution<span class="reorderer" name="caution"></span></th>
+								<th class="perfectCenter" width="140px">Photo</th>
+								<th class="perfectCenter" width="80%">Description</th>
+								<th class="perfectCenter" width="20%">Caution <span class="reorderer" name="caution"></span></th>
 							</tr>
 						</thead>
 						<tbody>
 							<% if(request.getParameter("idCat")!=null && !(request.getParameter("idCat").equals("0"))) {
 								for (Outil t : listeOutilsCat.getListeOutils()) { %>
-									<tr style="vertical-align: middle;" class="toPaginate">
-										<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
+									<tr style="vertical-align: middle;" class="toPaginate resize140">
+										<td class="perfectCenter"><img class="img-rounded" src="<%=t.getCheminImage() %>" /></td>
 										<td style="vertical-align: middle;"><strong><a
 												href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 											<p><%=t.getDescription() %></p></td>
@@ -211,8 +211,8 @@
 								<% } 
 								} else if (request.getParameter("idCat")!=null && request.getParameter("idCat").equals("0")) {
 									for (Outil t : listeAllTools.getListeOutils()) { %>
-									<tr style="vertical-align: middle;" class="toPaginate">
-										<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
+									<tr style="vertical-align: middle;" class="toPaginate resize140">
+										<td class="perfectCenter"><img class="img-rounded" src="<%=t.getCheminImage() %>" /></td>
 										<td style="vertical-align: middle;"><strong><a
 												href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 											<p><%=t.getDescription() %></p></td>
