@@ -162,10 +162,15 @@ if(request.getParameter("userId") != null) {
 										<td width="30%" class="text-right"><strong>Adresse :</strong></td>
 										<td width="70%"><%=utilisateurGet.getAdresse().getadresseComplete()%></td>
 									</tr>
-									<% } %>
-									<tr>
-									
 									<% 
+									} else if((utilisateurGet.getAdresse().getVille() != null) && (utilisateurGet.getAdresse().getRue() != null) && (utilisateurGet.getAdresse().getPays() != null))
+									{%>
+									<tr>
+										<td width="30%" class="text-right"><strong>Adresse :</strong></td>
+										<td width="70%"><%out.print(utilisateurGet.getAdresse().getRue());%>, <%out.print(utilisateurGet.getAdresse().getVille());%> (<%out.print(utilisateurGet.getAdresse().getPays());%>)</td>
+									</tr>
+									<%}
+									
 									if(utilisateurGet.getTelephone() != null)
 									{
 									%>
