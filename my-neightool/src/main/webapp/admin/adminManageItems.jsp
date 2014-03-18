@@ -172,8 +172,9 @@ $(function() {
 <table class="table table-hover" id="toReorder">
 	<thead>
 		<tr>
-			<th width="5%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
-			<th width="25%" class="perfectCenter">Nom de l'outil</th>
+			<th width="10%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
+			<th width="30px" class="perfectCenter">Photo</th>
+			<th width="20%" class="perfectCenter">Nom de l'outil</th>
 			<th width="5%" class="perfectCenter">Disponible</th>
 			<th width="20%" class="perfectCenter">Propriétaire</th>
 			<th width="15%" class="perfectCenter">Catégorie</th>
@@ -193,10 +194,11 @@ $(function() {
 			
 		%>
 			<tr class="toPaginate">
-			<td class="perfectCenter reorderable"><%=outil.getId() %></td>
-			<% 
 			
-			%>
+			<td class="perfectCenter reorderable"><%=outil.getId() %></td>
+			
+			<td class="perfectCenter"><img class="img-rounded" src="<%=outil.getCheminImage()%>" width="35" height="35" /></td>
+			
 			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=outil.getNom() %></td>
 			<%
 			Boolean b=outil.isDisponible();

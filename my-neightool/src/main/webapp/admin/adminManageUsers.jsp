@@ -358,6 +358,7 @@ $(function(){
 	<thead>
 		<tr>
 			<th width="10%" class="perfectCenter">Id <span class="reorderer" name="idOrder"></span></th>
+			<th width="30px" class="perfectCenter">Photo</th>
 			<th width="15%" class="perfectCenter">Login</th>
 			<th width="15%" class="perfectCenter">Prénom</th>
 			<th width="15%" class="perfectCenter">Nom</th>
@@ -378,6 +379,13 @@ $(function(){
 		%>
 			<tr class="toPaginate">
 				<td class="perfectCenter reorderable"><%=u.getId()%></td>
+				<% 
+					String path = imgFolder + "user_avatar_default.png";
+					if(u.getCheminImage()!=null){
+						path = u.getCheminImage();
+					}
+				%>
+				<td class="perfectCenter"><img class="img-rounded" src="<%=path%>" width="35" height="35" /></td>
 				<td class="perfectCenter"><%=u.getConnexion().getLogin()%></td>
 				<td class="perfectCenter"><%=u.getPrenom() %></td>
 				<td class="perfectCenter"><%=u.getNom() %></td>
