@@ -5,12 +5,15 @@ package com.ped.myneightool.model;
 
 import java.util.Date;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -38,6 +41,7 @@ public class Message {
 	
 	private String objet;
 	
+	@Lob @Basic(fetch=FetchType.LAZY, optional=false)
 	private String corps;
 	
 	/*
@@ -112,6 +116,7 @@ public class Message {
 	}
 
 	@XmlElement
+	@Column(name="DESC", columnDefinition="TEXT")
 	public String getCorps() {
 		return corps;
 	}

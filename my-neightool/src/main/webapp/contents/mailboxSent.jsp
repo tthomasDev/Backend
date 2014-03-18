@@ -102,7 +102,7 @@
 	}
 
 //Conversion des dates
-DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		
 %>
 
@@ -117,6 +117,7 @@ var nbMessages = <%=messagesDto.size()%>;
 		$.ajax({
 		    url: "<%=pluginFolder%>etatScript.jsp",
 		    type: 'POST',
+			<div style="text-align: justify !important">
 		    data: {id: idMsg, etat: 3, page: 2},
 		    success: function() {
 		    	msg.tooltip('hide');
@@ -165,7 +166,7 @@ var nbMessages = <%=messagesDto.size()%>;
 							href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a></strong>
 						<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
 							<hr />
-							<div style="text-align: justify !important"><%=m.getCorps()%></div>
+							<div style="white-space:pre-wrap; word-wrap: break-word; width:440px;"><%=m.getCorps()%></div>
 						</div></td>
 					<td class="perfectCenter">
 					<% String date = df.format(m.getDate());
