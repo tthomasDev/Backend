@@ -116,6 +116,7 @@ public class TestUtilisateur {
 			
 			final Utilisateur utilisateur= new Utilisateur("admin","admin",connexion,"admin@myneightool.com","0000000000",adresse,birthDate);
 			utilisateur.setRole("ADMIN");
+			utilisateur.setCheminImage("http://localhost:8080/uploads/img/admin.png");
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 						
