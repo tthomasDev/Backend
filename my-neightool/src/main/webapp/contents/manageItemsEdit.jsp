@@ -95,144 +95,6 @@
 			e.printStackTrace();
 		}
 	}
-	
-	System.out.println("\n \n CONNARD !!! " + escapeStr(request.getParameter("itemName")));
-	System.out.println("2 !!! " + escapeStr(request.getParameter("itemCategory")));
-	System.out.println("2 !!! " + request.getParameter("itemDetails"));
-	System.out.println("2 !!! " + request.getParameter("itemCaution"));
-	System.out.println("2 !!! " + request.getParameter("start"));
-	System.out.println("2 !!! " + request.getParameter("end"));
-	
-	if ((request.getParameter("itemName") != "" )
-	&& (request.getParameter("itemCategory") != "" )
-	&& (request.getParameter("itemDetails") != "" )
-	&& (request.getParameter("itemCaution") != null )
-	&& (request.getParameter("start") != "" )
-	&& (request.getParameter("end") != "" )) {
-
-		actionValid = true;
-
-	// Utilisateur
-	Utilisateur user = new Utilisateur(); 
-	
-	cautionCorrecte = request.getParameter("itemCaution").matches("[0-9]*");
-	System.out.println("CAUTION CORRECTE " + cautionCorrecte);
-	
-	//ici on va créer l'outil avec les données rentrées dans le formulaire
-	final String name = escapeStr(request.getParameter("itemName"));
-	final String category = escapeStr(request.getParameter("itemCategory"));
-	final String description = escapeStr(request.getParameter("itemDetails"));
-	final int caution;
-	if ( cautionCorrecte ){
-		caution = Integer.parseInt(request.getParameter("itemCaution"));
-	}
-	else {
-		caution = 0;
-	}
-	
-	// On parse l'ID de la catégorie
-	final int category_id = Integer.parseInt(category);
-	
-	// On cherche la catégorie en fonction de son ID
-	try {
-		ClientRequest requestCategory;
-		requestCategory = new ClientRequest(siteUrl + "rest/categorie/" + category_id);
-		requestCategory.accept("application/xml");
-		ClientResponse<String> responseCategory = requestCategory.get(String.class);
-		if(responseCategory.getStatus() == 200) {
-			Unmarshaller un2 = jaxbc2.createUnmarshaller();
-			categorieRes = (Categorie) un2.unmarshal(new StringReader(
-					responseCategory.getEntity()));
-
-			// et ici on peut vérifier que c'est bien le bon objet
-			messageValue = "La catégorie a bien été récupérée";
-			messageType = "success";
-		} else {
-			messageValue = "Une erreur est survenue";
-			messageType = "danger";
-		}
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-	
-	// On récupère l'image correspondante à l'objet créé
-	final String cheminImage = escapeStr(request.getParameter("itemImg"));
-
-	final String startDate = escapeStr(request.getParameter("start"));
-	final String endDate = escapeStr(request.getParameter("end"));
-	
-	final String id = String.valueOf(session.getAttribute("ID"));
-	final String userName = String.valueOf(session.getAttribute("userName"));
-	
-	//Si la caution est correcte, on poursuit. Sinon on ne fait pas l'ajout en base de donnée
-	if ( cautionCorrecte )
-	{	
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		Date parsedDateD = sdf.parse(startDate);
-		System.out.println("test date debut : " + parsedDateD);
-		
-		Date parsedDateF = sdf.parse(endDate);
-		System.out.println("test date fin : " + parsedDateF);
-		
-		//ici on récupère les données de l'utilisateur
-		try {
-			ClientRequest clientRequest ;
-			clientRequest = new ClientRequest(siteUrl + "rest/user/" + id);
-			clientRequest.accept("application/xml");
-			ClientResponse<String> response2 = clientRequest.get(String.class);
-			if (response2.getStatus() == 200)
-			{
-				Unmarshaller un = jaxbc.createUnmarshaller();
-				user = (Utilisateur) un.unmarshal(new StringReader(response2.getEntity()));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		final Outil tool = new Outil(user, name, description, true, categorieRes, caution, parsedDateD, parsedDateF, cheminImage);
-		
-		try {
-			final ClientRequest requestToolUpdate = new ClientRequest(siteUrl + "rest/tool/update");
-
-			//ici il faut sérialiser l'outil
-			final Marshaller marshaller2 = jaxbc2.createMarshaller();
-			marshaller2.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-			final java.io.StringWriter sw2 = new StringWriter();
-			marshaller2.marshal(toolToUpdate, sw2);
-
-			requestToolUpdate.body("application/xml", toolToUpdate);	
-			
-			//CREDENTIALS		
-			String username = user.getConnexion().getLogin();
-			String password = user.getConnexion().getPassword();
-			String base64encodedUsernameAndPassword = DatatypeConverter.printBase64Binary((username + ":" + password).getBytes());
-			requestToolUpdate.header("Authorization", "Basic " +base64encodedUsernameAndPassword );
-			///////////////////
-			
-			final ClientResponse<String> responseToolUpdate = requestToolUpdate.post(String.class);
-		
-			if (responseToolUpdate.getStatus() == 200) { // OK
-				final Unmarshaller un = jaxbc.createUnmarshaller();
-				final StringReader sr = new StringReader(responseToolUpdate.getEntity());
-				final Object object = (Object) un.unmarshal(sr);
-				toolToUpdate = (Outil) object;
-			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}		
-	}
-	else {
-		messageType = "danger";
-		messageValue = "Caution incorrecte";	
-	}
-	}
-	
-	else {
-		messageType = "danger";
-		messageValue = "Tous les champs n'ont pas été remplis.";
-	
-	}
 %>
 
 <script src="./dist/js/bootstrap-datepicker.js" charset="UTF-8"></script>
@@ -270,6 +132,10 @@
 			<div class="col-sm-6">
 				<input type="text" class="form-control" id="itemName"
 					name="itemName" value="<%=toolToUpdate.getNom() %>" required />
+			</div>
+			<div class="col-sm-6">
+				<input type="hidden" class="form-control" id="itemId"
+					name="itemId" value="<%=toolToUpdate.getId()%>" required />
 			</div>
 			<br />
 		</div>
@@ -313,7 +179,7 @@
 		<div class="form-group">
 			<label for="itemDetails" class="col-sm-3 control-label">Disponibilité</label>
 			<div class="col-sm-6" id="datepicker">
-				<% DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+				<% DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				String dateDeb = df.format(toolToUpdate.getDateDebut());
 				String dateFin = df.format(toolToUpdate.getDateFin()); %>
 				<div class="input-daterange input-group" id="datepicker">
