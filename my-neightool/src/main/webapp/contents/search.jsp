@@ -165,17 +165,32 @@ try {
 }
 
 
-for (Categorie c : categoriesDto.getListeCategories()) {
-	categories.add(c.getNom());
-}
-
-
 if(request.getParameter("category") != null) {
 	int nbC = 0;
 	String cats = "";
+	
 	for(String c:request.getParameterValues("category")) {
 		categoriesIdSelected.add(Integer.parseInt(c));
-		cats+= " <strong>" + categories.get(categories.size()-categoriesIdSelected.get(nbC)) + "</strong>, ";
+		Categorie cat = new Categorie();
+		
+		try {
+		ClientRequest clientRequest;
+		clientRequest = new ClientRequest(
+		siteUrl+"rest/categorie/"+categoriesIdSelected.get(nbC));
+		clientRequest.accept("application/xml");
+		ClientResponse<String> response2 = clientRequest.get(String.class);
+		if (response2.getStatus() == 200) {
+			Unmarshaller un = jaxbc.createUnmarshaller();
+			cat = (Categorie) un.unmarshal(new StringReader(
+			response2.getEntity()));
+		}
+
+		} catch (Exception e) {
+		e.printStackTrace();
+		}
+		
+		
+		cats+= " <strong>" + cat.getNom() + "</strong>, ";
 
 		nbC++;
 	}
