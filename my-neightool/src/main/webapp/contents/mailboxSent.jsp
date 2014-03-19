@@ -108,8 +108,7 @@ DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 <script>
 $(function(){
-var nbMessages = <%=messagesDto.size()%>;
-
+	var nbMessages = <%=messagesDto.size()%>;
 
 	$('.delMessage').click(function() {
 		var idMsg = $(this).attr("id").split("delMsg")[1];
@@ -117,7 +116,6 @@ var nbMessages = <%=messagesDto.size()%>;
 		$.ajax({
 		    url: "<%=pluginFolder%>etatScript.jsp",
 		    type: 'POST',
-			<div style="text-align: justify !important">
 		    data: {id: idMsg, etat: 3, page: 2},
 		    success: function() {
 		    	msg.tooltip('hide');
@@ -161,12 +159,10 @@ var nbMessages = <%=messagesDto.size()%>;
 					{%>
 					<tr style="vertical-align: middle;" class="toPaginate">
 					<td class="perfectCenter"><%=m.getDestinataire().getConnexion().getLogin()%></td>
-					<td class="perfectCenter"><strong><a
-							data-toggle="collapse" data-parent="#accordion"
-							href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a></strong>
+					<td class="perfectCenter"><strong><a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=m.getId()%>"><%=m.getObjet()%></a></strong>
 						<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
 							<hr />
-							<div style="white-space:pre-wrap; word-wrap: break-word; width:440px;"><%=m.getCorps()%></div>
+							<div style="white-space:pre-wrap; word-wrap: break-word;  word-break:break-all;"><%=m.getCorps()%></div>
 						</div></td>
 					<td class="perfectCenter">
 					<% String date = df.format(m.getDate());

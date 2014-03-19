@@ -255,7 +255,7 @@ $(function(){
 						<td class="perfectCenter"><img class="img-rounded" src="<%=t.getCheminImage() %>"/></td>
 						<td style="vertical-align: middle;"><strong><a
 								href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
-							<p><%=t.getDescription() %></p></td>
+							<p style="white-space:pre-wrap; word-wrap: break-word;  word-break:break-all;"><%=t.getDescription() %></p></td>
 						<td class="perfectCenter reorderable"><%=t.getCaution()%> euros</td>
 						<td class="perfectCenter">
 							<div class="btn-group">

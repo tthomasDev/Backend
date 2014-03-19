@@ -415,7 +415,7 @@ if (displayMessage) {
 			</tr>
 			<tr>
 				<td class="tableTmp">Description :</td>
-				<td style="text-align: justify"><%=itemDescription%></td>
+				<td style="white-space:pre-wrap; word-wrap: break-word; word-break:break-all;"><%=itemDescription%></td>
 			</tr>
 			<tr>
 				<td>&nbsp;</td>

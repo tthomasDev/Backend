@@ -232,7 +232,7 @@ $(function(){
 					<% } if(m.getEtatDestinataire() != 3) {	%>
 							<div id="collapse<%=m.getId()%>" class="panel-collapse collapse">
 								<hr />
-								<div style="white-space:pre-wrap; word-wrap: break-word; width:440px;"><%=m.getCorps()%></div>
+								<div style="white-space:pre-wrap; word-wrap: break-word;  word-break:break-all;"><%=m.getCorps()%></div>
 							</div></td>
 						<td class="perfectCenter">
 						<%
