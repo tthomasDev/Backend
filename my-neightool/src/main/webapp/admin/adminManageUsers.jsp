@@ -308,7 +308,7 @@
 						path = u.getCheminImage();
 					}
 				%>
-				<td class="perfectCenter"><img class="img-rounded" src="<%=path%>" width="35" height="35" /></td>
+				<td class="perfectCenter"><img class="img-rounded" style="width:auto;height:40px" src="<%=path%>" /></td>
 				<td class="perfectCenter">
 					<FONT COLOR="#58ACFA"><%=u.getConnexion().getLogin()%></FONT>
 				</td>

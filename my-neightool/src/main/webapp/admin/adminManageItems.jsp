@@ -200,7 +200,7 @@ $(function() {
 			
 			<td class="perfectCenter reorderable"><%=outil.getId() %></td>
 			
-			<td class="perfectCenter"><img class="img-rounded" src="<%=outil.getCheminImage()%>" width="35" height="35" /></td>
+			<td class="perfectCenter"><img class="img-rounded" style="width:auto;height:40px" src="<%=outil.getCheminImage()%>" /></td>
 			
 			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=outil.getNom() %></td>
 			<%
