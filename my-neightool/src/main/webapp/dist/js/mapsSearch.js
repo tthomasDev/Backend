@@ -1,5 +1,7 @@
 var map;
 
+var markerInfowindow;
+
 function initialize() {
   var mapOptions = {
     zoom: 9
@@ -62,18 +64,18 @@ function extractFromSelect()
 				'<th style="vertical-align:middle; text-align:center;" width="10%">Distance</th>'+
 			'</tr>'+
 		'</thead>'+
-			'<tr>'+
-				'<td style="vertical-align:middle; text-align:center;"><img src="' + imTool + '" width="70px" height="70px"/></td>'+
-				'<td style="vertical-align:middle; text-align:center;"><strong><a ' + 
-				'href="dashboard.jsp?page=itemDetails&id=' + idTool + '">' + nameTool + '</a></strong><br />' + 
-				'<p>' + descTool + '</p></td>'+
-				'<td style="vertical-align:middle; text-align:center;">' + userName + '</td>'+
-				'<td style="vertical-align:middle; text-align:center;">'+ cautTool +'€</td>'+
-				'<td style="vertical-align:middle; text-align:center;">' + distTool +' km</td>'+
-			'</tr>'+
+			'<tbody>'+
+				'<tr>'+
+					'<td style="vertical-align:middle; text-align:center;"><img src="' + imTool + '" width="70px" height="70px"/></td>'+
+					'<td style="vertical-align:middle; text-align:center;"><strong><a ' + 
+					'href="dashboard.jsp?page=itemDetails&id=' + idTool + '">' + nameTool + '</a></strong><br />' + 
+					'<p>' + descTool + '</p></td>'+
+					'<td style="vertical-align:middle; text-align:center;">' + userName + '</td>'+
+					'<td style="vertical-align:middle; text-align:center;">'+ cautTool +'€</td>'+
+					'<td style="vertical-align:middle; text-align:center;">' + distTool +' km</td>'+
+				'</tr>'+
+			'</tbody>'+
 		'</table>';
-		
-		//var contentString = '<table><tr><td>1.1</td><td>1.2</td></tr><tr><td>2.1</td><td>2.2</td></tr></table>'
 		
 		addMarker(loc, contentString);
 	}
@@ -81,9 +83,6 @@ function extractFromSelect()
 
 function addMarker(location, contentString)
 {
-	var infowindow = new google.maps.InfoWindow({
-	      content: contentString
-	  });
 	
     var marker = new google.maps.Marker({
         position: location,
@@ -91,8 +90,12 @@ function addMarker(location, contentString)
         icon: 'http://maps.google.com/mapfiles/marker_yellow.png'
     });
     
+    markerInfowindow = new google.maps.InfoWindow({
+	      content: contentString
+	 	});
+    
     google.maps.event.addListener(marker, 'click', function() {
-	    infowindow.open(map,marker);
+	    markerInfowindow.open(map,marker);
 	  });
 }
 
