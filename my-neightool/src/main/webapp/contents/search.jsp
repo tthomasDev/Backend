@@ -494,6 +494,7 @@ if(request.getParameter("category") != null) {
 		
 		%>
 	</select>
+	<input type="hidden" value="<%=currentUserLat %>" name="lat" id="lat"> <input type="hidden" value="<%=currentUserLng %>" name="lng" id="lng">
 	
 	
 <div class="col-md-3 well">
