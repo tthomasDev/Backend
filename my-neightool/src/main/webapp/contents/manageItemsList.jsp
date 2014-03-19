@@ -120,8 +120,6 @@
 				
 					//On met à indisponnible tous les emprunts qui lui sont liés
 						//on récupère tous les emprunts
-						
-						System.out.println("ON RECUPERE LA LISTE");
 						EmpruntsDTO empruntdto = new EmpruntsDTO();
 					
 						try {
@@ -148,7 +146,6 @@
 						{
 							if(emprunt.getOutil().getId() == Integer.parseInt(request.getParameter("idTool")))
 							{
-								System.out.println("MAJ EMPRUNT TOOL SUPP");
 								{
 									emprunt.setValide(0);
 									

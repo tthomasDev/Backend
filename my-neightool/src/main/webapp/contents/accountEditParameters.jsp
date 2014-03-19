@@ -107,9 +107,7 @@ if(request.getParameter("oldPassword") != null) {
 	showAlertMessage = true;
 	alertMessage = "<i class='glyphicon glyphicon-ok'></i> Modifications enregistrées.";
 	alertType = "success";
-		
 	
-	System.out.println("debut de boucle");
 	String str=escapeStr(request.getParameter("oldPassword"));
 	System.out.println(str);
 	if(utilisateurGet.getConnexion().getPassword().equals(str)){
@@ -317,28 +315,7 @@ if(request.getParameter("deleteAccount") != null) {
 			} catch (final Exception e) {
 				e.printStackTrace();
 			}
-
-			/*
-			ClientRequest clientRequest;
-			clientRequest = new ClientRequest("http://localhost:8080/rest/user/update/" + utilisateurGet.getId());
-			 */
-			//clientRequest = new ClientRequest("http://localhost:8080/rest/user/delete/" + utilisateurGet.getId());
-			/*
-			clientRequest.accept("application/xml");
-			ClientResponse<String> clientResponse = clientRequest.get(String.class);
-			if (clientResponse.getStatus() == 200)
-			{
-			 */
-			//session.removeAttribute("ID");
-			//session.removeAttribute("userName");
-			/*
-			RequestDispatcher rd =request.getRequestDispatcher("index.jsp?attemp=0");
-			rd.forward(request, response);
-			 */
-
-			//response.sendRedirect("index.jsp?attemp=0");
-
-			//}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

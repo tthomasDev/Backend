@@ -146,7 +146,6 @@
 				<select class="form-control" id="itemCategory" name="itemCategory"
 					required>
 					<% for (Categorie c : categoriesDto.getListeCategories()) {
-						System.out.println("NOM de la CAT : "+c.getNom());
 						cpt++;
 					%>
 						<% if (c.getId()!=toolToUpdate.getCategorie().getId()) { %>

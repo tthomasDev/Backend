@@ -172,15 +172,13 @@
 						clientResponse.getEntity()));
 						// et ici on peut vérifier que c'est bien le bonne objet
 				
-						/*A mettre lors de la mise en prod*/
-						/*
+						//mail de rappel identifiants
 						 new SendMailTLS(request.getParameter("email"),"Bonjour ! "
-						 + "\n \n Bienvenue sur le site MyNeighTool. Pour rappel voici vos idnetifiants :"
-						 + "\n \n - Login : "+ connexion.getLogin()
-						 + "\n - Mot de passe "+ connexion.getPassword()
+						 + "\n \n Bienvenue "+ connexion.getLogin() +" sur le site MyNeighTool. Votre inscription est réussie et vous pouvez dés à présent vous connecter sur le site avec vos identifiants."
+						 + "\n \n Si vous avez besoin d'aide, n'hésitez pas à consulter la FAQ du site."
 						 + "\n \n Cordialement, l'équipe de MyNeighTool");
 						 System.out.println("Mail de confirmation envoyé");
-						 */
+						 
 						messageValue = "Vous avez bien été enregistré";
 						messageType = "success";
 				
@@ -424,7 +422,7 @@
 									<label class="checkbox">
 										<input type="checkbox" id="tou" name="checkbox" class="ttipb" required> J'ai lu et j'accepte les <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a>
 									</label>
-									<br />
+									<hr />
 									<input type="hidden" name="signUp" id="signUp"> <input type="hidden" value="" name="lat" id="lat">
 									<input type="hidden" value="" name="long" id="long">
 									<a id="signUpBtn" class="pull-right btn btn-info btn-lg">Inscription</a>

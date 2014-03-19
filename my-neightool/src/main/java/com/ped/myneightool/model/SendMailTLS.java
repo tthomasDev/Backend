@@ -14,9 +14,8 @@ public class SendMailTLS {
 	
 	public SendMailTLS (String dest,String myMessage)
 	{
-		System.out.println("Envoi d'un message1");
  
-		final String username = "myneightool@gmail.com";/*TODO*/
+		final String username = "myneightool@gmail.com";
 		final String password = "ped2014tool";
  
 		Properties props = new Properties();
@@ -25,7 +24,6 @@ public class SendMailTLS {
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 		
-		System.out.println("PROPRIETE OK");
 		
 		Session session = Session.getInstance(props,
 		  new javax.mail.Authenticator() {
@@ -43,11 +41,9 @@ public class SendMailTLS {
 			message.setSubject("Message de NeighTool");
 			message.setText(myMessage);
 			
-			System.out.println("Message créé");
 			Transport.send(message);
 			
 			System.out.println("Message envoyé");
-			System.out.println("Done");
  
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
@@ -57,10 +53,9 @@ public class SendMailTLS {
 	
 	public SendMailTLS (String dest,String myMessage, String myObjet)
 	{
-		System.out.println("Envoi d'un message2");
 		String objet=myObjet;
 		final String username = "myneightool@gmail.com";
-		final String password = "ped2014tool";/*TODO*/
+		final String password = "ped2014tool";
  
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -68,15 +63,13 @@ public class SendMailTLS {
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 		
-		System.out.println("PROPRIETE OK2");
-		
 		Session session = Session.getInstance(props,
 		  new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(username, password);
 			}
 		  });
-		System.out.println("Autentification fait2");
+		System.out.println("Autentification fait 2");
 		try {
  
 			Message message = new MimeMessage(session);
@@ -85,12 +78,9 @@ public class SendMailTLS {
 				InternetAddress.parse(dest));
 			message.setSubject(objet);
 			message.setText(myMessage);
-			
-			System.out.println("Message créé2");
 			Transport.send(message);
 			
-			System.out.println("Message envoyé2");
-			System.out.println("Done");
+			System.out.println("Message envoyé 2");
  
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);

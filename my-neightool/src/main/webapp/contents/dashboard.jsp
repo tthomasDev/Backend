@@ -78,16 +78,9 @@
 			categoriesDto = (CategoriesDTO) un2.unmarshal(new StringReader(
 					responseCategories.getEntity()));
 			if(categoriesDto.size()>0)
-			{
 				list=true;
-				System.out.println("LISTE TRUE");
-			}
 			else
-			{
-				list=false;	
-				System.out.println("LISTE FALSE");
-				
-			}
+				list=false;					
 			
 			messageValue = "La liste a bien été récupérée";
 			messageType = "success";
@@ -134,7 +127,7 @@
 			</ul>
 			<hr />
 			<ul class="nav nav-pills nav-stacked">
-				<% System.out.println("AFFICHAGE : ");
+				<%
 				if(list) {
 					for (Categorie c : categoriesDto.getListeCategories()) { 
 						if (request.getParameter("idCat")!=null) {
