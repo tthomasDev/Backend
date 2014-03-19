@@ -21,7 +21,7 @@
 <%
 
 
-String firstname="", lastname="", address="", telephone="", avatar="", alertMessage="", alertType="";
+String firstname="", lastname="", address="", rue="", cp="", ville="", pays="", telephone="", avatar="", alertMessage="", alertType="";
 //String city,postalCode;
 int bYear=1900, bMonth=1, bDay=1;
 boolean showAlertMessage = false;
@@ -129,6 +129,12 @@ if(request.getParameter("firstname") != null) {
 		telephone = 	utilisateurGet2.getTelephone();
 		avatar = 		imgFolder + "user_avatar_default.png"; //utilisateurGet.getCheminImage();
 		
+		rue=utilisateurGet2.getAdresse().getRue();
+		cp=utilisateurGet2.getAdresse().getcodePostale(); 
+		ville=utilisateurGet2.getAdresse().getVille();
+		pays=utilisateurGet2.getAdresse().getPays();
+		
+		
 		}
 	else {
 		if ( !correctFN )
@@ -161,6 +167,11 @@ if(request.getParameter("firstname") != null) {
 	address = 		utilisateurGet.getAdresse().getadresseComplete();
 	telephone = 	utilisateurGet.getTelephone();
 	avatar = 		"./dist/img/user_avatar_default.png"; //utilisateurGet.getCheminImage();
+	
+	rue=utilisateurGet.getAdresse().getRue();
+	cp=utilisateurGet.getAdresse().getcodePostale(); 
+	ville=utilisateurGet.getAdresse().getVille();
+	pays=utilisateurGet.getAdresse().getPays();
 
 }
 
@@ -240,7 +251,13 @@ if(request.getParameter("firstname") != null) {
 			<h4>Votre adresse</h4>
 			<hr />
 			<div class="input-group">
-				<input type="text" placeholder="Adresse complète (Rue, Ville, Pays, Code Postal)" value="<% out.print(address /*+ ", " + postalCode + " " + city*/); %>" id="location" name="location" class="form-control" required="required">
+			<% if (address != null) 
+			{
+			%>
+				<input type="text" placeholder="Adresse complète (Rue, Ville, Pays, Code Postal)" value="<% out.print(address); %>" id="location" name="location" class="form-control" required="required">
+			<% } else if ((rue != null) && (cp != null) && (ville != null) && (pays != null)){ %>
+				<input type="text" placeholder="Adresse complète (Rue, Ville, Pays, Code Postal)" value="<% out.print(rue+", "+cp+" "+ville+" ("+pays+")"); %>" id="location" name="location" class="form-control" required="required">
+			<% } %>
 				<span class="input-group-btn">
 					<button class="btn btn-default ttipb" type="button" data-toggle="tooltip" title="Vérifier la carte" onclick="codeAddress()"><span class="glyphicon glyphicon-search"></span></button>
 					<button class="btn btn-default ttipb" type="button" data-toggle="tooltip" title="Me trouver sur la carte" onclick="codeLatLng(null)"><span class="glyphicon glyphicon-screenshot"></span></button>
