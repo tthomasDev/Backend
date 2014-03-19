@@ -431,7 +431,6 @@ $(function() {
 		$("#idCat").val("");
 		$("#categoryModal").modal('show');
 	});
-	
 });
 </script>
 

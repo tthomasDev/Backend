@@ -261,90 +261,12 @@
 		e.printStackTrace();
 	}
 %>
-
-<script>
-$(function(){
-
-	var field = $("#sUser");
-	var btnCancel = $("#sBtnCancel");
-	var btnSearch = $("#sBtnSearch");
-	var initialTab = $("#searchBody").html();
-	
-	btnSearch.click(function() {
-		if(field.val()=="") {
-			field.data('bs.tooltip').options.title = 'Veuillez taper un utilisateur (nom, email, ...) à rechercher';
-			field.tooltip('show');
-		} else {
-			btnCancel.removeClass("disabled");
-			var nbResult = 0;
-			var foundInRow;
-			var cellContent;
-			var initTabArray = new Array();
-			$("#searchBody").find("tr").each(function() {
-				foundInRow = false;
-				$(this).find("td").each(function() {
-					cellContent = $(this).html();
-					if(cellContent.indexOf(field.val()) >= 0)
-						foundInRow = true;
-				});
-				if(foundInRow) {
-					initTabArray[nbResult] = "<tr class='toPaginate'>" + $(this).html() + "</tr>";
-					nbResult++;
-				}
-			});
-			if(nbResult == 0)
-				$("#searchBody").html("<tr class='toPaginate'><td class='perfectCenter' colspan='6'>Aucun résultat à votre recherche</td></tr>");
-			else {
-				$("#searchBody").html("");
-				for(var i = 0; i < nbResult; i++) {
-					$("#searchBody").append(initTabArray[i]);
-				}	
-			}
-
-
-			var nbElements = $("#paginatorNbElements").val();
-			$(".toPaginate").hide();
-			
-			$("#paginator").html(function() {
-				var count = 0;
-				$(".toPaginate").each(function() {count++});
-				var paginator = "";
-				if(count>0) {
-					count = count / nbElements;
-					paginator = "<div class='row'>" +
-						"<div class='col-md-12' style='text-align: center;'>" +
-							"<ul class='pagination'>" + 
-								"<li class='disabled'><a href='javascript:void(0);'>Page : </a></li>";
-					for(var i = 0; i < count; i++)
-						paginator += "<li id='page" + i + "'><a href='javascript:void(0);' onclick='changePage(" + i + ", "+ nbElements +");'>" + (i+1) + "</a></li>";
-					paginator += "</ul>" +
-						"</div>" +
-					"</div>";
-				}
-				return paginator;
-			});
-			
-			recalculateNbPage();
-		}
-	});
-	
-	btnCancel.click(function() {
-		btnCancel.addClass("disabled").tooltip('hide');
-		field.val("");
-		$("#searchBody").html(initialTab);
-		
-	});
-	
-});
-</script>
+<script src="<%=jsFolder%>adminSearch.js"></script>
 
 <h3>Liste des utilisateurs 
-	<span class="pull-right input-group col-md-4">
-		<input type="text" id="sUser" placeholder="Chercher un utilisateur (login, email, ...)" class="form-control ttipl">
-		<span class="input-group-btn">
-			<button class="btn btn-default" id="sBtnSearch" type="button"><i class="glyphicon glyphicon-search"></i></button>
-			<button class="btn btn-default disabled ttipt" title="Annuler la recherche" id="sBtnCancel" type="button"><i class="glyphicon glyphicon-remove"></i></button>
-		</span>
+	<span class="pull-right col-md-4" style="margin-right:-15px !important;">
+		<input type="text" id="sSearch" placeholder="Chercher un utilisateur (login, email, ...)" class="form-control ttipl">
+		<a style="position:absolute; right:23px; top:9px;font-size:16px; display:none;" href="javascript:void(0)" class="disabled ttipt" title="Annuler la recherche" id="sBtnCancel" type="button"><i class="glyphicon glyphicon-remove"></i></a>
 	</span>
 </h3>
 <hr />

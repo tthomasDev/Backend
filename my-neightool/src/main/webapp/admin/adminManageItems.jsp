@@ -162,12 +162,16 @@ $(function() {
 		$("#idCat").val(tmp);
 		$("#categoryModal").modal('show');
 	});
-	
-	
 });
 </script>
+<script src="<%=jsFolder%>adminSearch.js"></script>
 
-<h3>Liste des outils <span class="pull-right"></span></h3>
+<h3>Liste des outils
+	<span class="pull-right col-md-4" style="margin-right:-15px !important;">
+		<input type="text" id="sSearch" placeholder="Chercher un outil (nom, propriétaire...)" class="form-control ttipl">
+		<a style="position:absolute; right:23px; top:9px;font-size:16px; display:none;" href="javascript:void(0)" class="disabled ttipt" title="Annuler la recherche" id="sBtnCancel" type="button"><i class="glyphicon glyphicon-remove"></i></a>
+	</span>
+</h3>
 <hr />
 <table class="table table-hover" id="toReorder">
 	<thead>
@@ -182,7 +186,7 @@ $(function() {
 			<th width="15%" class="perfectCenter">Action</th>
 		</tr>
 	</thead>
-	<tbody>
+	<tbody id="searchBody">
 		<%
 		
 		Iterator<Outil> ito=outilsDto.getListeOutils().iterator();
