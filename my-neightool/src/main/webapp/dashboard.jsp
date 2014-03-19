@@ -31,10 +31,10 @@
 	
 	// Le DTO des outils permettant de récupérer la liste des messages
 	MessagesDTO messagesDto = new MessagesDTO();
-	
+	Utilisateur myUser = new Utilisateur();
 	//ici on va récuperer la réponse de la requete
 	try {
-			Utilisateur myUser = new Utilisateur();
+			
 			
 			try {
 				ClientRequest clientRequest;
@@ -171,6 +171,7 @@
 	        			<li class="ttipb" title="<%=tooltip%>"><a href="dashboard.jsp?page=mailbox">Mes messages <span class="badge"><%=nbNewMessage%></span></a></li>
         				<li><a href="dashboard.jsp?page=account">Mon compte</a></li>
         				<li><a href="index.jsp?attemp=0">Déconnexion</a></li>
+        				
 					</ul>
 				</div>
 			</div>

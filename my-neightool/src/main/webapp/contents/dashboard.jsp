@@ -194,7 +194,7 @@
 						<tbody>
 							<% if(request.getParameter("idCat")!=null && !(request.getParameter("idCat").equals("0"))) {
 								for (Outil t : listeOutilsCat.getListeOutils()) { %>
-									<tr style="vertical-align: middle;" class="toPaginate resize140">
+									<tr class="toPaginate resize140">
 										<td class="perfectCenter"><img class="img-rounded" src="<%=t.getCheminImage() %>" /></td>
 										<td style="vertical-align: middle;"><strong><a
 												href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
@@ -204,7 +204,7 @@
 								<% } 
 								} else if (request.getParameter("idCat")!=null && request.getParameter("idCat").equals("0")) {
 									for (Outil t : listeAllTools.getListeOutils()) { %>
-									<tr style="vertical-align: middle;" class="toPaginate resize140">
+									<tr class="toPaginate resize140">
 										<td class="perfectCenter"><img class="img-rounded" src="<%=t.getCheminImage() %>" /></td>
 										<td style="vertical-align: middle;"><strong><a
 												href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />

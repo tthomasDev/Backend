@@ -176,7 +176,7 @@ $(function() {
 <table class="table table-hover" id="toReorder">
 	<thead>
 		<tr>
-			<th width="10%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
+			<th width="10%" class="perfectCenter">Id <span class="reorderer" name="idOrder"></span></th>
 			<th width="30px" class="perfectCenter">Photo</th>
 			<th width="20%" class="perfectCenter">Nom de l'outil</th>
 			<th width="20%" class="perfectCenter">Propriétaire</th>

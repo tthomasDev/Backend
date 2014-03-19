@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="constantes.jsp"%>
 <%@include file="functions.jsp"%>
 <%@ page import="java.util.Date"%>
@@ -61,9 +62,9 @@
 				JAXBContext jaxbc = JAXBContext
 				.newInstance(Connexion.class);
 		
-				/*On crÈÈ une tentative de connexion avec les logins et mdp entrÈs*/
+				/*On cr√©√© une tentative de connexion avec les logins et mdp entr√©s*/
 				final Connexion connexion = new Connexion(escapeStr(request.getParameter("login_username")),encodedPw(escapeStr(request.getParameter("login_password"))));
-				/*On sÈrialise*/
+				/*On s√©rialise*/
 				final Marshaller marshaller = jaxbc.createMarshaller();
 				marshaller.setProperty(Marshaller.JAXB_ENCODING,"UTF-8");
 				final java.io.StringWriter sw = new StringWriter();
@@ -80,17 +81,17 @@
 				clientRequest.header("Authorization", "Basic " + base64encodedUsernameAndPassword);
 				///////////////////
 		
-				/*on rÈcupËre la rÈponse de la requete*/
+				/*on r√©cup√®re la r√©ponse de la requete*/
 				final ClientResponse<String> clientResponse = clientRequest.post(String.class);
 				System.out.println("\n\n" + clientResponse.getEntity()+ "\n\n");
 		
 				if (clientResponse.getStatus() == 200) {
-					//Si on rÈcupËre un ID
+					//Si on r√©cup√®re un ID
 					try {
 						Integer.parseInt(clientResponse.getEntity());
 				
 						messageType = "success";
-						messageValue = "Connexion rÈussie";
+						messageValue = "Connexion r√©ussie";
 				
 						session.setAttribute("ID", clientResponse.getEntity());
 						session.setAttribute("userName",escapeStr(request.getParameter("login_username")));
@@ -101,18 +102,18 @@
 						messageType = "danger";
 					}
 				} else {
-					messageValue = "ProblËme de connexion, ressayez plus tard";
+					messageValue = "Probl√®me de connexion, ressayez plus tard";
 					messageType = "danger";
 				}
 			} else if (request.getParameter("signUp") != null) {
 		
-				//on a besoin du contexte si on veut serialiser/dÈsÈrialiser avec jaxb
+				//on a besoin du contexte si on veut serialiser/d√©s√©rialiser avec jaxb
 				JAXBContext jaxbc = JAXBContext
 				.newInstance(Utilisateur.class);
 		
 				System.out.println("LAT : " + request.getParameter("lat"));
 		
-				//ici on va crÈer l'utilisateur avec les donnÈes rentrÈs dans le formulaire
+				//ici on va cr√©er l'utilisateur avec les donn√©es rentr√©s dans le formulaire
 				boolean correctPW = escapeStr(request.getParameter("password")).matches("[a-zA-Z0-9#$%+=]*");
 				//Formatage de la date
 				String m = escapeStr(request.getParameter("month"));
@@ -127,7 +128,7 @@
 				DateFormat sdf = new SimpleDateFormat("d-M-yyyy");
 				try {
 					String dateFormatee = sdf.format(d);
-					System.out.println("Date formatÈe : " + dateFormatee);
+					System.out.println("Date format√©e : " + dateFormatee);
 					if (dateFormatee.compareTo(target) != 0)
 						dateCorrecte = false;
 					else
@@ -136,18 +137,18 @@
 					System.out.println("Exception");
 				}
 		
-				//Verification numÈro de tel
+				//Verification num√©ro de tel
 				String numTel = escapeStr(request.getParameter("telephone"));
 				boolean correctTel = numTel.matches("[0-9]{10}");
-				boolean correctLN = escapeStr(request.getParameter("lastname")).matches("[a-zA-ZÈËÔ-]*");
-				boolean correctFN = escapeStr(request.getParameter("firstname")).matches("[a-zA-ZÈËÔ-]*");
+				boolean correctLN = escapeStr(request.getParameter("lastname")).matches("[a-zA-Z√©√®√Ø-]*");
+				boolean correctFN = escapeStr(request.getParameter("firstname")).matches("[a-zA-Z√©√®√Ø-]*");
 		
 				if (correctTel && dateCorrecte && correctLN	&& correctFN && correctPW) {
 					final Adresse adresse = new Adresse(escapeStr(request.getParameter("location")),Float.valueOf(escapeStr(request.getParameter("long"))),Float.valueOf(escapeStr(request.getParameter("lat"))));
 					final Connexion connexion = new Connexion(escapeStr(request.getParameter("username")),encodedPw(escapeStr(request.getParameter("password"))));
 					final Utilisateur user = new Utilisateur(escapeStr(request.getParameter("lastname")), escapeStr(request.getParameter("firstname")),	connexion, escapeStr(request.getParameter("email")),numTel, adresse, d);
 
-					//ici il faut sÈrialiser l'utilisateur
+					//ici il faut s√©rialiser l'utilisateur
 					final Marshaller marshaller = jaxbc.createMarshaller();
 					marshaller.setProperty(Marshaller.JAXB_ENCODING,"UTF-8");
 					final java.io.StringWriter sw = new StringWriter();
@@ -157,29 +158,29 @@
 					final ClientRequest clientRequest = new ClientRequest(siteUrl + "rest/user/create");
 					clientRequest.body("application/xml", user);
 				
-					//ici on va rÈcuperer la rÈponse de la requete
+					//ici on va r√©cuperer la r√©ponse de la requete
 					final ClientResponse<String> clientResponse = clientRequest.post(String.class);
 					//test affichage
 					System.out.println("\n\n" + clientResponse.getEntity() + "\n\n");
 					if (clientResponse.getStatus() == 200) {
-						// si la rÈponse est valide !
-						// on dÈsÈrialiser la rÈponse si on veut vÈrifier que l'objet retourner
-						// est bien celui qu'on a voulu crÈer , pas obligatoire
+						// si la r√©ponse est valide !
+						// on d√©s√©rialiser la r√©ponse si on veut v√©rifier que l'objet retourner
+						// est bien celui qu'on a voulu cr√©er , pas obligatoire
 						final Unmarshaller un = jaxbc
 						.createUnmarshaller();
 						final Object object = (Object) un
 						.unmarshal(new StringReader(
 						clientResponse.getEntity()));
-						// et ici on peut vÈrifier que c'est bien le bonne objet
+						// et ici on peut v√©rifier que c'est bien le bonne objet
 				
 						//mail de rappel identifiants
 						 new SendMailTLS(request.getParameter("email"),"Bonjour ! "
-						 + "\n \n Bienvenue "+ connexion.getLogin() +" sur le site MyNeighTool. Votre inscription est rÈussie et vous pouvez dÈs ‡ prÈsent vous connecter sur le site avec vos identifiants."
-						 + "\n \n Si vous avez besoin d'aide, n'hÈsitez pas ‡ consulter la FAQ du site."
-						 + "\n \n Cordialement, l'Èquipe de MyNeighTool");
-						 System.out.println("Mail de confirmation envoyÈ");
+						 + "\n \n Bienvenue "+ connexion.getLogin() +" sur le site MyNeighTool. Votre inscription est r√©ussie et vous pouvez d√©s √† pr√©sent vous connecter sur le site avec vos identifiants."
+						 + "\n \n Si vous avez besoin d'aide, n'h√©sitez pas √† consulter la FAQ du site."
+						 + "\n \n Cordialement, l'√©quipe de MyNeighTool");
+						 System.out.println("Mail de confirmation envoy√©");
 						 
-						messageValue = "Vous avez bien ÈtÈ enregistrÈ";
+						messageValue = "Vous avez bien √©t√© enregistr√©";
 						messageType = "success";
 				
 					} else {
@@ -187,19 +188,19 @@
 						messageType = "danger";
 					}
 				} else if (!correctTel) {
-					messageValue = "Numero de tÈlÈphone incorrect. Format : 10 chiffres";
+					messageValue = "Numero de t√©l√©phone incorrect. Format : 10 chiffres";
 					messageType = "danger";
 				} else if (!dateCorrecte) {
 					messageValue = "La date de naissance est incorrecte";
 					messageType = "danger";
 				} else if (!correctFN) {
-					messageValue = "PrÈnom incorrect";
+					messageValue = "Pr√©nom incorrect";
 					messageType = "danger";
 				} else if (!correctLN) {
 					messageValue = "Nom incorrect";
 					messageType = "danger";
 				} else if (!correctPW) {
-					messageValue = "Mot de passe incorrect. CaractËres autorisÈs : chiffres, lettres (majuscules et minuscules), caractËres spÈciaux (uniquement : #, +, =, $, %)";
+					messageValue = "Mot de passe incorrect. Caract√®res autoris√©s : chiffres, lettres (majuscules et minuscules), caract√®res sp√©ciaux (uniquement : #, +, =, $, %)";
 					messageType = "danger";
 				}
 			} else {
@@ -209,7 +210,7 @@
 		}
 	}
 
-	//Si l'utilisateur est dÈj‡ connectÈ on redirige vers dashboard
+	//Si l'utilisateur est d√©j√† connect√© on redirige vers dashboard
 	if (session.getAttribute("ID") != null) {
 		RequestDispatcher rd = request
 		.getRequestDispatcher("dashboard.jsp?idCat=0");
@@ -339,8 +340,8 @@
 					<div class="col-md-1"></div>
 					<div class="col-md-5 img-rounded"
 						style="background-color: #DDD !important; margin-left: 60px !important">
-						<h3>CrÈez un compte gratuitement</h3>
-						<h4>Echangez dËs maintenant prËs de chez vous !</h4>
+						<h3>Cr√©ez un compte gratuitement</h3>
+						<h4>Echangez d√®s maintenant pr√®s de chez vous !</h4>
 						<hr />
 						<form id="formSignUp" action="index.jsp?attemp=1" method="POST">
 							<div class="row">
@@ -348,7 +349,7 @@
 									<input type="text" placeholder="Nom" id="firstname" name="firstname" class="form-control ttipt" required/>
 								</div>
 								<div class="col-md-6 form-group">
-									<input type="text" placeholder="PrÈnom" id="lastname" name="lastname" class="form-control ttipt" required/>
+									<input type="text" placeholder="Pr√©nom" id="lastname" name="lastname" class="form-control ttipt" required/>
 								</div>
 								<div class="col-md-6 form-group">
 									<input type="text" placeholder="Nom d'utilisateur" id="username" name="username" class="form-control ttipr" required/>
@@ -363,7 +364,7 @@
 									<input type="password" placeholder="Mot de passe" id="password"	name="password" class="form-control ttipr" required/>
 								</div>
 								<div class="col-md-6 form-group">
-									<input type="text" placeholder="NumÈro de tÈlÈphone" id="telephone" name="telephone" maxlength="10" class="form-control ttipr" required/>
+									<input type="text" placeholder="Num√©ro de t√©l√©phone" id="telephone" name="telephone" maxlength="10" class="form-control ttipr" required/>
 								</div>
 							</div>
 							<div class="row">
@@ -407,20 +408,20 @@
 									<div class="input-group">
 										<input type="text" placeholder="Votre ville" id="location" name="location" class="form-control ttipb" required/>
 										<span class="input-group-btn">
-											<button class="btn btn-default ttipb" type="button"	data-toggle="tooltip" title="VÈrifier la carte"	onclick="codeAddress()">
+											<button class="btn btn-default ttipb" type="button"	data-toggle="tooltip" title="V√©rifier la carte"	onclick="codeAddress()">
 												<span class="glyphicon glyphicon-search"></span>
 											</button>
 											<button class="btn btn-default ttipb" type="button"	data-toggle="tooltip" title="Me trouver sur la carte" onclick="codeLatLng(null)">
 												<span class="glyphicon glyphicon-screenshot"></span>
 											</button>
-											<button class="btn btn-default ttipb" type="button"	data-toggle="tooltip" title="RÈcupÈrer la position sur la carte" onclick="getMyMarker()">
+											<button class="btn btn-default ttipb" type="button"	data-toggle="tooltip" title="R√©cup√©rer la position sur la carte" onclick="getMyMarker()">
 												<span class="glyphicon glyphicon-pushpin"></span>
 											</button>
 										</span>
 									</div>
 									<hr />
 									<label class="checkbox">
-										<input type="checkbox" id="tou" name="checkbox" class="ttipb" required> J'ai lu et j'accepte les <a href="#" data-toggle="modal" data-target="#terms">Conditions gÈnÈrales d'utilisation</a>
+										<input type="checkbox" id="tou" name="checkbox" class="ttipb" required> J'ai lu et j'accepte les <a href="#" data-toggle="modal" data-target="#terms">Conditions g√©n√©rales d'utilisation</a>
 									</label>
 									<hr />
 									<input type="hidden" name="signUp" id="signUp"> <input type="hidden" value="" name="lat" id="lat">
@@ -441,7 +442,7 @@
 					Copyrights &copy; MyNeighTool 2014 | <span><a href="#"
 						id="contactLink" data-toggle="modal" data-target="#contact">Nous
 							contacter</a> &bull; <a href="#" data-toggle="modal"
-						data-target="#terms">Conditions gÈnÈrales d'utilisation</a> &bull;
+						data-target="#terms">Conditions g√©n√©rales d'utilisation</a> &bull;
 						<a href="#" data-toggle="modal" data-target="#faq">FAQ</a></span>
 				</p>
 			</footer>

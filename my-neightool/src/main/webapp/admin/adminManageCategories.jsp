@@ -445,7 +445,7 @@ $(function() {
 <table class="table table-hover" id="toReorder">
 	<thead>
 		<tr>
-			<th width="10%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
+			<th width="10%" class="perfectCenter">Id <span class="reorderer" name="idOrder"></span></th>
 			<th width="75%" class="perfectCenter">Nom de la catégorie</th>
 			<th width="15%" class="perfectCenter">Action</th>
 		</tr>

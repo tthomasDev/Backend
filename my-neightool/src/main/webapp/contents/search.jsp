@@ -128,7 +128,7 @@ final JAXBContext jaxbc3 = JAXBContext.newInstance(UtilisateursDTO.class);
 try {
 ClientRequest clientRequest;
 clientRequest = new ClientRequest(
-"http://localhost:8080/rest/user/list");
+siteUrl+"rest/user/list");
 clientRequest.accept("application/xml");
 ClientResponse<String> response2 = clientRequest.get(String.class);
 if (response2.getStatus() == 200) {
@@ -379,6 +379,13 @@ if(request.getParameter("category") != null) {
 			&& request.getParameter("s") == "" && othersSubmitted) {
 		keywordsDisplay = "Résultats pour les objets" + adds;
 	}
+	String cautionEnable = "", distanceEnable = "";
+	if(request.getParameter("enableDistance")!=null && request.getParameter("enableDistance").equals("on")) {
+		distanceEnable = "checked='checked'";
+	}
+	if(request.getParameter("enableCaution")!=null && request.getParameter("enableCaution").equals("on")) {
+		cautionEnable = "checked='checked'";
+	}
 %>
 <script>
 				var activateDistance = false;
@@ -439,6 +446,16 @@ if(request.getParameter("category") != null) {
 					else
 						$("#amountDistance").html($("#sliderDistance").slider("value") + " km maximum");
 					$("#dMax").val($("#sliderDistance").slider("value"));
+					<% if(distanceEnable.equals("")) { %>
+						$("#amountDistance").html("Désactivée");
+						$("#sliderDistance").hide();
+						$("#dMax").prop('disabled', true);
+					<% } %>
+					<% if(cautionEnable.equals("")) { %>
+						$("#amountCaution").html("Désactivée");
+						$("#sliderCaution").hide();
+						$("#cMax").prop('disabled', true);
+					<% } %>
 				});
 			</script>
 			
@@ -507,7 +524,7 @@ if(request.getParameter("category") != null) {
 		<div class="form-group">
 			<div class="checkbox">
 				<label id="enableDistanceLbl"><strong><input
-						type="checkbox" checked="checked" name="enableDistance"
+						type="checkbox" <%=distanceEnable%> name="enableDistance"
 						id="enableDistance" /> Distance : <span id="amountDistance"></span></strong></label>
 			</div>
 			<div id="sliderDistance"></div>
@@ -516,7 +533,7 @@ if(request.getParameter("category") != null) {
 		<div class="form-group">
 			<div class="checkbox">
 				<label id="enableCautionLbl"><strong><input
-						type="checkbox" checked="checked" name="enableCaution"
+						type="checkbox" <%=cautionEnable%> name="enableCaution"
 						id="enableCaution" /> Caution maximum : <span id="amountCaution"></span></strong></label>
 			</div>
 			<div id="sliderCaution"></div>
@@ -545,15 +562,13 @@ if(request.getParameter("category") != null) {
 	<div class="tab-content">
 		<div class="tab-pane active" id="list">
 			<div class="table-responsive">
-				<table class="table table-hover">
+				<table class="table table-hover" id="toReorder" >
 					<thead>
 						<tr>
 							<th class="perfectCenter" width="140px">Photo</th>
 							<th class="perfectCenter" width="60%">Description</th>
-							<th class="perfectCenter" width="20%">Caution </a><span class="reorderer" name="distance"></span></th>
-							<th class="perfectCenter" width="20%">Distance <a href="#"><span
-									class="glyphicon glyphicon-chevron-up"></span></a><a href="#"><span
-									class="glyphicon glyphicon-chevron-down"></span></a></th>
+							<th class="perfectCenter" width="20%">Caution</th>
+							<th class="perfectCenter" width="20%">Distance <span class="reorderer" name="distance"></span></th> 
 						</tr>
 					</thead>
 					<tbody>
@@ -565,13 +580,13 @@ if(request.getParameter("category") != null) {
 								for (Outil t : arrayListeOutilsCat.get(i).getListeOutils()) {
 									nbOutils++;
 									%>
-									<tr style="vertical-align: middle;" class="toPaginate">
-										<td><img class="img-rounded" src="<%=t.getCheminImage() %>" width="140px" height="140px" /></td>
+									<tr class="toPaginate resize140">
+										<td class="perfectCenter reorderable"><img class="img-rounded" src="<%=t.getCheminImage() %>" /></td>
 										<td style="vertical-align: middle;"><strong><a
 												href="dashboard.jsp?page=itemDetails&id=<%=t.getId()%>"><%=t.getNom() %></a></strong><br />
 											<p><%=t.getDescription() %></p></td>
-										<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
-										<td style="vertical-align: middle; text-align: center;">
+										<td class="perfectCenter reorderable"><%=t.getCaution() + " "%> euros</td>
+										<td class="perfectCenter reorderable">
 										<%							
 								
 										float userLat = t.getUtilisateur().getAdresse().getLatitude();
@@ -580,7 +595,7 @@ if(request.getParameter("category") != null) {
 										double distance = distFrom(currentUserLat, currentUserLng, userLat, userLng);
 										String distanceStr = new DecimalFormat("#").format(distance);
 										 %>
-										<%= distanceStr + "km"%>
+										<%= distanceStr + " km"%>
 										</td>
 									</tr>
 								<% 
