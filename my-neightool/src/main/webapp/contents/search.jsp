@@ -483,7 +483,7 @@ if(request.getParameter("category") != null) {
 							+ o.getCheminImage() + "\\"
 							+ o.getCaution() + "\\"
 							+ distanceStr + "\\"
-							+ o.getUtilisateur().getNom() + "\\"
+							+ o.getUtilisateur().getConnexion().getLogin() + "\\"
 							+ o.getUtilisateur().getAdresse().getLatitude() + "\\"
 							+ o.getUtilisateur().getAdresse().getLongitude()
 							+ "</option>");

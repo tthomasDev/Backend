@@ -267,7 +267,7 @@ function addMarker(location, isDestination, contentString) {
 	      });
 	      
 	      google.maps.event.addListener(marker, 'click', function() {
-  		 		markerInfowindow.setContent(contentString);
+		 		markerInfowindow.setContent(contentString);
 	    	    markerInfowindow.open(map,marker);
 	    	  });
 	      
