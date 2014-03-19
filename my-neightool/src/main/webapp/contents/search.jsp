@@ -443,19 +443,29 @@ if(request.getParameter("category") != null) {
 			</script>
 			
 			
-	<select style="display:block;" class="form-control" id="users" name="users">
+	<select style="display:none;" class="form-control" id="users" name="users">
 		<% 	
+			float currentUserLat = currentUser.getAdresse().getLatitude();
+			float currentUserLng = currentUser.getAdresse().getLongitude();
 			int num = 0;
 			for(OutilsDTO outilDTO : arrayListeOutilsCat)
 			{
 				for(Outil o : outilDTO.getListeOutils())
 				{
+
+					float userLat = o.getUtilisateur().getAdresse().getLatitude();
+					float userLng = o.getUtilisateur().getAdresse().getLongitude();
+					
+					double distance = distFrom(currentUserLat, currentUserLng, userLat, userLng);
+					String distanceStr = new DecimalFormat("#").format(distance);
 					
 					out.println("<option value='" + num + "'>"
 							+ o.getId() + "\\"
 							+ o.getNom() + "\\"
 							+ o.getDescription() + "\\"
 							+ o.getCheminImage() + "\\"
+							+ o.getCaution() + "\\"
+							+ distanceStr + "\\"
 							+ o.getUtilisateur().getNom() + "\\"
 							+ o.getUtilisateur().getAdresse().getLatitude() + "\\"
 							+ o.getUtilisateur().getAdresse().getLongitude()
@@ -550,6 +560,7 @@ if(request.getParameter("category") != null) {
 							<% 
 							if(request.getParameter("category")!=null || arrayListeOutilsCat.size()>0) {
 							int nbOutils = 0;
+							
 							for (int i=0; i<arrayListeOutilsCat.size(); i++){
 								for (Outil t : arrayListeOutilsCat.get(i).getListeOutils()) {
 									nbOutils++;
@@ -562,9 +573,7 @@ if(request.getParameter("category") != null) {
 										<td style="vertical-align: middle; text-align: center;"><%=t.getCaution() + " "%><i class="glyphicon glyphicon-euro"></i></td>
 										<td style="vertical-align: middle; text-align: center;">
 										<%							
-										float currentUserLat = currentUser.getAdresse().getLatitude();
-										float currentUserLng = currentUser.getAdresse().getLongitude();
-										
+								
 										float userLat = t.getUtilisateur().getAdresse().getLatitude();
 										float userLng = t.getUtilisateur().getAdresse().getLongitude();
 										
@@ -599,8 +608,8 @@ if(request.getParameter("category") != null) {
 			<input id="paginatorNbElements" type="hidden" value="5"
 				readonly="readonly" />
 		</div>
-		<script type="text/javascript"
-			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsO96nmOiM5A5mef1oNv4PZoETDWvfJ88&sensor=false"></script>
+		<!-- <script type="text/javascript"
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsO96nmOiM5A5mef1oNv4PZoETDWvfJ88&sensor=false"></script> -->
 		<script src="./dist/js/mapsSearch.js"></script>
 		<style>
 #map-canvas {
