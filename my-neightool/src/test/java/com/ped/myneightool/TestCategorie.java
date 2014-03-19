@@ -45,11 +45,11 @@ public class TestCategorie {
 		crb= new ClientRequestBuilder(jaxbc);
 		
 		try {
-			final Connexion connexion = new Connexion("adminCategorie",CryptHandler.encodedPw("admin"));
+			final Connexion connexion = new Connexion("adminMaurice",CryptHandler.encodedPw("admin"));
 			final Adresse adresse = new Adresse("658 quai du tram","33000","Bordeaux","France",-33,33);
 			final Date birthDate = new Date();
 			
-			final Utilisateur utilisateur= new Utilisateur("admin","admin",connexion,"adminCategorie@myneightool.com","0000000000",adresse,birthDate);
+			final Utilisateur utilisateur= new Utilisateur("Maurice","Lefbreve",connexion,"adminCategorie@myneightool.com","0000000000",adresse,birthDate);
 			utilisateur.setRole("ADMIN");
 			utilisateurAdmin = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 									

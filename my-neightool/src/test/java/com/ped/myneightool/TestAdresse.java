@@ -41,11 +41,11 @@ public class TestAdresse {
 	@Test
 	public void testCreateUserWithAddress() {
 		try {
-			final Connexion connexion = new Connexion("loginCreateAdress",CryptHandler.encodedPw("passwordCreate"));
+			final Connexion connexion = new Connexion("jeanmichmich",CryptHandler.encodedPw("passwordCreate"));
 			final Adresse adresse = new Adresse("20 rue principale","33000","Bordeaux","France",-30,-9);
 			
 			//final Utilisateur utilisateur = new Utilisateur("test", "xml");
-			final Utilisateur utilisateur2= new Utilisateur("JeanAdresseCreate","DucheminAdresseCreate",connexion,"dsqdqsjean-duchemin@gmail.com","0606060606",adresse,new Date(0));
+			final Utilisateur utilisateur2= new Utilisateur("Jean-Michel","Ducheminet",connexion,"dsqdqsjean-duchemin@gmail.com","0606060606",adresse,new Date(0));
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur2,"user/create");
 			
 						
@@ -64,11 +64,11 @@ public class TestAdresse {
 	@Test
 	public void testUpdateAddressFromUtilisateur() {
 		try {
-			final Connexion connexion = new Connexion("loginCreatesqdsqd",CryptHandler.encodedPw("passwordCreate"));
+			final Connexion connexion = new Connexion("JeanRene",CryptHandler.encodedPw("passwordCreate"));
 			final Adresse adresse = new Adresse("20 rue principale","33000","Bordeaux","France",-20,-21);
 			
 			
-			final Utilisateur utilisateur= new Utilisateur("JeanAdresseCreate","DucheminAdresseCreate",connexion,"dsqdjean-duchemin@gmail.com","0606060606",adresse,new Date(0));
+			final Utilisateur utilisateur= new Utilisateur("Jean-Rene","Duchemindelarue",connexion,"dsqdjean-duchemin@gmail.com","0606060606",adresse,new Date(0));
 			final Utilisateur utilisateurPost = (Utilisateur) crb.httpRequestXMLBody(utilisateur,"user/create");
 			
 			

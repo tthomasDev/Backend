@@ -23,6 +23,30 @@ if(!fileExists(filePath))
 	filePath = adminFolder+"404.jsp";
 
 final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
+
+
+Utilisateur utilisateurGet = new Utilisateur();
+try {
+	ClientRequest clientRequest;
+	clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
+	clientRequest.accept("application/xml");
+	ClientResponse<String> clientResponse = clientRequest.get(String.class);
+	if (clientResponse.getStatus() == 200)
+	{
+		Unmarshaller un = jaxbc.createUnmarshaller();
+		utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
+		
+	}
+} catch (Exception e) {
+	e.printStackTrace();
+}
+
+if(utilisateurGet.getRole().equals("USER")){
+	RequestDispatcher rd = request
+			.getRequestDispatcher("dashboard.jsp?page=404");
+	rd.forward(request, response);
+}
+
 %>
 <!doctype html>
 <html lang="en">
@@ -87,21 +111,7 @@ final JAXBContext jaxbc = JAXBContext.newInstance(Utilisateur.class);
 				<p>Copyrights &copy; MyNeighTool 2014 | <span><a href="#" id="contactLink" data-toggle="modal" data-target="#contact">Nous contacter</a> &bull; <a href="#" data-toggle="modal" data-target="#terms">Conditions générales d'utilisation</a> &bull; <a href="#" data-toggle="modal" data-target="#faq">FAQ</a>
 				<% 
 								
-				Utilisateur utilisateurGet = new Utilisateur();
-				try {
-					ClientRequest clientRequest;
-					clientRequest = new ClientRequest(siteUrl + "rest/user/" + session.getAttribute("ID"));
-					clientRequest.accept("application/xml");
-					ClientResponse<String> clientResponse = clientRequest.get(String.class);
-					if (clientResponse.getStatus() == 200)
-					{
-						Unmarshaller un = jaxbc.createUnmarshaller();
-						utilisateurGet = (Utilisateur) un.unmarshal(new StringReader(clientResponse.getEntity()));
-						
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				
 				
 				if(utilisateurGet.getRole().equals("ADMIN")){ %>
 				&bull; 

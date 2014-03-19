@@ -56,10 +56,10 @@ public class TestConnexion {
 
 		try {
 
-			final Connexion connexion = new Connexion("loginTestValidConnexion",CryptHandler.encodedPw("password"));
+			final Connexion connexion = new Connexion("JeanConnexion",CryptHandler.encodedPw("password"));
 			final Adresse adresse = new Adresse("45 allée des rues","33000","Bordeaux","France",-6,6);
 			final Date birthDate = new Date();
-			final Utilisateur utilisateur= new Utilisateur("JeanConnexion","DucheminConnexion",connexion,"connexion@connexion.com","0909090989",adresse,birthDate);
+			final Utilisateur utilisateur= new Utilisateur("Jean-Paul","DucheminConnexion",connexion,"connexion@connexion.com","0909090989",adresse,birthDate);
 			final Utilisateur utilisateurPost=(Utilisateur)crb.httpRequestXMLBody(utilisateur, "user/create");
 						
 			

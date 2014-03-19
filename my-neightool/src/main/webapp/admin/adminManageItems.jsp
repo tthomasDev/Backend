@@ -179,7 +179,6 @@ $(function() {
 			<th width="10%" class="perfectCenter"><span class="reorderer" name="idOrder"></span> Id</th>
 			<th width="30px" class="perfectCenter">Photo</th>
 			<th width="20%" class="perfectCenter">Nom de l'outil</th>
-			<th width="5%" class="perfectCenter">Disponible</th>
 			<th width="20%" class="perfectCenter">Propriétaire</th>
 			<th width="15%" class="perfectCenter">Catégorie</th>
 			<th width="10%" class="perfectCenter">Caution</th>
@@ -205,20 +204,9 @@ $(function() {
 			
 			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=outil.getNom() %></td>
 			<%
-			Boolean b=outil.isDisponible();
-			String s=new String(""+b);
-			if(b){
-				s="Oui";
-			}
-			else{
-				s="Non";
-			}
-			%>
-			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=s %></td>
-			<%
 				String str2= outil.getUtilisateur().getConnexion().getLogin();
 			%>
-			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><%=str2 %></td>
+			<td id="nameCat<%=outil.getId()%>" class="perfectCenter"><FONT COLOR="#58ACFA"><%=str2 %></FONT></td>
 			<% 
 				String str= outil.getCategorie().getNom();
 				if(str.equals(null)){

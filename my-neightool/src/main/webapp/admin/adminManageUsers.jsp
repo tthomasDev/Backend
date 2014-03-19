@@ -285,7 +285,8 @@
 			<th width="15%" class="perfectCenter">Prénom</th>
 			<th width="15%" class="perfectCenter">Nom</th>
 			<th width="30%" class="perfectCenter">Email</th>
-			<th width="15%" class="perfectCenter">Action</th>
+			<th width="5%" class="perfectCenter">Role</th>
+			<th width="10%" class="perfectCenter">Action</th>
 		</tr>
 	</thead>
 	<tbody id="searchBody">
@@ -308,10 +309,13 @@
 					}
 				%>
 				<td class="perfectCenter"><img class="img-rounded" src="<%=path%>" width="35" height="35" /></td>
-				<td class="perfectCenter"><%=u.getConnexion().getLogin()%></td>
+				<td class="perfectCenter">
+					<FONT COLOR="#58ACFA"><%=u.getConnexion().getLogin()%></FONT>
+				</td>
 				<td class="perfectCenter"><%=u.getPrenom() %></td>
 				<td class="perfectCenter"><%=u.getNom() %></td>
 				<td class="perfectCenter"><%=u.getMail() %></td>
+				<td class="perfectCenter"><%=u.getRole() %></td>
 				<td class="perfectCenter">
 					<% if(u.getRole().equals("USER")){ %>
 					<a href="adminDashboard.jsp?page=adminManageUsers&deleteId=<%=u.getId()%>" class="ttipt btn btn-danger" title="Supprimer l'utilisateur">
